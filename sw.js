@@ -1,5 +1,5 @@
 /* Offline cache for مختبر الجبر الخطي. Bump CACHE to force refresh. */
-const CACHE = "linalg-v1";
+const CACHE = "linalg-v2";
 const CORE = [
   "./",
   "./index.html",

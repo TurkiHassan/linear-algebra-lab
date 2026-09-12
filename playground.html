@@ -42,6 +42,7 @@
   pre{margin:0;padding:14px;min-height:430px;max-height:560px;overflow:auto;background:var(--term);color:var(--termtext);font-family:var(--mono);font-size:12.5px;line-height:1.75;direction:ltr;text-align:left;white-space:pre-wrap}
   pre .err{color:#ff9d8a}
   pre .ok{color:#b9e6a1}
+  pre .warn{color:#ffd28a}
   .status{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:10px;min-height:1.6em}
   .foot{margin-top:60px;border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--sans);font-size:12px;color:var(--muted)}
   input[type=file]{font-family:var(--sans);font-size:12.5px}
@@ -60,7 +61,7 @@
   </div>
   <header class="hero">
     <h1>مشغّل بايثون في المتصفح</h1>
-    <p class="lead">اختر تمريناً، عدّل الكود، ثم شغّله مباشرة — بلا تثبيت بايثون. المحرّك هو <span lang="en">Pyodide</span>، ويُحمَّل أول مرة عند الضغط على «شغّل».</p>
+    <p class="lead">اختر تمريناً، عدّل الكود، ثم شغّله مباشرة — بلا تثبيت بايثون. المحرّك هو <span lang="en">Pyodide</span>، ويُحمَّل أول مرة عند الضغط على «شغّل». التمارين ناقصة عمداً: أكمل الدوال المعلّمة بـ <span lang="en">TODO</span> ثم شغّل، وستطبع اللوحة <span lang="en">PASS/FAIL</span> لكل اختبار.</p>
     <p class="note">يحتاج اتصالاً أول مرة لتحميل المحرّك. عند فتح الملفات محلياً بلا خادم، استخدم زر «افتح ملفاً» لتحميل التمرين من القرص.</p>
   </header>
   <div class="bar">
@@ -117,12 +118,29 @@
   function clearOut(){out.innerHTML="";}
   function setStatus(s){status.textContent=s;}
 
+  function findStubs(src){
+    var lines=src.split("\n"),cur=null,out=[];
+    for(var i=0;i<lines.length;i++){
+      var m=lines[i].match(/^\s*def\s+([A-Za-z_][A-Za-z0-9_]*)\s*\(/);
+      if(m){cur=m[1];}
+      if(/raise\s+NotImplementedError/.test(lines[i]) && cur && out.indexOf(cur)<0){out.push(cur);}
+    }
+    return out;
+  }
+  function noteStubs(){
+    var names=findStubs(code.value);
+    if(names.length){
+      setStatus("التمرين غير مكتمل عمداً — أكمل الدوال: "+names.join("، ")+" ثم اضغط «شغّل». ابحث عن TODO في الكود.");
+    }else{
+      setStatus("جاهز — اضغط «شغّل».");
+    }
+    return names;
+  }
   function loadExercise(name){
     editorName.textContent="practice/"+name+".py";
     var emb=window.LINALG_EXERCISES && window.LINALG_EXERCISES[name];
     if(emb){
-      code.value=emb; clearOut();
-      setStatus("جاهز — عدّل الكود ثم اضغط «شغّل».");
+      code.value=emb; clearOut(); noteStubs();
       return;
     }
     setStatus("أحمّل "+name+" …");
@@ -130,8 +148,7 @@
       if(!r.ok) throw new Error(r.status);
       return r.text();
     }).then(function(t){
-      code.value=t; clearOut();
-      setStatus("جاهز — اضغط «شغّل».");
+      code.value=t; clearOut(); noteStubs();
     }).catch(function(){
       setStatus("تعذّر جلب الملف تلقائياً (فتح محلي؟). استخدم «افتح ملفاً» أو الصق الكود يدوياً.");
     });
@@ -169,8 +186,19 @@
       ok.textContent="\n— انتهى التنفيذ —";
       out.appendChild(ok);
     }catch(err){
-      var e=document.createElement("span"); e.className="err";
-      e.textContent="\n"+err;
+      var msg=String((err && err.message) || err);
+      var e=document.createElement("span");
+      if(msg.indexOf("NotImplementedError")>=0){
+        var names=findStubs(code.value);
+        e.className="warn";
+        e.textContent="⚠ التمرين لم يكتمل بعد.\n"+
+          (names.length?("الدوال التي تحتاج إكمالاً: "+names.join("، ")+".\n"):"")+
+          "ابحث عن TODO في الكود، اكتب الحل بنفسك، ثم أعد «شغّل».\n"+
+          "الحل الكامل في practice/solutions/ — لا تفتحه قبل محاولتين جادتين.";
+      }else{
+        e.className="err";
+        e.textContent="\n"+msg;
+      }
       out.appendChild(e);
     }finally{
       runBtn.disabled=false;
