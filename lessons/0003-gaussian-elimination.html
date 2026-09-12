@@ -1,0 +1,266 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0003 · الحذف الغاوسي خطوة بخطوة — Gaussian Elimination</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer,.legend,.opchip{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .btn:disabled{opacity:.4;cursor:default}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .step-stage{display:grid;gap:10px;margin-top:12px}
+  .stepc{border:1px solid var(--line);border-radius:12px;padding:12px 14px;background:var(--paper);overflow-x:auto}
+  .stepc .katex{font-size:1.1em}
+  .legend{display:flex;flex-wrap:wrap;gap:8px 18px;margin:6px 0 2px;font-size:12.5px;color:var(--soft)}
+  .legend .li{display:inline-flex;align-items:center;gap:7px}
+  .dotpiv{width:11px;height:11px;border-radius:50%;background:var(--accent);display:inline-block}
+  .ringchg{width:13px;height:13px;border:2.5px solid var(--terra);border-radius:50%;display:inline-block}
+  .mx{display:inline-flex;align-items:stretch;gap:7px}
+  .bl{width:11px;border:3px solid var(--ink);border-right:0;border-radius:10px 0 0 10px}
+  .br{width:11px;border:3px solid var(--ink);border-left:0;border-radius:0 10px 10px 0}
+  .mg{display:inline-grid;gap:3px 0;padding:5px 3px}
+  .mc{position:relative;padding:3px 11px;text-align:center;font-family:ui-monospace,Menlo,Consolas,monospace;font-size:17px;line-height:1.5}
+  .mc.aug{border-left:2px solid var(--ink);margin-left:5px;padding-left:13px}
+  .mc.piv{color:var(--accent);font-weight:800}
+  .mc.chg::after{content:"";position:absolute;top:0;bottom:0;left:3px;right:3px;border:2.5px solid var(--terra);border-radius:50%;pointer-events:none;animation:pop .35s ease}
+  @keyframes pop{from{transform:scale(.6);opacity:0}}
+  @media (prefers-reduced-motion:reduce){.mc.chg::after{animation:none}}
+  .why{margin:10px auto 0;max-width:600px;text-align:right;font-size:13.5px;line-height:1.9;color:#3c3c38}
+  .why b{color:var(--ink)}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0002-matrices-inverse.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0004-matrix-properties.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0003 · <bdi>Build</bdi></div>
+    <h1>الحذف الغاوسي خطوة بخطوة</h1>
+    <span class="en-line" lang="en">Gaussian Elimination — three row moves solve any linear system</span>
+    <div class="rule"></div>
+    <p class="meta">~45 دقيقة · المتطلب: الدرس 0002 (المصفوفات)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> ثلاث حركات فقط<span class="en-sub" lang="en">Scale a row, swap two rows, add a multiple of one row to another</span></h2>
+    <p>كل الحذف الغاوسي مبني على ثلاث <span class="term">عمليات صفوف</span> <span class="en" lang="en" dir="ltr">(row operations)</span> لا تغيّر الحل: ضرب صف بثابت غير صفري، تبديل صفين، وإضافة مضاعف صف إلى آخر. الهدف: الوصول إلى <span class="term">الشكل المثلث</span> ثم <span class="term">التعويض الخلفي</span> <span class="en" lang="en" dir="ltr">(back substitution)</span>.</p>
+    <div class="analogy"><b>تشبيه: ترتيب المكتبة</b><p>لا ترمي الكتب ولا تشتري جديدة — فقط رتّب: ضاعف رفاً، أو بدّل رفين، أو انقل نسخاً من رف إلى آخر. المحتوى الكلي ثابت، وفي النهاية يبقى في كل رف كتاب واحد فقط. <span class="en" lang="en" dir="ltr">Reorganise, never discard: the solution set stays identical.</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> اجعل <span class="term">القائد</span> <span class="en" lang="en" dir="ltr">(pivot)</span> يساوي <span class="coord">1</span>، ثم صفّر كل ما تحته، عموداً بعد عمود، من اليسار إلى اليمين. <span class="en" lang="en" dir="ltr">(Ones on the diagonal, zeros below — left to right.)</span></p></div>
+    <div class="kmath" id="k1"></div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> غرفة العمليات: أنت الجرّاح<span class="en-sub" lang="en">Pick the right row move at each stage</span></h2>
+    <p>المصفوفة الموسعة لمنظومة التدريبات أمامك. في كل مرحلة اختر العملية الصحيحة من الأزرار الثلاثة — اللوحة ترفض الخطأ وتشرح الصواب.</p>
+    <div class="demo" data-label="Operate · STEPS">
+      <h3>اختر العملية الصحيحة</h3>
+      <p class="hint">اقرأ المرحلة، ثم اضغط الزر المناسب — الدائرة تحيط بما غيّرته حركتك، والشرح يفصّل الحساب</p>
+      <div class="legend"><span class="li"><i class="dotpiv"></i> القائد (pivot)</span><span class="li"><i class="ringchg"></i> تغيّر بحركتك الأخيرة</span></div>
+      <div class="step-stage"><div class="stepc" id="opBox" style="text-align:center"><span id="opMat">[ 2 4 6 | 22 ] / [ 3 8 5 | 27 ] / [ -1 1 2 | 2 ]</span><div class="why" id="lastDid"></div></div></div>
+      <div class="controls stick"><button class="btn" data-op="scale">ضرب صف بثابت</button><button class="btn" data-op="add">إضافة مضاعف صف</button><button class="btn ghost" data-op="swap">تبديل صفين</button><button class="btn ghost" id="opReset">من البداية</button></div>
+      <div class="readout" id="opNote" style="direction:rtl;text-align:right">المرحلة 1 من 5: القائد <span class="coord">2</span> — اجعله <span class="coord">1</span>. أي زر؟</div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> التعويض الخلفي يحصد النتيجة<span class="en-sub" lang="en">Read z, then climb back up to y and x</span></h2>
+    <p>بعد المثلث العلوي <span class="coord">[1 2 3|11] / [0 1 −2|−3] / [0 0 11|22]</span> نقرأ <span class="coord">z = 2</span> مباشرة، ثم نصعد: <span class="coord">y − 2z = −3</span> تعطي <span class="coord">y = 1</span>، ثم <span class="coord">x + 2y + 3z = 11</span> تعطي <span class="coord">x = 3</span>. تحقق دائماً بالتعويض في المعادلات الأصلية.</p>
+    <div class="demo" data-label="Verify · CHECK">
+      <h3>مدقق الحل</h3>
+      <p class="hint">أدخل مرشحك (x, y, z) واللوحة تعوّض في المنظومة الأصلية</p>
+      <div class="controls"><label>x <input type="number" id="vx" value="3" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><label>y <input type="number" id="vy" value="1" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><label>z <input type="number" id="vz" value="2" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><button class="btn" id="vGo">تحقق</button></div>
+      <div class="readout" id="vRO">2x+4y+6z = ? · 3x+8y+5z = ? · −x+y+2z = ?</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>صف كامل أصفار مع ثابت غير صفري مثل <span class="coord">[0 0 0 | 5]</span> يعني: لا حل. وصف أصفار كامل <span class="coord">[0 0 0 | 0]</span> يعني: حلول لا نهائية. <span class="en" lang="en" dir="ltr">(0 = 5: impossible. 0 = 0: free variable.)</span></p></div>
+  </section>
+
+  <div class="demo" data-label="Watch · VIDEO">
+    <h3>شاهد الحل متحركاً</h3>
+    <p class="hint">موشن جرافيك بتعليق عربي لنفس المنظومة — القائد بالأخضر، وكل خلية تغيّرت بالدائرة الطينية</p>
+    <video controls preload="metadata" poster="../video/outputs/0003-gaussian-elimination-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
+      <source src="../video/outputs/0003-gaussian-elimination-ar.mp4" type="video/mp4">
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0003-gaussian-elimination-subs.srt" default>
+    </video>
+  </div>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>القائد <span class="en" lang="en">pivot</span></td><td>أول رقم في الصف</td><td>أول غير صفري نرتّب عليه العمود كاملاً</td></tr>
+    <tr><td>الشكل المثلث</td><td>أصفار كثيرة</td><td>أصفار تحت القطر — تجهيز للقراءة المباشرة</td></tr>
+    <tr><td>التعويض الخلفي</td><td>حل عكسي</td><td>من z إلى y إلى x صعوداً بالتعويض</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> تحزر الحل. <b>بعد هذا الدرس:</b> تنفذ خمس مراحل ميكانيكية تصل بك إلى <span class="coord">(3, 1, 2)</span> وتتحقق منها.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">أي عمليات الصفوف التالية ممنوعة؟</div>
+      <button class="opt" data-q="q1" data-a="0">ضرب صف في صفر</button><button class="opt" data-q="q1" data-a="1">ضرب صف في 2</button><button class="opt" data-q="q1" data-a="2">تبديل صفين</button><button class="opt" data-q="q1" data-a="3">إضافة مضاعف صف لآخر</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">أول خطوة مع القائد 2 في المثال؟</div>
+      <button class="opt" data-q="q2" data-a="0">R₁/2 لجعله 1</button><button class="opt" data-q="q2" data-a="1">حذف العمود الأول كله</button><button class="opt" data-q="q2" data-a="2">تبديل R₁ مع R₃</button><button class="opt" data-q="q2" data-a="3">ضرب R₁ في صفر</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">بعد <span class="coord">R₁/2</span>، كيف نصفّر الـ <span class="coord">3</span> تحت القائد؟</div>
+      <button class="opt" data-q="q3" data-a="0"><span class="coord">−3R₁ + R₂</span></button><button class="opt" data-q="q3" data-a="1"><span class="coord">R₂/3</span> فقط</button><button class="opt" data-q="q3" data-a="2">حذف الصف الثاني</button><button class="opt" data-q="q3" data-a="3"><span class="coord">3R₁ + R₁</span></button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">ماذا يعني الصف <span class="coord">[0 0 0 | 5]</span>؟</div>
+      <button class="opt" data-q="q4" data-a="0">لا يوجد حل (0 = 5 مستحيل)</button><button class="opt" data-q="q4" data-a="1">حل وحيد z = 5</button><button class="opt" data-q="q4" data-a="2">حلول لا نهائية</button><button class="opt" data-q="q4" data-a="3">تجاهل الصف وأكمل</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">ما حل المثال الكامل؟</div>
+      <button class="opt" data-q="q5" data-a="0"><span class="coord">(x, y, z) = (3, 1, 2)</span></button><button class="opt" data-q="q5" data-a="1"><span class="coord">(x, y, z) = (11, −3, 2)</span></button><button class="opt" data-q="q5" data-a="2"><span class="coord">(x, y, z) = (2, 2, 2)</span></button><button class="opt" data-q="q5" data-a="3"><span class="coord">(x, y, z) = (1, 1, 1)</span></button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>عمليات الصفوف</td><td><span class="en" lang="en" dir="ltr">row operations</span></td><td>التحريكات الثلاثة المسموحة بلا تغيير الحل</td></tr>
+    <tr><td>القائد</td><td><span class="en" lang="en" dir="ltr">pivot</span></td><td>مسمار العمود: نجعله 1 ونصفّر تحته</td></tr>
+    <tr><td>التعويض الخلفي</td><td><span class="en" lang="en" dir="ltr">back substitution</span></td><td>الصعود من z إلى x بالتعويض</td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0003-gaussian-elimination">شغّل التمرين في المتصفح</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0003" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a><span>شاهد: «المصفوفة المعكوسة وفضاء الأعمدة» (7) ثم أعد الحل بنفسك</span></li>
+      <li><a href="https://ar.khanacademy.org/math/linear-algebra" target="_blank" rel="noopener">خان أكاديمي بالعربية — الجبر الخطي</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0002-matrices-inverse.html" rel="prev"><small>الدرس السابق</small>المصفوفات والعمليات والنظير الضربي</a>
+    <a class="next" href="0004-matrix-properties.html" rel="next"><small>الدرس التالي</small>خصائص المصفوفات والمصفوفة الصفرية</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0003 · الحذف الغاوسي خطوة بخطوة</span><span>التمرين: <code lang="en">python3 practice/0003-gaussian-elimination.py</code> · <a href="../playground.html?ex=0003-gaussian-elimination">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  function mxHTML(rows,piv,chg){
+    var n=rows[0].length;
+    var h='<span class="mx" dir="ltr"><span class="bl"></span><span class="mg" style="grid-template-columns:repeat('+n+',minmax(2.1em,auto))">';
+    h+=rows.map(function(r,i){
+      return r.map(function(v,j){
+        var cls='mc'+(j===n-1?' aug':'')+(piv&&piv[0]===i&&piv[1]===j?' piv':'')+(chg&&chg.some(function(c){return c[0]===i&&c[1]===j;})?' chg':'');
+        return '<span class="'+cls+'">'+v+'</span>';
+      }).join('');
+    }).join('');
+    return h+'</span><span class="br"></span></span>';
+  }
+  function diffRows(a,b){
+    var out=[];
+    for(var i=0;i<a.length;i++)for(var j=0;j<a[i].length;j++)if(a[i][j]!==b[i][j])out.push([i,j]);
+    return out;
+  }
+  tex(document.getElementById('k1'),"R_i \\leftarrow cR_i \\;\\; R_i \\leftrightarrow R_j \\;\\; R_i \\leftarrow R_i + cR_j \\qquad c \\neq 0");
+  var STAGES=[
+    {rows:[[2,4,6,22],[3,8,5,27],[-1,1,2,2]],piv:[0,0],need:"scale",note:"المرحلة 1 من 5: القائد <span class='coord'>2</span> — اجعله <span class='coord'>1</span>. أي زر؟",
+     did:"البداية: المصفوفة الموسعة للمنظومة — القائد الأخضر <span class='coord'>2</span> يحتاج تصغيراً."},
+    {rows:[[1,2,3,11],[3,8,5,27],[-1,1,2,2]],piv:[0,0],need:"add",note:"المرحلة 2 من 5: صفّر تحت القائد <span class='coord'>−3R₁+R₂</span> و<span class='coord'>R₁+R₃</span>.",
+     did:"أحسنت — <b>ضرب صف بثابت</b>: قسمت R₁ على <span class='coord'>2</span> فصارت <span class='coord'>[1,2,3|11]</span>. الدوائر الأربع هي خلايا R₁ الجديدة."},
+    {rows:[[1,2,3,11],[0,2,-4,-6],[0,3,5,13]],piv:[1,1],need:"scale",note:"المرحلة 3 من 5: قائد الصف الثاني <span class='coord'>2</span> — اجعله <span class='coord'>1</span>.",
+     did:"ممتاز — <b>إضافة مضاعف صف</b>: <span class='coord'>R₂ ← −3R₁+R₂ = [0,2,−4|−6]</span> و <span class='coord'>R₃ ← R₁+R₃ = [0,3,5|13]</span>. ثماني خلايا محاطة تغيّرت دفعة واحدة، والعمود الأول تحت القائد صار أصفاراً."},
+    {rows:[[1,2,3,11],[0,1,-2,-3],[0,3,5,13]],piv:[1,1],need:"add",note:"المرحلة 4 من 5: صفّر تحت القائد الثاني <span class='coord'>−3R₂+R₃</span>.",
+     did:"صحيح — <b>ضرب صف بثابت</b>: <span class='coord'>R₂ ÷ 2 ← [0,1,−2|−3]</span>. القائد الجديد <span class='coord'>1</span> بالأخضر."},
+    {rows:[[1,2,3,11],[0,1,-2,-3],[0,0,11,22]],piv:[2,2],need:"scale",note:"المرحلة 5 من 5: القائد <span class='coord'>11</span> — اجعله <span class='coord'>1</span> (<span class='coord'>R₃/11</span>). النهاية!",
+     did:"تمام — <b>إضافة مضاعف صف</b>: <span class='coord'>R₃ ← −3R₂+R₃ = [0,0,11|22]</span> — تحقق: <span class='coord'>3−3=0</span>، <span class='coord'>5+6=11</span>، <span class='coord'>13+9=22</span>."}
+  ];
+  var FIN={rows:[[1,2,3,11],[0,1,-2,-3],[0,0,1,2]],piv:[2,2],
+    did:"اكتمل المثلث — <b>ضرب صف بثابت</b>: <span class='coord'>R₃ ÷ 11 ← [0,0,1|2]</span>. اقرأ <span class='coord'>z = 2</span> ثم اصعد: <span class='coord'>y = 1</span>، <span class='coord'>x = 3</span>."};
+  var s=0,mat=document.getElementById('opMat'),note=document.getElementById('opNote'),lastDid=document.getElementById('lastDid');
+  mat.className="";
+  function follow(el){try{if(el&&el.scrollIntoView)el.scrollIntoView({behavior:(window.matchMedia&&matchMedia('(prefers-reduced-motion: reduce)').matches)?'auto':'smooth',block:'nearest'});}catch(e){}}
+  function render(){
+    var st=STAGES[Math.min(s,STAGES.length-1)];
+    var prev=s>0?STAGES[s-1].rows:null;
+    mat.innerHTML=mxHTML(st.rows,st.piv,prev?diffRows(prev,st.rows):[]);
+    lastDid.innerHTML=st.did;
+    note.innerHTML=st.note;
+    if(s>0)follow(mat);
+  }
+  document.querySelectorAll('[data-op]').forEach(function(b){b.addEventListener('click',function(){
+    if(s>=STAGES.length)return;
+    if(b.getAttribute('data-op')===STAGES[s].need){s++;if(s>=STAGES.length){mat.innerHTML=mxHTML(FIN.rows,FIN.piv,diffRows(STAGES[STAGES.length-1].rows,FIN.rows));lastDid.innerHTML=FIN.did;note.innerHTML="مثلث كامل — <span class='coord'>z = 2</span>. أحسنت!";follow(lastDid);}else render();}
+    else{note.innerHTML="ليس الآن: "+STAGES[s].note;}
+  });});
+  document.getElementById('opReset').onclick=function(){s=0;render();};
+  render();
+  document.getElementById('vGo').onclick=function(){
+    var x=+document.getElementById('vx').value,y=+document.getElementById('vy').value,z=+document.getElementById('vz').value;
+    var r1=2*x+4*y+6*z,r2=3*x+8*y+5*z,r3=-x+y+2*z;
+    var ok=(r1===22&&r2===27&&r3===2);
+    document.getElementById('vRO').textContent="2x+4y+6z = "+r1+" (want 22) · 3x+8y+5z = "+r2+" (want 27) · −x+y+2z = "+r3+" (want 2) → "+(ok?"CORRECT":"NOT YET");
+  };
+  var ANS={q1:{"0":["صحيح — الضرب في صفر يمحو المعادلة ويغيّر الحل.",true],"1":["مسموح — ثابت غير صفري.",false],"2":["مسموح — لا يغيّر الحل.",false],"3":["مسموح — قلب الحذف.",false]},
+    q2:{"0":["صحيح — التطبيع أولاً دائماً.",true],"1":["لا حذف قبل التطبيع.",false],"2":["التبديل هنا غير لازم.",false],"3":["ممنوع — يمحو الصف.",false]},
+    q3:{"0":["صحيح — نضرب القائد المطبّع ونضيف.",true],"1":["القسمة وحدها لا تصفّر.",false],"2":["لا حذف لصفوف.",false],"3":["هذا يضاعف الصف الأول فقط.",false]},
+    q4:{"0":["صحيح — 0 = 5 مستحيلة: لا حل.",true],"1":["الثابت ليس قيمة z.",false],"2":["تلك حالة الصف 0 = 0.",false],"3":["الصف المستحيل حكم نهائي.",false]},
+    q5:{"0":["صحيح — تحقق بالتعويض في الأصل.",true],"1":["هذه الثوابت بعد التطبيع لا الحل.",false],"2":["تخمين جميل لكنه خاطئ.",false],"3":["عوّضها وستفشل.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

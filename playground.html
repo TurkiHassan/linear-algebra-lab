@@ -1,0 +1,196 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مشغّل بايثون — شغّل التمارين في المتصفح | مختبر الجبر الخطي</title>
+<meta name="description" content="شغّل تمارين الجبر الخطي بلغة بايثون داخل المتصفح مباشرة بلا تثبيت، عبر Pyodide.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="assets/lesson-fonts.css">
+<style>
+  :root{--paper:#faf7f2;--card:#fff;--ink:#111;--muted:#7a7a72;--line:#d8d4cc;--accent:#0d5c46;--terra:#c2562f;--term:#111;--termtext:#e8e4d8;
+    --serif:"ThmanyahSerifDisplay",serif;--text:"ThmanyahSerifText",serif;--sans:"ThmanyahSans",system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+  [data-theme=dark]{--paper:#14130f;--card:#1d1c17;--ink:#f2efe6;--muted:#a7a396;--line:#33312a;--accent:#7fc9ae;--terra:#e0906a;--term:#000;--termtext:#e8e4d8}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);line-height:1.9;transition:background .25s ease,color .25s ease}
+  a{color:inherit}
+  .wrap{max-width:1100px;margin:0 auto;padding:0 22px 70px}
+  .top{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:3px solid var(--ink)}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--sans);font-weight:700;font-size:15px}
+  .mark{width:24px;height:24px;border-radius:8px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:15px;font-weight:900}
+  .top nav{margin-inline-start:auto;display:flex;gap:16px;font-family:var(--sans);font-size:13px;flex-wrap:wrap;align-items:center}
+  .top nav a{text-decoration:none;color:var(--muted)}.top nav a:hover{color:var(--ink)}
+  .hero{padding:38px 0 4px}
+  h1{font-family:var(--serif);font-size:clamp(28px,5vw,44px);margin:0 0 8px}
+  .lead{font-family:var(--sans);font-size:14px;color:var(--muted);margin:0;max-width:78ch}
+  .note{font-family:var(--sans);font-size:12.5px;color:var(--terra);margin-top:8px}
+  .bar{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin:22px 0 14px}
+  select{font:inherit;font-family:var(--sans);font-size:13.5px;background:var(--card);color:var(--ink);border:1.5px solid var(--ink);border-radius:10px;padding:9px 12px}
+  .btn{font-family:var(--sans);font-size:13px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);border-radius:999px;padding:9px 20px;cursor:pointer}
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn.solid{background:var(--ink);color:var(--paper)}
+  .btn:disabled{opacity:.45;cursor:default}
+  .btn.solid:hover:disabled{background:var(--ink);color:var(--paper)}
+  .grid{display:grid;grid-template-columns:1.05fr .95fr;gap:14px}
+  @media(max-width:900px){.grid{grid-template-columns:1fr}}
+  .pane{background:var(--card);border:1px solid var(--line);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+  .pane h2{font-family:var(--sans);font-size:12.5px;margin:0;padding:10px 14px;border-bottom:1px solid var(--line);color:var(--muted);display:flex;justify-content:space-between;align-items:center}
+  textarea{flex:1;min-height:430px;resize:vertical;border:0;background:transparent;color:var(--ink);font-family:var(--mono);font-size:13px;line-height:1.7;padding:14px;direction:ltr;text-align:left;tab-size:4}
+  textarea:focus{outline:none}
+  pre{margin:0;padding:14px;min-height:430px;max-height:560px;overflow:auto;background:var(--term);color:var(--termtext);font-family:var(--mono);font-size:12.5px;line-height:1.75;direction:ltr;text-align:left;white-space:pre-wrap}
+  pre .err{color:#ff9d8a}
+  pre .ok{color:#b9e6a1}
+  .status{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin-top:10px;min-height:1.6em}
+  .foot{margin-top:60px;border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--sans);font-size:12px;color:var(--muted)}
+  input[type=file]{font-family:var(--sans);font-size:12.5px}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="index.html"><span class="mark">✳</span> مختبر الجبر الخطي</a>
+    <nav aria-label="تنقل">
+      <a href="index.html">الرئيسية</a>
+      <a href="review.html">مراجعة</a>
+      <a href="search.html">بحث</a>
+      <button class="btn theme-btn" type="button" style="padding:6px 16px;font-size:12px">الوضع الداكن</button>
+    </nav>
+  </div>
+  <header class="hero">
+    <h1>مشغّل بايثون في المتصفح</h1>
+    <p class="lead">اختر تمريناً، عدّل الكود، ثم شغّله مباشرة — بلا تثبيت بايثون. المحرّك هو <span lang="en">Pyodide</span>، ويُحمَّل أول مرة عند الضغط على «شغّل».</p>
+    <p class="note">يحتاج اتصالاً أول مرة لتحميل المحرّك. عند فتح الملفات محلياً بلا خادم، استخدم زر «افتح ملفاً» لتحميل التمرين من القرص.</p>
+  </header>
+  <div class="bar">
+    <label><span style="font-family:var(--sans);font-size:13px">التمرين: </span>
+      <select id="ex" aria-label="اختر التمرين">
+        <option value="0001-linear-systems">0001 — تمييز الخطي</option>
+        <option value="0002-matrices-inverse">0002 — المصفوفات والنظير</option>
+        <option value="0003-gaussian-elimination">0003 — الحذف الغاوسي</option>
+        <option value="0004-matrix-properties">0004 — الخصائص والصفرية</option>
+        <option value="0005-euclidean-spaces">0005 — الضرب الداخلي</option>
+        <option value="0006-subspaces">0006 — الفضاء الجزئي</option>
+        <option value="0007-linear-combinations">0007 — التركيب الخطي</option>
+        <option value="0008-span-independence">0008 — المولد والاستقلال</option>
+        <option value="0009-basis-dimension">0009 — الأساس والأبعاد</option>
+        <option value="0010-determinants">0010 — المحددات</option>
+        <option value="0011-drills">0011 — بنك التدريبات</option>
+      </select>
+    </label>
+    <button class="btn" id="load" type="button">حمّل التمرين</button>
+    <button class="btn solid" id="run" type="button">شغّل ▶</button>
+    <button class="btn" id="clear" type="button">امسح الخرج</button>
+    <label class="btn" style="padding:7px 16px">افتح ملفاً
+      <input type="file" id="file" accept=".py" style="display:none">
+    </label>
+  </div>
+  <div class="grid">
+    <div class="pane">
+      <h2>الكود <span id="editorName" lang="en">practice/0001-linear-systems.py</span></h2>
+      <textarea id="code" spellcheck="false" aria-label="محرر الكود"></textarea>
+    </div>
+    <div class="pane">
+      <h2>الخرج</h2>
+      <pre id="out" aria-live="polite"></pre>
+    </div>
+  </div>
+  <p class="status" id="status"></p>
+  <div class="foot">
+    <span>التمارين والحلول ملفات محلية: <span class="coord" lang="en">practice/</span> و<span class="coord" lang="en">practice/solutions/</span></span>
+    <span><a href="index.html">الرئيسية</a> · <a href="review.html">مراجعة</a> · <a href="search.html">بحث</a></span>
+  </div>
+</div>
+<script src="assets/exercises.js"></script>
+<script src="assets/site.js"></script>
+<script src="https://cdn.jsdelivr.net/pyodide/v0.26.4/full/pyodide.js"></script>
+<script>
+(function(){
+  "use strict";
+  var ex=document.getElementById("ex"),code=document.getElementById("code"),
+      out=document.getElementById("out"),status=document.getElementById("status"),
+      runBtn=document.getElementById("run"),editorName=document.getElementById("editorName");
+  var pyodide=null,loading=false;
+
+  function print(s,cls){out.textContent += (cls? "" : ""); out.textContent += s;}
+  function clearOut(){out.innerHTML="";}
+  function setStatus(s){status.textContent=s;}
+
+  function loadExercise(name){
+    editorName.textContent="practice/"+name+".py";
+    var emb=window.LINALG_EXERCISES && window.LINALG_EXERCISES[name];
+    if(emb){
+      code.value=emb; clearOut();
+      setStatus("جاهز — عدّل الكود ثم اضغط «شغّل».");
+      return;
+    }
+    setStatus("أحمّل "+name+" …");
+    fetch("practice/"+name+".py").then(function(r){
+      if(!r.ok) throw new Error(r.status);
+      return r.text();
+    }).then(function(t){
+      code.value=t; clearOut();
+      setStatus("جاهز — اضغط «شغّل».");
+    }).catch(function(){
+      setStatus("تعذّر جلب الملف تلقائياً (فتح محلي؟). استخدم «افتح ملفاً» أو الصق الكود يدوياً.");
+    });
+  }
+
+  async function ensurePyodide(){
+    if(pyodide) return pyodide;
+    if(loading) return null;
+    loading=true; runBtn.disabled=true;
+    setStatus("أحمّل Pyodide أول مرة … (قد يأخذ نصف دقيقة)");
+    try{
+      pyodide=await loadPyodide({indexURL:"https://cdn.jsdelivr.net/pyodide/v0.26.4/full/"});
+      pyodide.setStdout({batched:function(s){print(s+"\n");}});
+      pyodide.setStderr({batched:function(s){print(s+"\n");}});
+      setStatus("محرّك بايثون جاهز.");
+    }catch(err){
+      pyodide=null;
+      var d=document.createElement("span"); d.className="err"; d.textContent="فشل تحميل Pyodide: "+err+"\n";
+      out.appendChild(d);
+      setStatus("تحقّق من الاتصال بالإنترنت ثم أعد المحاولة.");
+    }finally{
+      loading=false; runBtn.disabled=false;
+    }
+    return pyodide;
+  }
+
+  runBtn.addEventListener("click",async function(){
+    clearOut();
+    var py=await ensurePyodide();
+    if(!py) return;
+    runBtn.disabled=true;
+    try{
+      await py.runPythonAsync(code.value);
+      var ok=document.createElement("span"); ok.className="ok";
+      ok.textContent="\n— انتهى التنفيذ —";
+      out.appendChild(ok);
+    }catch(err){
+      var e=document.createElement("span"); e.className="err";
+      e.textContent="\n"+err;
+      out.appendChild(e);
+    }finally{
+      runBtn.disabled=false;
+    }
+  });
+
+  document.getElementById("load").addEventListener("click",function(){loadExercise(ex.value);});
+  document.getElementById("clear").addEventListener("click",clearOut);
+  ex.addEventListener("change",function(){loadExercise(ex.value);});
+  document.getElementById("file").addEventListener("change",function(){
+    var f=this.files[0]; if(!f) return;
+    var rd=new FileReader();
+    rd.onload=function(){code.value=rd.result; editorName.textContent=f.name; setStatus("حُمّل الملف محلياً.");};
+    rd.readAsText(f);
+  });
+
+  var qs=new URLSearchParams(location.search).get("ex");
+  if(qs){ ex.value=qs; }
+  loadExercise(ex.value);
+})();
+</script>
+</body>
+</html>

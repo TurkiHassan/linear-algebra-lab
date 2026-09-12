@@ -1,0 +1,169 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>بحث موحّد — مصطلحات ودروس | مختبر الجبر الخطي</title>
+<meta name="description" content="ابحث في مصطلحات الجبر الخطي وفي محتوى الدروس الأحد عشر، مع روابط مباشرة إلى الموضع.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="assets/lesson-fonts.css">
+<style>
+  :root{--paper:#faf7f2;--card:#fff;--ink:#111;--muted:#7a7a72;--line:#d8d4cc;--accent:#0d5c46;--terra:#c2562f;--mark:#f5e3a3;
+    --serif:"ThmanyahSerifDisplay",serif;--text:"ThmanyahSerifText",serif;--sans:"ThmanyahSans",system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace}
+  [data-theme=dark]{--paper:#14130f;--card:#1d1c17;--ink:#f2efe6;--muted:#a7a396;--line:#33312a;--accent:#7fc9ae;--terra:#e0906a;--mark:#6b5a1d}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);line-height:1.9;transition:background .25s ease,color .25s ease}
+  a{color:inherit}
+  .wrap{max-width:920px;margin:0 auto;padding:0 22px 80px}
+  .top{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:3px solid var(--ink)}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--sans);font-weight:700;font-size:15px}
+  .mark{width:24px;height:24px;border-radius:8px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:15px;font-weight:900}
+  .top nav{margin-inline-start:auto;display:flex;gap:16px;font-family:var(--sans);font-size:13px;flex-wrap:wrap;align-items:center}
+  .top nav a{text-decoration:none;color:var(--muted)}.top nav a:hover{color:var(--ink)}
+  .hero{padding:40px 0 8px}
+  h1{font-family:var(--serif);font-size:clamp(30px,5vw,46px);margin:0 0 8px}
+  .lead{font-family:var(--sans);font-size:14.5px;color:var(--muted);margin:0;max-width:70ch}
+  .searchbar{display:flex;gap:10px;margin:26px 0 10px}
+  input[type=search]{flex:1;font:inherit;font-family:var(--sans);font-size:16px;border:2px solid var(--ink);background:var(--card);color:var(--ink);border-radius:14px;padding:13px 18px}
+  input[type=search]:focus{outline:3px solid var(--accent);outline-offset:2px}
+  .chips{display:flex;gap:8px;flex-wrap:wrap;font-family:var(--sans);font-size:12.5px;margin-bottom:8px}
+  .chip{border:1.5px solid var(--line);background:var(--card);color:var(--muted);border-radius:999px;padding:6px 14px;cursor:pointer;font:inherit}
+  .chip[aria-pressed=true]{border-color:var(--ink);color:var(--ink);background:var(--ink);color:var(--paper)}
+  .count{font-family:var(--sans);font-size:12.5px;color:var(--muted);margin:6px 0 0}
+  .res{list-style:none;margin:18px 0 0;padding:0;display:grid;gap:10px}
+  .res li{background:var(--card);border:1px solid var(--line);border-radius:14px;padding:14px 16px;transition:border-color .15s ease}
+  .res li:hover{border-color:var(--ink)}
+  .res a{text-decoration:none}
+  .badge{font-family:var(--sans);font-size:10.5px;border:1px solid var(--line);border-radius:999px;padding:3px 10px;color:var(--muted);margin-inline-end:8px;white-space:nowrap}
+  .badge.term{color:var(--accent);border-color:var(--accent)}
+  .badge.section{color:var(--terra);border-color:var(--terra)}
+  .rtitle{font-family:var(--sans);font-weight:700;font-size:15px}
+  .rmeta{font-family:var(--sans);font-size:11.5px;color:var(--muted)}
+  .rsnip{font-family:var(--sans);font-size:13px;color:var(--muted);margin-top:6px;overflow-wrap:anywhere}
+  mark{background:var(--mark);color:inherit;border-radius:4px;padding:0 3px}
+  .empty{font-family:var(--sans);color:var(--muted);font-size:14px;margin-top:26px;display:none}
+  .foot{margin-top:70px;border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--sans);font-size:12px;color:var(--muted)}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="index.html"><span class="mark">✳</span> مختبر الجبر الخطي</a>
+    <nav aria-label="تنقل">
+      <a href="index.html">الرئيسية</a>
+      <a href="review.html">مراجعة</a>
+      <a href="playground.html">شغّل بايثون</a>
+      <button class="chip theme-btn" type="button">الوضع الداكن</button>
+    </nav>
+  </div>
+  <header class="hero">
+    <h1>بحث موحّد</h1>
+    <p class="lead">ابحث في المصطلحات وفي محتوى الدروس معاً. الكتابة بلا تشكيل تعمل، والألف بأشكالها والهاء/التاء المربوطة تُوحَّد تلقائياً.</p>
+    <div class="searchbar">
+      <input type="search" id="q" placeholder="ابحث عن مصطلح أو فكرة… (اضغط / للتركيز)" aria-label="بحث" autocomplete="off">
+    </div>
+    <div class="chips" role="group" aria-label="تصفية">
+      <button class="chip" data-f="all" aria-pressed="true">الكل</button>
+      <button class="chip" data-f="term" aria-pressed="false">المصطلحات</button>
+      <button class="chip" data-f="section" aria-pressed="false">محتوى الدروس</button>
+      <button class="chip" data-f="lesson" aria-pressed="false">عناوين الدروس</button>
+    </div>
+    <p class="count" id="count"></p>
+  </header>
+  <ul class="res" id="res"></ul>
+  <p class="empty" id="empty">لا نتائج — جرّب كلمة أقصر أو بلا تشكيل.</p>
+  <div class="foot">
+    <span>بحث فوري محلي بالكامل — يعمل دون اتصال بعد أول زيارة</span>
+    <span><a href="index.html">الرئيسية</a> · <a href="review.html">مراجعة</a></span>
+  </div>
+</div>
+<script src="assets/search-data.js"></script>
+<script src="assets/site.js"></script>
+<script>
+(function(){
+  "use strict";
+  var DIAC = /[\u064B-\u0652\u0670\u0640]/g;
+  function norm(s){
+    return (s||"").replace(DIAC,"")
+      .replace(/[أإآٱ]/g,"ا").replace(/ى/g,"ي").replace(/ؤ/g,"و").replace(/ئ/g,"ي")
+      .replace(/ة/g,"ه").replace(/[ـ]/g,"").toLowerCase();
+  }
+  var flat=[];
+  (window.LINALG_DATA||[]).forEach(function(les){
+    les.entries.forEach(function(e){
+      flat.push({type:e.type,title:e.title||"",en:e.en||"",text:e.text||"",
+        lesson:les.id,lessonTitle:les.title,url:les.url+(e.anchor||"")});
+    });
+  });
+  var q=document.getElementById("q"),res=document.getElementById("res"),
+      cnt=document.getElementById("count"),empty=document.getElementById("empty");
+  var filter="all";
+  document.querySelectorAll(".chip[data-f]").forEach(function(c){
+    c.addEventListener("click",function(){
+      filter=c.getAttribute("data-f");
+      document.querySelectorAll(".chip[data-f]").forEach(function(x){
+        x.setAttribute("aria-pressed", x===c ? "true":"false");
+      });
+      render();
+    });
+  });
+  function esc(s){return (s||"").replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;");}
+  function mark(text,nq){
+    if(!nq) return esc(text);
+    var nt=norm(text), i=nt.indexOf(nq);
+    if(i<0) return esc(text);
+    var end=i+nq.length;
+    return esc(text.slice(0,i))+"<mark>"+esc(text.slice(i,end))+"</mark>"+esc(text.slice(end));
+  }
+  function snippet(text,nq){
+    var nt=norm(text), i=nt.indexOf(nq);
+    if(i<0) return text.slice(0,150);
+    var a=Math.max(0,i-45), b=Math.min(text.length,i+110);
+    return (a>0?"… ":"")+text.slice(a,b)+(b<text.length?" …":"");
+  }
+  function badge(type){
+    return type==="term" ? '<span class="badge term">مصطلح</span>'
+         : type==="section" ? '<span class="badge section">قسم</span>'
+         : '<span class="badge">درس</span>';
+  }
+  function render(){
+    var raw=q.value.trim(), nq=norm(raw);
+    var out=[];
+    if(nq.length>=2){
+      flat.forEach(function(e){
+        if(filter!=="all" && e.type!==filter) return;
+        var nt=norm(e.title), nx=norm(e.text), ne=norm(e.en);
+        var score=0;
+        if(nt.indexOf(nq)===0) score=40; else if(nt.indexOf(nq)>=0) score=30;
+        if(ne.indexOf(nq)>=0) score=Math.max(score,26);
+        if(nx.indexOf(nq)>=0) score=Math.max(score,10);
+        if(norm(e.lessonTitle).indexOf(nq)>=0) score=Math.max(score,8);
+        if(score>0) out.push({e:e,score:score});
+      });
+    }
+    out.sort(function(a,b){return b.score-a.score;});
+    out=out.slice(0,60);
+    res.innerHTML=out.map(function(o){
+      var e=o.e;
+      return '<li><a href="'+e.url+'">'+badge(e.type)+
+        '<span class="rtitle">'+mark(e.title,nq)+'</span>'+
+        '<div class="rmeta">'+esc(e.lesson)+' · '+esc(e.lessonTitle)+'</div>'+
+        '<div class="rsnip">'+mark(snippet(e.text,nq),nq)+'</div></a></li>';
+    }).join("");
+    empty.style.display=(nq.length>=2 && out.length===0)?"block":"none";
+    cnt.textContent = nq.length<2 ? "" : (out.length? ("نتائج: "+out.length) : "");
+  }
+  q.addEventListener("input",render);
+  document.addEventListener("keydown",function(ev){
+    if(ev.key==="/" && document.activeElement!==q){ev.preventDefault();q.focus();}
+    if(ev.key==="Escape" && document.activeElement===q){q.value="";render();q.blur();}
+  });
+  var initQ=(new URLSearchParams(location.search).get("q")||"").trim();
+  if(initQ) q.value=initQ;
+  render();
+})();
+</script>
+</body>
+</html>

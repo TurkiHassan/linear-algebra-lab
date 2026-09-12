@@ -1,0 +1,206 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0009 · الأساس والأبعاد — Basis & Dimension</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0008-span-independence.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0010-determinants.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0009 · <bdi>Build</bdi></div>
+    <h1>الأساس والأبعاد</h1>
+    <span class="en-line" lang="en">Basis & Dimension — the smallest team that spans, and how to count it</span>
+    <div class="rule"></div>
+    <p class="meta">~40 دقيقة · المتطلب: الدرس 0008 (المولد والاستقلال)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> الأساس: أصغر فريق يغطي الملعب<span class="en-sub" lang="en">Independent + spanning = basis; its size = dimension</span></h2>
+    <p>ال<span class="term">أساس</span> <span class="en" lang="en" dir="ltr">(basis)</span> فريق متجهات يحقق شرطين معاً: مستقل (لا هدر) ومولّد (تغطية كاملة). و<span class="term">البعد</span> <span class="en" lang="en" dir="ltr">(dimension)</span> هو عدد أعضاء أي أساس — وهو ثابت لا يتغير مهما بدّلت الفريق. أساس <span class="coord">R²</span> المعياري: <span class="coord">e₁ = (1,0)</span> و <span class="coord">e₂ = (0,1)</span>، فبعد <span class="coord">R²</span> هو <span class="coord">2</span>.</p>
+    <div class="analogy"><b>تشبيه: فريق الإنقاذ</b><p>تريد تغطية جزيرة كاملة بأقل عدد من الأبراج، وبلا تداخل في الإرسال. برجان متداخلان هدر، وبرج واحد لا يغطي — الأساس هو التغطية الكاملة بأقل عدد. <span class="en" lang="en" dir="ltr">Full coverage, zero overlap, fewest towers.</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> أساس = استقلال + توليد. والبعد يُقرأ من أي أساس: <span class="coord">Rⁿ</span> بعده <span class="coord">n</span>، والخط عبر الأصل بعده <span class="coord">1</span>، والنقطة وحدها بعدها <span class="coord">0</span>. <span class="en" lang="en" dir="ltr">(Count any basis — the number never changes.)</span></p></div>
+    <div class="kmath" id="k1"></div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> هل هذا أساس؟ المحكمة تنعقد<span class="en-sub" lang="en">Three candidates for a basis of R² — test both conditions</span></h2>
+    <p>ثلاثة مرشحين لأساس <span class="coord">R²</span>: الزوج المعياري، وزوج مائل، وزوج متوازٍ. اختر مرشحاً — اللوحة تختبر الاستقلال ثم التوليد وتصدر الحكم المزدوج.</p>
+    <div class="demo" data-label="Court · BASIS">
+      <h3>محكمة الأسس</h3>
+      <p class="hint">اختر المرشح ثم اضغط «احكم» — شرطان لا شرط واحد</p>
+      <div class="controls"><select id="cand"><option value="std">الأساس المعياري</option><option value="tilt">الأساس المائل</option><option value="par">الزوج المتوازي</option></select><button class="btn" id="bGo">احكم</button></div>
+      <div class="kmath" id="bStage" style="min-height:56px"></div>
+      <div class="readout" id="bRO" style="direction:rtl;text-align:right">شرطان… وحكم واحد</div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> الإحداثيات: عنوانك بلغة الأساس<span class="en-sub" lang="en">Coordinates are unique — the same point, a new address book</span></h2>
+    <p>في أساس ما، كل متجه يُكتب بطريقة <b>وحيدة</b> كتركيب من الأساس — ومعاملاته هي <span class="term">إحداثياته</span> <span class="en" lang="en" dir="ltr">(coordinates)</span> في ذلك الأساس. في الزوج المائل <span class="coord">(1,1),(1,−1)</span>: الهدف <span class="coord">(4,2)</span> إحداثياته <span class="coord">(3,1)</span> لأن <span class="coord">3·(1,1) + 1·(1,−1) = (4,2)</span>. أدخل هدفك واللوحة تجد إحداثياته.</p>
+    <div class="demo" data-label="Locate · COORDS">
+      <h3>مُترجم الإحداثيات المائلة</h3>
+      <p class="hint">الأساس ثابت (1,1),(1,−1) — أدخل هدفك (x,y)</p>
+      <div class="controls"><label>x <input type="number" id="gx" value="4"></label><label>y <input type="number" id="gy" value="2"></label><button class="btn" id="gGo">جد الإحداثيات</button></div>
+      <div class="readout" id="gRO">coordinates = ?</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الإحداثيات تتبع الأساس: النقطة نفسها <span class="coord">(4,2)</span> إحداثياتها <span class="coord">(4,2)</span> في المعياري و <span class="coord">(3,1)</span> في المائل. لا تخلط دفتر العناوين! <span class="en" lang="en" dir="ltr">(Same point, different address book.)</span></p></div>
+  </section>
+
+  <div class="demo" data-label="Watch · VIDEO">
+    <h3>شاهد الأساس متحركاً</h3>
+    <p class="hint">موشن جرافيك بتعليق عربي: الشرطان، والمرشحون، والإحداثيات</p>
+    <video controls preload="metadata" poster="../video/outputs/0009-basis-dimension-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
+      <source src="../video/outputs/0009-basis-dimension-ar.mp4" type="video/mp4">
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0009-basis-dimension-subs.srt" default>
+    </video>
+  </div>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>الأساس</td><td>متجهات مهمة</td><td>مستقلة ومولّدة معاً — أصغر فريق كافٍ</td></tr>
+    <tr><td>البعد</td><td>حجم الفضاء</td><td>عدد عناصر أي أساس — ثابت للفضاء</td></tr>
+    <tr><td>الإحداثيات</td><td>موقع النقطة</td><td>معاملات التركيب الوحيد — تتبع الأساس</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> متجهات بلا عناوين. <b>بعد هذا الدرس:</b> تختبر أي أساس مرشح، وتقرأ البعد، وتكتب إحداثيات أي نقطة بلغة أي أساس.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما شرطا الأساس؟</div>
+      <button class="opt" data-q="q1" data-a="0">مستقل ومولّد معاً</button><button class="opt" data-q="q1" data-a="1">مستقل فقط</button><button class="opt" data-q="q1" data-a="2">مولّد فقط</button><button class="opt" data-q="q1" data-a="3">متعامد فقط</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">ما بُعد <span class="coord">R³</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0">3 — الأساس المعياري من ثلاثة متجهات</button><button class="opt" data-q="q2" data-a="1">2</button><button class="opt" data-q="q2" data-a="2">9</button><button class="opt" data-q="q2" data-a="3">لا نهائي</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">هل <span class="coord">(1,1),(2,2)</span> أساس لـ <span class="coord">R²</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0">لا — مرتبطان (متوازيان)</button><button class="opt" data-q="q3" data-a="1">نعم — مختلفان</button><button class="opt" data-q="q3" data-a="2">نعم — يولدان الخط y=x</button><button class="opt" data-q="q3" data-a="3">لا — لأنهما طويلان</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">إحداثيات <span class="coord">(4,2)</span> في الأساس <span class="coord">(1,1),(1,−1)</span>؟</div>
+      <button class="opt" data-q="q4" data-a="0"><span class="coord">(3,1)</span></button><button class="opt" data-q="q4" data-a="1"><span class="coord">(4,2)</span></button><button class="opt" data-q="q4" data-a="2"><span class="coord">(1,3)</span></button><button class="opt" data-q="q4" data-a="3"><span class="coord">(2,2)</span></button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">ما بُعد الخط عبر الأصل في <span class="coord">R²</span>؟</div>
+      <button class="opt" data-q="q5" data-a="0">1 — يكفي متجه واحد غير صفري</button><button class="opt" data-q="q5" data-a="1">2</button><button class="opt" data-q="q5" data-a="2">0</button><button class="opt" data-q="q5" data-a="3">لا نهائي</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>الأساس</td><td><span class="en" lang="en" dir="ltr">basis</span></td><td>أصغر فريق يغطي الفضاء بلا هدر</td></tr>
+    <tr><td>البعد</td><td><span class="en" lang="en" dir="ltr">dimension</span></td><td>عدد أعضاء أي أساس</td></tr>
+    <tr><td>الإحداثيات</td><td><span class="en" lang="en" dir="ltr">coordinates</span></td><td>عنوان المتجه بلغة أساس معين</td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0009-basis-dimension">شغّل التمرين في المتصفح</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0009" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a><span>شاهد: الحلقتين 2 و8</span></li>
+      <li><a href="https://ar.khanacademy.org/math/linear-algebra" target="_blank" rel="noopener">خان أكاديمي بالعربية — الجبر الخطي</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0008-span-independence.html" rel="prev"><small>الدرس السابق</small>المولد والاستقلال الخطي</a>
+    <a class="next" href="0010-determinants.html" rel="next"><small>الدرس التالي</small>المحددات من 2×2 إلى 3×3</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0009 · الأساس والأبعاد</span><span>التمرين: <code lang="en">python3 practice/0009-basis-dimension.py</code> · <a href="../playground.html?ex=0009-basis-dimension">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  tex(document.getElementById('k1'),"\\mathcal{B} \\text{ basis} \\iff \\text{independent } + \\text{ spanning} \\qquad \\dim V = |\\mathcal{B}|");
+  var C={std:{v:"(1,0),(0,1)",det:1,ind:true,span:true},tilt:{v:"(1,1),(1,−1)",det:-2,ind:true,span:true},par:{v:"(1,1),(2,2)",det:0,ind:false,span:false}};
+  document.getElementById('bGo').onclick=function(){
+    var k=document.getElementById('cand').value,c=C[k];
+    tex(document.getElementById('bStage'),"\\det = "+c.det+" \\qquad "+c.v);
+    document.getElementById('bRO').innerHTML="مستقلان؟ "+(c.ind?"نعم — <span class='coord'>det = "+c.det+" ≠ 0</span>":"لا — <span class='coord'>det = 0</span>: متوازيان، أحدهما زائد")+" · يولدان <span class='coord'>R²</span>؟ "+(c.span?"نعم — أي نقطة تُبنى منهما":"لا — مولدهما خط واحد")+" → "+((c.ind&&c.span)?"أساس والبعد <span class='coord'>2</span>":"ليس أساساً: ينقصه شرط");
+  };
+  document.getElementById('gGo').onclick=function(){
+    var x=+document.getElementById('gx').value,y=+document.getElementById('gy').value;
+    function fmt(v){return Math.round(v*1000)/1000;}
+    var c1=fmt((x+y)/2),c2=fmt((x-y)/2);
+    document.getElementById('gRO').textContent="("+x+", "+y+") = "+c1+"(1,1) + "+c2+"(1,−1) → coords ("+c1+", "+c2+") · check: ("+fmt(c1+c2)+", "+fmt(c1-c2)+")";
+  };
+  var ANS={q1:{"0":["صحيح — الشرطان معاً لا أحدهما.",true],"1":["ناقص — أين التوليد؟",false],"2":["ناقص — أين الاستقلال؟",false],"3":["التعامد زينة لا شرط.",false]},
+    q2:{"0":["صحيح — e₁,e₂,e₃.",true],"1":["هذا بعد المستوى.",false],"2":["هذا عدد عناصر مصفوفة 3×3.",false],"3":["البعد منتهٍ ومعروف.",false]},
+    q3:{"0":["صحيح — الثاني ضعف الأول.",true],"1":["الاختلاف الشكلي لا يكفي.",false],"2":["التوليد الجزئي لا يكفي.",false],"3":["الطول لا علاقة له.",false]},
+    q4:{"0":["صحيح — 3+1=4 و 3−1=2.",true],"1":["هذه إحداثيات المعياري.",false],"2":["معكوسة — تحقق وستفشل.",false],"3":["هذا نصف الهدف.",false]},
+    q5:{"0":["صحيح — اتجاه واحد يكفي.",true],"1":["هذا بعد المستوى كله.",false],"2":["هذا بعد النقطة.",false],"3":["البعد منتهٍ.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

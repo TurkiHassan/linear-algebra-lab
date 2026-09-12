@@ -1,0 +1,25 @@
+{
+ "name": "مختبر الجبر الخطي — مقرر تفاعلي من الصفر",
+ "short_name": "الجبر الخطي",
+ "description": "أحد عشر درساً عربياً تفاعلياً في الجبر الخطي: شرح، مختبرات، فيديو بتعليق عربي، تمارين بايثون، ومراجعة.",
+ "lang": "ar",
+ "dir": "rtl",
+ "start_url": "./index.html",
+ "scope": "./",
+ "display": "standalone",
+ "background_color": "#faf7f2",
+ "theme_color": "#faf7f2",
+ "icons": [
+  {
+   "src": "assets/icons/icon-192.png",
+   "sizes": "192x192",
+   "type": "image/png"
+  },
+  {
+   "src": "assets/icons/icon-512.png",
+   "sizes": "512x512",
+   "type": "image/png",
+   "purpose": "any maskable"
+  }
+ ]
+}

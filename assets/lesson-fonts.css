@@ -1,0 +1,13 @@
+/* Thmanyah fonts — shared by every lesson. Link as ../assets/lesson-fonts.css */
+@font-face{font-family:"ThmanyahSerifDisplay";src:url("./fonts/thmanyahserifdisplay-Black.woff2") format("woff2");font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSerifDisplay";src:url("./fonts/thmanyahserifdisplay-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSerifDisplay";src:url("./fonts/thmanyahserifdisplay-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSerifDisplay";src:url("./fonts/thmanyahserifdisplay-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSerifText";src:url("./fonts/thmanyahseriftext-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSerifText";src:url("./fonts/thmanyahseriftext-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSerifText";src:url("./fonts/thmanyahseriftext-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSans";src:url("./fonts/thmanyahsans-Black.woff2") format("woff2");font-weight:900;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSans";src:url("./fonts/thmanyahsans-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSans";src:url("./fonts/thmanyahsans-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+@font-face{font-family:"ThmanyahSans";src:url("./fonts/thmanyahsans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+:root{--serif-display:"ThmanyahSerifDisplay",serif;--serif-text:"ThmanyahSerifText",serif;--th-sans:"ThmanyahSans",system-ui,sans-serif}

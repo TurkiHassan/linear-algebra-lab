@@ -1,0 +1,82 @@
+/* Shared RTL fixes + UI components for every lesson page.
+   Link this AFTER the lesson's inline <style> so equal-specificity rules win. */
+
+/* --- bilingual text hygiene ------------------------------------------- */
+/* English subtitles sit under an Arabic heading: keep the Latin direction
+   but align them with the Arabic start edge instead of flinging them left. */
+.en-line,.en-sub{text-align:right}
+/* Inline English inside Arabic sentences must not swallow neighbours'
+   punctuation (bidi isolation). */
+.en{unicode-bidi:isolate;direction:ltr;color:var(--soft)}
+h2 .num{margin-left:0;margin-inline-end:10px}
+.why{text-align:start}
+a{text-underline-offset:3px}
+section{scroll-margin-top:24px}
+:focus-visible{outline:3px solid var(--accent);outline-offset:2px;border-radius:8px}
+
+/* --- sequential lesson navigation ------------------------------------- */
+.pager{display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;margin:52px 0 0}
+.pager a{flex:1 1 260px;border:1.5px solid var(--ink);border-radius:14px;padding:14px 18px;
+  text-decoration:none;background:#fff;font-family:var(--th-sans);color:var(--ink);
+  transition:transform .15s ease,background .2s ease,color .2s ease}
+.pager a:hover{background:var(--ink);color:#fff}
+.pager a:active{transform:scale(.98)}
+.pager small{display:block;color:var(--soft);font-size:12px;margin-bottom:5px}
+.pager a:hover small{color:#d8d2c4}
+.pager .next{margin-inline-start:auto;text-align:left}
+.pager .home{flex:0 0 auto;display:inline-flex;align-items:center;padding-inline:22px}
+
+/* Canvas demos must keep their intrinsic aspect ratio (the parallelogram
+   area demo is geometrically distorted by a forced CSS height). */
+canvas{height:auto}
+
+/* --- small screens ----------------------------------------------------- */
+@media(max-width:700px){
+  table{display:block;overflow-x:auto;-webkit-overflow-scrolling:touch}
+  table th,table td{min-width:130px}
+  .masthead{flex-wrap:wrap;gap:6px}
+}
+@media(max-width:520px){
+  .controls.stick{position:static;width:auto}
+  .pager a{flex:1 1 100%}
+  .pager .next{margin-inline-start:0}
+}
+/* --- lesson tools + references ---------------------------------------- */
+.lesson-tools{display:flex;flex-wrap:wrap;gap:10px;margin:34px 0 0;font-family:var(--th-sans)}
+.tool-btn{font:inherit;font-size:13px;border:1.5px solid var(--ink);background:transparent;color:var(--ink);
+  border-radius:999px;padding:9px 18px;cursor:pointer;text-decoration:none;display:inline-flex;align-items:center;
+  transition:background .2s ease,color .2s ease,transform .15s ease}
+.tool-btn:hover{background:var(--ink);color:var(--paper)}
+.tool-btn:active{transform:scale(.97)}
+.done-toggle.is-done{background:var(--accent);border-color:var(--accent);color:#fff}
+.refs{margin:22px 0 0;border:1px solid var(--line);border-radius:14px;padding:16px 18px;background:#fff}
+.refs ul{margin:10px 0 0;padding-inline-start:18px;font-family:var(--th-sans);font-size:13.5px;line-height:2}
+.refs li{margin-bottom:4px}
+.refs a{color:var(--accent)}
+.refs li span{color:var(--soft);margin-inline-start:6px;font-size:12.5px}
+
+/* --- dark mode (night review) ----------------------------------------- */
+:root[data-theme=dark]{--paper:#14130f;--ink:#f2efe6;--soft:#a7a396;--line:#33312a;--accent:#7fc9ae;--terra:#e0906a;--vio:#b39ce0}
+[data-theme=dark] .card,[data-theme=dark] .analogy,[data-theme=dark] .demo,
+[data-theme=dark] .opt,[data-theme=dark] .kmath,[data-theme=dark] .refs{background:#1d1c17}
+[data-theme=dark] .card-tag,[data-theme=dark] .opchip{color:#14130f}
+[data-theme=dark] .num{color:#14130f}
+[data-theme=dark] .btn{color:#14130f;background:var(--ink);border-color:var(--ink)}
+[data-theme=dark] .btn:hover{background:#000;color:#f2efe6}
+[data-theme=dark] .btn.ghost{background:transparent;color:var(--ink)}
+[data-theme=dark] .btn.ghost:hover{background:#000;color:#f2efe6}
+[data-theme=dark] .readout{background:#000;color:#e8e4d8}
+[data-theme=dark] .coord{background:#ffffff12}
+[data-theme=dark] th{background:#ffffff10}
+[data-theme=dark] .controls.stick{background:color-mix(in srgb,#1d1c17 90%,transparent);border-color:var(--line)}
+[data-theme=dark] .pager a{background:#1d1c17;color:var(--ink)}
+[data-theme=dark] .pager a:hover{background:var(--ink);color:#14130f}
+[data-theme=dark] .done-toggle.is-done{color:#0c0c0a}
+[data-theme=dark] .score{color:#0c0c0a}
+
+@media print{
+  .pager,.controls,.demo video,.skip,.lesson-tools,.refs,.theme-btn{display:none}
+  body{background:#fff}
+  h1{font-size:34px}
+  .card,.analogy,.demo,.kmath{break-inside:avoid}
+}

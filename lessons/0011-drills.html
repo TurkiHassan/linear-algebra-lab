@@ -1,0 +1,215 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0011 · بنك التدريبات مع الحلول — Drills Bank</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls input[type=number]{width:72px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .score{font-family:var(--th-sans);direction:rtl;text-align:right;background:var(--accent);color:#fff;border-radius:12px;padding:10px 16px;margin-top:12px}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0010-determinants.html">→ السابق</a> · <a href="../index.html">الرئيسية</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0011 · <bdi>Capstone drills</bdi></div>
+    <h1>بنك التدريبات مع الحلول</h1>
+    <span class="en-line" lang="en">Drills Bank — the whole course in one workout, with generator and score</span>
+    <div class="rule"></div>
+    <p class="meta">~60 دقيقة · المتطلب: الدروس 0001–0010</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> خريطة المعركة<span class="en-sub" lang="en">Ten drills, one per lesson, plus a final check — solve on paper, verify here</span></h2>
+    <p>من ملف <span class="coord">تدريبات.pdf</span> (11 صفحة): كل تدريب أدناه ينتمي لدرس. احللّ التدريب على ورق أولاً ثم تحقق. القاعدة: لا تنظر للحل قبل محاولتين جادتين.</p>
+    <div class="analogy"><b>تشبيه: الإحماء قبل المباراة</b><p>اللاعب لا يتعلم حركة جديدة يوم المباراة — يكرر الأساسيات حتى تصبح رد فعل. هذا الدرس هو الإحماء: سرعة ودقة بلا مفاجآت. <span class="en" lang="en" dir="ltr">Drills turn knowledge into reflex.</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> الورق أولاً، اللوحة للتحقق فقط. من يتحقق قبل المحاولة يسرق من نفسه التدريب. <span class="en" lang="en" dir="ltr">(Paper first, panel second — no peeking.)</span></p></div>
+    <table><tr><th>التدريب</th><th>الدرس</th><th>المهارة</th></tr>
+    <tr><td>D1</td><td>0001</td><td>تمييز الخطي من غيره</td></tr>
+    <tr><td>D2</td><td>0002</td><td>شكل ناتج الضرب + نظير 2×2</td></tr>
+    <tr><td>D3</td><td>0003</td><td>حل منظومة 3×3 بالحذف</td></tr>
+    <tr><td>D4</td><td>0004</td><td>تسمية الخاصية + حكم <span class="coord">cA = 0</span></td></tr>
+    <tr><td>D5</td><td>0005</td><td>ضرب داخلي وطول ومسافة</td></tr>
+    <tr><td>D6</td><td>0006</td><td>حكم فضاء جزئي مع مثال مضاد</td></tr>
+    <tr><td>D7</td><td>0007</td><td>أوزان تركيب لهدف معطى</td></tr>
+    <tr><td>D8</td><td>0008</td><td>استقلال زوج بالمحدد</td></tr>
+    <tr><td>D9</td><td>0009</td><td>اختبار أساس + إحداثيات</td></tr>
+    <tr><td>D10</td><td>0010</td><td>محدد 2×2 وساروس 3×3</td></tr></table>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> مولد التدريبات العشوائية<span class="en-sub" lang="en">Infinite practice — a fresh numbers drill on every click</span></h2>
+    <p>اختر المهارة — المولد يرمي أرقاماً جديدة كل مرة، تحل على ورقك، تدخل إجابتك، واللوحة تصحح وتسجّل نقاطك التراكمية.</p>
+    <div class="demo" data-label="Drill · TRAIN">
+      <h3>ساحة التدريب</h3>
+      <p class="hint">اختر المهارة ثم «تدريب جديد» — أجب ثم «صحح»</p>
+      <div class="controls stick"><select id="skill"><option value="det">محدد 2×2</option><option value="dot">ضرب داخلي</option><option value="inv">النظير 2×2 (العنصر الأول)</option><option value="span">هل الزوج مستقل؟ (1 = نعم، 0 = لا)</option></select><button class="btn" id="newD">تدريب جديد</button></div>
+      <div class="kmath" id="drStage" style="min-height:56px"></div>
+      <div class="controls"><label>إجابتك <input type="number" id="drAns" value="0"></label><button class="btn" id="drCheck">صحح</button></div>
+      <div class="score" id="drScore">النقاط: 0 / 0</div>
+      <div class="readout" id="drRO" style="direction:rtl;text-align:right">اختر مهارة ثم اضغط «تدريب جديد»…</div>
+    </div>
+  </section>
+
+  <div class="demo" data-label="Watch · VIDEO">
+    <h3>شاهد الإحماء متحركاً</h3>
+    <p class="hint">موشن جرافيك بتعليق عربي: طلقات الإحماء وحصاد المسار</p>
+    <video controls preload="metadata" poster="../video/outputs/0011-drills-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
+      <source src="../video/outputs/0011-drills-ar.mp4" type="video/mp4">
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0011-drills-subs.srt" default>
+    </video>
+  </div>
+
+  <section id="gain">
+    <h2><span class="num">٣</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا المسار:</b> صفحات بخط اليد. <b>بعد هذا المسار:</b> تميّز الخطي، وتضرب المصفوفات، وتحذف غاوسياً، وتختبر الفضاءات، وتخلط التراكيب، وتحسم الاستقلال، وتقرأ الأساس والبعد، وتحسب المحددات — وتثبت كل ذلك ببايثون.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٤</span> الاختبار الختامي<span class="en-sub" lang="en">Final check across the whole path</span></h2>
+    <div class="q" id="q1"><div class="prompt">أيّهما خطية؟ <span class="coord">(1/2)x + y − πz = √2</span> أم <span class="coord">xy + z = 2</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0">الأولى — الثوابت لا تضر</button><button class="opt" data-q="q1" data-a="1">الثانية — فيها z</button><button class="opt" data-q="q1" data-a="2">كلتاهما</button><button class="opt" data-q="q1" data-a="3">لا واحدة</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">ناتج ضرب <span class="coord">(2×3)</span> في <span class="coord">(3×4)</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">(2×4)</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">(3×3)</span></button><button class="opt" data-q="q2" data-a="2">ممنوع</button><button class="opt" data-q="q2" data-a="3"><span class="coord">(4×2)</span></button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">ما حل المنظومة <span class="coord">2x+4y+6z=22, 3x+8y+5z=27, −x+y+2z=2</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0"><span class="coord">(3, 1, 2)</span></button><button class="opt" data-q="q3" data-a="1"><span class="coord">(11, −3, 2)</span></button><button class="opt" data-q="q3" data-a="2"><span class="coord">(1, 1, 1)</span></button><button class="opt" data-q="q3" data-a="3">لا حل</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">هل المجموعة <span class="coord">{(x,y): y = x²}</span> فضاء جزئي؟</div>
+      <button class="opt" data-q="q4" data-a="0">لا — الجمع يخرج من المنحنى</button><button class="opt" data-q="q4" data-a="1">نعم — يحوي الصفر</button><button class="opt" data-q="q4" data-a="2">نعم — منحنى مستمر</button><button class="opt" data-q="q4" data-a="3">لا — لا يحوي الصفر</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">المحدد <span class="coord">[[2,−3],[1,2]]</span> يساوي 7 — ماذا يترتب على ذلك؟</div>
+      <button class="opt" data-q="q5" data-a="0">النظير موجود والأعمدة مستقلة</button><button class="opt" data-q="q5" data-a="1">0 — شاذة</button><button class="opt" data-q="q5" data-a="2">1 — وحدة</button><button class="opt" data-q="q5" data-a="3">−7 — والنظير ممنوع</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٥</span> قاموس المسار<span class="en-sub" lang="en">Path glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>منظومة خطية</td><td><span class="en" lang="en" dir="ltr">linear system</span></td><td>معادلات خطية تُحل معاً</td></tr>
+    <tr><td>القائد</td><td><span class="en" lang="en" dir="ltr">pivot</span></td><td>مسمار الحذف الغاوسي</td></tr>
+    <tr><td>الأساس والبعد</td><td><span class="en" lang="en" dir="ltr">basis & dimension</span></td><td>أصغر فريق وعدد أعضائه</td></tr>
+    <tr><td>المحدد</td><td><span class="en" lang="en" dir="ltr">determinant</span></td><td>كاشف النظير والمساحة</td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0011-drills">شغّل التمرين في المتصفح</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0011" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a><span>شاهد: السلسلة كاملة، ثم حُلّ التدريبات على ورق</span></li>
+      <li><a href="https://ar.khanacademy.org/math/linear-algebra" target="_blank" rel="noopener">خان أكاديمي بالعربية — الجبر الخطي</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0010-determinants.html" rel="prev"><small>الدرس السابق</small>المحددات من 2×2 إلى 3×3</a>
+    <a class="next home" href="../index.html"><small>اكتمل المسار</small>إلى الفهرس</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0011 · بنك التدريبات مع الحلول</span><span>التمرين: <code lang="en">python3 practice/0011-drills.py</code> · <a href="../playground.html?ex=0011-drills">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var cur=null,got=0,total=0;
+  function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
+  document.getElementById('newD').onclick=function(){
+    var sk=document.getElementById('skill').value,a,b,c,d;
+    if(sk==='det'){a=rnd(-4,4);b=rnd(-4,4);c=rnd(-4,4);d=rnd(-4,4);cur={sk:sk,a:a,b:b,c:c,d:d,ans:a*d-b*c};tex(document.getElementById('drStage'),"\\det\\begin{bmatrix}"+a+"&"+c+"\\\\"+b+"&"+d+"\\end{bmatrix} = ?");}
+    else if(sk==='dot'){a=rnd(-5,5);b=rnd(-5,5);c=rnd(-5,5);d=rnd(-5,5);cur={sk:sk,a:a,b:b,c:c,d:d,ans:a*c+b*d};tex(document.getElementById('drStage'),"("+a+","+b+")\\cdot("+c+","+d+") = ?");}
+    else if(sk==='inv'){do{a=rnd(-3,3);b=rnd(-3,3);c=rnd(-3,3);d=rnd(-3,3);}while(a*d-b*c===0);cur={sk:sk,a:a,b:b,c:c,d:d,ans:d/(a*d-b*c)};tex(document.getElementById('drStage'),"A^{-1}_{11} \\text{ for } \\begin{bmatrix}"+a+"&"+c+"\\\\"+b+"&"+d+"\\end{bmatrix} = ?");}
+    else{a=rnd(-3,3);b=rnd(-3,3);c=rnd(-3,3);d=rnd(-3,3);cur={sk:sk,a:a,b:b,c:c,d:d,ans:(a*d-b*c===0?0:1),yn:true};tex(document.getElementById('drStage'),"\\text{independent? } ("+a+","+b+"),("+c+","+d+") \\; \\text{(1 = yes / 0 = no)}");}
+    document.getElementById('drRO').innerHTML="احلل على الورق، ثم أدخل إجابتك واضغط «صحح».";
+  };
+  function fmt(v){return Math.abs(v-Math.round(v))<1e-9?String(Math.round(v)):String(Math.round(v*1000)/1000);}
+  function worked(c){
+    if(c.sk==='det')return "الحل: <span class='coord'>det = a·d − b·c = "+c.a+"·"+c.d+" − ("+c.b+")·("+c.c+") = "+fmt(c.a*c.d)+" − ("+fmt(c.b*c.c)+") = "+fmt(c.ans)+"</span>";
+    if(c.sk==='dot')return "الحل: اضرب المتناظر ثم اجمع: <span class='coord'>("+c.a+")("+c.c+") + ("+c.b+")("+c.d+") = "+fmt(c.a*c.c)+" + ("+fmt(c.b*c.d)+") = "+fmt(c.ans)+"</span>";
+    if(c.sk==='inv'){var det=c.a*c.d-c.b*c.c;return "الحل: المحدد <span class='coord'>"+fmt(det)+"</span>، والعنصر الأول في النظير <span class='coord'>d/det = "+c.d+"/"+fmt(det)+" = "+fmt(c.ans)+"</span>";}
+    var det2=c.a*c.d-c.b*c.c;return "الحل: <span class='coord'>det = "+fmt(det2)+"</span>"+(det2===0?" = صفر: متوازيان ← مرتبطان (الجواب 0)":" ≠ صفر: مستقلان (الجواب 1)");
+  }
+  document.getElementById('drCheck').onclick=function(){
+    if(!cur)return;total++;
+    var v=+document.getElementById('drAns').value,ok=Math.abs(v-cur.ans)<0.01;
+    if(ok)got++;
+    document.getElementById('drScore').textContent="النقاط: "+got+" / "+total;
+    document.getElementById('drRO').innerHTML=(ok?"إجابة صحيحة (<span class='coord'>"+fmt(cur.ans)+"</span>) — أحسنت، اطلب تدريباً جديداً.":"ليست بعد — الجواب <span class='coord'>"+fmt(cur.ans)+"</span>. "+worked(cur));
+    cur=null;
+  };
+  var ANS={q1:{"0":["صحيح — π و√2 ثوابت.",true],"1":["xy حاصل ضرب متغيرين.",false],"2":["واحدة فقط.",false],"3":["الأولى خطية.",false]},
+    q2:{"0":["صحيح — الوسط يسقط.",true],"1":["ليست مربعة.",false],"2":["الوسط متطابق.",false],"3":["الترتيب ثابت.",false]},
+    q3:{"0":["صحيح — عوّض وتحقق.",true],"1":["قيم مأخوذة من المصفوفة المختزلة لا حلّ المنظومة.",false],"2":["تخمين مرفوض.",false],"3":["بل يوجد حل وحيد.",false]},
+    q4:{"0":["صحيح — مجموع (1,1) و(2,4) هو (3,5)، و 5 ≠ 9 = 3²: الجمع يخرج من المنحنى.",true],"1":["الصفر لازم لا كافٍ.",false],"2":["الاستمرارية لا علاقة لها.",false],"3":["بل (0,0) تحقق 0=0.",false]},
+    q5:{"0":["صحيح — 4+3=7 والحزمة كاملة.",true],"1":["هذا للمصفوفة الأخرى.",false],"2":["ليست وحدة.",false],"3":["الإشارة موجبة.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,223 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0005 · فضاء المتجهات الإقليدي — Euclidean Vector Spaces</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=range]{width:110px}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  canvas{width:100%;height:300px;border:1px solid var(--line);border-radius:12px;background:var(--paper);direction:ltr}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+</head>
+<body>
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0004-matrix-properties.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0006-subspaces.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0005 · <bdi>Build</bdi></div>
+    <h1>فضاء المتجهات الإقليدي</h1>
+    <span class="en-line" lang="en">Euclidean Vector Spaces — inner product, length and distance</span>
+    <div class="rule"></div>
+    <p class="meta">~45 دقيقة · المتطلب: الدرس 0002 (العمليات)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> المتجه عنوان في الفضاء<span class="en-sub" lang="en">Rⁿ: (1,5,−2) lives in R³, (3,8) lives in R²</span></h2>
+    <p>من دفترك: <span class="coord">(1,5,−2)</span> متجه في <span class="coord">R³</span>، و <span class="coord">(1,5,−2,6)</span> في <span class="coord">R⁴</span>، و <span class="coord">(3,8)</span> في <span class="coord">R²</span>. التساوي عنصري: <span class="coord">u = v ⟺</span> كل عنصر يساوي نظيره. والجمع والضرب القياسي والطرح كلها عنصرية: <span class="coord">u+v = (u₁+v₁, u₂+v₂, …)</span> و <span class="coord">ku = (ku₁, ku₂, …)</span>.</p>
+    <div class="analogy"><b>تشبيه: إحداثيات المدينة</b><p>عنوانك «شارع 3، مبنى 8» لا يعني شيئاً إن بدّلت الرقمين — <span class="coord">(3,8)</span> ليست <span class="coord">(8,3)</span>. والانتقال من عنوان لآخر تجمع الفروق شارعاً بشارع. <span class="en" lang="en" dir="ltr">Order is the address; addition walks street by street.</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> كل عمليات المتجهات الأساسية تتم عنصراً بعنصر — ما عدا عمليتين جديدتين: الضرب الداخلي (يُخرج رقماً) والطول (يُخرج مسافة). <span class="en" lang="en" dir="ltr">(Everything is entrywise — except dot product and length.)</span></p></div>
+    <div class="kmath" id="k1"></div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> مختبر الضرب الداخلي والطول<span class="en-sub" lang="en">Drag u and v — watch dot, lengths and distance update live</span></h2>
+    <p>من دفترك: <span class="term">الضرب الداخلي</span> <span class="en" lang="en" dir="ltr">(inner product)</span> هو <span class="coord">⟨u,v⟩ = u₁v₁ + u₂v₂ + …</span>، و<span class="term">الطول</span> <span class="en" lang="en" dir="ltr">(length)</span> هو <span class="coord">‖u‖ = √(u₁² + u₂² + …)</span>، و<span class="term">المسافة</span> <span class="en" lang="en" dir="ltr">(distance)</span> هي <span class="coord">d(u,v) = ‖u − v‖</span>. حرّك المتجهين على اللوحة وشاهد الأرقام الثلاثة تتحرك.</p>
+    <div class="demo" data-label="Try · PLAY">
+      <h3>ساحة المتجهات</h3>
+      <p class="hint">حرّك المنزلقات — النقاط والأسهم والأرقام تتبعك لحظياً</p>
+      <canvas id="vsCv" width="640" height="300"></canvas>
+      <div class="controls"><label>u₁ <input type="range" id="u1" min="-5" max="5" step="1" value="3"></label><label>u₂ <input type="range" id="u2" min="-5" max="5" step="1" value="2"></label><label>v₁ <input type="range" id="v1" min="-5" max="5" step="1" value="-1"></label><label>v₂ <input type="range" id="v2" min="-5" max="5" step="1" value="4"></label></div>
+      <div class="readout" id="vsRO" style="direction:rtl;text-align:right"></div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> التعامد: عندما يصمت الضرب الداخلي<span class="en-sub" lang="en">u·v = 0 means perpendicular — the right angle detector</span></h2>
+    <p>القوانين من دفترك: <span class="coord">u+v = v+u</span>، و <span class="coord">u·v = v·u</span>، و <span class="coord">(ku)·v = k(u·v)</span>، و <span class="coord">(u+v)·w = u·w + v·w</span>. أهم ثمارها: متجهان متعامدان ⟺ ضربهما الداخلي صفر. جرّب: هل <span class="coord">(3,1)</span> و <span class="coord">(−1,3)</span> متعامدان؟ <span class="coord">3·(−1)+1·3 = 0</span> — نعم!</p>
+    <div class="demo" data-label="Test · CHECK">
+      <h3>كاشف التعامد</h3>
+      <p class="hint">اضغط لتوليد زوج عشوائي — خمّن أولاً ثم اكشف</p>
+      <div class="controls"><button class="btn" id="orthGo">ولّد زوجاً</button><button class="btn ghost" id="orthReveal">اكشف التعامد</button></div>
+      <div class="kmath" id="orthStage" style="min-height:56px"></div>
+      <div class="readout" id="orthRO" style="direction:rtl;text-align:right">خمّن أولاً، ثم اكشف…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>المتجه الصفري <span class="coord">(0,0)</span> طوله صفر وعمودي على الجميع — لكنه لا يصلح اتجاهاً ولا يُوحَّد (القسمة على صفر ممنوعة). <span class="en" lang="en" dir="ltr">(Zero vector: length 0, direction none.)</span></p></div>
+  </section>
+
+  <div class="demo" data-label="Watch · VIDEO">
+    <h3>شاهد المتجهات متحركة</h3>
+    <p class="hint">موشن جرافيك بتعليق عربي: الضرب الداخلي والطول والتعامد</p>
+    <video controls preload="metadata" poster="../video/outputs/0005-euclidean-spaces-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
+      <source src="../video/outputs/0005-euclidean-spaces-ar.mp4" type="video/mp4">
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0005-euclidean-spaces-subs.srt" default>
+    </video>
+  </div>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>الضرب الداخلي</td><td>ضرب متجهين</td><td>رقم واحد = مجموع حواصل العناصر — كاشف التعامد</td></tr>
+    <tr><td>الطول</td><td>حجم المتجه</td><td>جذر مجموع المربعات — امتداد فيثاغورس</td></tr>
+    <tr><td>المسافة</td><td>البعد بين نقطتين</td><td>طول الفرق: ‖u − v‖</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> المتجه سهم غامض. <b>بعد هذا الدرس:</b> تحسب تشابه الاتجاهين برقم، وطول أي متجه، والمسافة بين أي نقطتين.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt"><span class="coord">(1,5,−2)</span> في أي فضاء؟</div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">R³</span> — ثلاثة عناصر</button><button class="opt" data-q="q1" data-a="1"><span class="coord">R²</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">R⁴</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">R¹</span></button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">الضرب الداخلي لـ <span class="coord">(1,2)</span> و <span class="coord">(3,−1)</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0">1 — لأن <span class="coord">3 − 2 = 1</span></button><button class="opt" data-q="q2" data-a="1">5</button><button class="opt" data-q="q2" data-a="2">(3,−2)</button><button class="opt" data-q="q2" data-a="3">0</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">طول <span class="coord">(3,4)</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0">5 — جذر <span class="coord">(9+16)</span></button><button class="opt" data-q="q3" data-a="1">7 — المجموع</button><button class="opt" data-q="q3" data-a="2">25</button><button class="opt" data-q="q3" data-a="3">12</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">متى يكون <span class="coord">u</span> و <span class="coord">v</span> متعامدين؟</div>
+      <button class="opt" data-q="q4" data-a="0">عندما <span class="coord">u·v = 0</span></button><button class="opt" data-q="q4" data-a="1">عندما <span class="coord">u = v</span></button><button class="opt" data-q="q4" data-a="2">عندما طولاهما متساويان</button><button class="opt" data-q="q4" data-a="3">عندما مجموعهما صفر</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">المسافة بين <span class="coord">(0,0)</span> و <span class="coord">(1,1)</span>؟</div>
+      <button class="opt" data-q="q5" data-a="0"><span class="coord">√2</span> — طول الفرق</button><button class="opt" data-q="q5" data-a="1">2</button><button class="opt" data-q="q5" data-a="2">1</button><button class="opt" data-q="q5" data-a="3">0</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>الضرب الداخلي</td><td><span class="en" lang="en" dir="ltr">inner product</span></td><td>رقم التشابه: اضرب المتناظر واجمع</td></tr>
+    <tr><td>الطول</td><td><span class="en" lang="en" dir="ltr">length (norm)</span></td><td>مسافة المتجه عن الأصل</td></tr>
+    <tr><td>المسافة</td><td><span class="en" lang="en" dir="ltr">distance</span></td><td>طول الفرق بين متجهين</td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0005-euclidean-spaces">شغّل التمرين في المتصفح</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0005" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a><span>شاهد: «الضرب الداخلي والثنائية» (الحلقة 9)</span></li>
+      <li><a href="https://ar.khanacademy.org/math/linear-algebra" target="_blank" rel="noopener">خان أكاديمي بالعربية — الجبر الخطي</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0004-matrix-properties.html" rel="prev"><small>الدرس السابق</small>خصائص المصفوفات والمصفوفة الصفرية</a>
+    <a class="next" href="0006-subspaces.html" rel="next"><small>الدرس التالي</small>الفضاء الجزئي</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0005 · فضاء المتجهات الإقليدي</span><span>التمرين: <code lang="en">python3 practice/0005-euclidean-spaces.py</code> · <a href="../playground.html?ex=0005-euclidean-spaces">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  tex(document.getElementById('k1'),"\\langle u,v\\rangle = u_1v_1+u_2v_2+\\cdots \\qquad \\|u\\| = \\sqrt{u_1^2+u_2^2+\\cdots} \\qquad d(u,v)=\\|u-v\\|");
+  var cv=document.getElementById('vsCv'),ctx=cv.getContext('2d'),RO=document.getElementById('vsRO');
+  function g(id){return +document.getElementById(id).value;}
+  function draw(){
+    var u=[g('u1'),g('u2')],v=[g('v1'),g('v2')];
+    var W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
+    var sc=34,ox=W/2,oy=H/2;
+    ctx.strokeStyle='#ded4c2';ctx.lineWidth=1;
+    for(var i=-9;i<=9;i++){ctx.beginPath();ctx.moveTo(ox+i*sc,0);ctx.lineTo(ox+i*sc,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,oy+i*sc);ctx.lineTo(W,oy+i*sc);ctx.stroke();}
+    ctx.strokeStyle='#1c1a15';ctx.lineWidth=2;
+    ctx.beginPath();ctx.moveTo(0,oy);ctx.lineTo(W,oy);ctx.stroke();ctx.beginPath();ctx.moveTo(ox,0);ctx.lineTo(ox,H);ctx.stroke();
+    function arrow(p,col){ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+p[0]*sc,oy-p[1]*sc);ctx.stroke();ctx.beginPath();ctx.arc(ox+p[0]*sc,oy-p[1]*sc,5,0,7);ctx.fill();}
+    arrow(u,'#0d5c46');arrow(v,'#c2562f');
+    var dot=u[0]*v[0]+u[1]*v[1],nu=Math.hypot(u[0],u[1]).toFixed(2),nv=Math.hypot(v[0],v[1]).toFixed(2),d=Math.hypot(u[0]-v[0],u[1]-v[1]).toFixed(2);
+    RO.innerHTML="<span class='coord'>u = ("+u+")</span> · <span class='coord'>v = ("+v+")</span> · <span class='coord'>u·v = "+dot+"</span> · <span class='coord'>‖u‖ = "+nu+"</span> · <span class='coord'>‖v‖ = "+nv+"</span> · <span class='coord'>d = "+d+"</span>"+(dot===0?" · <b>متعامدان ⊥</b>":"");
+  }
+  ['u1','u2','v1','v2'].forEach(function(id){document.getElementById(id).oninput=draw;});draw();
+  var OU=null;
+  document.getElementById('orthGo').onclick=function(){
+    var a=[Math.floor(Math.random()*9)-4,Math.floor(Math.random()*9)-4],b=[Math.floor(Math.random()*9)-4,Math.floor(Math.random()*9)-4];
+    if(Math.random()<0.35){b=[-a[1],a[0]];}
+    OU={a:a,b:b,dot:a[0]*b[0]+a[1]*b[1]};
+    tex(document.getElementById('orthStage'),"u=("+a+") \\quad v=("+b+") \\quad u\\cdot v = ?");
+    document.getElementById('orthRO').innerHTML="الزوج جاهز — التزم بتخمينك، ثم اضغط «اكشف التعامد».";
+  };
+  document.getElementById('orthReveal').onclick=function(){
+    if(!OU)return;
+    document.getElementById('orthRO').innerHTML="<span class='coord'>u·v = ("+OU.a[0]+")("+OU.b[0]+") + ("+OU.a[1]+")("+OU.b[1]+") = "+OU.dot+"</span> → "+(OU.dot===0?"يساوي صفراً: متعامدان — الزاوية قائمة":"لا يساوي صفراً: غير متعامدين");
+  };
+  var ANS={q1:{"0":["صحيح — عدّ العناصر يحدد الفضاء.",true],"1":["عنصران فقط في R².",false],"2":["أربعة عناصر في R⁴.",false],"3":["عنصر واحد في R¹.",false]},
+    q2:{"0":["صحيح — 1·3 + 2·(−1) = 1.",true],"1":["أعد الحساب: 3 − 2.",false],"2":["الناتج رقم لا متجه.",false],"3":["الصفر للتعامد فقط.",false]},
+    q3:{"0":["صحيح — 3-4-5 مثلث فيثاغورس.",true],"1":["المجموع ليس الطول.",false],"2":["نسيت الجذر.",false],"3":["هذا حاصل الضرب.",false]},
+    q4:{"0":["صحيح — الصفر هو كاشف الزاوية القائمة.",true],"1":["التساوي لا يعني التعامد.",false],"2":["الطول لا يحدد الزاوية.",false],"3":["هذا يعني v = −u.",false]},
+    q5:{"0":["صحيح — √(1+1).",true],"1":["هذا مجموع المربعات بلا جذر.",false],"2":["هذا طول (1,0).",false],"3":["النقطتان مختلفتان.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+</body>
+</html>

@@ -1,0 +1,491 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>مختبر الجبر الخطي — مقرر تفاعلي من الصفر</title>
+<meta name="description" id="metaDesc" content="أحد عشر درساً عربياً في الجبر الخطي، مبنيّة على تسعة ملفات بخط اليد: شرح تفاعلي، فيديو بتعليق عربي، اختبار، قاموس، وتمرين بايثون مع الحلول.">
+<style>
+  @font-face{font-family:"ThmanyahSerifDisplay";src:url("./assets/fonts/thmanyahserifdisplay-Black.woff2") format("woff2");font-weight:900;font-style:normal;font-display:swap}
+  @font-face{font-family:"ThmanyahSerifDisplay";src:url("./assets/fonts/thmanyahserifdisplay-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+  @font-face{font-family:"ThmanyahSans";src:url("./assets/fonts/thmanyahsans-Bold.woff2") format("woff2");font-weight:700;font-style:normal;font-display:swap}
+  @font-face{font-family:"ThmanyahSans";src:url("./assets/fonts/thmanyahsans-Medium.woff2") format("woff2");font-weight:500;font-style:normal;font-display:swap}
+  @font-face{font-family:"ThmanyahSans";src:url("./assets/fonts/thmanyahsans-Regular.woff2") format("woff2");font-weight:400;font-style:normal;font-display:swap}
+  :root{
+    --paper:#faf7f2; --card:#f0ede6; --ink:#111111; --muted:#7a7a72;
+    --line:#d8d4cc; --teal:#1e4a4a; --pink:#c99aa4; --sage:#b9c4a6;
+    --orange:#e07b39; --cream:#efe6d4;
+    --sans:-apple-system,BlinkMacSystemFont,"Helvetica Neue",Helvetica,Arial,"Segoe UI",sans-serif;
+    --mono:ui-monospace,SFMono-Regular,Menlo,Consolas,"Liberation Mono",monospace;
+    --max:1140px; --gutter:16px; --radius:20px;
+  }
+  html[lang=ar]{--sans:"ThmanyahSans",-apple-system,"Segoe UI",Tahoma,sans-serif;--mono:"ThmanyahSans",system-ui,Tahoma,sans-serif}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--sans);-webkit-font-smoothing:antialiased;overflow-x:hidden}
+  html[lang=ar] h1.display,html[lang=ar] h2.sec{font-family:"ThmanyahSerifDisplay",var(--sans);letter-spacing:0}
+  html[lang=ar] .kicker,html[lang=ar] .sec-label,html[lang=ar] .pill,html[lang=ar] .tag,html[lang=ar] .beta-badge{letter-spacing:.02em}
+  ::selection{background:#111;color:#faf7f2}
+  a{color:inherit}
+  :focus-visible{outline:3px solid #111;outline-offset:3px;border-radius:6px}
+
+  /* ---------- nav ---------- */
+  .nav{height:56px;position:sticky;top:0;z-index:50;background:color-mix(in srgb,var(--paper) 88%,transparent);backdrop-filter:blur(10px)}
+  .nav-inner{max-width:var(--max);height:56px;margin:0 auto;padding:0 24px;display:flex;align-items:center;justify-content:space-between;gap:16px}
+  .wordmark{display:flex;align-items:center;gap:9px;text-decoration:none;font-weight:800;font-size:15px;letter-spacing:-.01em}
+  .mark{width:22px;height:22px;border-radius:7px;background:#111;color:#faf7f2;display:grid;place-items:center;font-size:15px;font-weight:900;line-height:1}
+  .links{display:flex;align-items:center;gap:26px;list-style:none;margin:0;padding:0;font-family:var(--mono);font-size:13px}
+  .links a{text-decoration:none}
+  .links a:hover{text-decoration:underline;text-underline-offset:4px}
+  .has-drop{position:relative}
+  .drop-btn{background:none;border:0;font:inherit;color:inherit;cursor:pointer;display:flex;align-items:center;gap:6px;padding:6px 0}
+  .caret{font-size:10px;transition:transform .2s}
+  .has-drop.open .caret{transform:rotate(180deg)}
+  .drop{position:absolute;top:calc(100% + 10px);inset-inline-end:-12px;min-width:230px;background:#fff;border:1px solid var(--line);border-radius:14px;padding:8px;box-shadow:0 24px 60px rgba(0,0,0,.14);display:none}
+  .has-drop.open .drop{display:block}
+  .drop a{display:flex;justify-content:space-between;gap:12px;padding:10px 12px;border-radius:9px;font-size:12.5px;text-decoration:none}
+  .drop a:hover{background:var(--card);text-decoration:none}
+  .drop small{color:var(--muted)}
+  .menu-btn{display:none;background:none;border:1px solid var(--ink);border-radius:999px;padding:8px 14px;font-family:var(--mono);font-size:12px;cursor:pointer;color:var(--ink)}
+  @media(max-width:860px){.links{display:none}.menu-btn{display:block}.links.mobile-open{display:flex;position:absolute;top:56px;left:0;right:0;background:var(--paper);border-bottom:1px solid var(--line);padding:14px 24px 20px;flex-direction:column;align-items:flex-start;gap:14px}}
+
+  /* ---------- hero ---------- */
+  .wrap{max-width:var(--max);margin:0 auto;padding:0 24px}
+  .hero{padding:88px 0 40px}
+  .hero-copy{max-width:60%}
+  .kicker{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:0 0 22px}
+  h1.display{margin:0;font-weight:800;font-size:clamp(2.6rem,7vw,5.2rem);line-height:.95;letter-spacing:-.035em;text-wrap:balance}
+  html[lang=ar] h1.display{font-size:clamp(2.1rem,5.4vw,4.4rem);line-height:1.3}
+  h1.display .line{display:block}
+  .spray{position:relative;filter:url(#grit)}
+  .tagline{font-family:var(--mono);font-size:14.5px;line-height:1.6;color:#3c3c38;margin:26px 0 0;max-width:46ch}
+  @media(max-width:860px){.hero-copy{max-width:100%}}
+
+  /* ---------- collage strip ---------- */
+  .strip-zone{padding:56px 0 30px;overflow:hidden}
+  html[dir=rtl] .strip{direction:ltr}
+  .strip{display:flex;gap:0;overflow-x:visible;padding:30px max(calc((100vw - var(--max))/2),24px);scrollbar-width:none}
+  .strip::-webkit-scrollbar{display:none}
+  .pcard{flex:0 0 300px;width:300px;height:430px;border-radius:var(--radius);padding:20px 20px 0;margin-inline-start:-26px;position:relative;overflow:hidden;display:flex;flex-direction:column;box-shadow:0 24px 60px rgba(0,0,0,.15);transition:transform .28s ease,box-shadow .28s ease;scroll-snap-align:center;text-align:start}
+  .pcard:first-child{margin-inline-start:0}
+  .pcard:nth-child(1){transform:rotate(-3deg) translateY(10px);background:var(--teal);color:#f2efe6}
+  .pcard:nth-child(2){transform:rotate(2.4deg) translateY(-6px);background:var(--pink);color:#221a1c}
+  .pcard:nth-child(3){transform:rotate(-2deg) translateY(6px);background:var(--sage);color:#1d2317}
+  .pcard:nth-child(4){transform:rotate(3.2deg) translateY(-10px);background:var(--orange);color:#221206}
+  .pcard:nth-child(5){transform:rotate(-2.6deg) translateY(4px);background:var(--cream);color:#22201a;border:1px solid var(--line)}
+  .pcard:hover{transform:rotate(0deg) translateY(-8px);box-shadow:0 34px 80px rgba(0,0,0,.22);z-index:5}
+  .pill{align-self:flex-end;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;background:rgba(255,255,255,.16);border:1px solid rgba(0,0,0,.12);padding:6px 12px;border-radius:999px;white-space:nowrap}
+  html[dir=rtl] .pill{align-self:flex-start}
+  .pcard h3{margin:16px 0 6px;font-size:23px;font-weight:800;letter-spacing:-.02em}
+  .benefit{font-family:var(--mono);font-size:13px;line-height:1.6;opacity:.85;margin:0 0 14px}
+  .art{flex:1;border-radius:14px 14px 0 0;overflow:hidden;position:relative;margin:0 -20px}
+  .art svg{position:absolute;inset:0;width:100%;height:100%}
+  @media(max-width:860px){.strip-zone{overflow-x:auto}.strip{overflow-x:auto;padding-bottom:34px}.pcard{flex-basis:262px;width:262px;height:400px}}
+
+  /* ---------- sections ---------- */
+  section.block{padding:150px 0}
+  @media(max-width:860px){section.block{padding:96px 0}}
+  .sec-label{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.14em;color:var(--muted);margin:0 0 18px}
+  h2.sec{margin:0;font-size:clamp(1.9rem,4vw,2.8rem);line-height:1.35;letter-spacing:-.03em;font-weight:800;text-wrap:balance}
+  .manifesto-grid{max-width:55%}
+  .manifesto-grid p.body,.body{font-family:var(--mono);font-size:14.5px;line-height:1.6;color:var(--muted);margin:26px 0 0;max-width:56ch}
+  html[lang=ar] .body,html[lang=ar] .tagline{line-height:2}
+  @media(max-width:860px){.manifesto-grid{max-width:100%}}
+
+  /* ---------- lesson grid ---------- */
+  .mgrid{margin-top:54px;display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gutter)}
+  @media(max-width:960px){.mgrid{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:620px){.mgrid{grid-template-columns:1fr}}
+  .mcard{background:var(--card);border-radius:var(--radius);padding:28px;min-height:250px;display:flex;flex-direction:column;position:relative;transition:transform .22s ease,box-shadow .22s ease}
+  .mcard:hover{transform:translateY(-5px);box-shadow:0 18px 44px rgba(0,0,0,.12)}
+  .mcard h3{margin:0;font-size:22px;font-weight:800;letter-spacing:-.02em}
+  .mcard h3 a{text-decoration:none}
+  .mcard h3 a:hover{text-decoration:underline;text-underline-offset:4px}
+  .mcard p{font-family:var(--mono);font-size:13.5px;line-height:1.6;color:#55554e;margin:12px 0 56px}
+  html[lang=ar] .mcard p{line-height:2}
+  .tag{position:absolute;bottom:24px;inset-inline-start:28px;font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.08em;border:1px solid var(--line);background:rgba(255,255,255,.5);padding:6px 12px;border-radius:999px;color:#55554e}
+  .mcard.beta{background:transparent;border:1px solid var(--line);box-shadow:none}
+  .mcard.beta h3{color:#8a887f}
+  .mcard.beta p{color:#9a988f}
+  .beta-badge{position:absolute;top:22px;inset-inline-end:22px;font-family:var(--mono);font-size:10.5px;text-transform:uppercase;letter-spacing:.1em;border:1px solid var(--line);color:#8a887f;border-radius:999px;padding:5px 10px}
+
+  /* ---------- curriculum (course) ---------- */
+  .course{background:#111;color:#f4f1e8;border-radius:28px;padding:clamp(40px,6vw,84px);margin-top:20px}
+  html[lang=ar] .course h2.sec{font-family:"ThmanyahSerifDisplay",var(--sans)}
+  .course .sec-label{color:#9a978c}
+  .course h2.sec{color:#f4f1e8}
+  .course .body{color:#b9b6aa}
+  .crow{display:grid;grid-template-columns:138px 1fr auto;gap:18px;align-items:center;border-top:1px solid #2c2c28;padding:18px 4px;font-family:var(--mono);font-size:13px}
+  .crow:last-of-type{border-bottom:1px solid #2c2c28}
+  .crow b{font-size:16px}
+  html[lang=ar] .crow b{font-family:"ThmanyahSans",var(--sans)}
+  .crow .st{font-size:11px;text-transform:uppercase;letter-spacing:.1em;border:1px solid #3a3a35;border-radius:999px;padding:6px 12px;color:#cfccc0;white-space:nowrap}
+  .crow a{color:#fff}
+  .crow a.st{text-decoration:none}
+  .crow a.st:hover{background:#2c2c28}
+  .toolgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gutter);margin-top:34px}
+  @media(max-width:860px){.toolgrid{grid-template-columns:1fr}.crow{grid-template-columns:1fr;gap:6px}}
+  .tool{background:#1b1b18;border:1px solid #2e2e2a;border-radius:18px;padding:24px}
+  .tool h4{margin:0 0 10px;font-size:15px}
+  .tool p,.tool li{font-family:var(--mono);font-size:12.5px;line-height:1.7;color:#b9b6aa}
+  html[lang=ar] .tool p,html[lang=ar] .tool li{line-height:2}
+  .tool ul{margin:10px 0 0;padding-inline-start:18px}
+  .tool code{color:#fff;background:#00000055;padding:1px 6px;border-radius:6px;direction:ltr;unicode-bidi:isolate;display:inline-block}
+  .katex-demo{background:#f4f1e8;color:#111;border-radius:14px;padding:18px;margin-top:18px;font-size:17px;overflow-x:auto;direction:ltr;text-align:left}
+
+  /* ---------- CTA ---------- */
+  .cta h2.sec{max-width:12ch}
+  .cta .body{color:var(--muted)}
+  .btnrow{display:flex;flex-wrap:wrap;gap:12px;margin-top:34px}
+  .btn{font-family:var(--mono);font-size:13.5px;border-radius:999px;padding:14px 26px;text-decoration:none;display:inline-flex;align-items:center;cursor:pointer}
+  .btn.solid{background:#111;color:#fff;border:1px solid #111}
+  .btn.solid:hover{background:#000}
+  .btn.ghost{background:transparent;color:#111;border:1px solid #111}
+  .btn.ghost:hover{background:#111;color:#fff}
+
+  /* ---------- footer ---------- */
+  footer.site{border-top:1px solid var(--line);margin-top:40px}
+  .foot-grid{display:grid;grid-template-columns:1.2fr repeat(6,1fr);gap:20px;padding:56px 0 40px}
+  @media(max-width:960px){.foot-grid{grid-template-columns:1fr 1fr}}
+  .fbrand{font-weight:800;font-size:15px;display:flex;gap:9px;align-items:center}
+  .fcol h5{font-family:var(--mono);font-size:11px;text-transform:uppercase;letter-spacing:.1em;color:var(--muted);margin:0 0 14px;font-weight:500}
+  .fcol ul{list-style:none;margin:0;padding:0;display:grid;gap:9px;font-family:var(--mono);font-size:12.5px}
+  .fcol a{text-decoration:none}.fcol a:hover{text-decoration:underline;text-underline-offset:3px}
+  .bsuffix{font-size:9px;vertical-align:super;letter-spacing:.08em;color:var(--muted);margin-inline-start:4px}
+  .legal{border-top:1px solid var(--line);padding:18px 0 26px;display:flex;justify-content:space-between;gap:14px;flex-wrap:wrap;font-family:var(--mono);font-size:11.5px;color:var(--muted);align-items:center}
+  .legal select{font:inherit;background:#111;color:#fff;border:0;border-radius:999px;padding:10px 18px;font-weight:700;cursor:pointer}
+  .legal select option{color:#111}
+  .lang-toggle{background:#111;color:#faf7f2;border:1px solid #111;border-radius:999px;padding:8px 18px;font-family:var(--mono);font-size:12.5px;font-weight:700;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .lang-toggle:hover{background:#000}
+  .lang-toggle:active{transform:scale(.95)}
+  section.block,.course{scroll-margin-top:70px}
+  .btn{transition:transform .15s ease,background .2s ease}
+  .btn:active{transform:scale(.97)}
+  .menu-btn:active{transform:scale(.95)}
+  .crow{transition:background .2s ease}
+  .crow:hover{background:#1d1d1a}
+  .crow b a{text-decoration:none}
+  .crow b a:hover{text-decoration:underline;text-underline-offset:4px}
+  @media(max-width:860px){.strip{scroll-snap-type:x mandatory}}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .skip{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+  .skip:focus{position:fixed;top:12px;inset-inline-start:12px;width:auto;height:auto;margin:0;clip:auto;overflow:visible;background:#111;color:#fff;padding:10px 16px;z-index:99;border-radius:10px}
+  .prog{position:absolute;left:0;right:0;bottom:-3px;height:3px;background:color-mix(in srgb,var(--line) 55%,transparent)}
+  .prog i{display:block;height:100%;width:0;background:var(--teal);transition:width .35s ease}
+  .mcard.is-done{outline:2px solid var(--teal);outline-offset:-2px}
+  .mcard.is-done::after{content:"✓";position:absolute;top:18px;inset-inline-end:20px;width:26px;height:26px;border-radius:50%;background:var(--teal);color:#faf7f2;display:grid;place-items:center;font-weight:800;font-size:14px}
+  :root[data-theme=dark]{--paper:#14130f;--card:#1d1c17;--ink:#f2efe6;--muted:#a7a396;--line:#33312a;--teal:#7fc9ae;--pink:#8f6b74;--sage:#5d6b4e;--orange:#b5622a;--cream:#242219}
+  [data-theme=dark] .drop{background:#1d1c17;box-shadow:0 24px 60px rgba(0,0,0,.55)}
+  [data-theme=dark] .mcard p{color:#b9b6aa}
+  [data-theme=dark] .tag{background:#ffffff10;color:#b9b6aa;border-color:var(--line)}
+  [data-theme=dark] .katex-demo{background:#242219;color:#f2efe6}
+  [data-theme=dark] .course{background:#000}
+  [data-theme=dark] .btn.solid{background:var(--ink);color:#14130f}
+  [data-theme=dark] .btn.solid:hover{background:#fff}
+  [data-theme=dark] .btn.ghost:hover{background:var(--ink);color:#14130f}
+  [data-theme=dark] .lang-toggle{background:var(--ink);color:#14130f}
+  [data-theme=dark] .legal select{background:var(--ink);color:#14130f}
+  [data-theme=dark] .mcard.beta h3{color:#8a887f}
+  [data-theme=dark] .mcard.beta p{color:#9a988f}
+  /* collage cards keep their sticker colours in the dark */
+  [data-theme=dark] .pcard:nth-child(1){background:#1e4a4a;color:#f2efe6}
+  [data-theme=dark] .pcard:nth-child(2){background:#c99aa4;color:#221a1c}
+  [data-theme=dark] .pcard:nth-child(3){background:#b9c4a6;color:#1d2317}
+  [data-theme=dark] .pcard:nth-child(4){background:#e07b39;color:#221206}
+  [data-theme=dark] .pcard:nth-child(5){background:#efe6d4;color:#22201a;border-color:#3a382f}
+</style>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+</head>
+<body>
+<a class="skip" href="#models" data-i18n="skip">تخطَّ إلى المحتوى</a>
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <filter id="grit">
+      <feTurbulence type="fractalNoise" baseFrequency="0.9" numOctaves="3" result="n"/>
+      <feDisplacementMap in="SourceGraphic" in2="n" scale="7"/>
+    </filter>
+  </defs>
+</svg>
+
+<nav class="nav" aria-label="Primary">
+  <div class="nav-inner">
+    <a class="wordmark" href="#top" aria-label="مختبر الجبر الخطي"><span class="mark">✳</span> مختبر&nbsp;الجبر&nbsp;الخطي</a>
+    <ul class="links" id="navLinks">
+      <li class="has-drop" id="modelsDrop">
+        <button class="drop-btn" aria-haspopup="true" aria-expanded="false"><span data-i18n="navModels">الدروس</span> <span class="caret">▾</span></button>
+        <div class="drop" role="menu">
+          <a href="#models" role="menuitem"><span data-i18n="dAll">كل الدروس</span> <small>11</small></a>
+          <a href="#models" role="menuitem"><span data-i18n="catFound">الأساسيات</span> <small>01–04</small></a>
+          <a href="#models" role="menuitem"><span data-i18n="catVec">المتجهات والفضاءات</span> <small>05–08</small></a>
+          <a href="#models" role="menuitem"><span data-i18n="catCap">الأساس والمحددات</span> <small>09–11</small></a>
+          <a href="#course" role="menuitem"><span data-i18n="dCourse">مسار المقرر</span> <small data-i18n="dCourseN">11 درساً</small></a>
+        </div>
+      </li>
+      <li><a href="#course" data-i18n="navDocs">المقرر</a></li>
+      <li><a href="review.html" data-i18n="navReview">مراجعة</a></li>
+      <li><a href="search.html" data-i18n="navSearch">بحث</a></li>
+      <li><a href="#manifesto" data-i18n="navBlog">المنهجية</a></li>
+      <li><a href="#manifesto" data-i18n="navAbout">عن المقرر</a></li>
+      <li><a href="#cta" data-i18n="navContact">تواصل</a></li>
+    </ul>
+    <button class="lang-toggle theme-btn" type="button">الوضع الداكن</button>
+    <button class="lang-toggle" id="langToggle" aria-label="Switch language / تغيير اللغة">EN</button>
+    <button class="menu-btn" id="menuBtn" aria-expanded="false" data-i18n="menu">القائمة</button>
+  </div>
+  <span class="prog" aria-hidden="true"><i id="progFill"></i></span>
+</nav>
+
+<div class="wrap" id="top">
+  <header class="hero">
+    <div class="hero-copy">
+      <p class="kicker" data-i18n="kicker">مقرر تفاعلي من الصفر · 11 درساً + 11 فيديو</p>
+      <h1 class="display">
+        <span class="line spray" data-i18n="heroL1">افهم الجبر الخطي</span>
+        <span class="line" data-i18n="heroL2">لا تحفظه.</span>
+      </h1>
+      <p class="tagline" data-i18n="tagline">من ملفاتكم بخط اليد إلى أحد عشر درساً تفاعلياً: تشبيه لكل فكرة، مختبر عملي، فيديو بتعليق عربي، وتمرين بايثون مع الحلول.</p>
+    </div>
+  </header>
+</div>
+
+<div class="strip-zone" aria-label="الدروس البارزة">
+  <div class="strip">
+    <article class="pcard">
+      <span class="pill" data-i18n="pill01">الدرس 01</span>
+      <h3 data-i18n="h01">تمييز الخطي</h3>
+      <p class="benefit" data-i18n="ben01">عشر ثوانٍ وتصدر الحكم: خطية أم لا.</p>
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 300 260" preserveAspectRatio="xMidYMid slice"><rect width="300" height="260" fill="#163a3a"/><g fill="#9fd8cb"><rect x="24" y="120" width="10" height="40" rx="5"/><rect x="42" y="100" width="10" height="80" rx="5"/><rect x="60" y="70" width="10" height="140" rx="5"/><rect x="78" y="95" width="10" height="90" rx="5"/><rect x="96" y="60" width="10" height="160" rx="5"/><rect x="114" y="90" width="10" height="100" rx="5"/><rect x="132" y="110" width="10" height="60" rx="5"/><rect x="150" y="75" width="10" height="130" rx="5"/><rect x="168" y="105" width="10" height="70" rx="5"/><rect x="186" y="85" width="10" height="110" rx="5"/><rect x="204" y="115" width="10" height="50" rx="5"/><rect x="222" y="95" width="10" height="90" rx="5"/></g><circle cx="240" cy="50" r="60" fill="#ffffff" opacity=".08"/></svg></div>
+    </article>
+    <article class="pcard">
+      <span class="pill" data-i18n="pill02">الدرس 02</span>
+      <h3 data-i18n="h02">المصفوفات</h3>
+      <p class="benefit" data-i18n="ben02">الشكل يقرر ما يُسمح به، والمحدد يقرر النظير.</p>
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 300 260" preserveAspectRatio="xMidYMid slice"><rect width="300" height="260" fill="#b98b95"/><g fill="#3a2228" opacity=".85"><rect x="26" y="40" width="150" height="12" rx="6"/><rect x="26" y="62" width="200" height="12" rx="6"/><rect x="26" y="84" width="120" height="12" rx="6"/><rect x="26" y="120" width="220" height="54" rx="12" fill="#f6ecec"/><rect x="40" y="136" width="150" height="10" rx="5" fill="#3a2228"/><rect x="40" y="152" width="100" height="10" rx="5" fill="#3a2228" opacity=".6"/></g><circle cx="60" cy="210" r="46" fill="#f6ecec" opacity=".5"/></svg></div>
+    </article>
+    <article class="pcard">
+      <span class="pill" data-i18n="pill03">الدرس 03</span>
+      <h3 data-i18n="h03">الحذف الغاوسي</h3>
+      <p class="benefit" data-i18n="ben03">ثلاث عمليات صفوف حتى المثلث، ثم تعويض خلفي.</p>
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 300 260" preserveAspectRatio="xMidYMid slice"><rect width="300" height="260" fill="#a9b795"/><g stroke="#2c3a22" stroke-width="7" stroke-linecap="round" opacity=".9"><line x1="40" y1="60" x2="260" y2="60"/><line x1="40" y1="95" x2="210" y2="95"/><line x1="40" y1="130" x2="240" y2="130"/><line x1="40" y1="180" x2="170" y2="180" stroke="#f3f0e4" stroke-width="12"/></g><circle cx="236" cy="186" r="30" fill="#f3f0e4"/></svg></div>
+    </article>
+    <article class="pcard">
+      <span class="pill" data-i18n="pill04">الدرس 05</span>
+      <h3 data-i18n="h04">المتجهات</h3>
+      <p class="benefit" data-i18n="ben04">الضرب الداخلي يكشف التعامد.</p>
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 300 260" preserveAspectRatio="xMidYMid slice"><rect width="300" height="260" fill="#c96a2c"/><g stroke="#2a1503" stroke-width="8" fill="none"><path d="M40 90 V50 H80"/><path d="M220 50 H260 V90"/><path d="M40 170 V210 H80"/><path d="M220 210 H260 V170"/></g><rect x="90" y="105" width="120" height="50" rx="10" fill="#ffe9d2"/><circle cx="150" cy="200" r="26" fill="#2a1503"/><circle cx="150" cy="200" r="10" fill="#ffb066"/></svg></div>
+    </article>
+    <article class="pcard">
+      <span class="pill" data-i18n="pill05">الدرس 10</span>
+      <h3 data-i18n="h05">المحددات</h3>
+      <p class="benefit" data-i18n="ben05">رقم واحد: نظير، استقلال، ومساحة.</p>
+      <div class="art" aria-hidden="true"><svg viewBox="0 0 300 260" preserveAspectRatio="xMidYMid slice"><rect width="300" height="260" fill="#e9dfc9"/><g font-family="monospace" font-size="26" fill="#33302a"><text x="52" y="80">[ 2 –3 ]</text><text x="52" y="118">[ 1  2 ]</text><text x="52" y="170">|A| = 7</text></g><rect x="30" y="30" width="240" height="200" rx="14" fill="none" stroke="#33302a" stroke-width="3" opacity=".4"/></svg></div>
+    </article>
+  </div>
+</div>
+
+<div class="wrap">
+  <section class="block" id="manifesto">
+    <p class="sec-label" data-i18n="maniLabel">البيان</p>
+    <div class="manifesto-grid">
+      <h2 class="sec" data-i18n="maniH">نبني الطريقة التي نتمنى أن نتعلم بها الرياضيات.</h2>
+      <p class="body" data-i18n="maniP">درس واحد، فكرة واحدة، بلا حفظ أعمى. نبدأ من ملفاتكم المكتوبة بخط اليد، ونعيد بناءها كتجربة تفاعلية يمكنك لمسها — من تمييز الخطي في عشر ثوانٍ إلى حساب المحددات والمساحات.</p>
+    </div>
+  </section>
+
+  <section class="block" id="models" style="padding-top:0">
+    <p class="sec-label" data-i18n="modLabel">كتالوج الدروس · 11</p>
+    <h2 class="sec" data-i18n="modH">أحد عشر درساً، كلٌّ يبني على ما قبله.</h2>
+    <p class="body" data-i18n="modP">ثلاث مجموعات متدرجة: الأساسيات، ثم المتجهات والفضاءات، ثم الأساس والمحددات. كل بطاقة تحدد مهارتها، وتنتهي بفيديو وتمرين.</p>
+    <div class="mgrid">
+      <div class="mcard" data-card-done="0001"><h3><a href="lessons/0001-linear-systems.html">0001 · منظومات المعادلات الخطية</a></h3><p data-i18n="m01">تميّز الخطي من غيره في عشر ثوانٍ، وتحل منظومة 3×3 كاملة.</p><span class="tag" data-i18n="catFound">الأساسيات</span></div>
+      <div class="mcard" data-card-done="0002"><h3><a href="lessons/0002-matrices-inverse.html">0002 · المصفوفات والنظير الضربي</a></h3><p data-i18n="m02">الشكل (m×n) يقرر المسموح، والمحدد يقرر وجود النظير.</p><span class="tag" data-i18n="catFound">الأساسيات</span></div>
+      <div class="mcard" data-card-done="0003"><h3><a href="lessons/0003-gaussian-elimination.html">0003 · الحذف الغاوسي خطوة بخطوة</a></h3><p data-i18n="m03">ثلاث عمليات صفوف حتى الشكل المثلث، ثم التعويض الخلفي.</p><span class="tag" data-i18n="catFound">الأساسيات</span></div>
+      <div class="mcard" data-card-done="0004"><h3><a href="lessons/0004-matrix-properties.html">0004 · خصائص المصفوفات والصفرية</a></h3><p data-i18n="m04">القوانين الستة، والفخ الوحيد: AB ≠ BA، وقاعدة cA = O.</p><span class="tag" data-i18n="catFound">الأساسيات</span></div>
+      <div class="mcard" data-card-done="0005"><h3><a href="lessons/0005-euclidean-spaces.html">0005 · فضاء المتجهات الإقليدي</a></h3><p data-i18n="m05">الضرب الداخلي والطول والمسافة، وكاشف الزاوية القائمة.</p><span class="tag" data-i18n="catVec">المتجهات والفضاءات</span></div>
+      <div class="mcard" data-card-done="0006"><h3><a href="lessons/0006-subspaces.html">0006 · الفضاء الجزئي</a></h3><p data-i18n="m06">الاختبار الثلاثي: الصفر موجود، والجمع مغلق، والضرب مغلق.</p><span class="tag" data-i18n="catVec">المتجهات والفضاءات</span></div>
+      <div class="mcard" data-card-done="0007"><h3><a href="lessons/0007-linear-combinations.html">0007 · التركيب الخطي</a></h3><p data-i18n="m07">الأوزان هي الوصفة، وكل سؤال تركيب منظومة متنكرة.</p><span class="tag" data-i18n="catVec">المتجهات والفضاءات</span></div>
+      <div class="mcard" data-card-done="0008"><h3><a href="lessons/0008-span-independence.html">0008 · المولد والاستقلال الخطي</a></h3><p data-i18n="m08">إلى أين تصل الخلطة؟ وهل يوجد متجه زائد؟</p><span class="tag" data-i18n="catVec">المتجهات والفضاءات</span></div>
+      <div class="mcard" data-card-done="0009"><h3><a href="lessons/0009-basis-dimension.html">0009 · الأساس والأبعاد</a></h3><p data-i18n="m09">أصغر فريق يغطي الفضاء، والبعد عدد أعضائه.</p><span class="tag" data-i18n="catCap">الأساس والمحددات</span></div>
+      <div class="mcard" data-card-done="0010"><h3><a href="lessons/0010-determinants.html">0010 · المحددات من 2×2 إلى 3×3</a></h3><p data-i18n="m10">رقم واحد يكشف ثلاثة أسرار، مع قاعدة ساروس.</p><span class="tag" data-i18n="catCap">الأساس والمحددات</span></div>
+      <div class="mcard" data-card-done="0011"><h3><a href="lessons/0011-drills.html">0011 · بنك التدريبات مع الحلول</a></h3><p data-i18n="m11">أحد عشر تدريباً، ومولد عشوائي، واختبار ختامي.</p><span class="tag" data-i18n="catCap">الأساس والمحددات</span></div>
+      <div class="mcard beta"><span class="beta-badge" data-i18n="beta">قريباً</span><h3>بنك أسئلة موسّع</h3><p data-i18n="b1">مئات الأسئلة الإضافية المولّدة لكل درس، مع تتبع للأخطاء.</p><span class="tag" data-i18n="catFound">الأساسيات</span></div>
+      <div class="mcard beta"><span class="beta-badge" data-i18n="beta">قريباً</span><h3>مراجع مختارة</h3><p data-i18n="b2">روابط مختارة لكل فكرة من مصادر موثوقة، بالعربية والإنجليزية.</p><span class="tag" data-i18n="catVec">المتجهات والفضاءات</span></div>
+      <div class="mcard beta"><span class="beta-badge" data-i18n="beta">قريباً</span><h3>اختبار موقّت مع شهادة</h3><p data-i18n="b3">اختبار شامل بوقت محدد يجمع المسار، وينتهي بشهادة إتمام.</p><span class="tag" data-i18n="catCap">الأساس والمحددات</span></div>
+    </div>
+  </section>
+
+  <section class="block" id="course" style="padding-top:0">
+    <div class="course">
+      <p class="sec-label" data-i18n="courseLabel">المقرر · مبنيّ من تسعة ملفات بخط اليد</p>
+      <h2 class="sec" data-i18n="courseH">تسعة ملفات بخط اليد، أُعيد بناؤها كأحد عشر درساً تفاعلياً.</h2>
+      <p class="body" data-i18n="courseP">المنهجية نفسها في كل درس: البدء من الصفر، تشبيه من الحياة لكل فكرة، بطاقات القاعدة الذهبية، لوحة عملية لكل مفهوم، اختبار ختامي، قاموس، وتمرين بايثون مع حل منفصل. الخط Thmanyah والرياضيات بـ KaTeX.</p>
+      <div style="margin-top:34px" id="lessonRows">
+        <div class="crow"><span data-i18n="pdf01">الملف 01 · 10 صفحات</span><b><a href="lessons/0001-linear-systems.html">منظومات المعادلات الخطية — أي معادلة خطية؟</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0001-linear-systems-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf02">الملف 02 · 17 صفحة</span><b><a href="lessons/0002-matrices-inverse.html">المصفوفات والعمليات والنظير الضربي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0002-matrices-inverse-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf03">الملف 03 · 11 صفحة</span><b><a href="lessons/0003-gaussian-elimination.html">الحذف الغاوسي خطوة بخطوة</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0003-gaussian-elimination-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf04">الملف 04 · بخط اليد</span><b><a href="lessons/0004-matrix-properties.html">خصائص المصفوفات والمصفوفة الصفرية</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0004-matrix-properties-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf05">الملف 05 · 11 صفحة</span><b><a href="lessons/0005-euclidean-spaces.html">فضاء المتجهات الإقليدي: الضرب الداخلي والطول</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0005-euclidean-spaces-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf06">الملف 06 · 9 صفحات</span><b><a href="lessons/0006-subspaces.html">الفضاء الجزئي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0006-subspaces-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf07">الملف 07 · 5 صفحات</span><b><a href="lessons/0007-linear-combinations.html">التركيب الخطي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0007-linear-combinations-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf08">الملف 08 · 13 صفحة</span><b><a href="lessons/0008-span-independence.html">المولد والاستقلال الخطي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0008-span-independence-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf09">الملف 09 · 9 صفحات</span><b><a href="lessons/0009-basis-dimension.html">الأساس والأبعاد</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0009-basis-dimension-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf10">الملف 10 · 11 صفحة</span><b><a href="lessons/0010-determinants.html">المحددات من 2×2 إلى 3×3</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0010-determinants-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span data-i18n="pdf11">الملف 11 · 11 صفحة</span><b><a href="lessons/0011-drills.html">بنك التدريبات مع الحلول</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0011-drills-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+      </div>
+
+      <div class="toolgrid">
+        <div class="tool">
+          <h4 data-i18n="t1H">1 · قراءة الخط اليدوي</h4>
+          <p data-i18n="t1P">الصفحات الممسوحة بلا طبقة نص، فنعالجها صفحة صفحة:</p>
+          <ul>
+            <li data-i18n="t1L1">تحويل كل صفحة إلى صورة بدقة <code>300</code> مع تصحيح الميل والتباين</li>
+            <li data-i18n="t1L2">قراءة العربية والإنجليزية، ثم <b>مراجعة بشرية لكل صيغة</b></li>
+            <li data-i18n="t1L3">الأرقام والأمثلة تؤخذ من الصفحات كما هي — بلا اختراع</li>
+            <li data-i18n="t1L4">عند الشك: نعود إلى الصفحة الأصلية ونقارن</li>
+          </ul>
+        </div>
+        <div class="tool">
+          <h4 data-i18n="t2H">2 · كتابة المصفوفات</h4>
+          <p data-i18n="t2P">الرياضيات بـ <b>KaTeX</b>، ومصفوفات الدروس بمكوّن خفيف مضبوط الاتجاه:</p>
+          <ul>
+            <li><code>\begin{bmatrix} a &amp; c \\ b &amp; d \end{bmatrix}</code></li>
+            <li><code>|A| = ad - bc</code>, <code>\|u\| = \sqrt{u_1^2+u_2^2}</code></li>
+            <li data-i18n="t2L3">قاعدة RTL: كل إحداثي داخل <code>&lt;span class="coord"&gt;</code> ليعزل الاتجاه</li>
+          </ul>
+          <div class="katex-demo" id="katexDemo">|A| = ad − bc for A = [a c; b d]</div>
+        </div>
+        <div class="tool">
+          <h4 data-i18n="t3H">3 · التحريك والصوت</h4>
+          <p data-i18n="t3P">الفيديوهات مولّدة بالكود لا بالمونتاج اليدوي:</p>
+          <ul>
+            <li data-i18n="t3L1">تعليق عربي بصوت طبيعي، وتشكيل انتقائي للكلمات الملتبسة</li>
+            <li data-i18n="t3L2">ترجمة بتوقيت الكلمات الفعلي من الصوت — بلا انزياح</li>
+            <li data-i18n="t3L3">رسم الإطارات برمجياً بمعدل <code>24</code> إطاراً في الثانية</li>
+            <li data-i18n="t3L4">قبل النشر: مراجعة بشرية للتعليق والنص والترجمة</li>
+            <li data-i18n="t3L5">كل درس ينتهي بتمرين بايثون بلا مكتبات خارجية</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section class="block cta" id="cta" style="padding-top:0">
+    <p class="sec-label" data-i18n="ctaLabel">ابدأ الآن</p>
+    <h2 class="sec" data-i18n="ctaH">جرّب الدرس الأول.<br>بلا تسجيل. بلا التزام.</h2>
+    <p class="body" data-i18n="ctaP1">الدرس الأول لا يفترض أي معرفة سابقة: عشر دقائق تكفي لتميّز الخطي من غيره بحكم واثق.</p>
+    <p class="body" data-i18n="ctaP2">ملفات المقرر الأصلية محفوظة لأصحابها — والدروس تعيد اشتقاق الأمثلة كاملة وتتحقق منها.</p>
+    <div class="btnrow">
+      <a class="btn solid" href="#models" data-i18n="ctaB1">استعرض الدروس</a>
+      <a class="btn ghost" href="lessons/0001-linear-systems.html" data-i18n="ctaB2">افتح الدرس 01</a>
+      <a class="btn ghost" href="#course" data-i18n="ctaB3">افتح ملفات المقرر</a>
+    </div>
+  </section>
+</div>
+
+<footer class="site">
+  <div class="wrap">
+    <div class="foot-grid">
+      <div><div class="fbrand"><span class="mark">✳</span> مختبر الجبر الخطي</div></div>
+      <div class="fcol"><h5 data-i18n="fCourse">المقرر</h5><ul><li><a href="#manifesto" data-i18n="navAbout">عن المقرر</a></li><li><a href="#manifesto" data-i18n="navBlog">المنهجية</a></li><li><a href="#cta" data-i18n="navContact">تواصل</a></li></ul></div>
+      <div class="fcol"><h5 data-i18n="fStart">ابدأ</h5><ul><li><a href="lessons/0001-linear-systems.html" data-i18n="fLesson1">الدرس 01</a></li><li><a href="#course" data-i18n="fDrills">بنك التدريبات</a></li>
+<li><a href="playground.html" data-i18n="fPlay">مشغّل بايثون</a></li><li><a href="review.html" data-i18n="fReview">مراجعة سريعة</a></li></ul></div>
+      <div class="fcol"><h5 data-i18n="fFollow">تابع</h5><ul><li><a href="#top">RSS</a></li><li><a href="#top">GitHub</a></li><li><a href="#top" data-i18n="fNews">النشرة</a></li></ul></div>
+      <div class="fcol"><h5 data-i18n="catFound">الأساسيات</h5><ul><li><a href="lessons/0001-linear-systems.html">تمييز الخطي</a></li><li><a href="lessons/0002-matrices-inverse.html">المصفوفات</a></li><li><a href="lessons/0003-gaussian-elimination.html">الحذف الغاوسي</a></li><li><a href="lessons/0004-matrix-properties.html">الخصائص والصفرية</a></li></ul></div>
+      <div class="fcol"><h5 data-i18n="catVec">المتجهات والفضاءات</h5><ul><li><a href="lessons/0005-euclidean-spaces.html">الضرب الداخلي</a></li><li><a href="lessons/0006-subspaces.html">الفضاء الجزئي</a></li><li><a href="lessons/0007-linear-combinations.html">التركيب الخطي</a></li><li><a href="lessons/0008-span-independence.html">المولد والاستقلال</a></li></ul></div>
+      <div class="fcol"><h5 data-i18n="catCap">الأساس والمحددات</h5><ul><li><a href="lessons/0009-basis-dimension.html">الأساس والأبعاد</a></li><li><a href="lessons/0010-determinants.html">المحددات</a></li><li><a href="lessons/0011-drills.html">بنك التدريبات</a></li><li><a href="video/outputs/0011-drills-ar.mp4">آخر فيديو</a></li></ul></div>
+    </div>
+    <div class="legal">
+      <span data-i18n="legal">مقرر مفتوح: 11 درساً · 11 فيديو · 11 تمريناً · ملفات PDF الأصلية لأصحابها.</span>
+      <span id="progText">أكملت 0 من 11</span>
+      <label><span data-i18n="langLabel">اللغة</span> <select id="langSelect" aria-label="Language"><option value="en">English</option><option value="ar">العربية</option></select></label>
+    </div>
+  </div>
+</footer>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  var I18N={
+  en:{
+    title:"Linear Algebra Lab — an interactive course from scratch",
+    skip:"Skip to content",navModels:"Lessons",dAll:"All lessons",catFound:"Foundations",catVec:"Vectors & spaces",catCap:"Basis & determinants",dCourse:"Course path",dCourseN:"11 lessons",navDocs:"Course",navBlog:"Method",navAbout:"About",navContact:"Contact",menu:"Menu",navReview:"Review",navSearch:"Search",
+    kicker:"Interactive course from scratch · 11 lessons + 11 videos",
+    heroL1:"Linear algebra",heroL2:"you can see.",
+    tagline:"From your handwritten PDFs to eleven interactive lessons: one everyday analogy per idea, a hands-on lab, an Arabic-narrated video, and a Python exercise with its solution.",
+    pill01:"Lesson 01",ben01:"Ten seconds to judge: linear or not.",h01:"Spotting linear",pill02:"Lesson 02",ben02:"The shape decides what is allowed, the determinant decides the inverse.",h02:"Matrices",pill03:"Lesson 03",ben03:"Three row moves to the triangle, then back-substitution.",h03:"Gaussian elimination",pill04:"Lesson 05",ben04:"The inner product detects perpendicularity.",h04:"Vectors",pill05:"Lesson 10",ben05:"One number: inverse, independence, area.",h05:"Determinants",
+    maniLabel:"Manifesto",maniH:"We build the way we wish maths were taught.",maniP:"One lesson, one idea, no blind memorising. We start from your handwritten pages and rebuild them as something you can touch — from telling linear equations apart in ten seconds to computing determinants and areas.",
+    modLabel:"Lesson catalogue · 11",modH:"Eleven lessons, each building on the last.",modP:"Three progressive groups: foundations, then vectors and spaces, then basis and determinants. Every card states its skill and ends with a video and an exercise.",
+    m01:"Tell linear equations apart in ten seconds, then solve a full 3×3 system.",m02:"The shape (m×n) decides what is allowed; the determinant decides the inverse.",m03:"Three row operations to the triangular form, then back-substitution.",m04:"The six laws, the one trap AB ≠ BA, and the cA = O rule.",m05:"Inner product, length and distance — the right-angle detector.",m06:"The three-line test: zero in, addition closed, scaling closed.",m07:"The weights are the recipe; every combination question is a hidden system.",m08:"Where does the mix reach? Is any vector wasted?",m09:"The smallest team that spans, and its size is the dimension.",m10:"One number reveals three secrets, with Sarrus for 3×3.",m11:"Ten drills plus a final check, with a random drill generator.",beta:"Soon",b1:"Hundreds of extra generated questions per lesson, with error tracking.",b2:"Curated references per idea, in Arabic and English.",b3:"A timed final exam across the path, ending with a certificate.",
+    courseLabel:"Course · built from nine handwritten files",courseH:"Nine handwritten files, rebuilt as eleven interactive lessons.",courseP:"The same pedagogy in every lesson: start from zero, one everyday analogy per idea, golden-rule cards, a hands-on panel per concept, a closing quiz, a glossary, and a Python exercise with its solution kept separate. Set in Thmanyah type, rendered with KaTeX.",
+    pdf01:"File 01 · 10 pp",pdf02:"File 02 · 17 pp",pdf03:"File 03 · 11 pp",pdf04:"File 04 · handwritten",pdf05:"File 05 · 11 pp",pdf06:"File 06 · 9 pp",pdf07:"File 07 · 5 pp",pdf08:"File 08 · 13 pp",pdf09:"File 09 · 9 pp",pdf10:"File 10 · 11 pp",pdf11:"File 11 · 11 pp",stBuilt:"Built",stVideo:"Video",
+    t1H:"1 · Reading handwriting",t1P:"Scanned pages hold no text layer, so each page is processed on its own:",t1L1:"Render every page at <code>300</code> dpi, deskew and fix contrast",t1L2:"Read Arabic and English, then <b>human-verify every formula</b>",t1L3:"Numbers and examples come from the pages themselves — never invented",t1L4:"When in doubt: reopen the original page and compare",
+    t2H:"2 · Writing matrices correctly",t2P:"Math is set with <b>KaTeX</b>; lesson matrices use a light direction-safe component:",t2L3:"RTL rule: wrap every coordinate in <code>&lt;span class=\"coord\"&gt;</code> to isolate it",
+    t3H:"3 · Motion & voice",t3P:"Videos are generated by code, not hand-edited:",t3L1:"Arabic narration with a natural voice and selective vowelling",t3L2:"Subtitles timed to the real spoken words — zero drift",t3L3:"Frames drawn programmatically at <code>24</code> fps",t3L4:"Before publishing: human review of narration, text and subtitles",t3L5:"Every lesson ends with a Python exercise, standard library only",
+    ctaLabel:"Get started",ctaH:"Try lesson one.<br>No sign-up. No commitment.",ctaP1:"Lesson one assumes no prior knowledge: ten minutes are enough to judge linear equations with confidence.",ctaP2:"The original course PDFs stay with their owners — lessons re-derive every example and verify it.",
+    ctaB1:"Browse the lessons",ctaB2:"Open lesson 01",ctaB3:"Open the course files",
+    fCourse:"Course",fStart:"Start",fFollow:"Follow",fLesson1:"Lesson 01",fDrills:"Drills bank",fReview:"Quick review",fNews:"Newsletter",fPlay:"Python runner",
+    legal:"Open course: 11 lessons · 11 videos · 11 exercises · original PDFs belong to their owners.",langLabel:"Language"
+  },
+  ar:{
+    title:"مختبر الجبر الخطي — مقرر تفاعلي من الصفر",
+    skip:"تخطَّ إلى المحتوى",navModels:"الدروس",dAll:"كل الدروس",catFound:"الأساسيات",catVec:"المتجهات والفضاءات",catCap:"الأساس والمحددات",dCourse:"مسار المقرر",dCourseN:"11 درساً",navDocs:"المقرر",navBlog:"المنهجية",navAbout:"عن المقرر",navContact:"تواصل",menu:"القائمة",navReview:"مراجعة",navSearch:"بحث",
+    kicker:"مقرر تفاعلي من الصفر · 11 درساً + 11 فيديو",
+    heroL1:"افهم الجبر الخطي",heroL2:"لا تحفظه.",
+    tagline:"من ملفاتكم بخط اليد إلى أحد عشر درساً تفاعلياً: تشبيه لكل فكرة، مختبر عملي، فيديو بتعليق عربي، وتمرين بايثون مع الحلول.",
+    pill01:"الدرس 01",ben01:"عشر ثوانٍ وتصدر الحكم: خطية أم لا.",h01:"تمييز الخطي",pill02:"الدرس 02",ben02:"الشكل يقرر ما يُسمح به، والمحدد يقرر النظير.",h02:"المصفوفات",pill03:"الدرس 03",ben03:"ثلاث عمليات صفوف حتى المثلث، ثم تعويض خلفي.",h03:"الحذف الغاوسي",pill04:"الدرس 05",ben04:"الضرب الداخلي يكشف التعامد.",h04:"المتجهات",pill05:"الدرس 10",ben05:"رقم واحد: نظير، استقلال، ومساحة.",h05:"المحددات",
+    maniLabel:"البيان",maniH:"نبني الطريقة التي نتمنى أن نتعلم بها الرياضيات.",maniP:"درس واحد، فكرة واحدة، بلا حفظ أعمى. نبدأ من ملفاتكم المكتوبة بخط اليد، ونعيد بناءها كتجربة تفاعلية يمكنك لمسها — من تمييز الخطي في عشر ثوانٍ إلى حساب المحددات والمساحات.",
+    modLabel:"كتالوج الدروس · 11",modH:"أحد عشر درساً، كلٌّ يبني على ما قبله.",modP:"ثلاث مجموعات متدرجة: الأساسيات، ثم المتجهات والفضاءات، ثم الأساس والمحددات. كل بطاقة تحدد مهارتها، وتنتهي بفيديو وتمرين.",
+    m01:"تميّز الخطي من غيره في عشر ثوانٍ، وتحل منظومة 3×3 كاملة.",m02:"الشكل (m×n) يقرر المسموح، والمحدد يقرر وجود النظير.",m03:"ثلاث عمليات صفوف حتى الشكل المثلث، ثم التعويض الخلفي.",m04:"القوانين الستة، والفخ الوحيد: AB ≠ BA، وقاعدة cA = O.",m05:"الضرب الداخلي والطول والمسافة، وكاشف الزاوية القائمة.",m06:"الاختبار الثلاثي: الصفر موجود، والجمع مغلق، والضرب مغلق.",m07:"الأوزان هي الوصفة، وكل سؤال تركيب منظومة متنكرة.",m08:"إلى أين تصل الخلطة؟ وهل يوجد متجه زائد؟",m09:"أصغر فريق يغطي الفضاء، والبعد عدد أعضائه.",m10:"رقم واحد يكشف ثلاثة أسرار، مع قاعدة ساروس.",m11:"أحد عشر تدريباً، ومولد عشوائي، واختبار ختامي.",beta:"قريباً",b1:"مئات الأسئلة الإضافية المولّدة لكل درس، مع تتبع للأخطاء.",b2:"روابط مختارة لكل فكرة من مصادر موثوقة، بالعربية والإنجليزية.",b3:"اختبار شامل بوقت محدد يجمع المسار، وينتهي بشهادة إتمام.",
+    courseLabel:"المقرر · مبنيّ من تسعة ملفات بخط اليد",courseH:"تسعة ملفات بخط اليد، أُعيد بناؤها كأحد عشر درساً تفاعلياً.",courseP:"المنهجية نفسها في كل درس: البدء من الصفر، تشبيه من الحياة لكل فكرة، بطاقات القاعدة الذهبية، لوحة عملية لكل مفهوم، اختبار ختامي، قاموس، وتمرين بايثون مع حل منفصل. الخط Thmanyah والرياضيات بـ KaTeX.",
+    pdf01:"الملف 01 · 10 صفحات",pdf02:"الملف 02 · 17 صفحة",pdf03:"الملف 03 · 11 صفحة",pdf04:"الملف 04 · بخط اليد",pdf05:"الملف 05 · 11 صفحة",pdf06:"الملف 06 · 9 صفحات",pdf07:"الملف 07 · 5 صفحات",pdf08:"الملف 08 · 13 صفحة",pdf09:"الملف 09 · 9 صفحات",pdf10:"الملف 10 · 11 صفحة",pdf11:"الملف 11 · 11 صفحة",stBuilt:"مكتمل",stVideo:"فيديو",
+    t1H:"1 · قراءة الخط اليدوي",t1P:"الصفحات الممسوحة بلا طبقة نص، فنعالجها صفحة صفحة:",t1L1:"تحويل كل صفحة إلى صورة بدقة <code>300</code> مع تصحيح الميل والتباين",t1L2:"قراءة العربية والإنجليزية، ثم <b>مراجعة بشرية لكل صيغة</b>",t1L3:"الأرقام والأمثلة تؤخذ من الصفحات كما هي — بلا اختراع",t1L4:"عند الشك: نعود إلى الصفحة الأصلية ونقارن",
+    t2H:"2 · كتابة المصفوفات",t2P:"الرياضيات بـ <b>KaTeX</b>، ومصفوفات الدروس بمكوّن خفيف مضبوط الاتجاه:",t2L3:"قاعدة RTL: كل إحداثي داخل <code>&lt;span class=\"coord\"&gt;</code> ليعزل الاتجاه",
+    t3H:"3 · التحريك والصوت",t3P:"الفيديوهات مولّدة بالكود لا بالمونتاج اليدوي:",t3L1:"تعليق عربي بصوت طبيعي، وتشكيل انتقائي للكلمات الملتبسة",t3L2:"ترجمة بتوقيت الكلمات الفعلي من الصوت — بلا انزياح",t3L3:"رسم الإطارات برمجياً بمعدل <code>24</code> إطاراً في الثانية",t3L4:"قبل النشر: مراجعة بشرية للتعليق والنص والترجمة",t3L5:"كل درس ينتهي بتمرين بايثون بلا مكتبات خارجية",
+    ctaLabel:"ابدأ الآن",ctaH:"جرّب الدرس الأول.<br>بلا تسجيل. بلا التزام.",ctaP1:"الدرس الأول لا يفترض أي معرفة سابقة: عشر دقائق تكفي لتميّز الخطي من غيره بحكم واثق.",ctaP2:"ملفات المقرر الأصلية محفوظة لأصحابها — والدروس تعيد اشتقاق الأمثلة كاملة وتتحقق منها.",
+    ctaB1:"استعرض الدروس",ctaB2:"افتح الدرس 01",ctaB3:"افتح ملفات المقرر",
+    fCourse:"المقرر",fStart:"ابدأ",fFollow:"تابع",fLesson1:"الدرس 01",fDrills:"بنك التدريبات",fReview:"مراجعة سريعة",fNews:"النشرة",fPlay:"مشغّل بايثون",
+    legal:"مقرر مفتوح: 11 درساً · 11 فيديو · 11 تمريناً · ملفات PDF الأصلية لأصحابها.",langLabel:"اللغة"
+  }};
+  var sel=document.getElementById('langSelect');
+  function setLang(l){
+    if(!I18N[l])l='ar';
+    document.documentElement.lang=l;
+    document.documentElement.dir=(l==='ar'?'rtl':'ltr');
+    document.title=I18N[l].title;
+    var md=document.getElementById('metaDesc');if(md)md.setAttribute('content',I18N[l].tagline);
+    document.querySelectorAll('[data-i18n]').forEach(function(el){
+      var k=el.getAttribute('data-i18n'),v=I18N[l][k];
+      if(typeof v==='string')el.innerHTML=v;
+    });
+    if(sel.value!==l)sel.value=l;
+    var lt=document.getElementById('langToggle');
+    if(lt){lt.textContent=(l==='ar'?'EN':'عربي');}
+    try{localStorage.setItem('linalg-lang',l);}catch(e){}
+    if(window.applyLinalgLabels)window.applyLinalgLabels();
+    if(window.applyLinalgProgress)window.applyLinalgProgress();
+  }
+  var init='ar';
+  try{init=localStorage.getItem('linalg-lang')||'ar';}catch(e){}
+  sel.value=(init==='ar'?'ar':'en');
+  sel.addEventListener('change',function(){setLang(sel.value);});
+  document.getElementById('langToggle').addEventListener('click',function(){
+    setLang(document.documentElement.lang==='ar'?'en':'ar');
+  });
+  setLang(sel.value);
+  var drop=document.getElementById('modelsDrop'),btn=drop.querySelector('.drop-btn');
+  function close(e){ if(!drop.contains(e.target)){drop.classList.remove('open');btn.setAttribute('aria-expanded','false');document.removeEventListener('click',close);} }
+  btn.addEventListener('click',function(e){e.stopPropagation();var o=drop.classList.toggle('open');btn.setAttribute('aria-expanded',o);if(o)document.addEventListener('click',close);});
+  var mb=document.getElementById('menuBtn'),nl=document.getElementById('navLinks');
+  mb.addEventListener('click',function(){var o=nl.classList.toggle('mobile-open');mb.setAttribute('aria-expanded',o);});
+  try{
+    if(window.katex){katex.render("|A| = ad - bc \\quad\\text{for}\\quad A = \\begin{bmatrix} a & c \\\\ b & d \\end{bmatrix}",document.getElementById('katexDemo'),{throwOnError:false});}
+  }catch(err){}
+})();
+</script>
+<script src="assets/site.js"></script>
+</body>
+</html>
