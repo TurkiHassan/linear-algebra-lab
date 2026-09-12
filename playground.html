@@ -211,8 +211,13 @@
   document.getElementById("file").addEventListener("change",function(){
     var f=this.files[0]; if(!f) return;
     var rd=new FileReader();
-    rd.onload=function(){code.value=rd.result; editorName.textContent=f.name; setStatus("حُمّل الملف محلياً.");};
+    rd.onload=function(){code.value=rd.result; editorName.textContent=f.name; clearOut(); noteStubs();};
     rd.readAsText(f);
+  });
+  var stubTimer=null;
+  code.addEventListener("input",function(){
+    if(stubTimer) clearTimeout(stubTimer);
+    stubTimer=setTimeout(noteStubs,400);
   });
 
   var qs=new URLSearchParams(location.search).get("ex");
