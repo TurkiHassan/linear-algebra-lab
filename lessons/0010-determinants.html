@@ -102,7 +102,7 @@
 <div class="wrap">
   <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0009-basis-dimension.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0010">الخارطة</a> · <a href="0011-drills.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0010 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0010 · الأساس والمحددات</div>
     <h1>المحددات من 2×2 إلى 3×3</h1>
     <span class="en-line" lang="en">Determinants — one number that reports area, volume and invertibility</span>
     <div class="rule"></div>
@@ -138,7 +138,7 @@
       <div class="controls"><label>a11 <input type="number" id="s11" value="2"></label><label>a12 <input type="number" id="s12" value="4"></label><label>a13 <input type="number" id="s13" value="6"></label><label>a21 <input type="number" id="s21" value="3"></label><label>a22 <input type="number" id="s22" value="8"></label><label>a23 <input type="number" id="s23" value="5"></label><label>a31 <input type="number" id="s31" value="-1"></label><label>a32 <input type="number" id="s32" value="1"></label><label>a33 <input type="number" id="s33" value="2"></label><button class="btn" id="sGo">احسب بساروس</button></div>
       <div class="readout" id="sRO" style="direction:rtl;text-align:right">مجموع النوازل − مجموع الصواعد = ؟</div>
     </div>
-    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>قاعدة ساروس صالحة للرتبة <span class="coord">3×3</span> فقط — لا تمددها إلى <span class="coord">4×4</span>؛ الرتب الأعلى تحتاج المفكوك (طريقة لابلاس). وخطأ الإشارة في الأقطار الصاعدة هو الفخ الأول. <span class="en" lang="en" dir="ltr">(Sarrus stops at 3×3; mind the minus signs.)</span></p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>قاعدة ساروس صالحة لمصفوفات <span class="coord">3×3</span> فقط — لا تمددها إلى <span class="coord">4×4</span>؛ والأحجام الأكبر تحتاج المفكوك (طريقة لابلاس). وخطأ الإشارة في الأقطار الصاعدة هو الفخ الأول. <span class="en" lang="en" dir="ltr">(Sarrus stops at 3×3; mind the minus signs.)</span></p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -154,7 +154,7 @@
     <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
     <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
     <tr><td>محدد <span class="coord">2×2</span></td><td><span class="coord">ad − bc</span> محفوظة</td><td>مساحة متوازي الأضلاع بإشارة + كاشف الشذوذ</td></tr>
-    <tr><td>ساروس 3×3</td><td>وصفة طويلة</td><td>أقطار نازلة ناقص صاعدة — للرتبة 3 فقط</td></tr>
+    <tr><td>ساروس 3×3</td><td>وصفة طويلة</td><td>أقطار نازلة ناقص صاعدة — لمصفوفات 3×3 فقط</td></tr>
     <tr><td>الشذوذ</td><td>مصفوفة سيئة</td><td>محدد صفر = بلا نظير = أعمدة مرتبطة = مساحة مسطحة</td></tr></table>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> تحسب المحدد آلياً. <b>بعد هذا الدرس:</b> تراه مساحةً، وتتنبأ بالنظير قبل حسابه، وتنفذ ساروس بلا أخطاء إشارة.</p></div>
   </section>
@@ -231,7 +231,7 @@
   };
   var ANS={q1:{"0":["صحيح — 2·2 − (−3)·1 = 7.",true],"1":["أعد: 4+3.",false],"2":["خطأ إشارة — السالب مع السالب.",false],"3":["الصفر للمصفوفة الثانية.",false]},
     q2:{"0":["صحيح — الصف الثاني ضعف الأول.",true],"1":["I ليست نظيراً تلقائياً.",false],"2":["الصفر يمنع النظير.",false],"3":["المساحة صفر هنا.",false]},
-    q3:{"0":["صحيح — هذا هو المعنى الهندسي.",true],"1":["القطر ليس المحدد.",false],"2":["الميل مفهوم آخر.",false],"3":["العدد يأتي من الرتبة.",false]},
+    q3:{"0":["صحيح — هذا هو المعنى الهندسي.",true],"1":["القطر ليس المحدد.",false],"2":["الميل مفهوم آخر.",false],"3":["عدد الحلول تحسمه المنظومة لا المساحة.",false]},
     q4:{"0":["صحيح — للأكبر استعمل المفكوك.",true],"1":["خاطئ — ساروس تنكسر بعد 3.",false],"2":["الصغرى لها ad−bc.",false],"3":["المحدد للمربعة فقط.",false]},
     q5:{"0":["صحيح — الحزمتان معاً.",true],"1":["التماثل غير مطلوب.",false],"2":["عكس الصحيح — الحل وحيد.",false],"3":["التعامد أقوى من اللازم.",false]}};
   document.querySelectorAll('.q').forEach(function(box){

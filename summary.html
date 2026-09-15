@@ -1393,7 +1393,7 @@
         <b>الحل وسد الفجوة (قراءة الصفوف بعد الحذف):</b>
         <ul>
           <li><b>1. حل وحيد:</b> كل عمود من المتغيرات يحوي قائداً (Pivot) دون تناقض.</li>
-          <li><b>2. عدد لا نهائي من الحلول:</b> المنظومة متسقة ويوجد عمود متغير <b>بلا قائد</b> (متغير حر Free Variable)، أو يظهر صف أصفار سليم $0 = 0$.</li>
+          <li><b>2. عدد لا نهائي من الحلول:</b> المنظومة متسقة <b>ويوجد عمود متغير بلا قائد</b> (متغير حر Free Variable). وصف الأصفار $0 = 0$ علامة على معادلة زائدة لا أكثر — قد يظهر والحل وحيد، فالعبرة بعدد القادة مقارنةً بعدد المتغيرات.</li>
           <li><b>3. مستحيلة الحل:</b> ظهور <b>صف التناقض</b>: $[0 \ 0 \ \dots \ 0 \mid b]$ حيث $b \neq 0$ (أي $0 = b$، محال رياضياً).</li>
         </ul>
       </div>
@@ -1556,7 +1556,7 @@
 
       <!-- Visual Educational Figure 1: Linear Systems 3 Cases -->
       <figure class="concept-figure">
-        <img src="assets/images/linear_systems_cases.jpg" alt="الحالات الهندسية الثلاث لحلول المنظومات الخطية في المستوى R^2" loading="lazy">
+        <img src="assets/images/linear_systems_cases.jpg" alt="الحالات الهندسية الثلاث لحلول المنظومات الخطية في المستوى \mathbb{R}^2" loading="lazy">
         <figcaption class="concept-caption">
           <b>📊 التفسير الهندسي البصري:</b> الحالات الثلاث لحلول المنظومات الخطية في المستوى $\mathbb{R}^2$. من اليسار إلى اليمين: 
           (1) <b>حل وحيد (Unique Solution):</b> يتقاطع المستقيمان في نقطة واحدة محددة. 
@@ -1663,7 +1663,7 @@
             <ul class="tree-subnodes">
               <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: حساب المحدد $\det(A) = ad - bc$ أولاً</span></li>
               <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: تبديل عنصري القطر الرئيسي وعكس إشارات الثانوي</span></li>
-              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: الضرب في المقلوب $A^{-1} = \frac{1}{\det(A)}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: الضرب في النظير الضربي $A^{-1} = \frac{1}{\det(A)}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$</span></li>
             </ul>
           </div>
           <div class="tree-branch b-purple">
@@ -1817,7 +1817,7 @@
             <div class="branch-content">قراءة شفرة الصف الأخير لحسم طبيعة الحل فورياً:</div>
             <ul class="tree-subnodes">
               <li class="tree-subnode"><span class="tree-connector">↳</span> <span>صف $[0 \; 0 \dots 0 \mid k]$ ($k \neq 0$): تناقض مستحيل (لا حل)</span></li>
-              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>صف أصفار كامل $[0 \dots 0 \mid 0]$: متغير حر (حلول لانهائية)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>صف أصفار كامل $[0 \dots 0 \mid 0]$: معادلة زائدة — احسب القادة قبل الحكم</span></li>
               <li class="tree-subnode"><span class="tree-connector">↳</span> <span>قائد في كل عمود: منظومة متسقة بحل وحيد تماماً</span></li>
             </ul>
           </div>
@@ -2379,7 +2379,7 @@
 
       <!-- Visual Educational Figure 3: Subspace Origin Test -->
       <figure class="concept-figure">
-        <img src="assets/images/subspace_comparison.jpg" alt="المقارنة الهندسية الصارمة للفضاء الجزئي في R^2" loading="lazy">
+        <img src="assets/images/subspace_comparison.jpg" alt="المقارنة الهندسية الصارمة للفضاء الجزئي في \mathbb{R}^2" loading="lazy">
         <figcaption class="concept-caption">
           <b>⚖️ اختبار الفضاء الجزئي الصارم في $\mathbb{R}^2$:</b> 
           على اليسار <b>(فضاء جزئي سليم ✓):</b> المستقيم $y = mx$ يمر حتماً بنقطة الأصل $(0,0)$ ويغلق عمليتي الجمع والضرب القياسي فيظل أي تركيب داخله. 
@@ -2645,7 +2645,7 @@
 
       <!-- Visual Educational Figure 4: Vector Span and Linear Independence in 3D -->
       <figure class="concept-figure">
-        <img src="assets/images/span_independence.jpg" alt="المولد والاستقلال الخطي في الفضاء الثلاثي R^3" loading="lazy">
+        <img src="assets/images/span_independence.jpg" alt="المولد والاستقلال الخطي في الفضاء الثلاثي \mathbb{R}^3" loading="lazy">
         <figcaption class="concept-caption">
           <b>🌌 المولد والاستقلال الخطي في $\mathbb{R}^3$:</b> 
           المتجهان $v_1$ و $v_2$ يحددان ويولدان مستوياً مضيئاً ثنائي الأبعاد $\text{Span}(v_1, v_2)$. 
@@ -2865,7 +2865,7 @@
             <ul class="tree-subnodes">
               <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المصفوفة المثلثية: المحدد هو حاصل ضرب عناصر القطر الرئيسي فوراً</span></li>
               <li class="tree-subnode"><span class="tree-connector">↳</span> <span>ضرب المصفوفات: $\det(AB) = \det(A)\det(B)$</span></li>
-              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فخ القياسي: $\det(cA) = c^n \det(A)$ (يخرج الثابت مرفوعاً للرتبة $n$)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فخ القياسي: $\det(cA) = c^n \det(A)$ (يخرج الثابت مرفوعاً للأس $n$)</span></li>
               <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فخ الجمع: $\det(A+B) \neq \det(A) + \det(B)$ إطلاقاً عموماً</span></li>
             </ul>
           </div>

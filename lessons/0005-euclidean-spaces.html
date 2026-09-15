@@ -101,7 +101,7 @@
 <div class="wrap">
   <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0004-matrix-properties.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0005">الخارطة</a> · <a href="0006-subspaces.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0005 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0005 · المتجهات والفضاءات</div>
     <h1>فضاء المتجهات الإقليدي</h1>
     <span class="en-line" lang="en">Euclidean Vector Spaces — inner product, length and distance</span>
     <div class="rule"></div>
@@ -109,8 +109,8 @@
   </header>
 
   <section id="s1">
-    <h2><span class="num">١</span> المتجه عنوان في الفضاء<span class="en-sub" lang="en">Rⁿ: (1,5,−2) lives in R³, (3,8) lives in R²</span></h2>
-    <p>من دفترك: <span class="coord">(1,5,−2)</span> متجه في <span class="coord">R³</span>، و <span class="coord">(1,5,−2,6)</span> في <span class="coord">R⁴</span>، و <span class="coord">(3,8)</span> في <span class="coord">R²</span>. التساوي عنصري: <span class="coord">u = v ⟺</span> كل عنصر يساوي نظيره. والجمع والضرب القياسي والطرح كلها عنصرية: <span class="coord">u+v = (u₁+v₁, u₂+v₂, …)</span> و <span class="coord">ku = (ku₁, ku₂, …)</span>.</p>
+    <h2><span class="num">١</span> المتجه عنوان في الفضاء<span class="en-sub" lang="en">ℝⁿ: (1,5,−2) lives in ℝ³, (3,8) lives in ℝ²</span></h2>
+    <p>من دفترك: <span class="coord">(1,5,−2)</span> متجه في <span class="coord">ℝ³</span>، و <span class="coord">(1,5,−2,6)</span> في <span class="coord">ℝ⁴</span>، و <span class="coord">(3,8)</span> في <span class="coord">ℝ²</span>. التساوي عنصري: <span class="coord">u = v ⟺</span> كل عنصر يساوي نظيره. والجمع والضرب القياسي والطرح كلها عنصرية: <span class="coord">u+v = (u₁+v₁, u₂+v₂, …)</span> و <span class="coord">ku = (ku₁, ku₂, …)</span>.</p>
     <div class="analogy"><b>تشبيه: إحداثيات المدينة</b><p>عنوانك «شارع 3، مبنى 8» لا يعني شيئاً إن بدّلت الرقمين — <span class="coord">(3,8)</span> ليست <span class="coord">(8,3)</span>. والانتقال من عنوان لآخر تجمع الفروق شارعاً بشارع. <span class="en" lang="en" dir="ltr">Order is the address; addition walks street by street.</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> كل عمليات المتجهات الأساسية تتم عنصراً بعنصر — ما عدا عمليتين جديدتين: الضرب الداخلي (يُخرج رقماً) والطول (يُخرج مسافة). <span class="en" lang="en" dir="ltr">(Everything is entrywise — except dot product and length.)</span></p></div>
     <div class="kmath" id="k1"></div>
@@ -118,7 +118,7 @@
 
   <section id="s2">
     <h2><span class="num">٢</span> مختبر الضرب الداخلي والطول<span class="en-sub" lang="en">Drag u and v — watch dot, lengths and distance update live</span></h2>
-    <p>من دفترك: <span class="term">الضرب الداخلي</span> <span class="en" lang="en" dir="ltr">(inner product)</span> هو <span class="coord">⟨u,v⟩ = u₁v₁ + u₂v₂ + …</span>، و<span class="term">الطول</span> <span class="en" lang="en" dir="ltr">(length)</span> هو <span class="coord">‖u‖ = √(u₁² + u₂² + …)</span>، و<span class="term">المسافة</span> <span class="en" lang="en" dir="ltr">(distance)</span> هي <span class="coord">d(u,v) = ‖u − v‖</span>. حرّك المتجهين على اللوحة وشاهد الأرقام الثلاثة تتحرك.</p>
+    <p>من دفترك: <span class="term">الضرب الداخلي</span> <span class="en" lang="en" dir="ltr">(inner product)</span> هو <span class="coord">u·v = u₁v₁ + u₂v₂ + …</span> (ويُكتب أيضاً <span class="coord">⟨u,v⟩</span> في بعض المراجع)، و<span class="term">الطول</span> <span class="en" lang="en" dir="ltr">(length)</span> هو <span class="coord">‖u‖ = √(u₁² + u₂² + …)</span>، و<span class="term">المسافة</span> <span class="en" lang="en" dir="ltr">(distance)</span> هي <span class="coord">d(u,v) = ‖u − v‖</span>. حرّك المتجهين على اللوحة وشاهد الأرقام الثلاثة تتحرك.</p>
     <div class="demo" data-label="Try · PLAY">
       <h3>ساحة المتجهات</h3>
       <p class="hint">حرّك المنزلقات — النقاط والأسهم والأرقام تتبعك لحظياً</p>
@@ -162,7 +162,7 @@
   <section id="quiz">
     <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
     <div class="q" id="q1"><div class="prompt"><span class="coord">(1,5,−2)</span> في أي فضاء؟</div>
-      <button class="opt" data-q="q1" data-a="0"><span class="coord">R³</span> — ثلاثة عناصر</button><button class="opt" data-q="q1" data-a="1"><span class="coord">R²</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">R⁴</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">R¹</span></button><div class="feedback"></div></div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">ℝ³</span> — ثلاثة عناصر</button><button class="opt" data-q="q1" data-a="1"><span class="coord">ℝ²</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">ℝ⁴</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">ℝ¹</span></button><div class="feedback"></div></div>
     <div class="q" id="q2"><div class="prompt">الضرب الداخلي لـ <span class="coord">(1,2)</span> و <span class="coord">(3,−1)</span>؟</div>
       <button class="opt" data-q="q2" data-a="0">1 — لأن <span class="coord">3 − 2 = 1</span></button><button class="opt" data-q="q2" data-a="1">5</button><button class="opt" data-q="q2" data-a="2">(3,−2)</button><button class="opt" data-q="q2" data-a="3">0</button><div class="feedback"></div></div>
     <div class="q" id="q3"><div class="prompt">طول <span class="coord">(3,4)</span>؟</div>
@@ -236,7 +236,7 @@
     if(!OU)return;
     document.getElementById('orthRO').innerHTML="<span class='coord'>u·v = ("+OU.a[0]+")("+OU.b[0]+") + ("+OU.a[1]+")("+OU.b[1]+") = "+OU.dot+"</span> → "+(OU.dot===0?"يساوي صفراً: متعامدان — الزاوية قائمة":"لا يساوي صفراً: غير متعامدين");
   };
-  var ANS={q1:{"0":["صحيح — عدّ العناصر يحدد الفضاء.",true],"1":["عنصران فقط في R².",false],"2":["أربعة عناصر في R⁴.",false],"3":["عنصر واحد في R¹.",false]},
+  var ANS={q1:{"0":["صحيح — عدّ العناصر يحدد الفضاء.",true],"1":["عنصران فقط في ℝ².",false],"2":["أربعة عناصر في ℝ⁴.",false],"3":["عنصر واحد في ℝ¹.",false]},
     q2:{"0":["صحيح — 1·3 + 2·(−1) = 1.",true],"1":["أعد الحساب: 3 − 2.",false],"2":["الناتج رقم لا متجه.",false],"3":["الصفر للتعامد فقط.",false]},
     q3:{"0":["صحيح — 3-4-5 مثلث فيثاغورس.",true],"1":["المجموع ليس الطول.",false],"2":["نسيت الجذر.",false],"3":["هذا حاصل الضرب.",false]},
     q4:{"0":["صحيح — الصفر هو كاشف الزاوية القائمة.",true],"1":["التساوي لا يعني التعامد.",false],"2":["الطول لا يحدد الزاوية.",false],"3":["هذا يعني v = −u.",false]},

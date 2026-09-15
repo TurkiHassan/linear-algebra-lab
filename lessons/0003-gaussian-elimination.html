@@ -118,7 +118,7 @@
 <div class="wrap">
   <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0002-matrices-inverse.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0003">الخارطة</a> · <a href="0004-matrix-properties.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0003 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0003 · الأساسيات</div>
     <h1>الحذف الغاوسي خطوة بخطوة</h1>
     <span class="en-line" lang="en">Gaussian Elimination — three row moves solve any linear system</span>
     <div class="rule"></div>
@@ -155,7 +155,7 @@
       <div class="controls"><label>x <input type="number" id="vx" value="3" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><label>y <input type="number" id="vy" value="1" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><label>z <input type="number" id="vz" value="2" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><button class="btn" id="vGo">تحقق</button></div>
       <div class="readout" id="vRO">2x+4y+6z = ? · 3x+8y+5z = ? · −x+y+2z = ?</div>
     </div>
-    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>صف كامل أصفار مع ثابت غير صفري مثل <span class="coord">[0 0 0 | 5]</span> يعني: لا حل. وصف أصفار كامل <span class="coord">[0 0 0 | 0]</span> يعني: حلول لا نهائية. <span class="en" lang="en" dir="ltr">(0 = 5: impossible. 0 = 0: free variable.)</span></p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>صف كامل أصفار مع ثابت غير صفري مثل <span class="coord">[0 0 0 | 5]</span> يعني: <b>لا حل</b> — حكم قاطع. أما صف الأصفار الكامل <span class="coord">[0 0 0 | 0]</span> فيعني أن معادلةً كانت <b>زائدة</b>، ولا يعني وحده وجود حلول لا نهائية. عُدّ القادة: إن نقصت عن عدد المتغيرات فالحلول لا نهائية، وإن ساوته فالحل وحيد رغم صف الأصفار. <span class="en" lang="en" dir="ltr">(0 = 5 is impossible; 0 = 0 only means one equation was redundant — count the pivots.)</span></p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
