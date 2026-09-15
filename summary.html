@@ -1,0 +1,3346 @@
+<!doctype html>
+<html lang="ar" dir="rtl" data-theme="light">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الملخص الشامل والمبسط مع الخرائط الذهنية والأمثلة — مختبر الجبر الخطي</title>
+<meta name="description" content="الملخص الذهبي الشامل لدروس الجبر الخطي الأحد عشر: خرائط ذهنية لكل درس، أمثلة محلولة خطوة بخطوة، أسهم ودوائر توضيحية، وسد الفجوات المفاهيمية.">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="assets/lesson-fonts.css">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<style>
+  :root {
+    --paper: #faf7f2;
+    --card: #ffffff;
+    --ink: #111111;
+    --muted: #706e68;
+    --line: #dcd8cf;
+    --accent: #0d5c46;
+    --accent-light: #e6f3ee;
+    --terra: #c2562f;
+    --terra-light: #faece6;
+    --gold: #b38600;
+    --gold-light: #fef8e7;
+    --blue: #235882;
+    --blue-light: #eaf2f8;
+    --purple: #6a3d9a;
+    --purple-light: #f3ecf9;
+    --serif: "ThmanyahSerifDisplay", Georgia, serif;
+    --text: "ThmanyahSerifText", Georgia, serif;
+    --sans: "ThmanyahSans", system-ui, -apple-system, sans-serif;
+    --mono: ui-monospace, Menlo, Consolas, monospace;
+    --radius: 16px;
+  }
+  [data-theme="dark"] {
+    --paper: #14130f;
+    --card: #1d1c17;
+    --ink: #f2efe6;
+    --muted: #a7a396;
+    --line: #33312a;
+    --accent: #7fc9ae;
+    --accent-light: #162922;
+    --terra: #e0906a;
+    --terra-light: #331f18;
+    --gold: #f2cb57;
+    --gold-light: #2c2514;
+    --blue: #81b8e4;
+    --blue-light: #172836;
+    --purple: #b993e9;
+    --purple-light: #261b33;
+  }
+  * { box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body {
+    margin: 0;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--text);
+    line-height: 1.85;
+    transition: background 0.25s ease, color 0.25s ease;
+    font-size: 16px;
+  }
+  a { color: inherit; }
+  .wrap { max-width: 1080px; margin: 0 auto; padding: 0 24px 90px; }
+
+  /* Sticky Navbar & Reading Progress */
+  .top-header {
+    position: sticky;
+    top: 0;
+    z-index: 90;
+    background: color-mix(in srgb, var(--paper) 86%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border-bottom: 1.5px solid var(--line);
+    transition: background 0.25s ease, border-color 0.25s ease;
+  }
+  .reading-progress-track {
+    position: absolute;
+    bottom: -1px;
+    left: 0;
+    right: 0;
+    height: 3px;
+    background: transparent;
+    pointer-events: none;
+  }
+  .reading-progress-fill {
+    height: 100%;
+    width: 0%;
+    background: var(--accent);
+    transition: width 0.08s linear;
+  }
+  .top-inner {
+    max-width: 1080px;
+    margin: 0 auto;
+    padding: 10px 24px;
+    display: flex;
+    align-items: center;
+    gap: 16px;
+    min-height: 58px;
+  }
+  .brand {
+    display: flex;
+    align-items: center;
+    gap: 9px;
+    text-decoration: none;
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 15.5px;
+    white-space: nowrap;
+    flex-shrink: 0;
+  }
+  .mark {
+    width: 26px;
+    height: 26px;
+    border-radius: 8px;
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    place-items: center;
+    font-size: 15px;
+    font-weight: 900;
+  }
+  .nav-links {
+    margin-inline-start: auto;
+    display: flex;
+    gap: 6px;
+    font-family: var(--sans);
+    font-size: 13px;
+    align-items: center;
+    flex-wrap: nowrap;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+    padding: 4px 0;
+    scrollbar-width: none;
+  }
+  .nav-links::-webkit-scrollbar { display: none; }
+  .nav-links a {
+    text-decoration: none;
+    color: var(--muted);
+    padding: 6px 12px;
+    border-radius: 999px;
+    transition: color .15s ease, background .15s ease;
+    white-space: nowrap;
+    font-weight: 600;
+  }
+  .nav-links a:hover {
+    color: var(--ink);
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+  }
+  .nav-links a.active {
+    color: var(--paper);
+    background: var(--ink);
+    font-weight: 700;
+  }
+  .nav-actions {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    flex-shrink: 0;
+  }
+  .theme-btn {
+    padding: 6px 14px;
+    font-size: 12px;
+    border-radius: 999px;
+    font-family: var(--sans);
+    font-weight: 700;
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    cursor: pointer;
+    white-space: nowrap;
+    transition: all .2s ease;
+  }
+  .theme-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+  }
+
+  /* Hero */
+  .hero { padding: 44px 0 20px; }
+  .kicker {
+    font-family: var(--sans);
+    font-size: 12px;
+    text-transform: uppercase;
+    letter-spacing: .08em;
+    color: var(--accent);
+    font-weight: 800;
+    margin-bottom: 8px;
+    display: inline-block;
+    background: var(--accent-light);
+    padding: 4px 14px;
+    border-radius: 999px;
+  }
+  h1 {
+    font-family: var(--serif);
+    font-size: clamp(32px, 5.5vw, 50px);
+    line-height: 1.25;
+    margin: 10px 0 14px;
+  }
+  .lead {
+    font-family: var(--sans);
+    font-size: 16px;
+    color: var(--muted);
+    margin: 0 0 20px;
+    max-width: 84ch;
+    line-height: 1.75;
+  }
+
+  /* Course Stats HUD */
+  .course-hud {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 8px;
+    margin: 16px 0 22px;
+  }
+  .hud-chip {
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 999px;
+    padding: 5px 13px;
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.02);
+  }
+  .hud-chip .chip-dot {
+    width: 7px;
+    height: 7px;
+    border-radius: 50%;
+    background: var(--accent);
+  }
+  .hud-chip.gold .chip-dot { background: var(--gold); }
+  .hud-chip.terra .chip-dot { background: var(--terra); }
+  .hud-chip.blue .chip-dot { background: var(--blue); }
+  .hud-chip.purple .chip-dot { background: var(--purple); }
+
+  /* Toolbar */
+  .bar { display: flex; gap: 10px; flex-wrap: wrap; margin: 18px 0 26px; }
+  .btn {
+    font-family: var(--sans);
+    font-size: 13.5px;
+    font-weight: 600;
+    border: 1.5px solid var(--ink);
+    background: transparent;
+    color: var(--ink);
+    border-radius: 999px;
+    padding: 9px 20px;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform .15s ease, background .2s ease;
+  }
+  .btn:hover { background: var(--ink); color: var(--paper); }
+  .btn:active { transform: scale(0.97); }
+  .btn.solid { background: var(--ink); color: var(--paper); }
+  .btn.solid:hover { background: #000; }
+
+  /* Interactive Filter Bar */
+  .summary-filter-wrap {
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    padding: 16px 20px;
+    margin: 18px 0 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  }
+  .filter-input-row {
+    display: flex;
+    gap: 12px;
+    align-items: center;
+  }
+  .filter-input-box {
+    flex: 1;
+    position: relative;
+    display: flex;
+    align-items: center;
+  }
+  .filter-icon {
+    position: absolute;
+    right: 14px;
+    font-size: 14px;
+    color: var(--muted);
+    pointer-events: none;
+  }
+  .filter-input {
+    width: 100%;
+    padding: 10px 42px 10px 38px;
+    border: 1.5px solid var(--line);
+    border-radius: 999px;
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 13.5px;
+    outline: none;
+    transition: border-color .2s ease, box-shadow .2s ease;
+  }
+  .filter-input:focus {
+    border-color: var(--ink);
+    box-shadow: 0 0 0 3px color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+  .filter-clear-btn {
+    border: none;
+    background: none;
+    position: absolute;
+    left: 12px;
+    cursor: pointer;
+    color: var(--muted);
+    font-size: 14px;
+    display: none;
+    padding: 4px 8px;
+    line-height: 1;
+  }
+  .filter-clear-btn:hover { color: var(--ink); }
+  .filter-status {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--muted);
+    margin-top: 10px;
+    display: none;
+  }
+  .filter-dimmed {
+    opacity: 0.28;
+    transition: opacity .2s ease;
+  }
+  .filter-matched {
+    opacity: 1 !important;
+    border-color: var(--accent) !important;
+    box-shadow: 0 6px 26px color-mix(in srgb, var(--accent) 18%, transparent) !important;
+  }
+
+  /* Table of Contents & Module Hierarchy */
+  .toc-bar {
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    padding: 18px 22px;
+    margin: 18px 0 40px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+  }
+  .toc-title {
+    font-family: var(--sans);
+    font-size: 13px;
+    font-weight: 800;
+    margin-bottom: 14px;
+    color: var(--muted);
+    text-transform: uppercase;
+    letter-spacing: .04em;
+  }
+  .toc-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(230px, 1fr));
+    gap: 16px;
+  }
+  .toc-group {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 14px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+  }
+  .toc-group-label {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 800;
+    color: var(--ink);
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 6px;
+  }
+  .toc-links {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+  }
+  .toc-links a {
+    font-family: var(--sans);
+    font-size: 12px;
+    text-decoration: none;
+    background: var(--card);
+    border: 1px solid var(--line);
+    padding: 5px 11px;
+    border-radius: 8px;
+    color: var(--ink);
+    font-weight: 600;
+    transition: border-color .15s, transform .15s, background .15s;
+    display: block;
+  }
+  .toc-links a:hover {
+    border-color: var(--ink);
+    background: color-mix(in srgb, var(--ink) 5%, var(--card));
+    transform: translateX(-3px);
+  }
+
+  /* Floating Reading Dock */
+  .floating-dock {
+    position: fixed;
+    bottom: 24px;
+    left: 50%;
+    transform: translateX(-50%) translateY(120px);
+    opacity: 0;
+    z-index: 85;
+    background: color-mix(in srgb, var(--card) 92%, transparent);
+    backdrop-filter: blur(14px);
+    -webkit-backdrop-filter: blur(14px);
+    border: 1.5px solid var(--line);
+    box-shadow: 0 12px 36px rgba(0,0,0,0.12);
+    border-radius: 999px;
+    padding: 6px 10px 6px 14px;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: transform 0.28s cubic-bezier(0.16, 1, 0.3, 1), opacity 0.25s ease;
+    max-width: calc(100vw - 32px);
+    pointer-events: none;
+  }
+  .floating-dock.visible {
+    transform: translateX(-50%) translateY(0);
+    opacity: 1;
+    pointer-events: auto;
+  }
+  .dock-current-badge {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    color: var(--ink);
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    white-space: nowrap;
+    padding-inline-end: 10px;
+    border-inline-end: 1px solid var(--line);
+    max-width: 220px;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  .dock-btn {
+    border: 1px solid var(--line);
+    background: var(--paper);
+    color: var(--ink);
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 700;
+    padding: 6px 13px;
+    border-radius: 999px;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 5px;
+    text-decoration: none;
+    white-space: nowrap;
+    transition: background 0.15s ease, border-color 0.15s ease;
+  }
+  .dock-btn:hover {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  .dock-btn.solid {
+    background: var(--ink);
+    color: var(--paper);
+    border-color: var(--ink);
+  }
+  @media(max-width: 680px) {
+    .dock-current-badge { display: none; }
+    .floating-dock { bottom: 16px; padding: 5px 8px; }
+    .dock-btn span.txt { display: none; }
+  }
+
+
+  /* Section Styles */
+  .section-block {
+    margin-top: 64px;
+    padding-top: 24px;
+    border-top: 2px solid var(--line);
+  }
+  .sec-header {
+    margin-bottom: 24px;
+  }
+  .sec-num {
+    font-family: var(--sans);
+    font-size: 12px;
+    font-weight: 800;
+    color: var(--accent);
+    letter-spacing: .08em;
+    display: block;
+    text-transform: uppercase;
+  }
+  h2.sec-title {
+    font-family: var(--serif);
+    font-size: clamp(26px, 4vw, 36px);
+    margin: 4px 0 10px;
+  }
+  .sec-desc {
+    font-family: var(--sans);
+    color: var(--muted);
+    font-size: 14.5px;
+    margin: 0;
+  }
+
+  /* Lesson Cards */
+  .lcard {
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: var(--radius);
+    padding: 28px 30px;
+    margin-bottom: 36px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.025);
+    transition: border-color .2s;
+  }
+  .lcard:hover { border-color: color-mix(in srgb, var(--ink) 40%, var(--line)); }
+  .lhead {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    margin-bottom: 18px;
+    border-bottom: 1.5px dashed var(--line);
+    padding-bottom: 14px;
+  }
+  .ltag {
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 800;
+    background: var(--ink);
+    color: var(--paper);
+    padding: 4px 12px;
+    border-radius: 999px;
+    display: inline-block;
+  }
+  .ltitle {
+    font-family: var(--serif);
+    font-size: 25px;
+    margin: 0;
+  }
+  .len {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+    direction: ltr;
+    text-align: right;
+    display: block;
+  }
+  .lopen {
+    font-family: var(--sans);
+    font-size: 12.5px;
+    font-weight: 700;
+    text-decoration: none;
+    color: var(--accent);
+    border-bottom: 1px solid var(--accent);
+    align-self: center;
+  }
+
+  /* Mind Map Component - Hierarchical 4-Branch Tree */
+  .mindmap-tree {
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    padding: 20px 22px;
+    margin: 20px 0 28px;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    position: relative;
+  }
+  .mindmap-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    flex-wrap: wrap;
+    gap: 12px;
+    margin-bottom: 16px;
+    padding-bottom: 12px;
+    border-bottom: 1.5px dashed var(--line);
+  }
+  .mindmap-header .title {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 15px;
+    color: var(--purple);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+  }
+  [data-theme="dark"] .mindmap-header .title { color: #caa4f6; }
+  .mindmap-root-badge {
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 12px;
+    padding: 4px 14px;
+    border-radius: 999px;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+  }
+  [data-theme="dark"] .mindmap-root-badge {
+    background: #f2efe6;
+    color: #14130f;
+  }
+  .tree-branches {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(225px, 1fr));
+    gap: 14px;
+  }
+  .tree-branch {
+    border-radius: 14px;
+    padding: 14px 16px;
+    border: 1.5px solid var(--line);
+    background: var(--paper);
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+    transition: transform 0.2s ease, box-shadow 0.2s ease;
+  }
+  .tree-branch:hover {
+    transform: translateY(-2px);
+    box-shadow: 0 6px 16px rgba(0,0,0,0.06);
+  }
+  .tree-branch.b-gold {
+    border-color: rgba(179, 134, 0, 0.35);
+    border-top: 4px solid var(--gold);
+    background: var(--gold-light);
+  }
+  .tree-branch.b-green {
+    border-color: rgba(13, 92, 70, 0.35);
+    border-top: 4px solid var(--accent);
+    background: var(--accent-light);
+  }
+  .tree-branch.b-blue {
+    border-color: rgba(35, 88, 130, 0.35);
+    border-top: 4px solid var(--blue);
+    background: var(--blue-light);
+  }
+  .tree-branch.b-purple {
+    border-color: rgba(106, 61, 154, 0.35);
+    border-top: 4px solid var(--purple);
+    background: var(--purple-light);
+  }
+  .branch-head {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 13.5px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+  }
+  .b-gold .branch-head { color: var(--gold); }
+  .b-green .branch-head { color: var(--accent); }
+  .b-blue .branch-head { color: var(--blue); }
+  .b-purple .branch-head { color: var(--purple); }
+
+  [data-theme="dark"] .b-gold .branch-head { color: #ffd659; }
+  [data-theme="dark"] .b-green .branch-head { color: #8dd9be; }
+  [data-theme="dark"] .b-blue .branch-head { color: #9bcaf0; }
+  [data-theme="dark"] .b-purple .branch-head { color: #caa4f6; }
+
+  .branch-content {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--ink);
+    font-weight: 600;
+    line-height: 1.55;
+  }
+  .tree-subnodes {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border-top: 1px dashed var(--line);
+    padding-top: 8px;
+    margin-top: 4px;
+  }
+  .tree-subnode {
+    font-family: var(--sans);
+    font-size: 12px;
+    color: var(--muted);
+    display: flex;
+    align-items: flex-start;
+    gap: 6px;
+    line-height: 1.45;
+  }
+  .tree-subnode .tree-connector {
+    font-family: var(--mono);
+    color: var(--ink);
+    opacity: 0.55;
+    font-weight: bold;
+    flex-shrink: 0;
+  }
+  .tree-subnode span {
+    color: var(--ink);
+  }
+
+  /* Content Boxes */
+  .feynman-box {
+    background: var(--paper);
+    border-right: 5px solid var(--gold);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .feynman-box b { color: var(--gold); }
+  [data-theme="dark"] .feynman-box b { color: #ffd659; }
+
+  .rule-box {
+    background: var(--accent-light);
+    border-right: 5px solid var(--accent);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: var(--sans);
+    font-size: 14.5px;
+  }
+  .rule-box b { color: var(--accent); }
+
+  .trap-box {
+    background: var(--terra-light);
+    border-right: 5px solid var(--terra);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .trap-box b { color: var(--terra); }
+
+  .geo-box {
+    background: var(--blue-light);
+    border-right: 5px solid var(--blue);
+    border-radius: 12px;
+    padding: 14px 18px;
+    margin: 16px 0;
+    font-family: var(--sans);
+    font-size: 14.5px;
+  }
+  .geo-box b { color: var(--blue); }
+  [data-theme="dark"] .geo-box b { color: #9bcaf0; }
+
+  /* Worked Example Container */
+  .example-box {
+    background: var(--card);
+    border: 1.5px solid var(--accent);
+    border-radius: 14px;
+    padding: 20px;
+    margin: 24px 0 16px;
+  }
+  .ex-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-bottom: 14px;
+    border-bottom: 1px dashed var(--line);
+    padding-bottom: 8px;
+  }
+  .ex-badge {
+    background: var(--accent);
+    color: #fff;
+    font-family: var(--sans);
+    font-size: 11.5px;
+    font-weight: 800;
+    padding: 3px 10px;
+    border-radius: 999px;
+  }
+  .ex-title {
+    font-family: var(--sans);
+    font-weight: 800;
+    font-size: 15px;
+    margin: 0;
+    color: var(--ink);
+  }
+
+  /* Step-by-Step Flow with Circles & Arrows */
+  .step-flow {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 14px 0;
+  }
+  .step-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    position: relative;
+  }
+  .step-num {
+    width: 28px;
+    height: 28px;
+    border-radius: 50%;
+    background: var(--ink);
+    color: var(--paper);
+    display: grid;
+    place-items: center;
+    font-size: 13px;
+    font-weight: 800;
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+  .step-body {
+    flex: 1;
+    font-family: var(--sans);
+    font-size: 14px;
+  }
+  .step-body b { color: var(--ink); }
+
+  /* Visual Highlight Indicators */
+  .pivot-circle {
+    display: inline-block;
+    border: 2px solid var(--accent);
+    background: var(--accent-light);
+    color: var(--accent);
+    font-weight: 800;
+    padding: 1px 7px;
+    border-radius: 50%;
+    margin: 0 3px;
+    direction: ltr;
+  }
+  .target-circle {
+    display: inline-block;
+    border: 2px solid var(--terra);
+    background: var(--terra-light);
+    color: var(--terra);
+    font-weight: 800;
+    padding: 1px 7px;
+    border-radius: 50%;
+    margin: 0 3px;
+    direction: ltr;
+  }
+  .target-box {
+    display: inline-block;
+    border: 1.5px dashed var(--terra);
+    padding: 0 6px;
+    border-radius: 6px;
+    font-weight: 700;
+  }
+  .op-arrow {
+    display: inline-flex;
+    align-items: center;
+    gap: 4px;
+    background: var(--ink);
+    color: var(--paper);
+    font-family: var(--mono);
+    font-size: 12px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    margin: 4px 0;
+    direction: ltr;
+  }
+  .op-arrow-down {
+    color: var(--terra);
+    font-weight: 900;
+    margin: 0 4px;
+  }
+
+  /* BiDi & LTR Strict Isolation for Math, Equations, and English Content */
+  .katex,
+  .katex * {
+    direction: ltr !important;
+  }
+  .katex {
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+    display: inline-block !important;
+    text-align: left !important;
+  }
+  .katex-display {
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+    text-align: center !important;
+    margin: 16px 0 !important;
+    width: 100% !important;
+    overflow-x: auto !important;
+    overflow-y: hidden !important;
+  }
+  .katex-display > .katex {
+    display: inline-block !important;
+    text-align: center !important;
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+  }
+  .katex-html {
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+  }
+
+  /* All English terms, badges, codes, and coordinates */
+  [dir="ltr"],
+  [lang="en"],
+  .en,
+  .len,
+  .coord,
+  .en-inline,
+  .en-code,
+  bdi,
+  code,
+  pre,
+  kbd,
+  samp,
+  .op-arrow,
+  .pivot-circle,
+  .target-circle,
+  .target-box {
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+  }
+  .en-inline, bdi, code, .coord, .en-code {
+    display: inline-block;
+  }
+  .en-code {
+    font-family: var(--mono);
+    font-size: 0.88em;
+    background: color-mix(in srgb, var(--ink) 6%, transparent);
+    color: var(--ink);
+    padding: 1.5px 7px;
+    border-radius: 6px;
+    border: 1px solid color-mix(in srgb, var(--ink) 14%, transparent);
+    font-weight: 600;
+    vertical-align: baseline;
+  }
+  [data-theme="dark"] .en-code {
+    background: rgba(255, 255, 255, 0.08);
+    border-color: rgba(255, 255, 255, 0.16);
+    color: #f2efe6;
+  }
+  .len {
+    text-align: right;
+    display: block;
+  }
+
+  /* Pedagogical Visual Diagram Figure */
+  .concept-figure {
+    margin: 22px 0 26px;
+    background: var(--card);
+    border: 1.5px solid var(--line);
+    border-radius: 16px;
+    overflow: hidden;
+    box-shadow: 0 4px 20px rgba(0,0,0,0.04);
+  }
+  .concept-figure img {
+    width: 100%;
+    height: auto;
+    display: block;
+    border-bottom: 1.5px solid var(--line);
+  }
+  .concept-caption {
+    padding: 14px 18px;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    color: var(--ink);
+    background: var(--paper);
+    line-height: 1.65;
+  }
+  .concept-caption b {
+    color: var(--accent);
+    display: inline-block;
+    margin-inline-end: 4px;
+  }
+  [data-theme="dark"] .concept-caption b {
+    color: var(--accent);
+  }
+
+  /* Original Project Matrix Components */
+  .mx {
+    display: inline-flex;
+    align-items: stretch;
+    gap: 7px;
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+    vertical-align: middle;
+  }
+  .bl {
+    width: 11px;
+    border: 3px solid var(--ink);
+    border-right: 0;
+    border-radius: 10px 0 0 10px;
+  }
+  .br {
+    width: 11px;
+    border: 3px solid var(--ink);
+    border-left: 0;
+    border-radius: 0 10px 10px 0;
+  }
+  .mg {
+    display: inline-grid;
+    gap: 3px 0;
+    padding: 5px 3px;
+  }
+  .mc {
+    position: relative;
+    padding: 3px 11px;
+    text-align: center;
+    font-family: var(--mono);
+    font-size: 17px;
+    line-height: 1.5;
+    color: var(--ink);
+  }
+  .mc.aug {
+    border-left: 2px solid var(--ink);
+    margin-left: 5px;
+    padding-left: 13px;
+  }
+  .mc.piv {
+    color: var(--accent);
+    font-weight: 800;
+  }
+  .mc.chg::after {
+    content: "";
+    position: absolute;
+    top: 0;
+    bottom: 0;
+    left: 3px;
+    right: 3px;
+    border: 2.5px solid var(--terra);
+    border-radius: 50%;
+    pointer-events: none;
+    animation: pop .35s ease;
+  }
+  @keyframes pop { from { transform: scale(.6); opacity: 0; } }
+  @media (prefers-reduced-motion: reduce) { .mc.chg::after { animation: none; } }
+
+  .dotpiv {
+    width: 11px;
+    height: 11px;
+    border-radius: 50%;
+    background: var(--accent);
+    display: inline-block;
+  }
+  .ringchg {
+    width: 13px;
+    height: 13px;
+    border: 2.5px solid var(--terra);
+    border-radius: 50%;
+    display: inline-block;
+  }
+  .opchip {
+    display: inline-block;
+    background: var(--ink);
+    color: var(--paper);
+    border-radius: 999px;
+    padding: 3px 16px;
+    font-size: 12px;
+    font-weight: 700;
+    margin-bottom: 10px;
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+  }
+  .matrix-stage {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .stepc {
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 14px 16px;
+    background: var(--paper);
+    overflow-x: auto;
+    text-align: center;
+    margin: 10px 0;
+  }
+  .legend {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 8px 18px;
+    margin: 8px 0 14px;
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+  .legend .li {
+    display: inline-flex;
+    align-items: center;
+    gap: 7px;
+  }
+  .why {
+    margin: 10px auto 0;
+    max-width: 620px;
+    text-align: right;
+    font-size: 13.5px;
+    line-height: 1.85;
+    color: var(--ink);
+  }
+  .why b {
+    color: var(--ink);
+  }
+
+  /* Matrix Layout Display */
+  .matrix-display {
+    direction: ltr !important;
+    unicode-bidi: isolate !important;
+    text-align: center !important;
+    background: var(--card);
+    border: 1px solid var(--line);
+    border-radius: 10px;
+    padding: 10px;
+    margin: 10px 0;
+    overflow-x: auto;
+    font-size: 15px;
+    display: block;
+  }
+
+  /* Active Recall Toggle Card */
+  .recall-card {
+    background: var(--paper);
+    border: 1px solid var(--line);
+    border-radius: 12px;
+    padding: 12px 18px;
+    margin-top: 16px;
+    cursor: pointer;
+  }
+  .recall-q {
+    font-family: var(--sans);
+    font-weight: 700;
+    font-size: 13.5px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  .recall-q::after { content: "▼"; font-size: 10px; color: var(--muted); transition: transform .2s; }
+  .recall-card.open .recall-q::after { transform: rotate(180deg); }
+  .recall-a {
+    font-family: var(--sans);
+    font-size: 13px;
+    color: var(--muted);
+    margin-top: 8px;
+    display: none;
+    border-top: 1px dashed var(--line);
+    padding-top: 8px;
+  }
+  .recall-card.open .recall-a { display: block; }
+
+  /* Master Equivalence Table */
+  .table-wrap {
+    overflow-x: auto;
+    margin: 24px 0;
+    border-radius: 14px;
+    border: 1.5px solid var(--line);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.03);
+    -webkit-overflow-scrolling: touch;
+  }
+  table.matrix-table {
+    width: 100%;
+    border-collapse: collapse;
+    font-family: var(--sans);
+    font-size: 13.5px;
+    background: var(--card);
+  }
+  table.matrix-table th, table.matrix-table td {
+    border: 1px solid var(--line);
+    padding: 13px 18px;
+    text-align: start;
+    vertical-align: middle;
+  }
+  table.matrix-table th {
+    background: var(--paper);
+    font-weight: 800;
+    font-size: 13.5px;
+  }
+  .th-good { color: var(--accent); }
+  .th-bad { color: var(--terra); }
+  [data-theme="dark"] .th-good { color: #8dd9be; }
+  [data-theme="dark"] .th-bad { color: #e0906a; }
+  .badge-col {
+    display: inline-block;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-size: 11.5px;
+    font-weight: 800;
+    margin-inline-end: 4px;
+  }
+  .badge-col.good {
+    background: var(--accent);
+    color: #ffffff;
+  }
+  .badge-col.bad {
+    background: var(--terra);
+    color: #ffffff;
+  }
+  table.matrix-table td.col-good {
+    background: var(--accent-light);
+    font-weight: 600;
+    color: var(--ink);
+    border-inline: 1.5px solid color-mix(in srgb, var(--accent) 25%, transparent);
+  }
+  table.matrix-table td.col-bad {
+    background: var(--terra-light);
+    font-weight: 600;
+    color: var(--ink);
+    border-inline: 1.5px solid color-mix(in srgb, var(--terra) 25%, transparent);
+  }
+
+  /* Footer */
+  footer.site {
+    margin-top: 80px;
+    border-top: 1px solid var(--line);
+    padding-top: 24px;
+    display: flex;
+    justify-content: space-between;
+    gap: 16px;
+    flex-wrap: wrap;
+    font-family: var(--sans);
+    font-size: 12.5px;
+    color: var(--muted);
+  }
+
+  /* Print Styles */
+  @media print {
+    :root {
+      --paper: #fff !important;
+      --card: #fff !important;
+      --ink: #000 !important;
+      --muted: #444 !important;
+      --line: #ccc !important;
+      --accent-light: #f4f4f4 !important;
+      --terra-light: #f4f4f4 !important;
+      --gold-light: #f4f4f4 !important;
+      --blue-light: #f4f4f4 !important;
+    }
+    .top-header, .bar, .toc-bar, .lopen, .theme-btn, .floating-dock, .summary-filter-wrap { display: none !important; }
+    body { font-size: 11pt; line-height: 1.5; background: #fff !important; }
+    .wrap { max-width: 100% !important; padding: 0 !important; margin: 0 !important; }
+    .lcard, .mindmap-tree, .example-box, .concept-figure {
+      page-break-inside: avoid;
+      break-inside: avoid;
+      border: 1px solid #aaa !important;
+      margin-bottom: 24px;
+      box-shadow: none !important;
+    }
+    .recall-a { display: block !important; }
+    .recall-q::after { display: none !important; }
+    .section-block { page-break-before: always; }
+    .tree-branches { display: flex !important; flex-direction: column !important; gap: 8px !important; }
+    .tree-branch { page-break-inside: avoid; break-inside: avoid; }
+  }
+</style>
+</head>
+<body>
+
+<header class="top-header">
+  <div class="top-inner">
+    <a class="brand" href="index.html"><span class="mark">✳</span> مختبر الجبر الخطي</a>
+    <nav class="nav-links" aria-label="تنقل رئيسي">
+      <a href="index.html">الرئيسية</a>
+      <a href="summary.html" class="active">الملخص الشامل</a>
+      <a href="review.html">مراجعة سريعة</a>
+      <a href="search.html">بحث</a>
+      <a href="playground.html">شغّل بايثون</a>
+    </nav>
+    <div class="nav-actions">
+      <button class="btn theme-btn" type="button" aria-label="تبديل مظهر الموقع">الوضع الداكن</button>
+    </div>
+  </div>
+  <div class="reading-progress-track" aria-hidden="true">
+    <div class="reading-progress-fill" id="readProgress"></div>
+  </div>
+</header>
+
+<div class="wrap">
+  <section class="hero">
+    <span class="kicker">الدليل التعليمي الشامل وسد الفجوات</span>
+    <h1>الملخص الشامل والمبسط للجبر الخطي</h1>
+    <p class="lead">مرجع دراسي متكامل يجمع أعلى الممارسات التعليمية: <b>خارطة ذهنية في مطلع كل درس</b> تلخص المفهوم، وتفسير بديهي بتشبيهات فاينمان، مع <b>أمثلة محلولة خطوة بخطوة</b> تستخدم <b>الأسهم والدوائر التوضيحية</b> للإشارة بدقة للمكون المعني بالعملية في كل مرحلة.</p>
+    
+    <!-- Course Pedagogical Stats HUD -->
+    <div class="course-hud">
+      <div class="hud-chip"><span class="chip-dot"></span> 11 درساً شاملاً</div>
+      <div class="hud-chip purple"><span class="chip-dot"></span> 11 خارطة ذهنية هرمية</div>
+      <div class="hud-chip terra"><span class="chip-dot"></span> 11 مثالاً خطوة بخطوة</div>
+      <div class="hud-chip gold"><span class="chip-dot"></span> 11 بطاقة استرجاع نشط</div>
+      <div class="hud-chip blue"><span class="chip-dot"></span> 6 فجوات مفاهيمية محلولة</div>
+      <div class="hud-chip"><span class="chip-dot"></span> لوحة التكافؤ الذهبية الكبرى</div>
+    </div>
+
+    <!-- Quick Action Bar -->
+    <div class="bar">
+      <button class="btn solid" onclick="window.print()" type="button">🖨️ طباعة الملخص / حفظ PDF</button>
+      <button class="btn" id="toggleAllRecallBtn" type="button">👁️ كشف جميع إجابات الاسترجاع</button>
+      <a class="btn" href="#gaps">🔍 سد الفجوات (Gaps)</a>
+      <a class="btn" href="#mod1">المحور 1: المنظومات (01–04)</a>
+      <a class="btn" href="#mod2">المحور 2: الفضاءات (05–08)</a>
+      <a class="btn" href="#mod3">المحور 3: المحددات (09–11)</a>
+      <a class="btn" href="#grand-unification">🌟 لوحة التكافؤ الشامل</a>
+    </div>
+
+    <!-- Interactive Search / Filter -->
+    <div class="summary-filter-wrap">
+      <div class="filter-input-row">
+        <div class="filter-input-box">
+          <span class="filter-icon" aria-hidden="true">🔍</span>
+          <input type="text" id="summaryFilterInput" class="filter-input" placeholder="ابحث في دروس ومفاهيم الملخص (مثال: محدد، غاوس، استقلال، تعامد، ساروس...)" autocomplete="off">
+          <button type="button" id="filterClearBtn" class="filter-clear-btn" title="مسح البحث">✕</button>
+        </div>
+      </div>
+      <div id="filterStatus" class="filter-status"></div>
+    </div>
+
+    <!-- Table of Contents & Module Hierarchy -->
+    <nav class="toc-bar" aria-label="فهرس المحاور والدروس">
+      <div class="toc-title">فهرس الانتقال السريع للمحاور والدروس</div>
+      <div class="toc-grid">
+        <div class="toc-group">
+          <span class="toc-group-label">المقدمة وسد الفجوات</span>
+          <div class="toc-links">
+            <a href="#gaps" data-target="gaps">سد الفجوات المفاهيمية الست</a>
+          </div>
+        </div>
+        <div class="toc-group">
+          <span class="toc-group-label">المحور 1: المنظومات والمصفوفات</span>
+          <div class="toc-links">
+            <a href="#c0001" data-target="c0001">01 · تمييز الخطية</a>
+            <a href="#c0002" data-target="c0002">02 · العمليات والنظير</a>
+            <a href="#c0003" data-target="c0003">03 · الحذف الغاوسي بالخطوات</a>
+            <a href="#c0004" data-target="c0004">04 · الخصائص والصفرية</a>
+          </div>
+        </div>
+        <div class="toc-group">
+          <span class="toc-group-label">المحور 2: الفضاءات والمتجهات</span>
+          <div class="toc-links">
+            <a href="#c0005" data-target="c0005">05 · الفضاء الإقليدي والتعامد</a>
+            <a href="#c0006" data-target="c0006">06 · فحص الفضاء الجزئي</a>
+            <a href="#c0007" data-target="c0007">07 · حل التركيب الخطي</a>
+            <a href="#c0008" data-target="c0008">08 · المولد والاستقلال</a>
+          </div>
+        </div>
+        <div class="toc-group">
+          <span class="toc-group-label">المحور 3: الأساس والمحددات</span>
+          <div class="toc-links">
+            <a href="#c0009" data-target="c0009">09 · الأساس والإحداثيات</a>
+            <a href="#c0010" data-target="c0010">10 · المحددات وساروس</a>
+            <a href="#c0011" data-target="c0011">11 · استراتيجية الامتحانات</a>
+            <a href="#grand-unification" data-target="grand-unification">🌟 لوحة التكافؤ الشامل</a>
+          </div>
+        </div>
+      </div>
+    </nav>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- SECTION: CLOSING GAPS -->
+  <!-- ================================================================= -->
+  <section class="section-block" id="gaps">
+    <div class="sec-header">
+      <span class="sec-num">تشخيص وسد الثغرات</span>
+      <h2 class="sec-title">سد الفجوات المفاهيمية الست (Closing The Gaps)</h2>
+      <p class="sec-desc">أكبر عائق يواجه دارس الجبر الخطي ليس صعوبة الحسابات، بل وجود فجوات غير مرئية بين الدروس. هنا نسد هذه الفجوات بست إجابات قاطعة:</p>
+    </div>
+
+    <!-- Gap 1 -->
+    <div class="lcard">
+      <div class="lhead">
+        <span class="ltag">الفجوة 1</span>
+        <h3 class="ltitle">فجوة الخيط الناظم الشامل (The Grand Unification Gap)</h3>
+      </div>
+      <p><b>المشكلة:</b> دراسة المحددات، النظير، الحذف الغاوسي، والاستقلال كجزر منعزلة، مما يفقد الطالب الرؤية الموحدة للمقرر.</p>
+      <div class="rule-box">
+        <b>الحل وسد الفجوة:</b> لمصفوفة مربعة $A$ بحجم $n \times n$، كل هذه المفاهيم هي في الحقيقة <b>وجه واحد لعملة واحدة</b>:
+        $$\det(A) \neq 0 \iff \exists A^{-1} \iff \text{الأعمدة مستقلة خطياً} \iff \text{الأعمدة تولد } \mathbb{R}^n \iff \text{الأعمدة تشكل أساساً} \iff Ax=0 \text{ حله الوحيد } x=0$$
+        وإذا كان المحدد صفراً، تسقط كل هذه الخصائص دفعة واحدة بلا استثناء!
+      </div>
+    </div>
+
+    <!-- Gap 2 -->
+    <div class="lcard">
+      <div class="lhead">
+        <span class="ltag">الفجوة 2</span>
+        <h3 class="ltitle">فجوة حالات الحلول الثلاث لأي منظومة (3 Solution Cases)</h3>
+      </div>
+      <p><b>المشكلة:</b> التركيز على "الحل الوحيد" وغموض الفرق الدقيق بين المنظومة ذات الحل اللانهائي والمستحيلة.</p>
+      <div class="rule-box">
+        <b>الحل وسد الفجوة (قراءة الصفوف بعد الحذف):</b>
+        <ul>
+          <li><b>1. حل وحيد:</b> كل عمود من المتغيرات يحوي قائداً (Pivot) دون تناقض.</li>
+          <li><b>2. عدد لا نهائي من الحلول:</b> المنظومة متسقة ويوجد عمود متغير <b>بلا قائد</b> (متغير حر Free Variable)، أو يظهر صف أصفار سليم $0 = 0$.</li>
+          <li><b>3. مستحيلة الحل:</b> ظهور <b>صف التناقض</b>: $[0 \ 0 \ \dots \ 0 \mid b]$ حيث $b \neq 0$ (أي $0 = b$، محال رياضياً).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Gap 3 -->
+    <div class="lcard">
+      <div class="lhead">
+        <span class="ltag">الفجوة 3</span>
+        <h3 class="ltitle">فجوة التمييز بين (المولد Span) و(الأساس Basis) و(الفضاء الجزئي Subspace)</h3>
+      </div>
+      <div class="feynman-box">
+        <b>الحل وسد الفجوة (مقارنة حاسمة بتشبيه فاينمان):</b>
+        <ul>
+          <li><b>الفضاء الجزئي (Subspace):</b> هو "المنطقة / النادي المغلق" (مثل مستوى يمر بالأصل). صفته الإغلاق التام تحت الجمع والضرب.</li>
+          <li><b>المولد (Span):</b> هو "مدى الوصول"؛ كل الأماكن التي تصل إليها التراكيب الخطية لمتجهاتك (قد يتضمن متجهات مكررة زائدة).</li>
+          <li><b>الأساس (Basis):</b> هو "أصغر وأكفأ فريق" يولد الفضاء <b>بلا أي هدر أو تكرار</b> (مستقل خطياً + يولد الفضاء معاً).</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Gap 4 -->
+    <div class="lcard">
+      <div class="lhead">
+        <span class="ltag">الفجوة 4</span>
+        <h3 class="ltitle">فجوة نظير المصفوفات الأكبر من 2×2</h3>
+      </div>
+      <div class="rule-box">
+        <b>الحل وسد الفجوة (خوارزمية غاوس-جوردان الموسعة):</b>
+        نضع المصفوفة <bdi class="en-code" dir="ltr">A</bdi> وبجانبها مصفوفة الوحدة <bdi class="en-code" dir="ltr">I</bdi> في جدول موسع يفصل بينهما خط عمودي: <bdi class="en-code" dir="ltr">[A | I]</bdi>. ثم نطبق عمليات الصفوف البسيطة حتى يتحول الجانب الأيسر بالكامل إلى مصفوفة الوحدة:
+        <div dir="ltr" style="display:flex;align-items:center;justify-content:center;gap:12px;margin:14px 0;flex-wrap:wrap">
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-weight:700">[A | I] =</span>
+            <span class="mx" dir="ltr">
+              <span class="bl"></span>
+              <span class="mg" style="grid-template-columns:repeat(4,minmax(2.2em,auto))">
+                <span class="mc">2</span><span class="mc">-3</span><span class="mc aug">1</span><span class="mc">0</span>
+                <span class="mc">1</span><span class="mc">2</span><span class="mc aug">0</span><span class="mc">1</span>
+              </span>
+              <span class="br"></span>
+            </span>
+          </div>
+          <span style="font-weight:700;color:var(--accent);padding:0 4px">➔ عمليات الصفوف ➔</span>
+          <div style="display:flex;align-items:center;gap:6px">
+            <span style="font-weight:700">[I | A<sup>-1</sup>] =</span>
+            <span class="mx" dir="ltr">
+              <span class="bl"></span>
+              <span class="mg" style="grid-template-columns:repeat(4,minmax(2.8em,auto))">
+                <span class="mc piv">1</span><span class="mc">0</span><span class="mc aug"><sup>2</sup>/<sub>7</sub></span><span class="mc"><sup>3</sup>/<sub>7</sub></span>
+                <span class="mc">0</span><span class="mc piv">1</span><span class="mc aug">-<sup>1</sup>/<sub>7</sub></span><span class="mc"><sup>2</sup>/<sub>7</sub></span>
+              </span>
+              <span class="br"></span>
+            </span>
+          </div>
+        </div>
+        المصفوفة الناتجة على يمين الخط الفاصل هي النظير <bdi class="en-code" dir="ltr">A<sup>-1</sup></bdi> مباشرة بلا تخمين!
+      </div>
+    </div>
+
+    <!-- Gap 5 -->
+    <div class="lcard">
+      <div class="lhead">
+        <span class="ltag">الفجوة 5</span>
+        <h3 class="ltitle">فجوة خصائص المحددات والأفخاخ الحسابية</h3>
+      </div>
+      <div class="trap-box">
+        <b>الحل وسد الفجوة (التحذير الصارم من فخين):</b>
+        <ul>
+          <li>⚠️ <b>فخ الجمع:</b> $\det(A+B) \neq \det(A) + \det(B)$ إطلاقاً!</li>
+          <li>⚠️ <b>فخ الثابت:</b> لمصفوفة $n \times n$: $\det(cA) = c^n \det(A)$ وليس $c \det(A)$.</li>
+        </ul>
+      </div>
+    </div>
+
+    <!-- Gap 6 -->
+    <div class="lcard">
+      <div class="lhead">
+        <span class="ltag">الفجوة 6</span>
+        <h3 class="ltitle">فجوة الرؤية الهندسية لتحويلات الفضاء</h3>
+      </div>
+      <div class="geo-box">
+        <b>الحل وسد الفجوة:</b> المصفوفة تحويل هندسي يشوه الفضاء، والمحدد $|\det(A)|$ هو <b>معامل تمدد أو انكماش المساحة</b> (أو الحجم). وإذا كان صفراً، تسطح الفضاء وفقد بعداً كاملاً واستحال التراجع.
+      </div>
+
+      <!-- Visual Educational Figure 2: Determinant Geometric Transformation -->
+      <figure class="concept-figure">
+        <img src="assets/images/determinant_area.jpg" alt="المعنى الهندسي للمحدد كنسبة تمدد المساحة وانهيار الفضاء" loading="lazy">
+        <figcaption class="concept-caption">
+          <b>📐 التفسير الهندسي للمحدد:</b> المصفوفة تحويل هندسي ينقل مربع الوحدة القياسي (مساحته 1) إلى متوازي أضلاع تبلغ مساحته بدقة القيمة المطلقة للمحدد $|\det(A)|$. وفي المربع السفلي: عندما يكون $\det(A) = 0$، ينضغط الفضاء ويسقط متوازي الأضلاع إلى خط مستقيم ذي مساحة صفرية، مما يعني فقدان بعد كامل واستحالة وجود النظير الضربي $A^{-1}$.
+        </figcaption>
+      </figure>
+    </div>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- MODULE 1: LESSONS 0001 - 0004 -->
+  <!-- ================================================================= -->
+  <section class="section-block" id="mod1">
+    <div class="sec-header">
+      <span class="sec-num">المحور الأول · الدروس 01 إلى 04</span>
+      <h2 class="sec-title">الأساسيات والمصفوفات والمنظومات الخطية</h2>
+      <p class="sec-desc">تمييز الخطية، لغة المصفوفات، سلالم الحذف الغاوسي، والقوانين الجبرية الصامدة مع خطوات الحل بالأسهم والدوائر.</p>
+    </div>
+
+    <!-- Lesson 0001 -->
+    <article class="lcard" id="c0001">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0001</span>
+          <h3 class="ltitle">منظومات المعادلات الخطية (Linear Systems)</h3>
+          <span class="len">Systems of Linear Equations — which equation counts as linear?</span>
+        </div>
+        <a class="lopen" href="lessons/0001-linear-systems.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0001 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0001 · منظومات المعادلات الخطية</div>
+          <div class="mindmap-root-badge">🌱 المحور: المعادلة الخطية $a_1 x_1 + \dots + a_n x_n = b$</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">وصفة كعكة بمقادير مستقلة: كل متغير يدخل كجرعة مستقلة بالدرجة الأولى دون أي تشابك.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: طحين + سكر = طبق، بلا تربيع ولا ضرب للمكونات ببعضها</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>هندسياً: خط مستقيم منبسط في $\mathbb{R}^2$ أو مستوى أملس في $\mathbb{R}^3$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">شروط الخطية الثلاثة الصارمة — سقوط أي شرط يخرج المعادلة من المنهج الخطي!</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الأس = 1 فقط: ممنوع $x^2$ أو $\sqrt{x}$ أو $x^{-1}$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>حظر الدوال: ممنوع $\sin(x)$ أو $e^x$ أو $\ln(x)$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>حظر الضرب المشترك: ممنوع ضرب متغيرين كـ $x y$ أو $x_1 x_2$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">بناء المصفوفة الموسعة $[A \mid b]$ لعزل المعاملات في جدول أرقام تنفيذي.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: ترتيب المتغيرات في أعمدة متناظرة عمودياً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: ترحيل الثوابت المجردة إلى يمين علامة المساواة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: تفريغ المعاملات في مصفوفة موسعة تمهيداً للحذف</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">حسم مصير المنظومة فورياً إلى إحدى الحالات الهندسية الثلاث الحاسمة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>حل وحيد: تقاطع صريح في نقطة واحدة (المحدد $\neq 0$)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>لانهائي: مستقيمات متطابقة (وجود متغير حر Free Variable)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>مستحيل: مستقيمات متوازية لا تلتقي (ظهور صف $0 = b$)</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Educational Figure 1: Linear Systems 3 Cases -->
+      <figure class="concept-figure">
+        <img src="assets/images/linear_systems_cases.jpg" alt="الحالات الهندسية الثلاث لحلول المنظومات الخطية في المستوى R^2" loading="lazy">
+        <figcaption class="concept-caption">
+          <b>📊 التفسير الهندسي البصري:</b> الحالات الثلاث لحلول المنظومات الخطية في المستوى $\mathbb{R}^2$. من اليسار إلى اليمين: 
+          (1) <b>حل وحيد (Unique Solution):</b> يتقاطع المستقيمان في نقطة واحدة محددة. 
+          (2) <b>مستحيلة الحل (No Solution):</b> مستقيمان متوازيان لا يلتقيان أبداً (تناقض). 
+          (3) <b>عدد لا نهائي من الحلول (Infinite Solutions):</b> مستقيمان متطابقان تماماً يشتركان في كافة النقاط.
+        </figcaption>
+      </figure>
+
+      <div class="feynman-box">
+        <b>تشبيه فاينمان (وصفة المطبخ):</b> المعادلة الخطية مثل وصفة كعكة بسيطة: "كوبان طحين + بيضتان = طبق". كل مكوّن يظهر بمفرده وقوته 1. أما إذا ضربت "طحين × سكر" أو وضعت "بيض تربيع"، تغير التفاعل وخرجت عن المطبخ الخطي!
+      </div>
+
+      <div class="rule-box">
+        <b>القاعدة الذهبية (حكم الـ 10 ثوانٍ):</b>
+        $$a_1 x_1 + a_2 x_2 + \dots + a_n x_n = b$$
+        أس كل مجهول 1، المعاملات $a_i$ والثابت $b$ ثوابت عددية مسموحة بأي شكل، وممنوع ضرب أي مجهولين معاً أو إدخال مجهول داخل دالة.
+      </div>
+
+      <!-- Worked Example 0001 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول خطوة بخطوة: فحص الخطية وتمييز الأفخاخ</h4>
+          <span class="ex-badge">خطوة بخطوة بالأسهم والدوائر</span>
+        </div>
+        <p>احكم على المعادلات التالية مع الإشارة بدائرة إلى المكون الفاصل وسبب الحكم:</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <b>المعادلة الأولى:</b> $3x_1 + 2x_2 - 5x_3 = 8$<br>
+              <span class="op-arrow">فحص المكونات ➔</span> كل مجهول أسّه <span class="pivot-circle">1</span>، ولا يوجد ضرب متغيرات.<br>
+              <span style="color:var(--accent);font-weight:700">✓ الحكم: خطية تماماً.</span>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <b>المعادلة الثانية (الفخ):</b> $2y - \sin\pi = 6$<br>
+              <span class="op-arrow">تحديد المكون الحاسم ➔</span> انتبه إلى الحد <span class="target-circle">$\sin\pi$</span><br>
+              <span class="op-arrow-down">↓</span> الدالة المثلثية دخلت على عدد ثابت ($\pi$) وليس على مجهول: $\sin\pi = 0$.<br>
+              المعادلة تكافئ: $2y - 0 = 6 \implies 2y = 6$.<br>
+              <span style="color:var(--accent);font-weight:700">✓ الحكم: خطية (الثوابت مسموحة مهما بدت غريبة).</span>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <b>المعادلة الثالثة:</b> $x + 2y - <span class="target-circle">xz</span> = 4$<br>
+              <span class="op-arrow">تحديد المكون المخالف ➔</span> الدائرة تشير إلى <span class="target-circle">xz</span><br>
+              <span class="op-arrow-down">↓</span> حاصل ضرب متغيرين مجهولين $x \cdot z$ يرفع درجة الحد إلى الدرجة الثانية!<br>
+              <span style="color:var(--terra);font-weight:700">✗ الحكم: ليست خطية (Nonlinear).</span>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recall-card">
+        <div class="recall-q">اختبار الـ 10 ثوانٍ: هل المعادلة $\sqrt{x} + 2y = 5$ خطية؟</div>
+        <div class="recall-a"><b>ليست خطية!</b> لأن الجذر التربيعي يعني أن أس المتغير هو $\frac{1}{2}$ وليس $1$.</div>
+      </div>
+    </article>
+
+    <!-- Lesson 0002 -->
+    <article class="lcard" id="c0002">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0002</span>
+          <h3 class="ltitle">المصفوفات والعمليات والنظير الضربي (Matrices & Inverse)</h3>
+          <span class="len">Matrices, Operations & Multiplicative Inverse</span>
+        </div>
+        <a class="lopen" href="lessons/0002-matrices-inverse.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0002 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0002 · المصفوفات والنظير الضربي</div>
+          <div class="mindmap-root-badge">🌱 المحور: لغة المصفوفات وزر التراجع $A \cdot A^{-1} = I$</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">المصفوفة كآلة تحويل فضائي، والنظير $A^{-1}$ هو زر التراجع الدقيق (Ctrl+Z) للآلة.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>جواز السفر البعدي: $(m \times n)$ يحدد هوية وحقوق كل عملية</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>مصفوفة الوحدة $I$: المرآة المحايدة التي لا تغير ما يضرب بها</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">شروط التوافق البعدي للعمليات وشروط وجود النظير:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الجمع/الطرح: تطابق تام في الأبعاد $(m\times n) \pm (m\times n)$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الضرب: تطابق البعدين الداخليين $(m \times \mathbf{k})(\mathbf{k} \times n)$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>النظير: مصفوفة مربعة $n \times n$ وشرط حاسم $\det(A) \neq 0$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">حساب نظير مصفوفة $2 \times 2$ بقاعدة تبديل الأقطار والمحدد:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: حساب المحدد $\det(A) = ad - bc$ أولاً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: تبديل عنصري القطر الرئيسي وعكس إشارات الثانوي</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: الضرب في المقلوب $A^{-1} = \frac{1}{\det(A)}\begin{pmatrix} d & -b \\ -c & a \end{pmatrix}$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الحل الخاطف للمنظومات الخطية والارتباط العضوي بالمحددات:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>حل المعادلة $Ax = b$ مباشرة بضرب الطرفين: $x = A^{-1} b$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>مصفوفة شاذة (Singular): محددها صفر ➔ لا نظير ولا زر تراجع!</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="feynman-box">
+        <b>تشبيه فاينمان (صالة السينما وزر التراجع):</b> شكل المصفوفة مثل خريطة مقاعد السينما؛ رقم الصف ورقم الكرسي. والنظير الضربي $A^{-1}$ هو "زر التراجع (Undo)" الذي يلغي أثر المصفوفة ويعيدك للمحايد $I$.
+      </div>
+
+      <!-- Worked Example 0002 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول خطوة بخطوة: حساب النظير الضربي 2×2</h4>
+          <span class="ex-badge">بمكونات المشروع البصرية</span>
+        </div>
+        <p style="display:flex;align-items:center;gap:10px;flex-wrap:wrap">
+          أوجد النظير الضربي للمصفوفة:
+          <span style="font-weight:700">A =</span>
+          <span class="mx" dir="ltr">
+            <span class="bl"></span>
+            <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+              <span class="mc piv">2</span><span class="mc">-3</span>
+              <span class="mc">1</span><span class="mc piv">2</span>
+            </span>
+            <span class="br"></span>
+          </span>
+        </p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <b>حساب المحدد كاشف النظير:</b><br>
+              نضرب عنصري القطر الرئيسي الأخضر: (<span class="pivot-circle">2</span>) × (<span class="pivot-circle">2</span>) = 4<br>
+              نطرح حاصل ضرب عنصري القطر الفرعي: (<span class="target-circle">-3</span>) × (<span class="target-circle">1</span>) = -3<br>
+              <span class="op-arrow">العملية ➔</span> <bdi class="en-code" dir="ltr">det(A) = (2)(2) - (-3)(1) = 4 - (-3) = 7 ≠ 0</bdi><br>
+              <span style="color:var(--accent);font-weight:700">✓ المحدد لا يساوي صفراً ➔ النظير <bdi class="en-code" dir="ltr">A<sup>-1</sup></bdi> موجود!</span>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <b>تطبيق قاعدة تبديل وعكس الأماكن:</b><br>
+              <span class="op-arrow">القطر الرئيسي ➔</span> نبدل مكان <bdi class="en-code" dir="ltr">a</bdi> و <bdi class="en-code" dir="ltr">d</bdi>: كلاهما <span class="pivot-circle">2</span> و <span class="pivot-circle">2</span> بالأخضر فيبقيان كما هما.<br>
+              <span class="op-arrow">القطر الفرعي ➔</span> نعكس إشارة العنصرين: <bdi class="en-code" dir="ltr">-3 ➔ +3</bdi> و <bdi class="en-code" dir="ltr">1 ➔ -1</bdi> (محاطان بدوائر التغيير).<br>
+              <div dir="ltr" style="display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0;">
+                <span style="font-weight:700">adj(A) =</span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+                    <span class="mc piv">2</span><span class="mc chg">3</span>
+                    <span class="mc chg">-1</span><span class="mc piv">2</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <b>القسمة على المحدد:</b><br>
+              <div class="matrix-display" dir="ltr" style="display:flex;align-items:center;justify-content:center;gap:10px;flex-wrap:wrap">
+                <span style="font-weight:700">A<sup>-1</sup> = <sup>1</sup>/<sub>7</sub></span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+                    <span class="mc">2</span><span class="mc">3</span>
+                    <span class="mc">-1</span><span class="mc">2</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+                <span style="font-weight:700">=</span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:repeat(2,minmax(2.8em,auto))">
+                    <span class="mc"><sup>2</sup>/<sub>7</sub></span><span class="mc"><sup>3</sup>/<sub>7</sub></span>
+                    <span class="mc">-<sup>1</sup>/<sub>7</sub></span><span class="mc"><sup>2</sup>/<sub>7</sub></span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recall-card">
+        <div class="recall-q">ما هو شرط وجود النظير الضربي للمصفوفة المربعة؟</div>
+        <div class="recall-a">أن يكون محددها لا يساوي صفراً: $\det(A) \neq 0$. فإذا كان صفراً سميت مصفوفة شاذة ولا نظير لها.</div>
+      </div>
+    </article>
+
+    <!-- Lesson 0003 -->
+    <article class="lcard" id="c0003">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0003</span>
+          <h3 class="ltitle">الحذف الغاوسي خطوة بخطوة (Gaussian Elimination)</h3>
+          <span class="len">Gaussian Elimination — three row moves solve any linear system</span>
+        </div>
+        <a class="lopen" href="lessons/0003-gaussian-elimination.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0003 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0003 · الحذف الغاوسي وحالات الحلول</div>
+          <div class="mindmap-root-badge">🌱 المحور: ماكينة الحذف وتصفير ما تحت القادة (Pivots)</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">المثلث الذهبي المتدرج: تحويل المنظومة المعقدة إلى درج هابط ينكشف فيه المجهول الأخير أولاً.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: فك أحجار الدومينو من الأسفل للأعلى بنظام متسلسل</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: عزل كل مجهول على حدة عبر تصفير ما يشاركه العمود</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">قواعد العمليات الصفية الأولية (ERO) المسموحة قانونياً:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>تبديل صفين كاملين: $R_i \leftrightarrow R_j$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>ضرب صف بعدد غير صفري: $k R_i \to R_i$ ($k \neq 0$)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>إضافة مضاعف صف إلى صف آخر: $R_j + k R_i \to R_j$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">الهبوط التصفيري ثم الصعود بالتعويض الخلفي (Back-substitution):</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: تثبيت العنصر القائد (Pivot) غير الصفري بأعلى اليسار</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: استخدام الصف القائد لتصفير كافة المدخلات التي تحته</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: تكرار النمط قطرياً للوصول للشكل المدرج (REF)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 4: التعويض الخلفي من الصف الأخير صعوداً للقمة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">قراءة شفرة الصف الأخير لحسم طبيعة الحل فورياً:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>صف $[0 \; 0 \dots 0 \mid k]$ ($k \neq 0$): تناقض مستحيل (لا حل)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>صف أصفار كامل $[0 \dots 0 \mid 0]$: متغير حر (حلول لانهائية)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>قائد في كل عمود: منظومة متسقة بحل وحيد تماماً</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0003 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول بالكامل: سلّم الحذف الغاوسي خطوة بخطوة</h4>
+          <span class="ex-badge">مصفوفات بصرية كاملة</span>
+        </div>
+        <p>حل المنظومة التالية (من تدريبات المقرر) بالحذف الغاوسي حتى الشكل المثلثي ثم التعويض الخلفي:</p>
+        <div class="matrix-display">
+          <bdi class="en-code" dir="ltr">2x + 4y + 6z = 22</bdi><br>
+          <bdi class="en-code" dir="ltr">3x + 8y + 5z = 27</bdi><br>
+          <bdi class="en-code" dir="ltr">-x + y + 2z = 2</bdi>
+        </div>
+
+        <div class="legend">
+          <span class="li"><i class="dotpiv"></i> القائد (pivot)</span>
+          <span class="li"><i class="ringchg"></i> خلية تغيّرت في هذه الخطوة</span>
+        </div>
+
+        <div class="matrix-stage">
+          <!-- Step 1 -->
+          <div class="stepc">
+            <span class="opchip">المرحلة 1 · البداية وتحديد القائد الأول</span>
+            <div dir="ltr" style="text-align:center;margin:8px 0;">
+              <span class="mx" dir="ltr">
+                <span class="bl"></span>
+                <span class="mg" style="grid-template-columns:repeat(4,minmax(2.2em,auto))">
+                  <span class="mc piv">2</span><span class="mc">4</span><span class="mc">6</span><span class="mc aug">22</span>
+                  <span class="mc">3</span><span class="mc">8</span><span class="mc">5</span><span class="mc aug">27</span>
+                  <span class="mc">-1</span><span class="mc">1</span><span class="mc">2</span><span class="mc aug">2</span>
+                </span>
+                <span class="br"></span>
+              </span>
+            </div>
+            <div class="why">
+              <b>المصفوفة الموسعة:</b> المعاملات يسار الخط الفاصل والثوابت يمينه. القائد الأخضر هو <span class="coord">2</span>، والهدف تحويله إلى <span class="coord">1</span> بقسمة الصف الأول كاملاً على 2.
+            </div>
+          </div>
+
+          <!-- Step 2 -->
+          <div class="stepc">
+            <span class="opchip">المرحلة 2 · R₁ ÷ 2</span>
+            <div dir="ltr" style="text-align:center;margin:8px 0;">
+              <span class="mx" dir="ltr">
+                <span class="bl"></span>
+                <span class="mg" style="grid-template-columns:repeat(4,minmax(2.2em,auto))">
+                  <span class="mc piv chg">1</span><span class="mc chg">2</span><span class="mc chg">3</span><span class="mc aug chg">11</span>
+                  <span class="mc">3</span><span class="mc">8</span><span class="mc">5</span><span class="mc aug">27</span>
+                  <span class="mc">-1</span><span class="mc">1</span><span class="mc">2</span><span class="mc aug">2</span>
+                </span>
+                <span class="br"></span>
+              </span>
+            </div>
+            <div class="why">
+              <b>ضرب صف بثابت:</b> قسمنا الصف الأول كاملاً على <span class="coord">2</span>: <span class="coord">[2, 4, 6 | 22] ← [1, 2, 3 | 11]</span>. القائد صار <span class="coord">1</span> بالأخضر، والدوائر البرتقالية تبرز الخلايا الأربع التي تغيّرت.
+            </div>
+          </div>
+
+          <!-- Step 3 -->
+          <div class="stepc">
+            <span class="opchip">المرحلة 3 · −3R₁ + R₂ ، R₁ + R₃</span>
+            <div dir="ltr" style="text-align:center;margin:8px 0;">
+              <span class="mx" dir="ltr">
+                <span class="bl"></span>
+                <span class="mg" style="grid-template-columns:repeat(4,minmax(2.2em,auto))">
+                  <span class="mc">1</span><span class="mc">2</span><span class="mc">3</span><span class="mc aug">11</span>
+                  <span class="mc chg">0</span><span class="mc piv chg">2</span><span class="mc chg">-4</span><span class="mc aug chg">-6</span>
+                  <span class="mc chg">0</span><span class="mc chg">3</span><span class="mc chg">5</span><span class="mc aug">13</span>
+                </span>
+                <span class="br"></span>
+              </span>
+            </div>
+            <div class="why">
+              <b>إضافة مضاعف صف:</b> تصفير ما تحت القائد الأول بالكامل:
+              <div>• الصف الثاني: <span class="coord">[3, 8, 5 | 27] − 3×[1, 2, 3 | 11] = [0, 2, −4 | −6]</span></div>
+              <div>• الصف الثالث: <span class="coord">[−1, 1, 2 | 2] + [1, 2, 3 | 11] = [0, 3, 5 | 13]</span></div>
+              العمود الأول تحت القائد صار أصفاراً نقية، وتحدد القائد الثاني وهو <span class="coord">2</span> بالأخضر.
+            </div>
+          </div>
+
+          <!-- Step 4 -->
+          <div class="stepc">
+            <span class="opchip">المرحلة 4 · R₂ ÷ 2</span>
+            <div dir="ltr" style="text-align:center;margin:8px 0;">
+              <span class="mx" dir="ltr">
+                <span class="bl"></span>
+                <span class="mg" style="grid-template-columns:repeat(4,minmax(2.2em,auto))">
+                  <span class="mc">1</span><span class="mc">2</span><span class="mc">3</span><span class="mc aug">11</span>
+                  <span class="mc">0</span><span class="mc piv chg">1</span><span class="mc chg">-2</span><span class="mc aug chg">-3</span>
+                  <span class="mc">0</span><span class="mc">3</span><span class="mc">5</span><span class="mc aug">13</span>
+                </span>
+                <span class="br"></span>
+              </span>
+            </div>
+            <div class="why">
+              <b>تطبيع القائد الثاني:</b> قسمنا الصف الثاني على <span class="coord">2</span> فصار قائده <span class="coord">1</span> بالأخضر: <span class="coord">[0, 2, −4 | −6] ← [0, 1, −2 | −3]</span>.
+            </div>
+          </div>
+
+          <!-- Step 5 -->
+          <div class="stepc">
+            <span class="opchip">المرحلة 5 · −3R₂ + R₃</span>
+            <div dir="ltr" style="text-align:center;margin:8px 0;">
+              <span class="mx" dir="ltr">
+                <span class="bl"></span>
+                <span class="mg" style="grid-template-columns:repeat(4,minmax(2.2em,auto))">
+                  <span class="mc">1</span><span class="mc">2</span><span class="mc">3</span><span class="mc aug">11</span>
+                  <span class="mc">0</span><span class="mc">1</span><span class="mc">-2</span><span class="mc aug">-3</span>
+                  <span class="mc">0</span><span class="mc chg">0</span><span class="mc piv chg">11</span><span class="mc aug chg">22</span>
+                </span>
+                <span class="br"></span>
+              </span>
+            </div>
+            <div class="why">
+              <b>تصفير أسفل القائد الثاني:</b> طرحنا 3 أضعاف الصف الثاني من الثالث: <span class="coord">[0, 3, 5 | 13] − 3×[0, 1, −2 | −3] = [0, 0, 11 | 22]</span>.
+            </div>
+          </div>
+
+          <!-- Step 6 -->
+          <div class="stepc">
+            <span class="opchip">المرحلة 6 · R₃ ÷ 11 (اكتمل الشكل المثلثي)</span>
+            <div dir="ltr" style="text-align:center;margin:8px 0;">
+              <span class="mx" dir="ltr">
+                <span class="bl"></span>
+                <span class="mg" style="grid-template-columns:repeat(4,minmax(2.2em,auto))">
+                  <span class="mc">1</span><span class="mc">2</span><span class="mc">3</span><span class="mc aug">11</span>
+                  <span class="mc">0</span><span class="mc">1</span><span class="mc">-2</span><span class="mc aug">-3</span>
+                  <span class="mc">0</span><span class="mc">0</span><span class="mc piv chg">1</span><span class="mc aug chg">2</span>
+                </span>
+                <span class="br"></span>
+              </span>
+            </div>
+            <div class="why">
+              <b>اكتمل المثلث العلوي:</b> قسمنا الصف الثالث على <span class="coord">11</span> فأصبح <span class="coord">[0, 0, 1 | 2]</span>. أصفار نقية تحت القطر وقادة وحدات جاهزة للحصاد المباشر!
+            </div>
+          </div>
+
+          <!-- Step 7 -->
+          <div class="stepc" style="text-align:start">
+            <div style="text-align:center;margin-bottom:10px;"><span class="opchip">المرحلة 7 · التعويض الخلفي وحصد النتيجة</span></div>
+            <div class="why" style="max-width:100%">
+              <div><span class="op-arrow-down">↑</span> من الصف الثالث مباشرة: <bdi class="en-code" dir="ltr">z = 2</bdi>.</div>
+              <div><span class="op-arrow-down">↑</span> بالصعود للصف الثاني: <bdi class="en-code" dir="ltr">y − 2(2) = −3 ⟹ y = 1</bdi>.</div>
+              <div><span class="op-arrow-down">↑</span> بالصعود للصف الأول: <bdi class="en-code" dir="ltr">x + 2(1) + 3(2) = 11 ⟹ x + 8 = 11 ⟹ x = 3</bdi>.</div>
+              <div style="background:var(--accent-light);padding:10px 14px;border-radius:8px;font-weight:700;margin-top:10px;text-align:center">
+                الحل النهائي المحقق: <bdi class="en-code" dir="ltr">(x, y, z) = (3, 1, 2)</bdi>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="recall-card">
+        <div class="recall-q">ما هو الهدف الأساسي من الحذف الغاوسي قبل التعويض الخلفي؟</div>
+        <div class="recall-a">تحويل مصفوفة المعاملات إلى مصفوفة مثلثية علوية (Upper Triangular) بحيث تصبح جميع العناصر الواقعة تحت القادة أصفاراً نقية.</div>
+      </div>
+    </article>
+
+    <!-- Lesson 0004 -->
+    <article class="lcard" id="c0004">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0004</span>
+          <h3 class="ltitle">خصائص العمليات والمصفوفة الصفرية (Matrix Properties)</h3>
+          <span class="len">Matrix Properties — algebraic laws & the zero matrix</span>
+        </div>
+        <a class="lopen" href="lessons/0004-matrix-properties.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0004 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0004 · الجبر المصفوفي والمصفوفة الصفرية</div>
+          <div class="mindmap-root-badge">🌱 المحور: قوانين الحساب وأفخاخ البديهيات العمياء</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">المصفوفات ليست أرقاماً عادية: تروس ميكانيكية متراكبة يغير تبديل ترتيبها النتيجة بالكامل.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: ارتداء الجوارب ثم الحذاء يختلف كلياً عن ارتداء الحذاء أولاً!</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الحذر: لا تطبق بديهيات الجبر الابتدائي على المصفوفات دون تدقيق</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">القوانين المعتمدة وفخاخ الحظر الثلاثة القاتلة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المسموح: التجميع $(AB)C = A(BC)$ والتوزيع $A(B+C) = AB + AC$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الفخ 1: الضرب ليس إبدالياً عموماً $AB \neq BA$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الفخ 2: حظر الإلغاء ($AB = AC$ لا تقتضي $B = C$ إلا إذا كانت $A$ عكوسة)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الفخ 3: قواسم الصفر ($AB = O$ ممكنة حتى لو كانت $A, B \neq O$)</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">قواعد قلب الترتيب عند المدور والنظير وحسم المعادلة الصفرية:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>مدور الضرب يعكس الترتيب: $(AB)^T = B^T A^T$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>نظير الضرب يعكس الترتيب: $(AB)^{-1} = B^{-1} A^{-1}$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>قاعدة الصفر القياسي: $c A = O \implies (c = 0) \lor (A = O)$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">بناء البراهين الرياضية الصارمة وحماية الدرجة في الأسئلة النظرية:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>العصمة من الوقوع في فخاخ أسئلة "صح أو خطأ" الامتحانية</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التمهيد الدقيق لقواعد ضرب المحددات $\det(AB) = \det(A)\det(B)$</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0004 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: إثبات عدم إبدال الضرب بمثال عددي</h4>
+          <span class="ex-badge">فخ الإبدال</span>
+        </div>
+        <p style="display:flex;align-items:center;gap:12px;flex-wrap:wrap">
+          لتكن:
+          <span style="font-weight:700">A =</span>
+          <span class="mx" dir="ltr">
+            <span class="bl"></span>
+            <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+              <span class="mc">1</span><span class="mc">2</span>
+              <span class="mc">0</span><span class="mc">1</span>
+            </span>
+            <span class="br"></span>
+          </span>
+          <span style="font-weight:700">و B =</span>
+          <span class="mx" dir="ltr">
+            <span class="bl"></span>
+            <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+              <span class="mc">0</span><span class="mc">1</span>
+              <span class="mc">1</span><span class="mc">0</span>
+            </span>
+            <span class="br"></span>
+          </span>
+          . احسب <bdi class="en-code" dir="ltr">AB</bdi> و <bdi class="en-code" dir="ltr">BA</bdi> وقارن:
+        </p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <b>حساب <bdi class="en-code" dir="ltr">AB</bdi> (صف <bdi class="en-code" dir="ltr">A</bdi> في عمود <bdi class="en-code" dir="ltr">B</bdi>):</b><br>
+              الصف الأول في العمود الأول: <bdi class="en-code" dir="ltr">(1)(0) + (2)(1) = 2</bdi>.<br>
+              الصف الأول في العمود الثاني: <bdi class="en-code" dir="ltr">(1)(1) + (2)(0) = 1</bdi>.<br>
+              الصف الثاني في العمود الأول: <bdi class="en-code" dir="ltr">(0)(0) + (1)(1) = 1</bdi>.<br>
+              الصف الثاني في العمود الثاني: <bdi class="en-code" dir="ltr">(0)(1) + (1)(0) = 0</bdi>.<br>
+              <div dir="ltr" style="text-align:center;margin:10px 0;">
+                <span style="font-weight:700;margin-inline-end:8px">AB =</span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+                    <span class="mc">2</span><span class="mc">1</span>
+                    <span class="mc">1</span><span class="mc">0</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <b>حساب <bdi class="en-code" dir="ltr">BA</bdi> (صف <bdi class="en-code" dir="ltr">B</bdi> في عمود <bdi class="en-code" dir="ltr">A</bdi>):</b><br>
+              الصف الأول في العمود الأول: <bdi class="en-code" dir="ltr">(0)(1) + (1)(0) = 0</bdi>.<br>
+              الصف الأول في العمود الثاني: <bdi class="en-code" dir="ltr">(0)(2) + (1)(1) = 1</bdi>.<br>
+              الصف الثاني في العمود الأول: <bdi class="en-code" dir="ltr">(1)(1) + (0)(0) = 1</bdi>.<br>
+              الصف الثاني في العمود الثاني: <bdi class="en-code" dir="ltr">(1)(2) + (0)(1) = 2</bdi>.<br>
+              <div dir="ltr" style="text-align:center;margin:10px 0;">
+                <span style="font-weight:700;margin-inline-end:8px">BA =</span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+                    <span class="mc">0</span><span class="mc">1</span>
+                    <span class="mc">1</span><span class="mc">2</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <b>المقارنة والحكم:</b><br>
+              نلاحظ بوضوح عدم تطابق المصفوفتين:
+              <div dir="ltr" style="display:flex;align-items:center;justify-content:center;gap:12px;margin:10px 0;">
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-weight:700">AB =</span>
+                  <span class="mx" dir="ltr">
+                    <span class="bl"></span>
+                    <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+                      <span class="mc">2</span><span class="mc">1</span>
+                      <span class="mc">1</span><span class="mc">0</span>
+                    </span>
+                    <span class="br"></span>
+                  </span>
+                </div>
+                <span style="font-size:22px;font-weight:900;color:var(--terra)">≠</span>
+                <div style="display:flex;align-items:center;gap:6px">
+                  <span style="font-weight:700">BA =</span>
+                  <span class="mx" dir="ltr">
+                    <span class="bl"></span>
+                    <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+                      <span class="mc">0</span><span class="mc">1</span>
+                      <span class="mc">1</span><span class="mc">2</span>
+                    </span>
+                    <span class="br"></span>
+                  </span>
+                </div>
+              </div>
+              <span style="color:var(--terra);font-weight:800">إذن <bdi class="en-code" dir="ltr">AB ≠ BA</bdi>؛ ترتيب العوامل في ضرب المصفوفات يغير النتيجة بالكامل!</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- MODULE 2: LESSONS 0005 - 0008 -->
+  <!-- ================================================================= -->
+  <section class="section-block" id="mod2">
+    <div class="sec-header">
+      <span class="sec-num">المحور الثاني · الدروس 05 إلى 08</span>
+      <h2 class="sec-title">فضاءات المتجهات والتراكيب والمولد</h2>
+      <p class="sec-desc">الهندسة الفضائية: الضرب الداخلي والتعامد، نادي الفضاء الجزئي، خلطات التراكيب، والاستقلال الخطي.</p>
+    </div>
+
+    <!-- Lesson 0005 -->
+    <article class="lcard" id="c0005">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0005</span>
+          <h3 class="ltitle">فضاء المتجهات الإقليدي (Euclidean Vector Spaces)</h3>
+          <span class="len" dir="ltr">Euclidean Vector Spaces — inner product, length and distance</span>
+          <div style="font-size:13px;color:var(--muted);margin-top:4px">
+            <b>المعنى ببساطة:</b> هندسة الأسهم في الفضاء — قياس طول السهم بالمسطرة، زوايا الاتجاه، والضرب الداخلي لكشف التعامد.
+          </div>
+        </div>
+        <a class="lopen" href="lessons/0005-euclidean-spaces.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0005 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0005 · الفضاء الإقليدي الهندسي</div>
+          <div class="mindmap-root-badge">🌱 المحور: هندسة الأسهم، الطول بالمسطرة، والضرب الداخلي</div>
+        </div>
+        <div class="tree-branches">
+          <!-- Branch 1 -->
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي (عالم الأسهم)</div>
+            <div class="branch-content">المتجه ليس مجرد أرقام جافة داخل أقواس: بل هو <b>سهم حقيقي في الفضاء</b> له طول بالمسطرة وزاوية اتجاه.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span><b>تشبيه رادار الملاحة:</b> المتجه يحدد إزاحة الطائرة بدقة: كم كيلومتراً طارت (الطول) وفي أي اتجاه (الزاوية).</span>
+              </li>
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span><b>الضرب الداخلي (Dot Product):</b> جهاز كاشف التوازي؛ يقيس كم يتعاون السهمان ويسيران في نفس الاتجاه.</span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Branch 2 -->
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة (بلغة واضحة ومبسطة)</div>
+            <div class="branch-content">قواعد قياس الأسهم وفهم الرموز الرياضية خطوة بخطوة بلا غموض:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span>
+                  <b>1. انغلاق الفضاء (Closure):</b>
+                  مهما جمعت من أسهم أو مددتها بضربها في أي عدد، فإن السهم الناتج يظل حتماً داخل نفس الفضاء ولا يخرج منه أبداً (مثل الرسم على ورقة مستوية؛ مستحيل للخط أن يطير خارج الورقة).
+                </span>
+              </li>
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span>
+                  <b>2. إيجابية المعيار (طول السهم موجَب دائماً):</b>
+                  المعيار (<bdi class="en-code" dir="ltr">Norm</bdi>) هو ببساطة <b>طول السهم بالمسطرة</b>. طول أي سهم مسافة موجبة أو صفر:
+                  <bdi class="en-code" dir="ltr">||u|| ≥ 0</bdi>؛
+                  فلا وجود لطول سالب في الواقع! ولا ينعدم الطول (<bdi class="en-code" dir="ltr">||u|| = 0</bdi>) إلا إذا كان السهم نقطة ساكنة في مكانها بلا أي حركة، وهو ما يسمى <b>المتجه الصفري</b> (<bdi class="en-code" dir="ltr">Zero Vector: 0&#8407;</bdi>).
+                </span>
+              </li>
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span>
+                  <b>3. متباينة كوشي-شفارتز (Cauchy-Schwarz):</b>
+                  حاصل الضرب الداخلي بين سهمين لا يمكن أبداً أن يتجاوز حاصل ضرب طوليهما:
+                  <bdi class="en-code" dir="ltr">|u &middot; v| ≤ ||u|| &times; ||v||</bdi>.
+                  <b>معناها ببساطة:</b> أقصى طاقة وانسجام بين سهمين تحدث فقط عندما ينطبقان تماماً في نفس الاتجاه؛ وتقل هذه القيمة كلما تباعدا حتى تصبح صفراً عند التعامد!
+                </span>
+              </li>
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span>
+                  <b>4. متباينة المثلث (Triangle Inequality):</b>
+                  أقصر طريق بين نقطتين هو الخط المستقيم:
+                  <bdi class="en-code" dir="ltr">||u + v|| ≤ ||u|| + ||v||</bdi>؛
+                  أي أن طول الوتر المباشر لا يمكن أن يتجاوز مجموع طولي المسارين المنفصلين.
+                </span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Branch 3 -->
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي (الحسابات الثلاثة)</div>
+            <div class="branch-content">كيف تحسب بيدك خطوة بخطوة بالدوائر والأسهم:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span><b>1. الضرب الداخلي (Dot Product):</b> نضرب كل رقم بقرينه المقابل (السينات بالسينات والصادات بالصادات) ثم نجمع النواتج: <bdi class="en-code" dir="ltr">u &middot; v = u₁v₁ + u₂v₂ + &hellip;</bdi></span>
+              </li>
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span><b>2. طول السهم (المعيار Norm):</b> نطبق نظرية فيثاغورس؛ نربّع كل رقم، نجمع المربعات، ثم نأخذ الجذر التربيعي: <bdi class="en-code" dir="ltr">||u|| = &radic;(u₁&sup2; + u₂&sup2; + &hellip;)</bdi></span>
+              </li>
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span><b>3. كاشف التعامد الفوري (Orthogonal):</b> السهمان يشكلان زاوية قائمة 90&deg; إذا وفقط إذا كان ناتج ضربهما الداخلي صفراً تماماً: <bdi class="en-code" dir="ltr">u &middot; v = 0</bdi></span>
+              </li>
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span><b>4. المسافة بين سهمين (Distance):</b> هي طول السهم الواصل بين رأسيهما بطرح الإحداثيات: <bdi class="en-code" dir="ltr">d(u, v) = ||u - v||</bdi></span>
+              </li>
+            </ul>
+          </div>
+
+          <!-- Branch 4 -->
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل (ما فائدتها عملياً؟)</div>
+            <div class="branch-content">تطبيقات الذكاء الاصطناعي ومعالجة البيانات والملاحة الفضائية:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span><b>قياس الزاوية بين سهمين:</b> القانون يحسب الزاوية بالتمام والكمال: <bdi class="en-code" dir="ltr">cos(&theta;) = (u &middot; v) / (||u|| &times; ||v||)</bdi></span>
+              </li>
+              <li class="tree-subnode">
+                <span class="tree-connector">↳</span>
+                <span><b>محركات البحث والذكاء الاصطناعي:</b> تقنية <bdi class="en-code" dir="ltr">Cosine Similarity</bdi> لمقارنة تشابه النصوص والأسئلة والصور تعتمد كلياً على زاوية الضرب الداخلي هذه!</span>
+              </li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0005 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: حساب الضرب الداخلي والطول والمسافة والتعامد</h4>
+          <span class="ex-badge">حساب هندسي</span>
+        </div>
+        <p>ليكن $u = (3, -4)$ و $v = (4, 3)$ في الفضاء $\mathbb{R}^2$. احسب التالي:</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <b>الضرب الداخلي (المطابقة عنصراً بعنصر بالدوائر):</b><br>
+              نضرب السينات بدائرة خضراء: (<span class="pivot-circle">3</span>) $\times$ (<span class="pivot-circle">4</span>) $= 12$<br>
+              نضرب الصادات بدائرة برتقالية: (<span class="target-circle">-4</span>) $\times$ (<span class="target-circle">3</span>) $= -12$<br>
+              <span class="op-arrow">الجمع ➔</span> $\langle u, v \rangle = 12 + (-12) = \mathbf{0}$.<br>
+              <span style="color:var(--accent);font-weight:700">✓ الاستنتاج الفوري: بما أن الضرب الداخلي = 0، فإن المتجهين متعامدان ($u \perp v$)!</span>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <b>طول كل متجه (Norm):</b><br>
+              $\|u\| = \sqrt{3^2 + (-4)^2} = \sqrt{9 + 16} = \sqrt{25} = \mathbf{5}$.<br>
+              $\|v\| = \sqrt{4^2 + 3^2} = \sqrt{16 + 9} = \sqrt{25} = \mathbf{5}$.
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <b>المسافة بين المتجهين $d(u,v)$:</b><br>
+              نحسب متجه الفرق: $u - v = (3 - 4, -4 - 3) = (-1, -7)$.<br>
+              المسافة هي طول الفرق: $d(u,v) = \sqrt{(-1)^2 + (-7)^2} = \sqrt{1 + 49} = \mathbf{\sqrt{50}} = 5\sqrt{2}$.
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0006 -->
+    <article class="lcard" id="c0006">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0006</span>
+          <h3 class="ltitle">الفضاء الجزئي (Subspaces)</h3>
+          <span class="len">Subspaces — closed under addition and scalar multiplication</span>
+        </div>
+        <a class="lopen" href="lessons/0006-subspaces.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0006 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0006 · الفضاء الجزئي (Subspaces)</div>
+          <div class="mindmap-root-badge">🌱 المحور: نادي الشروط الثلاثة المنغلق داخل $\mathbb{R}^n$</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">النادي المنغلق بإحكام: فضاء مصغر يعيش داخل الفضاء الأكبر، مستحيل لأي عملية خلط أن تقذفك خارجه.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: ملعب مسيج؛ مهما سددت أو دمجت الكرات تظل داخل الملعب</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>هندسياً: خط مستقيم أو مستوٍ يمر إجبارياً بنقطة الأصل $(0,0,\dots)$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">دستور الفضاء الجزئي — سقوط شرط واحد يسقط الصفة فوراً:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span><b>الشرط 1 (تذكرة الدخول):</b> يمر حتماً بنقطة الأصل — المتجه الصفري <bdi class="en-code" dir="ltr">0&#8407; = (0, 0, &hellip;)</bdi> موجود في الفضاء حتماً.</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span><b>الشرط 2 (انغلاق الجمع):</b> جمع أي سهمين داخل الفضاء ينتج عنه سهم يظل حتماً داخل نفس الفضاء ولا يخرج منه: <bdi class="en-code" dir="ltr">u + v &isin; W</bdi>.</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span><b>الشرط 3 (انغلاق الضرب القياسي):</b> تمديد أو تقصير أو عكس اتجاه أي سهم بضربه في أي عدد حقيقي يظل داخل الفضاء: <bdi class="en-code" dir="ltr">c &middot; u &isin; W</bdi>.</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">بروتوكول الفحص السريع وكشف المشتبهين المرفوضين:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فحص الصفر أولاً: عوض $(0,0,\dots)$؛ إن لم يحقق فهو ليس فضاءً!</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المشتبه 1 (مرفوض): وجود ثابت مطلق كـ $x + y = 3$ (انزاح عن الأصل)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المشتبه 2 (مرفوض): متباينات كـ $x \ge 0$ (تفشل بالضرب في سالب)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المشتبه 3 (مرفوض): قوى ولاخطية كـ $y = x^2$ أو القيمة المطلقة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">فضاءات الحلول للمنظومات المتجانسة ونواة المصفوفات:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فضاء حلول المنظومة المتجانسة $Ax = \mathbf{0}$ فضاء جزئي دائماً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>تمهيد جوهري لفضاء النواة $\text{Null}(A)$ وفضاء الأعمدة $\text{Col}(A)$</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Educational Figure 3: Subspace Origin Test -->
+      <figure class="concept-figure">
+        <img src="assets/images/subspace_comparison.jpg" alt="المقارنة الهندسية الصارمة للفضاء الجزئي في R^2" loading="lazy">
+        <figcaption class="concept-caption">
+          <b>⚖️ اختبار الفضاء الجزئي الصارم في $\mathbb{R}^2$:</b> 
+          على اليسار <b>(فضاء جزئي سليم ✓):</b> المستقيم $y = mx$ يمر حتماً بنقطة الأصل $(0,0)$ ويغلق عمليتي الجمع والضرب القياسي فيظل أي تركيب داخله. 
+          على اليمين <b>(ليس فضاءً جزئياً ✗):</b> المستقيم $y = mx + c$ أزيح عن نقطة الأصل ($c \neq 0$) ففشل فورياً في اختبار الصفر وخَرَج عن قواعد الفضاء.
+        </figcaption>
+      </figure>
+
+      <!-- Worked Example 0006 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: فحص مجموعتين في $\mathbb{R}^2$ بالاختبار الثلاثي</h4>
+          <span class="ex-badge">إثبات ونفي</span>
+        </div>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <b>المسألة الأولى:</b> هل $W = \{(x, y) \mid y = 2x\}$ فضاء جزئي في $\mathbb{R}^2$؟<br>
+              <span class="op-arrow">الشرط 1 (الصفر) ➔</span> نعوض $(0,0)$: هل $0 = 2(0)$؟ نعم، $\vec{0} \in W$.<br>
+              <span class="op-arrow">الشرط 2 (الجمع) ➔</span> نفرض $u = (x_1, 2x_1)$ و $v = (x_2, 2x_2)$ في $W$.<br>
+              مجموعهما: $u+v = (x_1+x_2, 2x_1+2x_2) = (x_1+x_2, 2(x_1+x_2))$، يحقق العلاقة $y = 2x$.<br>
+              <span class="op-arrow">الشرط 3 (الضرب) ➔</span> نضرب في $k$: $ku = (k x_1, 2(k x_1))$، يحقق العلاقة.<br>
+              <span style="color:var(--accent);font-weight:700">✓ الحكم: $W$ فضاء جزئي سليم (خط مستقيم يمر بالأصل).</span>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <b>المسألة الثانية:</b> هل $V = \{(x, y) \mid y = 2x + 1\}$ فضاء جزئي في $\mathbb{R}^2$؟ (لاحظ وجود الثابت <span class="target-circle">+1</span>)<br>
+              <span class="op-arrow">اختبار الصفر (الثانية الواحدة) ➔</span> نعوض بالنقطة $(0,0)$:<br>
+              هل $0 = 2(0) + 1$؟ $\implies 0 \neq 1$.<br>
+              <span class="target-circle">الصفر غير موجود!</span><br>
+              <span style="color:var(--terra);font-weight:700">✗ الحكم الفوري: $V$ ليس فضاءً جزئياً (لأنه خط مزاح لا يمر بالأصل).</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0007 -->
+    <article class="lcard" id="c0007">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0007</span>
+          <h3 class="ltitle">التركيب الخطي (Linear Combinations)</h3>
+          <span class="len">Linear Combinations — mixing vectors with weights</span>
+        </div>
+        <a class="lopen" href="lessons/0007-linear-combinations.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0007 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0007 · التركيب الخطي (Linear Combinations)</div>
+          <div class="mindmap-root-badge">🌱 المحور: خلطة الأوزان $w = c_1 v_1 + c_2 v_2 + \dots + c_k v_k$</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">خلطة الدهانات والبهارات: مزج كميات محددة من متجهات أساسية لتوليد متجه هدف جديد.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: (ملعقتان أحمر + 3 ملاعق أزرق = بنفسجي فريد)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>هندسياً: السير بمحاذاة السهم الأول ثم السهم الثاني للوصول للهدف</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">المعادلة المتجهة والشرط الوجودي للأوزان الحقيقية:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المعادلة: $w = c_1 v_1 + c_2 v_2 + \dots + c_k v_k$ مع ثوابت $c_i \in \mathbb{R}$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>شرط الوجود: أن تكون المنظومة الخطية الناتجة متسقة (Consistent)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>إذا كانت غير متسقة، فالمتجه $w$ يقع خارج النطاق ويستحيل تركيبه!</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">تحويل مسألة التركيب إلى مصفوفة موسعة وحلها بالحذف:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: تفريغ المتجهات المعطاة $v_i$ كأعمدة في مصفوفة $A$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: وضع المتجه المطلوب $w$ كعمود للثوابت في $[A \mid w]$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: التدرج الغاوسي لاكتشاف هل يوجد تناقض $[0 \dots 0 \mid k]$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">جسر العبور نحو فضاء المولد (Span) والاستقلال الخطي:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فضاء المولد $\text{Span}$ هو ببساطة مظلة كل التراكيب الممكنة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>إذا كان المتجه تركيبة من زملائه، فهو عنصر زائد يمكن الاستغناء عنه!</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0007 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: فحص هل المتجه تركيب خطي بإيجاد الأوزان</h4>
+          <span class="ex-badge">منظومة متنكرة</span>
+        </div>
+        <p>هل المتجه $w = (9, 4)$ هو تركيب خطي من $v_1 = (2, 1)$ و $v_2 = (1, 2)$؟</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <b>كتابة معادلة الأوزان:</b><br>
+              <div dir="ltr" style="display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0;">
+                <span style="font-weight:700">c<sub>1</sub></span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:minmax(1.8em,auto)">
+                    <span class="mc">2</span>
+                    <span class="mc">1</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+                <span style="font-weight:700">+ c<sub>2</sub></span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:minmax(1.8em,auto)">
+                    <span class="mc">1</span>
+                    <span class="mc">2</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+                <span style="font-weight:700">=</span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:minmax(1.8em,auto)">
+                    <span class="mc">9</span>
+                    <span class="mc">4</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <b>المصفوفة الموسعة والحذف بمكونات المشروع البصرية:</b><br>
+              <div class="matrix-stage">
+                <div class="stepc">
+                  <span class="opchip">المصفوفة الموسعة للمنظومة</span>
+                  <div dir="ltr" style="text-align:center;margin:8px 0;">
+                    <span class="mx" dir="ltr">
+                      <span class="bl"></span>
+                      <span class="mg" style="grid-template-columns:repeat(3,minmax(2.2em,auto))">
+                        <span class="mc">2</span><span class="mc">1</span><span class="mc aug">9</span>
+                        <span class="mc piv">1</span><span class="mc">2</span><span class="mc aug">4</span>
+                      </span>
+                      <span class="br"></span>
+                    </span>
+                  </div>
+                </div>
+
+                <div class="stepc">
+                  <span class="opchip">R₁ ↔ R₂ · تبديل الصفين</span>
+                  <div dir="ltr" style="text-align:center;margin:8px 0;">
+                    <span class="mx" dir="ltr">
+                      <span class="bl"></span>
+                      <span class="mg" style="grid-template-columns:repeat(3,minmax(2.2em,auto))">
+                        <span class="mc piv chg">1</span><span class="mc chg">2</span><span class="mc aug chg">4</span>
+                        <span class="mc chg">2</span><span class="mc chg">1</span><span class="mc aug chg">9</span>
+                      </span>
+                      <span class="br"></span>
+                    </span>
+                  </div>
+                  <div class="why">وضعنا الصف ذو القائد <span class="coord">1</span> في الأعلى لتسهيل الحسابات.</div>
+                </div>
+
+                <div class="stepc">
+                  <span class="opchip">R₂ − 2R₁ · تصفير ما تحت القائد</span>
+                  <div dir="ltr" style="text-align:center;margin:8px 0;">
+                    <span class="mx" dir="ltr">
+                      <span class="bl"></span>
+                      <span class="mg" style="grid-template-columns:repeat(3,minmax(2.2em,auto))">
+                        <span class="mc">1</span><span class="mc">2</span><span class="mc aug">4</span>
+                        <span class="mc chg">0</span><span class="mc piv chg">-3</span><span class="mc aug chg">1</span>
+                      </span>
+                      <span class="br"></span>
+                    </span>
+                  </div>
+                  <div class="why">
+                    <b>تصفير أسفل القائد:</b> طرحنا ضعفي الصف الأول من الصف الثاني: <span class="coord">[2, 1 | 9] − 2×[1, 2 | 4] = [0, −3 | 1]</span>، واكتمل المثلث العلوي!
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <b>استخراج الأوزان بالتعويض الخلفي:</b><br>
+              من الصف الثاني: $-3c_2 = 1 \implies \mathbf{c_2 = -\frac{1}{3}}$.<br>
+              من الصف الأول: $c_1 + 2(-\frac{1}{3}) = 4 \implies c_1 - \frac{2}{3} = \frac{12}{3} \implies \mathbf{c_1 = \frac{14}{3}}$.<br>
+              <span style="color:var(--accent);font-weight:700">✓ الأوزان وُجدت، إذن $w$ هو تركيب خطي بالفعل: $w = \frac{14}{3}v_1 - \frac{1}{3}v_2$.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0008 -->
+    <article class="lcard" id="c0008">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0008</span>
+          <h3 class="ltitle">المولد والاستقلال الخطي (Span & Linear Independence)</h3>
+          <span class="len">Span & Linear Independence — reachable space and redundancy</span>
+        </div>
+        <a class="lopen" href="lessons/0008-span-independence.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0008 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0008 · المولد والاستقلال الخطي</div>
+          <div class="mindmap-root-badge">🌱 المحور: مدى الوصول (Span) وعدم الهدر (Independence)</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">شبكة التغطية وعضو الفريق الفعّال: المولد هو أقصى مدى وصول، والاستقلال يعني عدم وجود أي عضو زائد.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المولد (Span): مظلة الظل الشاملة لكل مكان يمكن الوصول إليه</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الاستقلال: كل متجه يقدم بعداً جديداً لا يستطيع زملاؤه تعويضه</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">معادلة الصفر الصارمة — لا مجاملة في الاستقلال الخطي:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span><b>معادلة الصفر المركزية:</b> نبحث عن أوزان تحقق: <bdi class="en-code" dir="ltr">c₁v₁ + c₂v₂ + &hellip; + c&#7522;v&#7522; = 0&#8407;</bdi>.</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span><b>مستقلة خطياً (Linearly Independent):</b> كل سهم يضيف بعداً جديداً فريداً، والحل الوحيد لمعادلة الصفر هو أن تكون كل الأوزان أصفاراً (<bdi class="en-code" dir="ltr">c₁ = c₂ = &hellip; = 0</bdi>) — لا يوجد أي سهم عالة أو مكرر!</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span><b>مرتبطة خطياً (Linearly Dependent):</b> يوجد هدر وتكرار؛ يمكن كتابة سهم واحد على الأقل كتركيبة من زملائه، مما يعني إمكانية الاستغناء عنه دون تقليص الفضاء!</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">طريقة الحسم السريع بالمحدد أو برتبة المصفوفة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>إذا كان عدد المتجهات يساوي البعد ($n$ في $\mathbb{R}^n$): احسب المحدد!</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>إذا كان $\det(A) \neq 0$: المتجهات مستقلة وتولد الفضاء معاً بضربة واحدة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>إذا كانت مستطيلة: طبق الحذف الغاوسي؛ كل عمود بلا قائد يعني ارتباطاً</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الولادة الطبيعية لمفهوم الأساس (Basis) في الدرس التالي:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>توليد (كفاية وتغطية) + استقلال (كفاءة بلا هدر) = أساس للفضاء!</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>القاعدة الذهبية: أكثر من $n$ متجهات في $\mathbb{R}^n$ مرتبطة خطياً حتماً</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Visual Educational Figure 4: Vector Span and Linear Independence in 3D -->
+      <figure class="concept-figure">
+        <img src="assets/images/span_independence.jpg" alt="المولد والاستقلال الخطي في الفضاء الثلاثي R^3" loading="lazy">
+        <figcaption class="concept-caption">
+          <b>🌌 المولد والاستقلال الخطي في $\mathbb{R}^3$:</b> 
+          المتجهان $v_1$ و $v_2$ يحددان ويولدان مستوياً مضيئاً ثنائي الأبعاد $\text{Span}(v_1, v_2)$. 
+          المتجه $v_3$ باللون السماوي يشير إلى خارج المستوى فيضيف بعداً ثالثاً جديداً للفضاء <b>(مستقل خطياً Linearly Independent)</b>. 
+          في المقابل، المتجه الراقد داخل المستوى يعد مكرراً وبلا إضافة جديدة <b>(مرتبط خطياً Linearly Dependent)</b> لأنه واقع في نطاق المولد أصلاً.
+        </figcaption>
+      </figure>
+
+      <!-- Worked Example 0008 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: فحص الاستقلال الخطي لثلاثة متجهات في $\mathbb{R}^3$</h4>
+          <span class="ex-badge">طريقة محدد الكاشف</span>
+        </div>
+        <p>هل المتجهات $v_1 = (1, 0, 1)$ و $v_2 = (1, 1, 0)$ و $v_3 = (0, 1, 1)$ مستقلة خطياً؟</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <b>بناء مصفوفة الأعمدة:</b><br>
+              نضع المتجهات كأعمدة في مصفوفة <bdi class="en-code" dir="ltr">A</bdi>:
+              <div dir="ltr" style="text-align:center;margin:10px 0;">
+                <span style="font-weight:700;margin-inline-end:8px">A =</span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:repeat(3,minmax(2.2em,auto))">
+                    <span class="mc">1</span><span class="mc">1</span><span class="mc">0</span>
+                    <span class="mc">0</span><span class="mc">1</span><span class="mc">1</span>
+                    <span class="mc">1</span><span class="mc">0</span><span class="mc">1</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <b>حساب المحدد بالمفكوك على الصف الأول بالأسهم:</b><br>
+              $$\det(A) = 1 \cdot \begin{vmatrix} 1 & 1 \\ 0 & 1 \end{vmatrix} - 1 \cdot \begin{vmatrix} 0 & 1 \\ 1 & 1 \end{vmatrix} + 0$$
+              <span class="op-arrow">القطر الأول ➔</span> $(1)[(1)(1) - (1)(0)] = 1(1) = 1$<br>
+              <span class="op-arrow">القطر الثاني ➔</span> $(-1)[(0)(1) - (1)(1)] = (-1)(-1) = +1$<br>
+              المجموع: $\det(A) = 1 + 1 = \mathbf{2} \neq 0$.
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <b>الحكم القاطع:</b><br>
+              بما أن $\det(A) \neq 0$، فإن المعادلة $c_1 v_1 + c_2 v_2 + c_3 v_3 = \vec{0}$ ليس لها سوى الحل الصفري التافه الوحيد.<br>
+              <span style="color:var(--accent);font-weight:700">✓ المتجهات الثلاثة مستقلة خطياً تماماً (Linearly Independent).</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- MODULE 3: LESSONS 0009 - 0011 -->
+  <!-- ================================================================= -->
+  <section class="section-block" id="mod3">
+    <div class="sec-header">
+      <span class="sec-num">المحور الثالث · الدروس 09 إلى 11</span>
+      <h2 class="sec-title">الأساس والأبعاد والمحددات والربط الشامل</h2>
+      <p class="sec-desc">الفريق المثالي لتغطية الفضاء، رقم الحسم والمساحات، واستراتيجية الاختبارات الشاملة.</p>
+    </div>
+
+    <!-- Lesson 0009 -->
+    <article class="lcard" id="c0009">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0009</span>
+          <h3 class="ltitle">الأساس والأبعاد (Basis & Dimension)</h3>
+          <span class="len">Basis & Dimension — the smallest spanning team and its size</span>
+        </div>
+        <a class="lopen" href="lessons/0009-basis-dimension.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0009 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0009 · الأساس والأبعاد (Basis & Dimension)</div>
+          <div class="mindmap-root-badge">🌱 المحور: الهيكل العظمي للفضاء وإحداثيات المتجهات</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">أعمدة الخيمة الرئيسية: الحد الأدنى المطلوب لرفع الفضاء بالكامل، نزع أحدها يسقطه وإضافة غيرها حشو.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: محاور الخريطة $(x, y, z)$؛ كل متجه يحدد اتجاهاً فريداً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>البعد (Dimension): عدد الأعمدة الجوهرية اللازمة لرفع الفضاء</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">الشرطان التوأمان للأساس وقانون ثبات البعد:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الشرط 1: استقلال خطي تام (مجموعة رشيقة بلا أي حشو)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الشرط 2: توليد الفضاء بأكمله $\text{Span}(S) = V$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>قانون البعد: أي أساسين لنفس الفضاء يمتلكان حتماً نفس عدد المتجهات!</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">استخراج أساس الفضاء وإيجاد متجه الإحداثيات $[v]_B$:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: رص المتجهات كأعمدة في مصفوفة وتطبيق الحذف الغاوسي</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: الأعمدة الأصلية المقابلة للأعمدة القائدة (Pivots) تشكل الأساس</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: حل المنظومة $[B \mid v]$ لاستخراج أوزان الإحداثيات الفريدة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">نظرية الرتبة والنواة والمختصر السحري لمصفوفات $\mathbb{R}^n$:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span><b>مبرهنة الرتبة والنواة (Rank-Nullity Theorem):</b> عدد أبعاد الصورة الناتجة (الرتبة <bdi class="en-code" dir="ltr">Rank</bdi>) + عدد أبعاد العناصر التي تلاشت وصُفّرت (النواة <bdi class="en-code" dir="ltr">Nullity</bdi>) = إجمالي عدد أعمدة المصفوفة الأصلية <bdi class="en-code" dir="ltr">n</bdi>!</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span><b>المختصر الذهبي:</b> في الفضاء <bdi class="en-code" dir="ltr">&#8477;<sup>n</sup></bdi>، إذا كان لديك <bdi class="en-code" dir="ltr">n</bdi> متجهات وأثبتت أنها مستقلة خطياً (أو محددها لا يساوي صفراً)، فهي تشكل <b>أساساً</b> فورياً دون حاجة لأي خطوات إضافية!</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0009 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: إثبات أساس مائل وحساب إحداثيات متجه بالنسبة له</h4>
+          <span class="ex-badge">دفتر العناوين الجديد</span>
+        </div>
+        <p>ليكن $B = \{v_1, v_2\}$ حيث $v_1 = (1, 1)$ و $v_2 = (1, -1)$.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <b>إثبات أن $B$ أساس للفضاء $\mathbb{R}^2$:</b><br>
+              نحسب محدد مصفوفة المتجهين:
+              <div dir="ltr" style="display:flex;align-items:center;justify-content:center;gap:8px;margin:10px 0;">
+                <span style="font-weight:700">det</span>
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:repeat(2,minmax(2.2em,auto))">
+                    <span class="mc">1</span><span class="mc">1</span>
+                    <span class="mc">1</span><span class="mc">-1</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+                <span style="font-weight:700">= (1)(-1) - (1)(1) = -1 - 1 = -2 ≠ 0</span>
+              </div>
+              بما أن المحدد $\neq 0$، فالمتجهان مستقلان خطياً. وبما أن بعد $\mathbb{R}^2$ هو $2$ وعدد المتجهات $2$، فهما يشكلان <b>أساساً</b> تلقائياً!
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <b>إيجاد إحداثيات الهدف $w = (4, 2)$ بلغة الأساس $B$:</b><br>
+              نبحث عن الأوزان $c_1, c_2$ بحيث: $c_1(1, 1) + c_2(1, -1) = (4, 2)$<br>
+              نكتب المنظومة:<br>
+              $c_1 + c_2 = 4 \quad \text{--- (1)}$<br>
+              $c_1 - c_2 = 2 \quad \text{--- (2)}$<br>
+              <span class="op-arrow">بجمع المعادلتين بالأسهم ➔</span> $2c_1 = 6 \implies \mathbf{c_1 = 3}$.<br>
+              <span class="op-arrow">بالتعويض في (1) ➔</span> $3 + c_2 = 4 \implies \mathbf{c_2 = 1}$.<br>
+              <div style="background:var(--accent-light);padding:8px;border-radius:6px;font-weight:700;margin-top:6px">
+                إحداثيات المتجه بالنسبة للأساس <bdi class="en-code" dir="ltr">B</bdi> هي:
+                <span style="display:inline-flex;align-items:center;gap:6px;direction:ltr;vertical-align:middle;margin:0 4px">
+                  <span style="font-weight:700">[w]<sub>B</sub> =</span>
+                  <span class="mx" dir="ltr">
+                    <span class="bl"></span>
+                    <span class="mg" style="grid-template-columns:minmax(1.8em,auto)">
+                      <span class="mc">3</span>
+                      <span class="mc">1</span>
+                    </span>
+                    <span class="br"></span>
+                  </span>
+                </span>.<br>
+                (النقطة نفسها عنوانها <bdi class="en-code" dir="ltr">(4, 2)</bdi> في النظام المعياري، و<bdi class="en-code" dir="ltr">(3, 1)</bdi> في الأساس <bdi class="en-code" dir="ltr">B</bdi>).
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0010 -->
+    <article class="lcard" id="c0010">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0010</span>
+          <h3 class="ltitle">المحددات من 2×2 إلى 3×3 (Determinants)</h3>
+          <span class="len">Determinants — area, volume and invertibility detector</span>
+        </div>
+        <a class="lopen" href="lessons/0010-determinants.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0010 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0010 · المحددات (Determinants)</div>
+          <div class="mindmap-root-badge">🌱 المحور: مقياس التمدد الحجمي وبوصلة حسم الخصائص</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">ميزان تمدد الفضاء: رقم سحري واحد يكشف نسبة تضخم المساحة، وهل انضغط الفضاء وانهار للصفر.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>هندسياً: مساحة متوازي الأضلاع في $\mathbb{R}^2$ أو الحجم في $\mathbb{R}^3$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>محدد = 0: الفضاء انضغط في خط أو نقطة (فقدت المصفوفة أبعادها)</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">القوانين المعتمدة وفخاخ الحسابات الامتحانية الشائعة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المصفوفة المثلثية: المحدد هو حاصل ضرب عناصر القطر الرئيسي فوراً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>ضرب المصفوفات: $\det(AB) = \det(A)\det(B)$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فخ القياسي: $\det(cA) = c^n \det(A)$ (يخرج الثابت مرفوعاً للرتبة $n$)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فخ الجمع: $\det(A+B) \neq \det(A) + \det(B)$ إطلاقاً عموماً</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">طرق الحساب السريع لـ $2 \times 2$ وقاعدة ساروس لـ $3 \times 3$:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>لمصفوفة $2\times 2$: مقص الأقطار $\det = ad - bc$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>لمصفوفة $3\times 3$: نسخ أول عمودين وجمع جداء الأقطار النازلة ناقص الصاعدة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>عمليات الصفوف: تبديل صفين يعكس الإشارة، وإضافة مضاعف صف لا يغير المحدد</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">مفتاح سلسلة التكافؤ الذهبي الشامل لمصفوفات $n \times n$:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\det(A) \neq 0 \iff$ النظير الضربي $A^{-1}$ موجود حتماً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\det(A) \neq 0 \iff$ الأعمدة مستقلة خطياً وتولد الفضاء وتشكل أساساً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\det(A) \neq 0 \iff$ المنظومة $Ax = b$ لها حل وحيد دائماً</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0010 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: حساب محدد 3×3 بقاعدة ساروس بالأسهم النازلة والصاعدة</h4>
+          <span class="ex-badge">قاعدة ساروس</span>
+        </div>
+        <p>احسب محدد المصفوفة التالية:</p>
+        <div dir="ltr" style="text-align:center;margin:10px 0;">
+          <span style="font-weight:700;margin-inline-end:8px">A =</span>
+          <span class="mx" dir="ltr">
+            <span class="bl"></span>
+            <span class="mg" style="grid-template-columns:repeat(3,minmax(2.2em,auto))">
+              <span class="mc">2</span><span class="mc">4</span><span class="mc">6</span>
+              <span class="mc">3</span><span class="mc">8</span><span class="mc">5</span>
+              <span class="mc">-1</span><span class="mc">1</span><span class="mc">2</span>
+            </span>
+            <span class="br"></span>
+          </span>
+        </div>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body">
+              <b>نسخ أول عمودين على يمين المصفوفة (شبكة ساروس 3×5):</b><br>
+              <div dir="ltr" style="text-align:center;margin:10px 0;">
+                <span class="mx" dir="ltr">
+                  <span class="bl"></span>
+                  <span class="mg" style="grid-template-columns:repeat(5,minmax(2.2em,auto))">
+                    <span class="mc piv">2</span><span class="mc piv">4</span><span class="mc">6</span><span class="mc aug">2</span><span class="mc">4</span>
+                    <span class="mc">3</span><span class="mc piv">8</span><span class="mc piv">5</span><span class="mc aug">3</span><span class="mc">8</span>
+                    <span class="mc">-1</span><span class="mc">1</span><span class="mc piv">2</span><span class="mc aug">-1</span><span class="mc">1</span>
+                  </span>
+                  <span class="br"></span>
+                </span>
+              </div>
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body">
+              <b>الأقطار النازلة الثلاثة (جمع حواصل الضرب) بالأسهم الخضراء:</b><br>
+              <span class="op-arrow">النازل 1 ↘</span> $(2) \times (8) \times (2) =$ <span class="pivot-circle">32</span><br>
+              <span class="op-arrow">النازل 2 ↘</span> $(4) \times (5) \times (-1) =$ <span class="pivot-circle">-20</span><br>
+              <span class="op-arrow">النازل 3 ↘</span> $(6) \times (3) \times (1) =$ <span class="pivot-circle">18</span><br>
+              <b>مجموع النوازل:</b> $32 + (-20) + 18 = \mathbf{30}$.
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body">
+              <b>الأقطار الصاعدة الثلاثة (طرح حواصل الضرب) بالأسهم البرتقالية:</b><br>
+              <span class="op-arrow">الصاعد 1 ↗</span> $(-1) \times (8) \times (6) =$ <span class="target-circle">-48</span><br>
+              <span class="op-arrow">الصاعد 2 ↗</span> $(1) \times (5) \times (2) =$ <span class="target-circle">10</span><br>
+              <span class="op-arrow">الصاعد 3 ↗</span> $(2) \times (3) \times (4) =$ <span class="target-circle">24</span><br>
+              <b>مجموع الصواعد:</b> $(-48) + 10 + 24 = \mathbf{-14}$.
+            </div>
+          </div>
+
+          <div class="step-item">
+            <span class="step-num">4</span>
+            <div class="step-body">
+              <b>النتيجة النهائية:</b><br>
+              $$\det(A) = (\text{مجموع النوازل}) - (\text{مجموع الصواعد}) = 30 - (-14) = 30 + 14 = \mathbf{44}$$
+              <span style="color:var(--accent);font-weight:700">✓ المحدد = 44 (لا يساوي صفراً) ➔ المصفوفة غير شاذة ولها نظير ضربي وأعمدتها مستقلة.</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0011 -->
+    <article class="lcard" id="c0011">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0011</span>
+          <h3 class="ltitle">بنك التدريبات والاستراتيجية الشاملة (Drills & Strategy)</h3>
+          <span class="len">Drills Bank — the whole course in one workout</span>
+        </div>
+        <a class="lopen" href="lessons/0011-drills.html">افتح بنك التدريبات التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0011 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0011 · الاستراتيجية الشاملة وحل ورقة الامتحان</div>
+          <div class="mindmap-root-badge">🌱 المحور: بروتوكول الحسم والتحكم في قاعة الاختبار</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">قائد غرفة العمليات: قراءة السؤال كخريطة طريق واضحة لاختيار الأداة الأسرع بدقة قبل تحريك القلم.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: جراح خبير يحدد نوع المشرط المناسب قبل فتح الشق</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تجنب الحسابات الطويلة إن أمكن حسم المسألة بفحص بديهي</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">شجرة القرارات الحاسمة حسب أبعاد المعطيات:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>مصفوفة مربعة $n \times n$: المحدد هو أسرع وأقوى سلاح للحسم الشامل</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>مصفوفة مستطيلة ($m \neq n$): الحذف الغاوسي هو الأداة الإلزامية الوحيدة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فضاء جزئي: اختبار الصفر أولاً ثم فحص الثوابت والمتباينات واللاخطية</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">بروتوكول الخطوات الأربع المنضبط على ورقة الإجابة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: فحص الأبعاد والتأكد من شروط التوافق للعمليات</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: اختبار الـ 10 ثوانٍ السريع لتفادي الفخاخ الظاهرة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: تنفيذ الحساب الرياضي بخطوات واضحة وترقيم العمليات الصفية</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 4: الفحص العكسي (تعويض الحل في إحدى المعادلات للتحقق)</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">امتلاك الصورة الكلية والتكافؤ الشامل لنيل العلامة الكاملة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>إغلاق الفجوات الست بالكامل وتحويل المادة من جزر معزولة إلى منظومة موحدة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الانتقال من الحفظ الميكانيكي المؤقت إلى الفهم الرياضي الرصين مدى الحياة</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <div class="rule-box">
+        <b>استراتيجية التعامل مع أي سؤال في الامتحان:</b>
+        <ol style="margin:6px 0;padding-inline-start:20px">
+          <li><b>سؤال حل منظومة أو تركيب خطي:</b> ضع المصفوفة الموسعة واستخدم الحذف الغاوسي.</li>
+          <li><b>سؤال استقلال خطي لمصفوفة مربعة:</b> احسب المحدد مباشرة. إن كان $\neq 0$ فالمجموعة مستقلة.</li>
+          <li><b>سؤال فضاء جزئي:</b> اختبر وجود الصفر $\vec{0}$ أولاً، فإن لم يوجد توقف واحكم بالرفض.</li>
+          <li><b>سؤال نظير $2\times 2$:</b> طبق قاعدة القلب والإشارات واقسم على المحدد.</li>
+        </ol>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- GRAND UNIFICATION MATRIX -->
+  <!-- ================================================================= -->
+  <section class="section-block" id="grand-unification">
+    <div class="sec-header">
+      <span class="sec-num">الخاتمة الكبرى والمخطط الموحد</span>
+      <h2 class="sec-title">لوحة التكافؤ الذهبي الكبرى (The Master Equivalence Matrix)</h2>
+      <p class="sec-desc">هذا الجدول يجمع الجبر الخطي كاملاً لمصفوفة مربعة $A$ بحجم $n \times n$. سطران يحددان مصير كل فكرة في المقرر:</p>
+    </div>
+
+    <div class="table-wrap">
+      <table class="matrix-table">
+        <thead>
+          <tr>
+            <th style="width:28%">المفهوم الرياضي</th>
+            <th class="th-good" style="width:36%"><span class="badge-col good">✨ الحالة الذهبية</span> (Invertible / غير شاذة)</th>
+            <th class="th-bad" style="width:36%"><span class="badge-col bad">⚠️ الحالة المنهارة</span> (Singular / شاذة)</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr>
+            <td><b>قيمة المحدد</b></td>
+            <td class="col-good">$\det(A) \neq 0$</td>
+            <td class="col-bad">$\det(A) = 0$</td>
+          </tr>
+          <tr>
+            <td><b>النظير الضربي $A^{-1}$</b></td>
+            <td class="col-good">موجود وحيد ($A$ Invertible)</td>
+            <td class="col-bad">غير موجود إطلاقاً (شاذة Singular)</td>
+          </tr>
+          <tr>
+            <td><b>رتبة المصفوفة (Rank)</b></td>
+            <td class="col-good">رتبة كاملة = $n$ (يوجد $n$ قادة Pivots)</td>
+            <td class="col-bad">رتبة ناقصة $< n$ (يوجد صف أصفار)</td>
+          </tr>
+          <tr>
+            <td><b>استقلال الأعمدة</b></td>
+            <td class="col-good">الأعمدة <b>مستقلة خطياً</b> (لا يوجد هدر)</td>
+            <td class="col-bad">الأعمدة <b>مرتبطة خطياً</b> (يوجد تكرار)</td>
+          </tr>
+          <tr>
+            <td><b>توليد الفضاء (Span)</b></td>
+            <td class="col-good">أعمدة المصفوفة تولد $\mathbb{R}^n$ بالكامل</td>
+            <td class="col-bad">الأعمدة تعجز عن تغطية $\mathbb{R}^n$</td>
+          </tr>
+          <tr>
+            <td><b>تشكيل أساس (Basis)</b></td>
+            <td class="col-good">الأعمدة تشكل <b>أساساً</b> لـ $\mathbb{R}^n$</td>
+            <td class="col-bad">الأعمدة لا تشكل أساساً</td>
+          </tr>
+          <tr>
+            <td><b>المنظومة المتجانسة $Ax = 0$</b></td>
+            <td class="col-good">الحل الصفري البديهي الوحيد ($x = \vec{0}$)</td>
+            <td class="col-bad">يوجد عدد لا نهائي من الحلول غير الصفرية</td>
+          </tr>
+          <tr>
+            <td><b>المنظومة العامة $Ax = b$</b></td>
+            <td class="col-good"><b>حل وحيد</b> دائماً: $x = A^{-1}b$</td>
+            <td class="col-bad">إما عدد لا نهائي من الحلول أو مستحيلة</td>
+          </tr>
+          <tr>
+            <td><b>المعنى الهندسي للمساحة/الحجم</b></td>
+            <td class="col-good">مساحة/حجم غير صفري (الفضاء مفتوح)</td>
+            <td class="col-bad">المساحة/الحجم مسطح = صفر (الفضاء منكمش)</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="rule-box" style="text-align:center;font-size:16px;margin-top:24px">
+      <b>خلاصة الخلاصة:</b> تذكّر دائماً — في المصفوفات المربعة $n \times n$:
+      <br>
+      <b>"إما أن تملك كل شيء ($\det \neq 0$)، أو تفقد كل شيء ($\det = 0$)!"</b>
+    </div>
+  </section>
+
+  <footer class="site">
+    <div>
+      <b>مختبر الجبر الخطي</b> · مقرر تفاعلي من الصفر
+    </div>
+    <div>
+      <a href="index.html">الرئيسية</a> ·
+      <a href="review.html">مراجعة سريعة</a> ·
+      <a href="playground.html">مشغّل بايثون</a> ·
+      <a href="search.html">البحث</a>
+    </div>
+  </footer>
+</div>
+
+<!-- Floating Reading Dock -->
+<div class="floating-dock" id="floatingDock" aria-label="شريط القراءة السريع">
+  <div class="dock-current-badge">
+    <span class="chip-dot"></span>
+    <span id="dockSectionName">الملخص الشامل</span>
+  </div>
+  <button class="dock-btn" id="dockToggleRecall" type="button" title="كشف أو إخفاء الإجابات">
+    <span>👁️</span> <span class="txt">الإجابات</span>
+  </button>
+  <button class="dock-btn" onclick="window.print()" type="button" title="طباعة أو حفظ كملف PDF">
+    <span>🖨️</span> <span class="txt">طباعة</span>
+  </button>
+  <button class="dock-btn solid" id="dockBackTop" type="button" title="العودة لأعلى الصفحة">
+    <span>↑</span> <span class="txt">للأعلى</span>
+  </button>
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/contrib/auto-render.min.js"></script>
+<script src="assets/site.js"></script>
+<script>
+document.addEventListener("DOMContentLoaded", function() {
+  // 1. Render KaTeX if available
+  if (window.renderMathInElement) {
+    try {
+      renderMathInElement(document.body, {
+        delimiters: [
+          {left: '$$', right: '$$', display: true},
+          {left: '$', right: '$', display: false}
+        ],
+        throwOnError: false
+      });
+    } catch(e) {
+      console.warn("KaTeX render notice:", e);
+    }
+  }
+
+  // 2. Strict LTR enforcement on all math elements
+  document.querySelectorAll('.katex, .katex-display').forEach(function(el) {
+    el.setAttribute('dir', 'ltr');
+    el.style.direction = 'ltr';
+    el.style.unicodeBidi = 'isolate';
+  });
+
+  // 3. BiDi & LTR Isolation for Math & English
+  if (window.applyLinalgBidi) {
+    window.applyLinalgBidi();
+  }
+
+  // 4. Reading Progress Bar
+  var progressBar = document.getElementById("readProgress");
+  var floatingDock = document.getElementById("floatingDock");
+  var ticking = false;
+
+  function updateScrollHUD() {
+    var winScroll = window.scrollY || document.documentElement.scrollTop;
+    var height = document.documentElement.scrollHeight - window.innerHeight;
+    var scrolled = height > 0 ? (winScroll / height) * 100 : 0;
+    if (progressBar) progressBar.style.width = scrolled + "%";
+
+    if (floatingDock) {
+      if (winScroll > 260) {
+        floatingDock.classList.add("visible");
+      } else {
+        floatingDock.classList.remove("visible");
+      }
+    }
+    ticking = false;
+  }
+
+  window.addEventListener("scroll", function() {
+    if (!ticking) {
+      window.requestAnimationFrame(updateScrollHUD);
+      ticking = true;
+    }
+  }, { passive: true });
+  updateScrollHUD();
+
+  // 5. Back to Top Button
+  var backTopBtn = document.getElementById("dockBackTop");
+  if (backTopBtn) {
+    backTopBtn.addEventListener("click", function(e) {
+      e.preventDefault();
+      window.scrollTo({ top: 0, behavior: "smooth" });
+    });
+  }
+
+  // 6. Section Tracker (IntersectionObserver)
+  var sectionTitles = {
+    "gaps": "سد الفجوات المفاهيمية الست",
+    "c0001": "01 · تمييز الخطية",
+    "c0002": "02 · العمليات والنظير",
+    "c0003": "03 · الحذف الغاوسي",
+    "c0004": "04 · الخصائص والصفرية",
+    "c0005": "05 · الفضاء الإقليدي والتعامد",
+    "c0006": "06 · فحص الفضاء الجزئي",
+    "c0007": "07 · التركيب الخطي",
+    "c0008": "08 · المولد والاستقلال",
+    "c0009": "09 · الأساس والإحداثيات",
+    "c0010": "10 · المحددات وساروس",
+    "c0011": "11 · بنك التدريبات والاستراتيجية",
+    "grand-unification": "لوحة التكافؤ الذهبي الكبرى"
+  };
+
+  var dockNameEl = document.getElementById("dockSectionName");
+  var sections = document.querySelectorAll(".section-block, article.lcard[id]");
+
+  if ("IntersectionObserver" in window) {
+    var observer = new IntersectionObserver(function(entries) {
+      entries.forEach(function(entry) {
+        if (entry.isIntersecting) {
+          var id = entry.target.id;
+          if (id && sectionTitles[id] && dockNameEl) {
+            dockNameEl.textContent = sectionTitles[id];
+          }
+        }
+      });
+    }, {
+      rootMargin: "-20% 0px -60% 0px",
+      threshold: 0
+    });
+
+    sections.forEach(function(sec) {
+      if (sec.id) observer.observe(sec);
+    });
+  }
+
+  // 7. Active Recall Cards (Single and All Toggle)
+  var recallCards = document.querySelectorAll(".recall-card");
+  var toggleAllBtn = document.getElementById("toggleAllRecallBtn");
+  var dockToggleBtn = document.getElementById("dockToggleRecall");
+  var allOpen = false;
+
+  function updateRecallButtons() {
+    var text = allOpen ? "🙈 إخفاء جميع إجابات الاسترجاع" : "👁️ كشف جميع إجابات الاسترجاع";
+    if (toggleAllBtn) toggleAllBtn.textContent = text;
+    if (dockToggleBtn) {
+      dockToggleBtn.innerHTML = allOpen ? '<span>🙈</span> <span class="txt">إخفاء</span>' : '<span>👁️</span> <span class="txt">الإجابات</span>';
+    }
+  }
+
+  function toggleAllRecall(e) {
+    if (e) e.preventDefault();
+    allOpen = !allOpen;
+    recallCards.forEach(function(card) {
+      card.classList.toggle("open", allOpen);
+    });
+    updateRecallButtons();
+  }
+
+  if (toggleAllBtn) toggleAllBtn.addEventListener("click", toggleAllRecall);
+  if (dockToggleBtn) dockToggleBtn.addEventListener("click", toggleAllRecall);
+
+  recallCards.forEach(function(card) {
+    card.addEventListener("click", function() {
+      this.classList.toggle("open");
+    });
+  });
+
+  // 8. Interactive Summary Search / Filter
+  var filterInput = document.getElementById("summaryFilterInput");
+  var filterClearBtn = document.getElementById("filterClearBtn");
+  var filterStatus = document.getElementById("filterStatus");
+  var cardsToFilter = document.querySelectorAll(".lcard, article.lcard");
+  var tocLinks = document.querySelectorAll(".toc-links a");
+
+  function runFilter() {
+    var query = (filterInput ? filterInput.value : "").trim().toLowerCase();
+
+    if (!query) {
+      if (filterClearBtn) filterClearBtn.style.display = "none";
+      if (filterStatus) filterStatus.style.display = "none";
+      cardsToFilter.forEach(function(card) {
+        card.classList.remove("filter-dimmed", "filter-matched");
+      });
+      tocLinks.forEach(function(link) {
+        link.style.display = "";
+      });
+      return;
+    }
+
+    if (filterClearBtn) filterClearBtn.style.display = "inline-block";
+
+    var matchCount = 0;
+    cardsToFilter.forEach(function(card) {
+      var text = card.textContent.toLowerCase();
+      if (text.indexOf(query) !== -1) {
+        card.classList.add("filter-matched");
+        card.classList.remove("filter-dimmed");
+        matchCount++;
+      } else {
+        card.classList.remove("filter-matched");
+        card.classList.add("filter-dimmed");
+      }
+    });
+
+    tocLinks.forEach(function(link) {
+      var text = link.textContent.toLowerCase();
+      link.style.display = text.indexOf(query) !== -1 ? "" : "none";
+    });
+
+    if (filterStatus) {
+      filterStatus.style.display = "block";
+      filterStatus.textContent = matchCount > 0
+        ? "تم العثور على " + matchCount + " موضعاً يطابق: «" + query + "»"
+        : "لا توجد نتائج تطابق: «" + query + "»";
+    }
+  }
+
+  if (filterInput) {
+    filterInput.addEventListener("input", runFilter);
+    filterInput.addEventListener("keydown", function(e) {
+      if (e.key === "Escape") {
+        filterInput.value = "";
+        runFilter();
+      }
+    });
+  }
+
+  if (filterClearBtn) {
+    filterClearBtn.addEventListener("click", function() {
+      if (filterInput) {
+        filterInput.value = "";
+        filterInput.focus();
+      }
+      runFilter();
+    });
+  }
+});
+</script>
+</body>
+</html>

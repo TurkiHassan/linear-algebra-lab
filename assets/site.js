@@ -86,10 +86,91 @@
     if (e.key === THEME_KEY) { theme = read(THEME_KEY, theme); applyTheme(theme); }
   });
 
+  /* ---------- BiDi and LTR Isolation for Math & English ---------- */
+  function applyBidiIsolation() {
+    if (!document.body) return;
+    // 1. Tag all KaTeX elements with LTR
+    var katexEls = document.querySelectorAll('.katex, .katex-display');
+    for (var k = 0; k < katexEls.length; k++) {
+      katexEls[k].setAttribute('dir', 'ltr');
+      katexEls[k].style.direction = 'ltr';
+      katexEls[k].style.unicodeBidi = 'isolate';
+    }
+
+    // 2. Isolate English phrases and equations in text nodes
+    var walker = document.createTreeWalker(document.body, NodeFilter.SHOW_TEXT, {
+      acceptNode: function(node) {
+        var p = node.parentElement;
+        if (!p) return NodeFilter.FILTER_REJECT;
+        var tag = p.tagName.toLowerCase();
+        if (tag === 'script' || tag === 'style' || tag === 'textarea' || tag === 'code' || tag === 'bdi' || tag === 'noscript') {
+          return NodeFilter.FILTER_REJECT;
+        }
+        if (p.closest('.katex') || p.closest('.katex-display') || p.closest('.katex-html') || p.closest('.katex-mathml') || p.closest('[dir="ltr"]') || p.closest('.mx')) {
+          return NodeFilter.FILTER_REJECT;
+        }
+        // Do not touch unrendered math containing $ or backslash
+        if (node.nodeValue.indexOf('\u0024') !== -1 || node.nodeValue.indexOf('\\') !== -1) {
+          return NodeFilter.FILTER_REJECT;
+        }
+        if (/[A-Za-z]/.test(node.nodeValue)) {
+          return NodeFilter.FILTER_ACCEPT;
+        }
+        return NodeFilter.FILTER_REJECT;
+      }
+    });
+
+    var nodes = [];
+    while (walker.nextNode()) nodes.push(walker.currentNode);
+
+    var pattern = /(?<![\w])(?=[^\s]*[A-Za-z])([0-9A-Za-z_+\-×=÷/\\|<>^~.:,()[\]{}]+(?:\s+[0-9A-Za-z_+\-×=÷/\\|<>^~.:,()[\]{}]+)*)(?![\w])/g;
+
+    nodes.forEach(function(node) {
+      var val = node.nodeValue;
+      if (!val || !/[A-Za-z]/.test(val)) return;
+
+      var frag = document.createDocumentFragment();
+      var lastIdx = 0;
+      var match;
+      var matches = [];
+      while ((match = pattern.exec(val)) !== null) {
+        matches.push({ index: match.index, text: match[0] });
+      }
+      if (matches.length === 0) return;
+
+      matches.forEach(function(m) {
+        if (m.index > lastIdx) {
+          frag.appendChild(document.createTextNode(val.substring(lastIdx, m.index)));
+        }
+        var bdi = document.createElement('bdi');
+        bdi.setAttribute('dir', 'ltr');
+        bdi.className = 'en-inline';
+        bdi.textContent = m.text;
+        frag.appendChild(bdi);
+        lastIdx = m.index + m.text.length;
+      });
+
+      if (lastIdx < val.length) {
+        frag.appendChild(document.createTextNode(val.substring(lastIdx)));
+      }
+
+      if (node.parentNode) {
+        node.parentNode.replaceChild(frag, node);
+      }
+    });
+  }
+  window.applyLinalgBidi = applyBidiIsolation;
+
   if (document.readyState === "loading") {
-    document.addEventListener("DOMContentLoaded", syncDone);
+    document.addEventListener("DOMContentLoaded", function() {
+      syncDone();
+      applyBidiIsolation();
+      setTimeout(applyBidiIsolation, 400);
+    });
   } else {
     syncDone();
+    applyBidiIsolation();
+    setTimeout(applyBidiIsolation, 400);
   }
 
   /* ---------- service worker ---------- */
