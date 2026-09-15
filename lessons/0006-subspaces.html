@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0006 · الفضاء الجزئي — Subspaces</title>
+<meta name="description" content="اختبار ثلاثي يحسم السؤال: الصفر موجود، والجمع مغلق، والضرب القياسي مغلق.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0006-subspaces.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0006 · الفضاء الجزئي — مختبر الجبر الخطي">
+<meta property="og:description" content="اختبار ثلاثي يحسم السؤال: الصفر موجود، والجمع مغلق، والضرب القياسي مغلق.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="../assets/lesson-fonts.css">
 <style>
@@ -63,24 +70,48 @@
   a{color:var(--accent)}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0006 · الفضاء الجزئي",
+ "alternateName": "Subspaces",
+ "description": "اختبار ثلاثي يحسم السؤال: الصفر موجود، والجمع مغلق، والضرب القياسي مغلق.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0006-subspaces.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "فيديو",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 6
+}
+</script>
 </head>
-<body>
+<body data-lesson-id="0006">
 <div class="wrap">
-  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0005-euclidean-spaces.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0007-linear-combinations.html">التالي ←</a></div></div>
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0005-euclidean-spaces.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0006">الخارطة</a> · <a href="0007-linear-combinations.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0006 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0006 · المتجهات والفضاءات</div>
     <h1>الفضاء الجزئي</h1>
-    <span class="en-line" lang="en">Subspaces — a smaller space living inside Rⁿ, closed under both operations</span>
+    <span class="en-line" lang="en">Subspaces — a smaller space living inside ℝⁿ, closed under both operations</span>
     <div class="rule"></div>
     <p class="meta">~40 دقيقة · المتطلب: الدرس 0005 (المتجهات)</p>
   </header>
 
   <section id="s1">
     <h2><span class="num">١</span> النادي المغلق: ثلاثة شروط<span class="en-sub" lang="en">Contains 0, closed under addition, closed under scalar multiplication</span></h2>
-    <p>ال<span class="term">فضاء الجزئي</span> <span class="en" lang="en" dir="ltr">(subspace)</span> مجموعة متجهات داخل <span class="coord">Rⁿ</span> تُشبه الفضاء الكامل: تحوي الصفر <span class="coord">0</span>، ومغلقة تحت الجمع (مجموع أي عنصرين يبقى داخلها)، ومغلقة تحت الضرب القياسي (أي مضاعف يبقى داخلها). سقط شرط واحد = ليست فضاءً جزئياً.</p>
+    <p>ال<span class="term">فضاء الجزئي</span> <span class="en" lang="en" dir="ltr">(subspace)</span> مجموعة متجهات داخل <span class="coord">ℝⁿ</span> تُشبه الفضاء الكامل: تحوي الصفر <span class="coord">0</span>، ومغلقة تحت الجمع (مجموع أي عنصرين يبقى داخلها)، ومغلقة تحت الضرب القياسي (أي مضاعف يبقى داخلها). سقط شرط واحد = ليست فضاءً جزئياً.</p>
     <div class="analogy"><b>تشبيه: نادٍ بقواعد دخول</b><p>النادي الحقيقي: المؤسس عضو (الصفر)، وصديقا العضوين عضوان (الجمع)، وضيوف العضو مرحب بهم (الضرب القياسي). نادٍ يطرد المؤسس أو يرفض الضيوف ليس نادياً. <span class="en" lang="en" dir="ltr">Founder in, friends of members in, guests in — or it is not a club.</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> اختبار من ثلاثة أسطر: هل <span class="coord">0</span> موجود؟ هل <span class="coord">u+v</span> باقٍ؟ هل <span class="coord">ku</span> باقٍ؟ نعم ثلاث مرات ⟺ فضاء جزئي. <span class="en" lang="en" dir="ltr">(Zero in, plus closed, times closed — that is all.)</span></p></div>
     <div class="kmath" id="k1"></div>
@@ -88,7 +119,7 @@
 
   <section id="s2">
     <h2><span class="num">٢</span> محكمة الفضاءات الجزئية<span class="en-sub" lang="en">Four suspects — only the closed ones walk free</span></h2>
-    <p>أربعة مشتبهين في <span class="coord">R²</span>: خط يمر بالأصل، خط لا يمر بالأصل، الربع الأول، والمحور السيني. اختر مشتبهاً — اللوحة ترسمه وتُجري الاختبارات الثلاثة وتُصدر الحكم.</p>
+    <p>أربعة مشتبهين في <span class="coord">ℝ²</span>: خط يمر بالأصل، خط لا يمر بالأصل، الربع الأول، والمحور السيني. اختر مشتبهاً — اللوحة ترسمه وتُجري الاختبارات الثلاثة وتُصدر الحكم.</p>
     <div class="demo" data-label="Judge · COURT">
       <h3>قاعة المحكمة</h3>
       <p class="hint">اختر المجموعة ثم اضغط «أصدر الحكم»</p>
@@ -115,7 +146,7 @@
     <p class="hint">موشن جرافيك بتعليق عربي: الشروط الثلاثة والمشتبهون الأربعة</p>
     <video controls preload="metadata" poster="../video/outputs/0006-subspaces-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0006-subspaces-ar.mp4" type="video/mp4">
-      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0006-subspaces-subs.srt" default>
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0006-subspaces-subs.vtt" default>
     </video>
   </div>
 
@@ -130,14 +161,14 @@
 
   <section id="quiz">
     <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
-    <div class="q" id="q1"><div class="prompt">أيها فضاء جزئي في <span class="coord">R²</span>؟</div>
+    <div class="q" id="q1"><div class="prompt">أيها فضاء جزئي في <span class="coord">ℝ²</span>؟</div>
       <button class="opt" data-q="q1" data-a="0">الخط <span class="coord">y = 2x</span> (عبر الأصل)</button><button class="opt" data-q="q1" data-a="1">الخط <span class="coord">y = 2x + 1</span></button><button class="opt" data-q="q1" data-a="2">الربع الأول</button><button class="opt" data-q="q1" data-a="3">الدائرة <span class="coord">x²+y² = 1</span></button><div class="feedback"></div></div>
     <div class="q" id="q2"><div class="prompt">لماذا <span class="coord">y = x + 1</span> ليس فضاءً جزئياً؟</div>
       <button class="opt" data-q="q2" data-a="0">لا يحوي الصفر <span class="coord">(0 ≠ 1)</span></button><button class="opt" data-q="q2" data-a="1">لأن ميله 1</button><button class="opt" data-q="q2" data-a="2">لأنه خط مستقيم</button><button class="opt" data-q="q2" data-a="3">لأنه يحوي <span class="coord">(1,2)</span></button><div class="feedback"></div></div>
     <div class="q" id="q3"><div class="prompt">أين يسقط الربع الأول؟</div>
       <button class="opt" data-q="q3" data-a="0">الضرب القياسي السالب يُخرج منه</button><button class="opt" data-q="q3" data-a="1">لا يحوي الصفر</button><button class="opt" data-q="q3" data-a="2">الجمع يُخرج منه</button><button class="opt" data-q="q3" data-a="3">لا يسقط — هو فضاء جزئي</button><div class="feedback"></div></div>
     <div class="q" id="q4"><div class="prompt">هل المجموعة <span class="coord">{(0,0)}</span> وحدها فضاء جزئي؟</div>
-      <button class="opt" data-q="q4" data-a="0">نعم — الفضاء الصفري يحقق الشروط</button><button class="opt" data-q="q4" data-a="1">لا — عنصر واحد لا يكفي</button><button class="opt" data-q="q4" data-a="2">لا — لا يحوي متجهاً غير صفري</button><button class="opt" data-q="q4" data-a="3">نعم — لكنه ليس في R²</button><div class="feedback"></div></div>
+      <button class="opt" data-q="q4" data-a="0">نعم — الفضاء الصفري يحقق الشروط</button><button class="opt" data-q="q4" data-a="1">لا — عنصر واحد لا يكفي</button><button class="opt" data-q="q4" data-a="2">لا — لا يحوي متجهاً غير صفري</button><button class="opt" data-q="q4" data-a="3">نعم — لكنه ليس في ℝ²</button><div class="feedback"></div></div>
     <div class="q" id="q5"><div class="prompt">أسرع أول اختبار لأي مجموعة؟</div>
       <button class="opt" data-q="q5" data-a="0">هل تحوي الصفر؟</button><button class="opt" data-q="q5" data-a="1">هل هي محدودة؟</button><button class="opt" data-q="q5" data-a="2">هل عناصرها أعداد صحيحة؟</button><button class="opt" data-q="q5" data-a="3">هل هي خط مستقيم؟</button><div class="feedback"></div></div>
   </section>
@@ -154,6 +185,8 @@
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
     <a class="tool-btn" href="../playground.html?ex=0006-subspaces">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0006">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0006">بطاقات المراجعة</a>
     <button class="tool-btn done-toggle" type="button" data-lesson="0006" aria-pressed="false">أتممت الدرس</button>
   </div>
   <div class="refs">
@@ -203,7 +236,7 @@
   var ANS={q1:{"0":["صحيح — يحوي الأصل ومغلق.",true],"1":["مزاح عن الأصل — مرفوض.",false],"2":["يسقط بالضرب السالب.",false],"3":["لا يحوي الصفر أصلاً.",false]},
     q2:{"0":["صحيح — (0,0) لا تحقق 0 = 1.",true],"1":["الميل لا علاقة له.",false],"2":["الاستقامة ليست المشكلة.",false],"3":["الاحتواء على نقاط لا يكفي.",false]},
     q3:{"0":["صحيح — (−1)·(1,1) خارجه.",true],"1":["بل يحوي (0,0).",false],"2":["الجمع يبقى داخل الربع.",false],"3":["بل يسقط — جرّب k = −1.",false]},
-    q4:{"0":["صحيح — 0+0=0 و k·0=0.",true],"1":["العدد لا يهم — الإغلاق يهم.",false],"2":["لا يشترط غير الصفري.",false],"3":["بل هو في كل Rⁿ.",false]},
+    q4:{"0":["صحيح — 0+0=0 و k·0=0.",true],"1":["العدد لا يهم — الإغلاق يهم.",false],"2":["لا يشترط غير الصفري.",false],"3":["بل هو في كل ℝⁿ.",false]},
     q5:{"0":["صحيح — ثانية واحدة تحسم كثيراً.",true],"1":["المحدودية ليست شرطاً.",false],"2":["نوع الأعداد لا يهم.",false],"3":["الشكل لا يكفي وحده.",false]}};
   document.querySelectorAll('.q').forEach(function(box){
     var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
@@ -216,5 +249,6 @@
 })();
 </script>
 <script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>

@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0003 · الحذف الغاوسي خطوة بخطوة — Gaussian Elimination</title>
+<meta name="description" content="ثلاث عمليات صفوف حتى الصورة الدرجية، ثم التعويض الخلفي — وحالات الحلول الثلاث.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0003-gaussian-elimination.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0003 · الحذف الغاوسي خطوة بخطوة — مختبر الجبر الخطي">
+<meta property="og:description" content="ثلاث عمليات صفوف حتى الصورة الدرجية، ثم التعويض الخلفي — وحالات الحلول الثلاث.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="../assets/lesson-fonts.css">
 <style>
@@ -79,15 +86,39 @@
   a{color:var(--accent)}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0003 · الحذف الغاوسي خطوة بخطوة",
+ "alternateName": "Gaussian Elimination",
+ "description": "ثلاث عمليات صفوف حتى الصورة الدرجية، ثم التعويض الخلفي — وحالات الحلول الثلاث.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0003-gaussian-elimination.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "فيديو",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 3
+}
+</script>
 </head>
-<body>
+<body data-lesson-id="0003">
 <div class="wrap">
-  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0002-matrices-inverse.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0004-matrix-properties.html">التالي ←</a></div></div>
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0002-matrices-inverse.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0003">الخارطة</a> · <a href="0004-matrix-properties.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0003 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0003 · الأساسيات</div>
     <h1>الحذف الغاوسي خطوة بخطوة</h1>
     <span class="en-line" lang="en">Gaussian Elimination — three row moves solve any linear system</span>
     <div class="rule"></div>
@@ -122,9 +153,9 @@
       <h3>مدقق الحل</h3>
       <p class="hint">أدخل مرشحك (x, y, z) واللوحة تعوّض في المنظومة الأصلية</p>
       <div class="controls"><label>x <input type="number" id="vx" value="3" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><label>y <input type="number" id="vy" value="1" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><label>z <input type="number" id="vz" value="2" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><button class="btn" id="vGo">تحقق</button></div>
-      <div class="readout" id="vRO">2x+4y+6z = ? · 3x+8y+5z = ? · −x+y+2z = ?</div>
+      <div class="readout" id="vRO" style="direction:rtl;text-align:right">2x+4y+6z = ? · 3x+8y+5z = ? · −x+y+2z = ?</div>
     </div>
-    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>صف كامل أصفار مع ثابت غير صفري مثل <span class="coord">[0 0 0 | 5]</span> يعني: لا حل. وصف أصفار كامل <span class="coord">[0 0 0 | 0]</span> يعني: حلول لا نهائية. <span class="en" lang="en" dir="ltr">(0 = 5: impossible. 0 = 0: free variable.)</span></p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>صف كامل أصفار مع ثابت غير صفري مثل <span class="coord">[0 0 0 | 5]</span> يعني: <b>لا حل</b> — حكم قاطع. أما صف الأصفار الكامل <span class="coord">[0 0 0 | 0]</span> فيعني أن معادلةً كانت <b>زائدة</b>، ولا يعني وحده وجود حلول لا نهائية. عُدّ القادة: إن نقصت عن عدد المتغيرات فالحلول لا نهائية، وإن ساوته فالحل وحيد رغم صف الأصفار. <span class="en" lang="en" dir="ltr">(0 = 5 is impossible; 0 = 0 only means one equation was redundant — count the pivots.)</span></p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -132,7 +163,7 @@
     <p class="hint">موشن جرافيك بتعليق عربي لنفس المنظومة — القائد بالأخضر، وكل خلية تغيّرت بالدائرة الطينية</p>
     <video controls preload="metadata" poster="../video/outputs/0003-gaussian-elimination-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0003-gaussian-elimination-ar.mp4" type="video/mp4">
-      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0003-gaussian-elimination-subs.srt" default>
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0003-gaussian-elimination-subs.vtt" default>
     </video>
   </div>
 
@@ -171,6 +202,8 @@
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
     <a class="tool-btn" href="../playground.html?ex=0003-gaussian-elimination">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0003">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0003">بطاقات المراجعة</a>
     <button class="tool-btn done-toggle" type="button" data-lesson="0003" aria-pressed="false">أتممت الدرس</button>
   </div>
   <div class="refs">
@@ -244,7 +277,7 @@
     var x=+document.getElementById('vx').value,y=+document.getElementById('vy').value,z=+document.getElementById('vz').value;
     var r1=2*x+4*y+6*z,r2=3*x+8*y+5*z,r3=-x+y+2*z;
     var ok=(r1===22&&r2===27&&r3===2);
-    document.getElementById('vRO').textContent="2x+4y+6z = "+r1+" (want 22) · 3x+8y+5z = "+r2+" (want 27) · −x+y+2z = "+r3+" (want 2) → "+(ok?"CORRECT":"NOT YET");
+    document.getElementById('vRO').innerHTML="<span class='coord'>2x+4y+6z = "+r1+"</span> (المطلوب 22) · <span class='coord'>3x+8y+5z = "+r2+"</span> (المطلوب 27) · <span class='coord'>−x+y+2z = "+r3+"</span> (المطلوب 2) ← <b>"+(ok?"مطابق ✓ الحل صحيح":"ليس بعد — راجع التعويض")+"</b>";
   };
   var ANS={q1:{"0":["صحيح — الضرب في صفر يمحو المعادلة ويغيّر الحل.",true],"1":["مسموح — ثابت غير صفري.",false],"2":["مسموح — لا يغيّر الحل.",false],"3":["مسموح — قلب الحذف.",false]},
     q2:{"0":["صحيح — التطبيع أولاً دائماً.",true],"1":["لا حذف قبل التطبيع.",false],"2":["التبديل هنا غير لازم.",false],"3":["ممنوع — يمحو الصف.",false]},
@@ -262,5 +295,6 @@
 })();
 </script>
 <script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>

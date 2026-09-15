@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0008 · المولد والاستقلال الخطي — Span & Linear Independence</title>
+<meta name="description" content="إلى أين تصل الخلطة (المولد)، وهل يوجد متجه زائد (الاستقلال).">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0008-span-independence.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0008 · المولد والاستقلال الخطي — مختبر الجبر الخطي">
+<meta property="og:description" content="إلى أين تصل الخلطة (المولد)، وهل يوجد متجه زائد (الاستقلال).">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="../assets/lesson-fonts.css">
 <style>
@@ -62,15 +69,39 @@
   a{color:var(--accent)}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0008 · المولد والاستقلال الخطي",
+ "alternateName": "Span & Linear Independence",
+ "description": "إلى أين تصل الخلطة (المولد)، وهل يوجد متجه زائد (الاستقلال).",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0008-span-independence.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "فيديو",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 8
+}
+</script>
 </head>
-<body>
+<body data-lesson-id="0008">
 <div class="wrap">
-  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0007-linear-combinations.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0009-basis-dimension.html">التالي ←</a></div></div>
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0007-linear-combinations.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0008">الخارطة</a> · <a href="0009-basis-dimension.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0008 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0008 · المتجهات والفضاءات</div>
     <h1>المولد والاستقلال الخطي</h1>
     <span class="en-line" lang="en">Span & Linear Independence — what a set reaches, and whether it wastes a vector</span>
     <div class="rule"></div>
@@ -79,15 +110,15 @@
 
   <section id="s1">
     <h2><span class="num">١</span> المولد: كل ما تصل إليه الخلطة<span class="en-sub" lang="en">Span = the set of ALL linear combinations</span></h2>
-    <p>ال<span class="term">مولد</span> <span class="en" lang="en" dir="ltr">(span)</span> لمجموعة متجهات هو كل النتائج الممكنة من كل الأوزان الممكنة. مولد <span class="coord">(1,0)</span> وحده هو المحور السيني كله. ومولد <span class="coord">(1,0)</span> و <span class="coord">(0,1)</span> هو <span class="coord">R²</span> كله. السؤال: هل المجموعة «تولّد» هدفك؟ أي: هل الهدف تركيب منها؟</p>
-    <div class="analogy"><b>تشبيه: تغطية الواي فاي</b><p>كل راوتر يغطي دائرة — والمولد هو اتحاد التغطيات لكل قوى الإشارة الممكنة. راوتران متوازيان لا يغطيان بيتاً من طابقين. <span class="en" lang="en" dir="ltr">Span is the total coverage at every power level.</span></p></div>
+    <p>ال<span class="term">مولد</span> <span class="en" lang="en" dir="ltr">(span)</span> لمجموعة متجهات هو كل النتائج الممكنة من كل الأوزان الممكنة. مولد <span class="coord">(1,0)</span> وحده هو المحور السيني كله. ومولد <span class="coord">(1,0)</span> و <span class="coord">(0,1)</span> هو <span class="coord">ℝ²</span> كله. السؤال: هل المجموعة «تولّد» هدفك؟ أي: هل الهدف تركيب منها؟</p>
+    <div class="analogy"><b>تشبيه: الخلاط مرة أخرى</b><p>عد إلى خلاط الدرس السابق: المكوّنات متجهات والكميات أوزان. <b>المولد</b> هو قائمة <b>كل</b> الأطعمة التي يمكن صنعها من هذه المكوّنات مهما غيّرت الكميات — لا مجرد الأطعمة التي جرّبتها. وبموزة وحليب تصنع عشرات المشروبات، لكن البيتزا تبقى خارج القائمة مهما فعلت: هي خارج المولد. و<b>الارتباط</b> أن تضيف مكوّناً لا يوسّع القائمة أصلاً — عصير موز جاهز بجانب الموز والحليب لا يفتح لك طبقاً جديداً، لأنه نفسه خلطة منهما. <span class="en" lang="en" dir="ltr">Span is every dish you could make; a dependent vector is an ingredient that adds no new dish.</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> المولد سؤال «وصول»: <span class="coord">w ∈ span{v₁,v₂}</span> تعني «يوجد حل لمنظومة الأوزان». والاستقلال سؤال «هدر»: هل أحد المتجهات تركيب من البقية؟ <span class="en" lang="en" dir="ltr">(Span asks “reachable?” Independence asks “wasted?”)</span></p></div>
     <div class="kmath" id="k1"></div>
   </section>
 
   <section id="s2">
-    <h2><span class="num">٢</span> مختبر الاستقلال لمتجهين<span class="en-sub" lang="en">Parallel ⟺ dependent in R² — test it with the determinant</span></h2>
-    <p>لمتجهين في <span class="coord">R²</span> الاختبار فوري: متوازيان ⟺ مرتبطان خطياً <span class="en" lang="en" dir="ltr">(dependent)</span>، وغير متوازيين ⟺ مستقلان <span class="en" lang="en" dir="ltr">(independent)</span>. والمحدد يحسم: <span class="coord">det = 0 ⟺</span> مرتبطان. أدخل أي زوجين واحكم.</p>
+    <h2><span class="num">٢</span> مختبر الاستقلال لمتجهين<span class="en-sub" lang="en">Parallel ⟺ dependent in ℝ² — test it with the determinant</span></h2>
+    <p>لمتجهين في <span class="coord">ℝ²</span> الاختبار فوري: متوازيان ⟺ مرتبطان خطياً <span class="en" lang="en" dir="ltr">(dependent)</span>، وغير متوازيين ⟺ مستقلان <span class="en" lang="en" dir="ltr">(independent)</span>. والمحدد يحسم: <span class="coord">det = 0 ⟺</span> مرتبطان. أدخل أي زوجين واحكم.</p>
     <div class="demo" data-label="Judge · TEST">
       <h3>ميزان الاستقلال</h3>
       <p class="hint">أدخل المتجهين — اللوحة تحسب المحدد وتصدر الحكم</p>
@@ -114,7 +145,7 @@
     <p class="hint">موشن جرافيك بتعليق عربي: التغطية، والمحدد، ومعادلة الصفر</p>
     <video controls preload="metadata" poster="../video/outputs/0008-span-independence-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0008-span-independence-ar.mp4" type="video/mp4">
-      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0008-span-independence-subs.srt" default>
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0008-span-independence-subs.vtt" default>
     </video>
   </div>
 
@@ -129,8 +160,8 @@
 
   <section id="quiz">
     <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
-    <div class="q" id="q1"><div class="prompt">ما مولد <span class="coord">(1,0)</span> وحده في <span class="coord">R²</span>؟</div>
-      <button class="opt" data-q="q1" data-a="0">المحور السيني كله</button><button class="opt" data-q="q1" data-a="1"><span class="coord">R²</span> كله</button><button class="opt" data-q="q1" data-a="2">النقطة <span class="coord">(1,0)</span> فقط</button><button class="opt" data-q="q1" data-a="3">الربع الأول</button><div class="feedback"></div></div>
+    <div class="q" id="q1"><div class="prompt">ما مولد <span class="coord">(1,0)</span> وحده في <span class="coord">ℝ²</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0">المحور السيني كله</button><button class="opt" data-q="q1" data-a="1"><span class="coord">ℝ²</span> كله</button><button class="opt" data-q="q1" data-a="2">النقطة <span class="coord">(1,0)</span> فقط</button><button class="opt" data-q="q1" data-a="3">الربع الأول</button><div class="feedback"></div></div>
     <div class="q" id="q2"><div class="prompt">هل <span class="coord">(1,1)</span> و <span class="coord">(2,2)</span> مستقلان؟</div>
       <button class="opt" data-q="q2" data-a="0">لا — متوازيان ومحددهما صفر</button><button class="opt" data-q="q2" data-a="1">نعم — مختلفان</button><button class="opt" data-q="q2" data-a="2">نعم — لا يحويان الصفر</button><button class="opt" data-q="q2" data-a="3">لا — لأنهما طويلان</button><div class="feedback"></div></div>
     <div class="q" id="q3"><div class="prompt">تعريف الارتباط الخطي؟</div>
@@ -138,7 +169,7 @@
     <div class="q" id="q4"><div class="prompt">مجموعة تحوي المتجه الصفري — حكمها؟</div>
       <button class="opt" data-q="q4" data-a="0">مرتبطة حتماً</button><button class="opt" data-q="q4" data-a="1">مستقلة حتماً</button><button class="opt" data-q="q4" data-a="2">لا يمكن الحكم</button><button class="opt" data-q="q4" data-a="3">فضاء جزئي حتماً</button><div class="feedback"></div></div>
     <div class="q" id="q5"><div class="prompt">مولد <span class="coord">(1,0)</span> و <span class="coord">(0,1)</span> هو؟</div>
-      <button class="opt" data-q="q5" data-a="0"><span class="coord">R²</span> كله</button><button class="opt" data-q="q5" data-a="1">المحور السيني فقط</button><button class="opt" data-q="q5" data-a="2">النقطتان فقط</button><button class="opt" data-q="q5" data-a="3">الخط <span class="coord">y = x</span></button><div class="feedback"></div></div>
+      <button class="opt" data-q="q5" data-a="0"><span class="coord">ℝ²</span> كله</button><button class="opt" data-q="q5" data-a="1">المحور السيني فقط</button><button class="opt" data-q="q5" data-a="2">النقطتان فقط</button><button class="opt" data-q="q5" data-a="3">الخط <span class="coord">y = x</span></button><div class="feedback"></div></div>
   </section>
 
   <section id="glossary">
@@ -153,6 +184,8 @@
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
     <a class="tool-btn" href="../playground.html?ex=0008-span-independence">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0008">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0008">بطاقات المراجعة</a>
     <button class="tool-btn done-toggle" type="button" data-lesson="0008" aria-pressed="false">أتممت الدرس</button>
   </div>
   <div class="refs">
@@ -178,10 +211,10 @@
     var a=+document.getElementById('du1').value,b=+document.getElementById('du2').value,c=+document.getElementById('dv1').value,d=+document.getElementById('dv2').value;
     var det=a*d-b*c;
     tex(document.getElementById('dStage'),"\\det\\begin{bmatrix}"+a+"&"+c+"\\\\"+b+"&"+d+"\\end{bmatrix} = "+det);
-    document.getElementById('dRO').innerHTML="<span class='coord'>det = ("+a+")("+d+") − ("+b+")("+c+") = "+det+"</span> → "+(det===0?"صفر: مرتبطان — متوازيان ومولدهما خط واحد فقط":"غير صفري: مستقلان — يولدان المستوى كله <span class='coord'>R²</span>");
+    document.getElementById('dRO').innerHTML="<span class='coord'>det = ("+a+")("+d+") − ("+b+")("+c+") = "+det+"</span> → "+(det===0?"صفر: مرتبطان — متوازيان ومولدهما خط واحد فقط":"غير صفري: مستقلان — يولدان المستوى كله <span class='coord'>ℝ²</span>");
   };
   var h1=document.getElementById('h1'),h2=document.getElementById('h2'),hRO=document.getElementById('hRO');
-  function hunt(){var a=+h1.value,b=+h2.value;var x=a*1+b*2,y=a*1+b*2;var zero=(x===0&&y===0),nontrivial=(a!==0||b!==0);hRO.innerHTML="<span class='coord'>"+a+"(1,1) + ("+b+")(2,2) = ("+x+", "+y+")</span> → "+((zero&&nontrivial)?"<b>صفر بأوزان غير صفرية — الارتباط مُثبت</b>":(zero?"أوزان صفرية فقط — هذا الحل التافه، واصل البحث":"ليست صفراً — واصل البحث"));}h1.oninput=hunt;h2.oninput=hunt;hunt();
+  function hunt(){var a=+h1.value,b=+h2.value;var x=a*1+b*2,y=a*1+b*2;var zero=(x===0&&y===0),nontrivial=(a!==0||b!==0);var mn=function(v){return String(v).replace(/-/g,"\u2212");};hRO.innerHTML="<span class='coord'>"+mn(a)+"(1,1) + ("+mn(b)+")(2,2) = ("+mn(x)+", "+mn(y)+")</span> → "+((zero&&nontrivial)?"<b>صفر بأوزان غير صفرية — الارتباط مُثبت</b>":(zero?"أوزان صفرية فقط — هذا الحل التافه، واصل البحث":"ليست صفراً — واصل البحث"));}h1.oninput=hunt;h2.oninput=hunt;hunt();
   var ANS={q1:{"0":["صحيح — كل (t,0) تركيب منه.",true],"1":["هذا مولد الزوج الكامل.",false],"2":["الأوزان كلها متاحة لا الصفر فقط.",false],"3":["المولد خط لا ربع.",false]},
     q2:{"0":["صحيح — الثاني ضعف الأول.",true],"1":["الاختلاف لا يكفي.",false],"2":["غياب الصفر لا يمنح الاستقلال.",false],"3":["الطول لا علاقة له.",false]},
     q3:{"0":["صحيح — هذا هو التعريف الحرفي.",true],"1":["التساوي حالة خاصة فقط.",false],"2":["التعامد استقلال لا ارتباط.",false],"3":["الموقع لا علاقة له.",false]},
@@ -198,5 +231,6 @@
 })();
 </script>
 <script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>

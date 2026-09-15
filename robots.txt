@@ -1,0 +1,4 @@
+User-agent: *
+Allow: /
+
+Sitemap: https://turkihassan.github.io/linear-algebra-lab/sitemap.xml

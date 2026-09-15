@@ -5,10 +5,17 @@
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>مراجعة سريعة — بطاقات وورقة غش | مختبر الجبر الخطي</title>
 <meta name="description" content="بطاقات مراجعة تفاعلية وورقة غش قابلة للطباعة من قواميس دروس الجبر الخطي الأحد عشر.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/review.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="المراجعة المتباعدة — بطاقات مجدولة بـ SM-2 — مختبر الجبر الخطي">
+<meta property="og:description" content="بطاقات مراجعة مجدولة بخوارزمية SM-2 من قواميس الدروس وقواعدها الذهبية، وورقة غش قابلة للطباعة.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="assets/icons/icon-192.png">
 <link rel="stylesheet" href="assets/lesson-fonts.css">
+<link rel="stylesheet" href="assets/ui.css">
 <style>
   :root{--paper:#faf7f2;--card:#fff;--ink:#111;--muted:#7a7a72;--line:#d8d4cc;--accent:#0d5c46;--terra:#c2562f;
     --serif:"ThmanyahSerifDisplay",serif;--text:"ThmanyahSerifText",serif;--sans:"ThmanyahSans",system-ui,sans-serif}
@@ -51,6 +58,46 @@
   .gcard.open .gmean{display:block}
   .gcard.open .ghint{display:none}
   .ghint{font-family:var(--sans);font-size:11px;color:var(--muted);margin-top:auto;opacity:.75}
+  /* ---------- جلسة المراجعة المتباعدة ---------- */
+  .srs{margin:30px 0 0;border:1.5px solid var(--line);border-radius:20px;background:var(--card);padding:22px 24px;font-family:var(--sans)}
+  .srs h2{font-family:var(--serif);font-size:24px;margin:0 0 6px}
+  .srs .why{font-size:13px;color:var(--muted);margin:0 0 18px;line-height:2;max-width:74ch}
+  .srs-stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(122px,1fr));gap:10px;margin-bottom:16px}
+  .srs-stat{border:1px solid var(--line);border-radius:14px;padding:11px 14px;background:var(--paper)}
+  .srs-stat b{display:block;font-size:22px;font-weight:800;line-height:1.2;direction:ltr;unicode-bidi:isolate;text-align:start}
+  .srs-stat small{font-size:11.5px;color:var(--muted)}
+  .srs-stat.due b{color:var(--terra)} .srs-stat.new b{color:var(--accent)}
+
+  .srs-stage{border:1px dashed var(--line);border-radius:16px;padding:26px 22px;min-height:224px;
+    display:flex;flex-direction:column;justify-content:center;gap:14px;text-align:center;background:var(--paper)}
+  .srs-kind{font-size:11px;color:var(--muted);letter-spacing:.06em}
+  .srs-q{font-family:var(--serif);font-size:clamp(20px,3.4vw,28px);line-height:1.5;margin:0}
+  .srs-en{font-family:ui-monospace,Menlo,Consolas,monospace;font-size:12.5px;color:var(--muted);direction:ltr}
+  .srs-a{font-size:15.5px;line-height:1.95;color:var(--ink);border-top:1px solid var(--line);padding-top:14px;margin:0}
+  .srs-a[hidden]{display:none}
+  .srs-src{font-size:12px;color:var(--muted)}
+  .srs-src a{color:var(--accent)}
+  .srs-acts{display:flex;gap:8px;flex-wrap:wrap;justify-content:center;margin-top:16px}
+  .grade{font:inherit;font-family:var(--sans);font-size:13px;border:1.5px solid var(--line);background:var(--card);
+    color:var(--ink);border-radius:14px;padding:10px 16px;cursor:pointer;min-width:112px;line-height:1.5}
+  .grade:hover{border-color:var(--ink)}
+  .grade b{display:block;font-size:13.5px}
+  .grade small{font-size:11px;color:var(--muted);direction:ltr;unicode-bidi:isolate;display:block}
+  .grade.g0{border-color:var(--terra)} .grade.g0 b{color:var(--terra)}
+  .grade.g3{border-color:var(--accent)} .grade.g3 b{color:var(--accent)}
+  .srs-bar{height:6px;border-radius:999px;background:var(--line);overflow:hidden;margin:14px 0 0}
+  .srs-bar i{display:block;height:100%;width:0;background:var(--accent);transition:width .25s ease}
+  .srs-meta{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:11.5px;color:var(--muted);margin-top:8px}
+  .heat{display:flex;gap:3px;flex-wrap:wrap;margin:14px 0 0;direction:ltr}
+  .heat i{width:11px;height:11px;border-radius:3px;background:var(--line);display:block}
+  .heat i[data-n="1"]{background:color-mix(in srgb,var(--accent) 35%,var(--line))}
+  .heat i[data-n="2"]{background:color-mix(in srgb,var(--accent) 65%,var(--line))}
+  .heat i[data-n="3"]{background:var(--accent)}
+  .due-badge{font-family:var(--sans);font-size:11px;border-radius:999px;padding:3px 10px;margin-inline-start:8px;
+    border:1px solid var(--terra);color:var(--terra);white-space:nowrap}
+  .due-badge.zero{border-color:var(--line);color:var(--muted)}
+  @media print{.srs{display:none}}
+
   .foot{margin-top:70px;border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;gap:12px;flex-wrap:wrap;font-family:var(--sans);font-size:12px;color:var(--muted)}
   @media print{
     :root{--paper:#fff;--card:#fff;--ink:#000;--muted:#333;--line:#bbb;--accent:#000;--terra:#000}
@@ -69,6 +116,7 @@
     <a class="brand" href="index.html"><span class="mark">✳</span> مختبر الجبر الخطي</a>
     <nav aria-label="تنقل">
       <a href="index.html">الرئيسية</a>
+      <a href="map.html">الخارطة الذهنية</a>
       <a href="summary.html">الملخص الشامل</a>
       <a href="search.html">بحث</a>
       <a href="playground.html">شغّل بايثون</a>
@@ -95,25 +143,57 @@
       <a href="#l0010">10 · المحددات من 2×2 إلى 3×3</a>
       <a href="#l0011">11 · بنك التدريبات مع الحلول</a></div>
   </header>
-<section class="ls" id="l0001"><div class="ls-head"><span class="lnum">01</span><div><h2>منظومات المعادلات الخطية</h2><a class="lsub" href="lessons/0001-linear-systems.html" lang="en">Systems of Linear Equations — which equation counts as linear?</a></div><a class="lopen" href="lessons/0001-linear-systems.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: المعادلة خطية إذا تحققت الشروط الثلاثة معاً: أس كل متغير 1 ، ولا توجد دوال ملتصقة بالمتغير (مثل sin x )، ولا يوجد حاصل ضرب متغيرين. (Power 1, no functions of x, no x·y terms.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">معادلة خطية <small lang="en">linear equation</small></span><span class="gmean">كل متغير بقوة 1 وحده</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">المصفوفة الموسعة <small lang="en">augmented matrix</small></span><span class="gmean">المعاملات والثوابت في جدول واحد</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الحذف الغاوسي <small lang="en">Gaussian elimination</small></span><span class="gmean">تصفير تدريجي ثم تعويض خلفي</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">العنصر القائد <small lang="en">pivot</small></span><span class="gmean">أول رقم غير صفري نرتّب عليه الصف</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0002"><div class="ls-head"><span class="lnum">02</span><div><h2>المصفوفات والعمليات والنظير الضربي</h2><a class="lsub" href="lessons/0002-matrices-inverse.html" lang="en">Matrices, Operations &amp; the Multiplicative Inverse — the objects and their arithmetic</a></div><a class="lopen" href="lessons/0002-matrices-inverse.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: الجمع يحتاج التطابق التام في الشكل، والضرب يحتاج تطابق «الوسط»: أعمدة الأولى = صفوف الثانية. (Add needs same shape; multiply needs inner dimensions to match.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">الشكل <small lang="en">shape (m × n)</small></span><span class="gmean">صفوف × أعمدة — جواز العمليات</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">مصفوفة الوحدة <small lang="en">identity I</small></span><span class="gmean">واحدات على القطر — العنصر المحايد ضرباً</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">النظير الضربي <small lang="en">inverse A⁻¹</small></span><span class="gmean">زر التراجع: A·A⁻¹ = I</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">شاذة <small lang="en">singular</small></span><span class="gmean">محددها صفر — بلا نظير</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0003"><div class="ls-head"><span class="lnum">03</span><div><h2>الحذف الغاوسي خطوة بخطوة</h2><a class="lsub" href="lessons/0003-gaussian-elimination.html" lang="en">Gaussian Elimination — three row moves solve any linear system</a></div><a class="lopen" href="lessons/0003-gaussian-elimination.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: اجعل القائد (pivot) يساوي 1 ، ثم صفّر كل ما تحته، عموداً بعد عمود، من اليسار إلى اليمين. (Ones on the diagonal, zeros below — left to right.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">عمليات الصفوف <small lang="en">row operations</small></span><span class="gmean">التحريكات الثلاثة المسموحة بلا تغيير الحل</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">القائد <small lang="en">pivot</small></span><span class="gmean">مسمار العمود: نجعله 1 ونصفّر تحته</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">التعويض الخلفي <small lang="en">back substitution</small></span><span class="gmean">الصعود من z إلى x بالتعويض</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0004"><div class="ls-head"><span class="lnum">04</span><div><h2>خصائص المصفوفات والمصفوفة الصفرية</h2><a class="lsub" href="lessons/0004-matrix-properties.html" lang="en">Matrix Properties — the six algebraic laws plus the zero matrix</a></div><a class="lopen" href="lessons/0004-matrix-properties.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: كل قوانين الأعداد المدرسية تنتقل للمصفوفات إلا إبدال الضرب. قبل أن تبادل AB إلى BA توقف واسأل. (Everything transfers except AB = BA.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">خاصية الإبدال <small lang="en">commutative</small></span><span class="gmean">الترتيب حر — للجمع فقط هنا</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">خاصية التوزيع <small lang="en">distributive</small></span><span class="gmean">الضرب القياسي يتوزع على الجمع</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">المصفوفة الصفرية <small lang="en">zero matrix O</small></span><span class="gmean">كلها أصفار — محايد الجمع</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0005"><div class="ls-head"><span class="lnum">05</span><div><h2>فضاء المتجهات الإقليدي</h2><a class="lsub" href="lessons/0005-euclidean-spaces.html" lang="en">Euclidean Vector Spaces — inner product, length and distance</a></div><a class="lopen" href="lessons/0005-euclidean-spaces.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: كل عمليات المتجهات الأساسية تتم عنصراً بعنصر — ما عدا عمليتين جديدتين: الضرب الداخلي (يُخرج رقماً) والطول (يُخرج مسافة). (Everything is entrywise — except dot product and length.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">الضرب الداخلي <small lang="en">inner product</small></span><span class="gmean">رقم التشابه: اضرب المتناظر واجمع</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الطول <small lang="en">length (norm)</small></span><span class="gmean">مسافة المتجه عن الأصل</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">المسافة <small lang="en">distance</small></span><span class="gmean">طول الفرق بين متجهين</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0006"><div class="ls-head"><span class="lnum">06</span><div><h2>الفضاء الجزئي</h2><a class="lsub" href="lessons/0006-subspaces.html" lang="en">Subspaces — a smaller space living inside Rⁿ, closed under both operations</a></div><a class="lopen" href="lessons/0006-subspaces.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: اختبار من ثلاثة أسطر: هل 0 موجود؟ هل u+v باقٍ؟ هل ku باقٍ؟ نعم ثلاث مرات ⟺ فضاء جزئي. (Zero in, plus closed, times closed — that is all.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">فضاء جزئي <small lang="en">subspace</small></span><span class="gmean">فضاء صغير داخل الكبير بقواعد الإغلاق</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">مغلق تحت عملية <small lang="en">closed under</small></span><span class="gmean">النتيجة لا تغادر المجموعة</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الفضاء الصفري <small lang="en">zero subspace {0}</small></span><span class="gmean">أصغر فضاء جزئي ممكن</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0007"><div class="ls-head"><span class="lnum">07</span><div><h2>التركيب الخطي</h2><a class="lsub" href="lessons/0007-linear-combinations.html" lang="en">Linear Combinations — mixing vectors with weights c₁v₁ + c₂v₂ + …</a></div><a class="lopen" href="lessons/0007-linear-combinations.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: التركيب الخطي = تضخيم ثم جمع. اكتب الأوزان أولاً دائماً: w = c₁v₁ + c₂v₂ ، فالسؤال «هل w تركيب؟» يعني «هل توجد أوزان؟». (Weights first: w = c₁v₁ + c₂v₂ asks “do weights exist?”)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">تركيب خطي <small lang="en">linear combination</small></span><span class="gmean">خلطة موزونة من المتجهات</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الأوزان <small lang="en">weights / coefficients</small></span><span class="gmean">مقادير الخلطة — مجاهيل تُحل</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0008"><div class="ls-head"><span class="lnum">08</span><div><h2>المولد والاستقلال الخطي</h2><a class="lsub" href="lessons/0008-span-independence.html" lang="en">Span &amp; Linear Independence — what a set reaches, and whether it wastes a vector</a></div><a class="lopen" href="lessons/0008-span-independence.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: المولد سؤال «وصول»: w ∈ span{v₁,v₂} تعني «يوجد حل لمنظومة الأوزان». والاستقلال سؤال «هدر»: هل أحد المتجهات تركيب من البقية؟ (Span asks “reachable?” Independence asks “wasted?”)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">المولد <small lang="en">span</small></span><span class="gmean">كل ما تصل إليه التراكيب</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الاستقلال الخطي <small lang="en">linear independence</small></span><span class="gmean">لا هدر: لا متجه زائد</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الارتباط الخطي <small lang="en">linear dependence</small></span><span class="gmean">هدر: أحدهم يُبنى من البقية</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0009"><div class="ls-head"><span class="lnum">09</span><div><h2>الأساس والأبعاد</h2><a class="lsub" href="lessons/0009-basis-dimension.html" lang="en">Basis &amp; Dimension — the smallest team that spans, and how to count it</a></div><a class="lopen" href="lessons/0009-basis-dimension.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: أساس = استقلال + توليد. والبعد يُقرأ من أي أساس: Rⁿ بعده n ، والخط عبر الأصل بعده 1 ، والنقطة وحدها بعدها 0 . (Count any basis — the number never changes.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">الأساس <small lang="en">basis</small></span><span class="gmean">أصغر فريق يغطي الفضاء بلا هدر</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">البعد <small lang="en">dimension</small></span><span class="gmean">عدد أعضاء أي أساس</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الإحداثيات <small lang="en">coordinates</small></span><span class="gmean">عنوان المتجه بلغة أساس معين</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0010"><div class="ls-head"><span class="lnum">10</span><div><h2>المحددات من 2×2 إلى 3×3</h2><a class="lsub" href="lessons/0010-determinants.html" lang="en">Determinants — one number that reports area, volume and invertibility</a></div><a class="lopen" href="lessons/0010-determinants.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: المحدد يسأل ثلاثة أسئلة دفعة واحدة: هل يوجد نظير؟ هل الأعمدة مستقلة؟ هل المساحة غير مسطحة؟ وإذا كان المحدد صفراً فالأجوبة: لا نظير، وأعمدة مرتبطة، ومساحة صفر. (Zero determinant: no inverse, dependent columns, zero area.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">المحدد <small lang="en">determinant</small></span><span class="gmean">رقم المصفوفة الكاشف: نظير واستقلال ومساحة</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">قاعدة ساروس <small lang="en">Sarrus rule</small></span><span class="gmean">وصفة الأقطار لمحدد 3×3</span><span class="ghint">اضغط للكشف</span></button></div></section>
-<section class="ls" id="l0011"><div class="ls-head"><span class="lnum">11</span><div><h2>بنك التدريبات مع الحلول</h2><a class="lsub" href="lessons/0011-drills.html" lang="en">Drills Bank — the whole course in one workout, with generator and score</a></div><a class="lopen" href="lessons/0011-drills.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: الورق أولاً، اللوحة للتحقق فقط. من يتحقق قبل المحاولة يسرق من نفسه التدريب. (Paper first, panel second — no peeking.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">منظومة خطية <small lang="en">linear system</small></span><span class="gmean">معادلات خطية تُحل معاً</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">القائد <small lang="en">pivot</small></span><span class="gmean">مسمار الحذف الغاوسي</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الأساس والبعد <small lang="en">basis &amp; dimension</small></span><span class="gmean">أصغر فريق وعدد أعضائه</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">المحدد <small lang="en">determinant</small></span><span class="gmean">كاشف النظير والمساحة</span><span class="ghint">اضغط للكشف</span></button></div></section>
+
+  <section class="srs" id="session" aria-labelledby="srsTitle">
+    <h2 id="srsTitle">جلسة المراجعة المتباعدة</h2>
+    <p class="why">خمسٌ وأربعون بطاقة من قواميس الدروس وقواعدها الذهبية، مجدولة بخوارزمية <span lang="en" dir="ltr">SM-2</span>: كلما تذكّرت البطاقة بسهولة باعَدَت موعدها، وكلما تعثّرت أعادتها قريباً. استرجع الجواب من ذاكرتك <b>قبل</b> أن تكشفه — الاسترجاع النشط هو ما يثبّت المعلومة، لا إعادة القراءة. كل شيء محفوظ في متصفحك وحده.</p>
+
+    <div class="srs-stats" id="srsStats" aria-live="polite"></div>
+
+    <div class="srs-stage" id="srsStage">
+      <p class="srs-q" id="srsIdle">اضغط «ابدأ الجلسة» لتبدأ المراجعة المجدولة لليوم.</p>
+    </div>
+
+    <div class="srs-bar" aria-hidden="true"><i id="srsFill"></i></div>
+    <div class="srs-meta">
+      <span id="srsProgress">لم تبدأ بعد</span>
+      <span>اختصارات: <span class="ui-key">مسافة</span> كشف · <span class="ui-key">1</span>–<span class="ui-key">4</span> تقييم</span>
+    </div>
+
+    <div class="bar" style="margin-top:16px">
+      <button class="btn solid" id="srsStart" type="button">ابدأ الجلسة</button>
+      <button class="btn" id="srsSkip" type="button" hidden>أنهِ الجلسة</button>
+      <a class="btn" href="map.html">الخارطة الذهنية</a>
+      <button class="btn" id="srsReset" type="button">صفّر الجدولة</button>
+    </div>
+
+    <div class="heat" id="srsHeat" role="img" aria-label="نشاط المراجعة في آخر ثلاثين يوماً"></div>
+  </section>
+<section class="ls" id="l0001"><div class="ls-head"><span class="lnum">01</span><div><h2>منظومات المعادلات الخطية</h2><a class="lsub" href="lessons/0001-linear-systems.html" lang="en">Systems of Linear Equations — which equation counts as linear?</a></div><span class="due-badge zero" data-due-for="0001" aria-live="polite"></span><a class="lopen" href="lessons/0001-linear-systems.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: المعادلة خطية إذا تحققت الشروط الثلاثة معاً: أس كل متغير 1 ، ولا توجد دوال ملتصقة بالمتغير (مثل sin x )، ولا يوجد حاصل ضرب متغيرين. (Power 1, no functions of x, no x·y terms.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">معادلة خطية <small lang="en">linear equation</small></span><span class="gmean">كل متغير بقوة 1 وحده</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">المصفوفة الموسعة <small lang="en">augmented matrix</small></span><span class="gmean">المعاملات والثوابت في جدول واحد</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الحذف الغاوسي <small lang="en">Gaussian elimination</small></span><span class="gmean">تصفير تدريجي ثم تعويض خلفي</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">العنصر القائد <small lang="en">pivot</small></span><span class="gmean">أول رقم غير صفري نرتّب عليه الصف</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0002"><div class="ls-head"><span class="lnum">02</span><div><h2>المصفوفات والعمليات والنظير الضربي</h2><a class="lsub" href="lessons/0002-matrices-inverse.html" lang="en">Matrices, Operations &amp; the Multiplicative Inverse — the objects and their arithmetic</a></div><span class="due-badge zero" data-due-for="0002" aria-live="polite"></span><a class="lopen" href="lessons/0002-matrices-inverse.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: الجمع يحتاج التطابق التام في الشكل، والضرب يحتاج تطابق «الوسط»: أعمدة الأولى = صفوف الثانية. (Add needs same shape; multiply needs inner dimensions to match.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">الشكل <small lang="en">shape (m × n)</small></span><span class="gmean">صفوف × أعمدة — جواز العمليات</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">مصفوفة الوحدة <small lang="en">identity I</small></span><span class="gmean">واحدات على القطر — العنصر المحايد ضرباً</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">النظير الضربي <small lang="en">inverse A⁻¹</small></span><span class="gmean">زر التراجع: A·A⁻¹ = I</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">شاذة <small lang="en">singular</small></span><span class="gmean">محددها صفر — بلا نظير</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0003"><div class="ls-head"><span class="lnum">03</span><div><h2>الحذف الغاوسي خطوة بخطوة</h2><a class="lsub" href="lessons/0003-gaussian-elimination.html" lang="en">Gaussian Elimination — three row moves solve any linear system</a></div><span class="due-badge zero" data-due-for="0003" aria-live="polite"></span><a class="lopen" href="lessons/0003-gaussian-elimination.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: اجعل القائد (pivot) يساوي 1 ، ثم صفّر كل ما تحته، عموداً بعد عمود، من اليسار إلى اليمين. (Ones on the diagonal, zeros below — left to right.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">عمليات الصفوف <small lang="en">row operations</small></span><span class="gmean">التحريكات الثلاثة المسموحة بلا تغيير الحل</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">القائد <small lang="en">pivot</small></span><span class="gmean">مسمار العمود: نجعله 1 ونصفّر تحته</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">التعويض الخلفي <small lang="en">back substitution</small></span><span class="gmean">الصعود من z إلى x بالتعويض</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0004"><div class="ls-head"><span class="lnum">04</span><div><h2>خصائص المصفوفات والمصفوفة الصفرية</h2><a class="lsub" href="lessons/0004-matrix-properties.html" lang="en">Matrix Properties — the six algebraic laws plus the zero matrix</a></div><span class="due-badge zero" data-due-for="0004" aria-live="polite"></span><a class="lopen" href="lessons/0004-matrix-properties.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: كل قوانين الأعداد المدرسية تنتقل للمصفوفات إلا إبدال الضرب. قبل أن تبادل AB إلى BA توقف واسأل. (Everything transfers except AB = BA.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">خاصية الإبدال <small lang="en">commutative</small></span><span class="gmean">الترتيب حر — للجمع فقط هنا</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">خاصية التوزيع <small lang="en">distributive</small></span><span class="gmean">الضرب القياسي يتوزع على الجمع</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">المصفوفة الصفرية <small lang="en">zero matrix O</small></span><span class="gmean">كلها أصفار — محايد الجمع</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0005"><div class="ls-head"><span class="lnum">05</span><div><h2>فضاء المتجهات الإقليدي</h2><a class="lsub" href="lessons/0005-euclidean-spaces.html" lang="en">Euclidean Vector Spaces — inner product, length and distance</a></div><span class="due-badge zero" data-due-for="0005" aria-live="polite"></span><a class="lopen" href="lessons/0005-euclidean-spaces.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: كل عمليات المتجهات الأساسية تتم عنصراً بعنصر — ما عدا عمليتين جديدتين: الضرب الداخلي (يُخرج رقماً) والطول (يُخرج مسافة). (Everything is entrywise — except dot product and length.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">الضرب الداخلي <small lang="en">inner product</small></span><span class="gmean">رقم التشابه: اضرب المتناظر واجمع</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الطول <small lang="en">length (norm)</small></span><span class="gmean">مسافة المتجه عن الأصل</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">المسافة <small lang="en">distance</small></span><span class="gmean">طول الفرق بين متجهين</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0006"><div class="ls-head"><span class="lnum">06</span><div><h2>الفضاء الجزئي</h2><a class="lsub" href="lessons/0006-subspaces.html" lang="en">Subspaces — a smaller space living inside ℝⁿ, closed under both operations</a></div><span class="due-badge zero" data-due-for="0006" aria-live="polite"></span><a class="lopen" href="lessons/0006-subspaces.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: اختبار من ثلاثة أسطر: هل 0 موجود؟ هل u+v باقٍ؟ هل ku باقٍ؟ نعم ثلاث مرات ⟺ فضاء جزئي. (Zero in, plus closed, times closed — that is all.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">فضاء جزئي <small lang="en">subspace</small></span><span class="gmean">فضاء صغير داخل الكبير بقواعد الإغلاق</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">مغلق تحت عملية <small lang="en">closed under</small></span><span class="gmean">النتيجة لا تغادر المجموعة</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الفضاء الصفري <small lang="en">zero subspace {0}</small></span><span class="gmean">أصغر فضاء جزئي ممكن</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0007"><div class="ls-head"><span class="lnum">07</span><div><h2>التركيب الخطي</h2><a class="lsub" href="lessons/0007-linear-combinations.html" lang="en">Linear Combinations — mixing vectors with weights c₁v₁ + c₂v₂ + …</a></div><span class="due-badge zero" data-due-for="0007" aria-live="polite"></span><a class="lopen" href="lessons/0007-linear-combinations.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: التركيب الخطي = تضخيم ثم جمع. اكتب الأوزان أولاً دائماً: w = c₁v₁ + c₂v₂ ، فالسؤال «هل w تركيب؟» يعني «هل توجد أوزان؟». (Weights first: w = c₁v₁ + c₂v₂ asks “do weights exist?”)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">تركيب خطي <small lang="en">linear combination</small></span><span class="gmean">خلطة موزونة من المتجهات</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الأوزان <small lang="en">weights / coefficients</small></span><span class="gmean">مقادير الخلطة — مجاهيل تُحل</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0008"><div class="ls-head"><span class="lnum">08</span><div><h2>المولد والاستقلال الخطي</h2><a class="lsub" href="lessons/0008-span-independence.html" lang="en">Span &amp; Linear Independence — what a set reaches, and whether it wastes a vector</a></div><span class="due-badge zero" data-due-for="0008" aria-live="polite"></span><a class="lopen" href="lessons/0008-span-independence.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: المولد سؤال «وصول»: w ∈ span{v₁,v₂} تعني «يوجد حل لمنظومة الأوزان». والاستقلال سؤال «هدر»: هل أحد المتجهات تركيب من البقية؟ (Span asks “reachable?” Independence asks “wasted?”)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">المولد <small lang="en">span</small></span><span class="gmean">كل ما تصل إليه التراكيب</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الاستقلال الخطي <small lang="en">linear independence</small></span><span class="gmean">لا هدر: لا متجه زائد</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الارتباط الخطي <small lang="en">linear dependence</small></span><span class="gmean">هدر: أحدهم يُبنى من البقية</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0009"><div class="ls-head"><span class="lnum">09</span><div><h2>الأساس والأبعاد</h2><a class="lsub" href="lessons/0009-basis-dimension.html" lang="en">Basis &amp; Dimension — the smallest team that spans, and how to count it</a></div><span class="due-badge zero" data-due-for="0009" aria-live="polite"></span><a class="lopen" href="lessons/0009-basis-dimension.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: أساس = استقلال + توليد. والبعد يُقرأ من أي أساس: ℝⁿ بعده n ، والخط عبر الأصل بعده 1 ، والنقطة وحدها بعدها 0 . (Count any basis — the number never changes.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">الأساس <small lang="en">basis</small></span><span class="gmean">أصغر فريق يغطي الفضاء بلا هدر</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">البعد <small lang="en">dimension</small></span><span class="gmean">عدد أعضاء أي أساس</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الإحداثيات <small lang="en">coordinates</small></span><span class="gmean">عنوان المتجه بلغة أساس معين</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0010"><div class="ls-head"><span class="lnum">10</span><div><h2>المحددات من 2×2 إلى 3×3</h2><a class="lsub" href="lessons/0010-determinants.html" lang="en">Determinants — one number that reports area, volume and invertibility</a></div><span class="due-badge zero" data-due-for="0010" aria-live="polite"></span><a class="lopen" href="lessons/0010-determinants.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: المحدد يسأل ثلاثة أسئلة دفعة واحدة: هل يوجد نظير؟ هل الأعمدة مستقلة؟ هل المساحة غير مسطحة؟ وإذا كان المحدد صفراً فالأجوبة: لا نظير، وأعمدة مرتبطة، ومساحة صفر. (Zero determinant: no inverse, dependent columns, zero area.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">المحدد <small lang="en">determinant</small></span><span class="gmean">رقم المصفوفة الكاشف: نظير واستقلال ومساحة</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">قاعدة ساروس <small lang="en">Sarrus rule</small></span><span class="gmean">وصفة الأقطار لمحدد 3×3</span><span class="ghint">اضغط للكشف</span></button></div></section>
+<section class="ls" id="l0011"><div class="ls-head"><span class="lnum">11</span><div><h2>بنك التدريبات مع الحلول</h2><a class="lsub" href="lessons/0011-drills.html" lang="en">Drills Bank — the whole course in one workout, with generator and score</a></div><span class="due-badge zero" data-due-for="0011" aria-live="polite"></span><a class="lopen" href="lessons/0011-drills.html">افتح الدرس</a></div><p class="idea">القاعدة الذهبية: الورق أولاً، اللوحة للتحقق فقط. من يتحقق قبل المحاولة يسرق من نفسه التدريب. (Paper first, panel second — no peeking.)</p><div class="cards"><button class="gcard" type="button"><span class="gterm">منظومة خطية <small lang="en">linear system</small></span><span class="gmean">معادلات خطية تُحل معاً</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">القائد <small lang="en">pivot</small></span><span class="gmean">مسمار الحذف الغاوسي</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">الأساس والبعد <small lang="en">basis &amp; dimension</small></span><span class="gmean">أصغر فريق وعدد أعضائه</span><span class="ghint">اضغط للكشف</span></button><button class="gcard" type="button"><span class="gterm">المحدد <small lang="en">determinant</small></span><span class="gmean">كاشف النظير والمساحة</span><span class="ghint">اضغط للكشف</span></button></div></section>
   <div class="foot">
     <span>قواميس الدروس الأحد عشر · القواعد الذهبية</span>
     <span><a href="index.html">الرئيسية</a> · <a href="search.html">بحث</a> · <a href="playground.html">مشغّل بايثون</a></span>
   </div>
 </div>
+<script src="assets/search-data.js"></script>
+<script src="assets/srs.js"></script>
 <script src="assets/site.js"></script>
+<script src="assets/ui.js"></script>
 <script>
 (function(){
+  "use strict";
+
+  /* ---------- تصفّح البطاقات (الوضع الحر) ---------- */
   document.querySelectorAll('.gcard').forEach(function(c){
     c.addEventListener('click',function(){c.classList.toggle('open');});
   });
@@ -123,6 +203,180 @@
     document.querySelectorAll('.gcard').forEach(function(c){c.classList.toggle('open',all);});
     this.textContent=all?'اطوِ كل البطاقات':'اكشف كل البطاقات';
   });
+
+  /* ================================================================
+     جلسة المراجعة المتباعدة (SM-2)
+     ================================================================ */
+  var SRS = window.LinalgSRS;
+  if (!SRS || !window.LINALG_DATA) return;
+
+  var DECK = SRS.buildDeck(window.LINALG_DATA);
+  var stage   = document.getElementById('srsStage');
+  var statsEl = document.getElementById('srsStats');
+  var fill    = document.getElementById('srsFill');
+  var progEl  = document.getElementById('srsProgress');
+  var startBtn= document.getElementById('srsStart');
+  var endBtn  = document.getElementById('srsSkip');
+  var resetBtn= document.getElementById('srsReset');
+  var heatEl  = document.getElementById('srsHeat');
+
+  var queue = [], cur = null, revealed = false, session = { total: 0, done: 0, again: 0 };
+
+  function esc(s){ return String(s==null?'':s).replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;'); }
+
+  /* تمييز العدد العربي: بطاقة واحدة / بطاقتان / ٣–١٠ بطاقات / ١١+ بطاقة */
+  function plural(n){
+    if (n === 1) return 'بطاقة واحدة';
+    if (n === 2) return 'بطاقتان';
+    if (n <= 10) return n + ' بطاقات';
+    return n + ' بطاقة';
+  }
+
+  function renderStats(){
+    var st = SRS.stats(DECK);
+    statsEl.innerHTML =
+      '<div class="srs-stat due"><b>' + st.due + '</b><small>مستحقّة الآن</small></div>' +
+      '<div class="srs-stat new"><b>' + st.fresh + '</b><small>لم تبدأها</small></div>' +
+      '<div class="srs-stat"><b>' + st.learned + '</b><small>بدأت حفظها</small></div>' +
+      '<div class="srs-stat"><b>' + st.mature + '</b><small>راسخة (٢١ يوماً فأكثر)</small></div>' +
+      '<div class="srs-stat"><b>' + st.total + '</b><small>إجمالي البطاقات</small></div>';
+
+    /* شارات الاستحقاق على أقسام الدروس وفهرسها */
+    Object.keys(st.byLesson).forEach(function(L){
+      var b = st.byLesson[L], n = b.due + b.fresh;
+      document.querySelectorAll('[data-due-for="' + L + '"]').forEach(function(el){
+        el.textContent = n ? (plural(n) + ' تنتظرك') : 'لا شيء مستحق';
+        el.className = 'due-badge' + (n ? '' : ' zero');
+      });
+    });
+    startBtn.textContent = st.due ? ('ابدأ الجلسة — ' + plural(st.due) + ' مستحقّة') : 'ابدأ الجلسة';
+  }
+
+  function renderHeat(){
+    var h = SRS.history(30);
+    heatEl.innerHTML = h.map(function(d){
+      var lvl = d.n === 0 ? 0 : (d.n < 5 ? 1 : (d.n < 15 ? 2 : 3));
+      return '<i data-n="' + lvl + '" title="' + d.day + ' — ' + d.n + ' بطاقة"></i>';
+    }).join('');
+  }
+
+  function idle(msg){
+    cur = null; revealed = false;
+    stage.innerHTML = '<p class="srs-q" id="srsIdle">' + esc(msg) + '</p>';
+    endBtn.hidden = true;
+    startBtn.hidden = false;
+    fill.style.width = '0%';
+  }
+
+  function draw(){
+    if (!queue.length){
+      var extra = session.again ? ' (منها ' + session.again + ' أعدتها)' : '';
+      idle('انتهت الجلسة: راجعت ' + plural(session.done) + extra + '. عُد غداً — التباعد هو ما يثبّت الحفظ.');
+      progEl.textContent = 'اكتملت الجلسة';
+      renderStats(); renderHeat();
+      if (window.linalgToast) window.linalgToast('أحسنت — اكتملت جلسة اليوم');
+      return;
+    }
+    cur = queue[0];
+    revealed = false;
+    var lessonTitle = cur.lessonTitle || '';
+    stage.innerHTML =
+      '<span class="srs-kind">' + (cur.kind === 'rule' ? 'قاعدة ذهبية' : 'مصطلح') +
+        ' · الدرس ' + esc(cur.lesson) + ' · ' + esc(lessonTitle) + '</span>' +
+      '<p class="srs-q">' + esc(cur.q) + '</p>' +
+      (cur.en ? '<span class="srs-en">' + esc(cur.en) + '</span>' : '') +
+      '<p class="srs-a" id="srsA" hidden>' + esc(cur.a) + '</p>' +
+      '<p class="srs-src" id="srsSrc" hidden><a href="' + cur.url + '">افتح موضع الشرح في الدرس ←</a></p>' +
+      '<div class="srs-acts" id="srsActs">' +
+        '<button class="grade" id="srsShow" type="button"><b>اكشف الجواب</b><small>Space</small></button>' +
+      '</div>';
+    document.getElementById('srsShow').focus();
+    updateProgress();
+  }
+
+  function reveal(){
+    if (!cur || revealed) return;
+    revealed = true;
+    document.getElementById('srsA').hidden = false;
+    document.getElementById('srsSrc').hidden = false;
+    var pv = SRS.preview(cur.id);
+    var L = [['أعِدها','g0'],['صعبة','g1'],['جيدة','g2'],['سهلة','g3']];
+    document.getElementById('srsActs').innerHTML = L.map(function(x,i){
+      return '<button class="grade ' + x[1] + '" type="button" data-g="' + i + '">' +
+             '<b>' + x[0] + '</b><small>' + esc(pv[i]) + ' · ' + (i+1) + '</small></button>';
+    }).join('');
+    var first = document.querySelector('#srsActs .grade');
+    if (first) first.focus();
+  }
+
+  function grade(g){
+    if (!cur || !revealed) return;
+    SRS.grade(cur.id, g);
+    queue.shift();
+    session.done++;
+    if (g === 0){ session.again++; queue.push(cur); }   /* أعِدها: تعود آخر الطابور */
+    draw();
+  }
+
+  function updateProgress(){
+    var total = session.total + session.again;
+    var pct = total ? Math.round(session.done / total * 100) : 0;
+    fill.style.width = Math.min(100, pct) + '%';
+    progEl.textContent = 'راجعت ' + session.done + ' · بقي ' + queue.length;
+  }
+
+  function start(){
+    queue = SRS.queue(DECK, { maxNew: 8, maxTotal: 30 });
+    if (!queue.length){
+      var soon = DECK.map(function(c){ return SRS.nextLabel(c.id); })
+                     .filter(function(x){ return x !== 'جديدة'; });
+      idle('لا بطاقات مستحقّة الآن — وهذا جيد. المراجعة المتباعدة تعني ألا تراجع قبل الأوان.');
+      progEl.textContent = 'كل شيء مجدول';
+      return;
+    }
+    session = { total: queue.length, done: 0, again: 0 };
+    startBtn.hidden = true;
+    endBtn.hidden = false;
+    draw();
+  }
+
+  startBtn.addEventListener('click', start);
+  endBtn.addEventListener('click', function(){
+    idle('أوقفت الجلسة بعد ' + plural(session.done) + '. ما راجعته محفوظ — تابع متى شئت.');
+    progEl.textContent = 'متوقّفة';
+    renderStats(); renderHeat();
+  });
+  resetBtn.addEventListener('click', function(){
+    if (!confirm('سيُحذف جدول المراجعة وسجلّها بالكامل من هذا المتصفح. متأكد؟')) return;
+    SRS.reset();
+    idle('صُفِّرت الجدولة. كل البطاقات صارت جديدة من جديد.');
+    renderStats(); renderHeat();
+  });
+
+  stage.addEventListener('click', function(e){
+    var t = e.target.closest ? e.target.closest('button') : null;
+    if (!t) return;
+    if (t.id === 'srsShow') reveal();
+    else if (t.hasAttribute('data-g')) grade(+t.getAttribute('data-g'));
+  });
+
+  document.addEventListener('keydown', function(e){
+    var tag = (e.target.tagName || '').toLowerCase();
+    if (tag === 'input' || tag === 'textarea' || e.target.isContentEditable) return;
+    if (!cur) return;
+    if (e.key === ' ' || e.key === 'Enter'){
+      if (!revealed){ e.preventDefault(); reveal(); }
+    } else if (revealed && e.key >= '1' && e.key <= '4'){
+      e.preventDefault(); grade(+e.key - 1);
+    }
+  });
+
+  renderStats();
+  renderHeat();
+  if ((location.hash || '') === '#session'){
+    document.getElementById('session').scrollIntoView({ block: 'start' });
+    start();
+  }
 })();
 </script>
 </body>

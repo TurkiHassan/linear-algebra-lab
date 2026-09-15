@@ -1,15 +1,24 @@
 /* Offline cache for مختبر الجبر الخطي. Bump CACHE to force refresh. */
-const CACHE = "linalg-v2";
+const CACHE = "linalg-v3";
+
+/* Precached on install: the shell every page needs. */
 const CORE = [
   "./",
   "./index.html",
+  "./map.html",
+  "./summary.html",
   "./review.html",
   "./search.html",
   "./playground.html",
+  "./404.html",
   "./manifest.webmanifest",
   "./assets/lesson-fonts.css",
   "./assets/lesson.css",
+  "./assets/ui.css",
   "./assets/site.js",
+  "./assets/ui.js",
+  "./assets/srs.js",
+  "./assets/graph-data.js",
   "./assets/search-data.js",
   "./assets/exercises.js",
   "./assets/icons/icon-192.png",
@@ -38,8 +47,18 @@ const CORE = [
   "./assets/fonts/thmanyahseriftext-Regular.woff2"
 ];
 
+/* Third-party origins worth keeping offline. KaTeX renders every formula in
+   the course: without it the lessons fall back to raw TeX, so it is cached on
+   first successful load instead of being skipped as "cross-origin". */
+const CDN_HOSTS = ["cdn.jsdelivr.net"];
+
 self.addEventListener("install", (e) => {
-  e.waitUntil(caches.open(CACHE).then((c) => c.addAll(CORE)).then(() => self.skipWaiting()));
+  e.waitUntil(
+    caches.open(CACHE)
+      /* One bad URL must not fail the whole install, so add them one by one. */
+      .then((c) => Promise.all(CORE.map((u) => c.add(u).catch(() => {}))))
+      .then(() => self.skipWaiting())
+  );
 });
 
 self.addEventListener("activate", (e) => {
@@ -52,19 +71,41 @@ self.addEventListener("activate", (e) => {
 self.addEventListener("fetch", (e) => {
   const req = e.request;
   if (req.method !== "GET") return;
+
   const url = new URL(req.url);
-  if (url.origin !== location.origin) return;
+  const sameOrigin = url.origin === location.origin;
+  const cdn = CDN_HOSTS.indexOf(url.hostname) !== -1;
+  if (!sameOrigin && !cdn) return;
+
+  /* Range requests (video seeking) must reach the network untouched: a cached
+     200 answer to a Range request makes Safari refuse to play the file. */
+  if (req.headers.has("range")) return;
+
   e.respondWith(
     caches.match(req).then((hit) => {
-      if (hit) return hit;
+      if (hit) {
+        /* Cached CDN assets refresh quietly in the background. */
+        if (cdn) fetch(req).then((res) => {
+          if (res && (res.ok || res.type === "opaque")) {
+            caches.open(CACHE).then((c) => c.put(req, res.clone())).catch(() => {});
+          }
+        }).catch(() => {});
+        return hit;
+      }
       return fetch(req).then((res) => {
-        if (res && res.ok && (req.destination === "video" || req.destination === "" ||
-            /\.(html|css|js|woff2|png|mp4|srt|webmanifest)$/.test(url.pathname))) {
+        const keep = res && (res.ok || res.type === "opaque") &&
+          (cdn || req.destination === "video" || req.destination === "" ||
+           /\.(html|css|js|woff2|png|jpg|mp4|srt|vtt|webmanifest|xml)$/.test(url.pathname));
+        if (keep) {
           const copy = res.clone();
           caches.open(CACHE).then((c) => c.put(req, copy)).catch(() => {});
         }
         return res;
-      }).catch(() => (req.mode === "navigate" ? caches.match("./index.html") : undefined));
+      }).catch(() =>
+        req.mode === "navigate"
+          ? caches.match("./404.html").then((p) => p || caches.match("./index.html"))
+          : undefined
+      );
     })
   );
 });

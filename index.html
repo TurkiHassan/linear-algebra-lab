@@ -47,6 +47,17 @@
   .drop a:hover{background:var(--card);text-decoration:none}
   .drop small{color:var(--muted)}
   .menu-btn{display:none;background:none;border:1px solid var(--ink);border-radius:999px;padding:8px 14px;font-family:var(--mono);font-size:12px;cursor:pointer;color:var(--ink)}
+  /* الشريط العلوي على الشاشات الضيقة: كان يتجاوز حدّ الشاشة بـ 10px */
+  @media(max-width:560px){
+    .nav-inner{padding:0 14px;gap:8px}
+    .wordmark{font-size:13px;gap:6px;min-width:0;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+    .lang-toggle,.menu-btn{padding:6px 11px;font-size:11.5px}
+  }
+  @media(max-width:400px){
+    .nav-inner{gap:6px}
+    .theme-btn{font-size:0;padding:6px 10px}
+    .theme-btn::after{content:"◐";font-size:14px}
+  }
   @media(max-width:860px){.links{display:none}.menu-btn{display:block}.links.mobile-open{display:flex;position:absolute;top:56px;left:0;right:0;background:var(--paper);border-bottom:1px solid var(--line);padding:14px 24px 20px;flex-direction:column;align-items:flex-start;gap:14px}}
 
   /* ---------- hero ---------- */
@@ -123,7 +134,7 @@
   .crow a{color:#fff}
   .crow a.st{text-decoration:none}
   .crow a.st:hover{background:#2c2c28}
-  .toolgrid{display:grid;grid-template-columns:repeat(3,1fr);gap:var(--gutter);margin-top:34px}
+  .toolgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gutter);margin-top:34px}
   @media(max-width:860px){.toolgrid{grid-template-columns:1fr}.crow{grid-template-columns:1fr;gap:6px}}
   .tool{background:#1b1b18;border:1px solid #2e2e2a;border-radius:18px;padding:24px}
   .tool h4{margin:0 0 10px;font-size:15px}
@@ -174,6 +185,40 @@
   .prog i{display:block;height:100%;width:0;background:var(--teal);transition:width .35s ease}
   .mcard.is-done{outline:2px solid var(--teal);outline-offset:-2px}
   .mcard.is-done::after{content:"✓";position:absolute;top:18px;inset-inline-end:20px;width:26px;height:26px;border-radius:50%;background:var(--teal);color:#faf7f2;display:grid;place-items:center;font-weight:800;font-size:14px}
+  /* ---------- لوحة التقدّم ورحلة الدرس ---------- */
+  .dash{margin:0;padding:0 0 10px}
+  .dash-head{display:flex;align-items:flex-end;justify-content:space-between;gap:18px;flex-wrap:wrap;margin-bottom:22px}
+  .dash-head h2{margin:0;font-size:clamp(1.5rem,3vw,2rem);letter-spacing:-.02em;font-weight:800}
+  .dash-head p{font-family:var(--mono);font-size:13px;color:var(--muted);margin:8px 0 0;max-width:58ch;line-height:1.9}
+  .dash-links{display:flex;gap:9px;flex-wrap:wrap;font-family:var(--mono);font-size:12.5px}
+  .dash-links a{border:1px solid var(--line);border-radius:999px;padding:8px 16px;text-decoration:none;background:var(--card)}
+  .dash-links a:hover{background:var(--ink);color:var(--paper);border-color:var(--ink)}
+  .dash-grid{display:grid;grid-template-columns:minmax(230px,1.25fr) repeat(3,1fr);gap:var(--gutter);align-items:stretch}
+  @media(max-width:960px){.dash-grid{grid-template-columns:1fr 1fr}}
+  @media(max-width:480px){.dash-grid{grid-template-columns:1fr}}
+  .ring{background:var(--card);border-radius:var(--radius);padding:24px 28px;display:flex;align-items:center;gap:18px;min-width:230px}
+  .ring .dial{width:82px;height:82px;border-radius:50%;flex:0 0 auto;display:grid;place-items:center;
+    background:conic-gradient(var(--teal) calc(var(--p,0)*1%),color-mix(in srgb,var(--line) 65%,transparent) 0)}
+  .ring .dial span{width:64px;height:64px;border-radius:50%;background:var(--card);display:grid;place-items:center;
+    font-weight:800;font-size:17px;font-family:var(--mono)}
+  .ring .rt{font-family:var(--mono);font-size:13px;line-height:1.8}
+  .ring .rt b{display:block;font-size:15px;font-family:var(--sans);font-weight:800}
+  .ring .rt small{color:var(--muted);font-size:12px}
+  .dcard{background:var(--card);border-radius:var(--radius);padding:20px 22px;font-family:var(--mono);display:flex;flex-direction:column;justify-content:center}
+  .dcard b{font-size:30px;font-weight:800;line-height:1.1;font-family:var(--sans);direction:ltr;unicode-bidi:isolate;text-align:start}
+  .dcard small{color:var(--muted);font-size:12px;margin-top:6px;line-height:1.7}
+  .dcard a{color:inherit;text-decoration:none;border-bottom:1px dashed var(--muted)}
+  .journey{display:grid;grid-template-columns:repeat(5,1fr);gap:var(--gutter);margin-top:var(--gutter)}
+  @media(max-width:960px){.journey{grid-template-columns:repeat(2,1fr)}}
+  @media(max-width:460px){.journey{grid-template-columns:1fr}}
+  .jstep{background:transparent;border:1px solid var(--line);border-radius:var(--radius);padding:20px;
+    font-family:var(--mono);font-size:12.5px;line-height:1.8;color:#55554e;text-decoration:none;display:block;
+    transition:transform .2s ease,border-color .2s ease}
+  .jstep:hover{transform:translateY(-4px);border-color:var(--ink)}
+  .jstep i{font-style:normal;font-size:19px;display:block;margin-bottom:9px}
+  .jstep b{display:block;font-family:var(--sans);font-size:15px;font-weight:800;color:var(--ink);margin-bottom:5px;letter-spacing:-.01em}
+  [data-theme=dark] .jstep{color:#b9b6aa}
+
   :root[data-theme=dark]{--paper:#14130f;--card:#1d1c17;--ink:#f2efe6;--muted:#a7a396;--line:#33312a;--teal:#7fc9ae;--pink:#8f6b74;--sage:#5d6b4e;--orange:#b5622a;--cream:#242219}
   [data-theme=dark] .drop{background:#1d1c17;box-shadow:0 24px 60px rgba(0,0,0,.55)}
   [data-theme=dark] .mcard p{color:#b9b6aa}
@@ -194,10 +239,34 @@
   [data-theme=dark] .pcard:nth-child(4){background:#e07b39;color:#221206}
   [data-theme=dark] .pcard:nth-child(5){background:#efe6d4;color:#22201a;border-color:#3a382f}
 </style>
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/">
+<meta property="og:type" content="website">
+<meta property="og:title" content="مختبر الجبر الخطي — مقرر تفاعلي من الصفر">
+<meta property="og:description" content="أحد عشر درساً عربياً في الجبر الخطي: شرح تفاعلي، خارطة ذهنية تربط المفاهيم، فيديو بتعليق عربي، مراجعة متباعدة، وتمارين بايثون في المتصفح.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary_large_image">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="manifest" href="manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="assets/ui.css">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "Course",
+ "name": "مختبر الجبر الخطي — مقرر تفاعلي من الصفر",
+ "description": "أحد عشر درساً عربياً تفاعلياً في الجبر الخطي مع خارطة ذهنية للمفاهيم، فيديو بتعليق عربي، مراجعة متباعدة، وتمارين بايثون تعمل داخل المتصفح.",
+ "inLanguage": "ar",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/",
+ "isAccessibleForFree": true,
+ "teaches": ["المنظومات الخطية", "المصفوفات والنظير", "الحذف الغاوسي", "فضاءات المتجهات", "الفضاء الجزئي", "التركيب الخطي", "المولد والاستقلال", "الأساس والأبعاد", "المحددات"],
+ "hasCourseInstance": {
+  "@type": "CourseInstance",
+  "courseMode": "online",
+  "courseWorkload": "PT9H"
+ }
+}
+</script>
 </head>
 <body>
 <a class="skip" href="#models" data-i18n="skip">تخطَّ إلى المحتوى</a>
@@ -222,9 +291,11 @@
           <a href="#models" role="menuitem"><span data-i18n="catVec">المتجهات والفضاءات</span> <small>05–08</small></a>
           <a href="#models" role="menuitem"><span data-i18n="catCap">الأساس والمحددات</span> <small>09–11</small></a>
           <a href="#course" role="menuitem"><span data-i18n="dCourse">مسار المقرر</span> <small data-i18n="dCourseN">11 درساً</small></a>
+          <a href="map.html" role="menuitem"><span data-i18n="navMap">الخارطة الذهنية</span> <small>28</small></a>
         </div>
       </li>
       <li><a href="#course" data-i18n="navDocs">المقرر</a></li>
+      <li><a href="map.html" data-i18n="navMap">الخارطة الذهنية</a></li>
       <li><a href="summary.html" data-i18n="navSummary">الملخص الشامل</a></li>
       <li><a href="review.html" data-i18n="navReview">مراجعة</a></li>
       <li><a href="search.html" data-i18n="navSearch">بحث</a></li>
@@ -288,6 +359,33 @@
 </div>
 
 <div class="wrap">
+  <section class="block dash" id="dashboard" style="padding:70px 0 0">
+    <p class="sec-label" data-i18n="dashLabel">لوحتك · محفوظة في متصفحك وحده</p>
+    <div class="dash-head">
+      <div>
+        <h2 data-i18n="dashH">أين أنت من المقرر الآن؟</h2>
+        <p data-i18n="dashP">لا تسجيل ولا حساب: تقدّمك ودرجاتك وجدول مراجعتك محفوظة محلياً في هذا المتصفح، وتظهر هنا وعلى الخارطة الذهنية.</p>
+      </div>
+      <div class="dash-links">
+        <a href="map.html" data-i18n="dashL1">الخارطة الذهنية</a>
+        <a href="review.html#session" data-i18n="dashL2">جلسة مراجعة اليوم</a>
+        <a href="summary.html" data-i18n="navSummary">الملخص الشامل</a>
+      </div>
+    </div>
+
+    <div id="resumeSlot"></div>
+
+    <div class="dash-grid" id="dashGrid" aria-live="polite"></div>
+
+    <div class="journey">
+      <a class="jstep" href="map.html"><i aria-hidden="true">🗺️</i><b data-i18n="j1H">1 · تموضع</b><span data-i18n="j1P">افتح الخارطة واعرف ما يحتاجه المفهوم قبله وما يُبنى فوقه.</span></a>
+      <a class="jstep" href="lessons/0001-linear-systems.html"><i aria-hidden="true">📘</i><b data-i18n="j2H">2 · افهم</b><span data-i18n="j2P">درس تفاعلي بتشبيه من الحياة ولوحة عملية لكل فكرة.</span></a>
+      <a class="jstep" href="video/outputs/0001-linear-systems-ar.mp4"><i aria-hidden="true">🎬</i><b data-i18n="j3H">3 · شاهد</b><span data-i18n="j3P">فيديو بتعليق عربي وترجمة مصاحبة — ترميز مزدوج: صورة وصوت.</span></a>
+      <a class="jstep" href="playground.html"><i aria-hidden="true">🐍</i><b data-i18n="j4H">4 · طبّق</b><span data-i18n="j4P">اكتب الخوارزمية بنفسك في بايثون داخل المتصفح، ولوحة الاختبارات تحكم.</span></a>
+      <a class="jstep" href="review.html#session"><i aria-hidden="true">🗂️</i><b data-i18n="j5H">5 · ثبّت</b><span data-i18n="j5P">بطاقات مجدولة بالتباعد: تراجع قبل النسيان بقليل، لا قبله بكثير.</span></a>
+    </div>
+  </section>
+
   <section class="block" id="manifesto">
     <p class="sec-label" data-i18n="maniLabel">البيان</p>
     <div class="manifesto-grid">
@@ -359,6 +457,17 @@
           <div class="katex-demo" id="katexDemo">|A| = ad − bc for A = [a c; b d]</div>
         </div>
         <div class="tool">
+          <h4 data-i18n="t4H">4 · نظام التثبيت</h4>
+          <p data-i18n="t4P">المقرر مبنيّ على ما تثبت أثره في أبحاث التعلّم، لا على الانطباع:</p>
+          <ul>
+            <li data-i18n="t4L1"><b>الاسترجاع النشط</b>: اختبار في نهاية كل درس، ودرجتك محفوظة ومعروضة</li>
+            <li data-i18n="t4L2"><b>التباعد</b>: بطاقات مجدولة بخوارزمية <code>SM-2</code> تعيد المصطلح قبل نسيانه</li>
+            <li data-i18n="t4L3"><b>الترميز المزدوج</b>: فكرة واحدة بثلاث قنوات — نص ولوحة متحركة وفيديو معلّق</li>
+            <li data-i18n="t4L4"><b>التداخل</b>: بنك التدريبات يخلط المحاور بدل تكرار نوع واحد</li>
+            <li data-i18n="t4L5"><b>خرائط المفاهيم</b>: خارطة تُظهر متطلبات كل فكرة وما يُبنى فوقها</li>
+          </ul>
+        </div>
+        <div class="tool">
           <h4 data-i18n="t3H">3 · التحريك والصوت</h4>
           <p data-i18n="t3P">الفيديوهات مولّدة بالكود لا بالمونتاج اليدوي:</p>
           <ul>
@@ -392,7 +501,7 @@
       <div><div class="fbrand"><span class="mark">✳</span> مختبر الجبر الخطي</div></div>
       <div class="fcol"><h5 data-i18n="fCourse">المقرر</h5><ul><li><a href="#manifesto" data-i18n="navAbout">عن المقرر</a></li><li><a href="#manifesto" data-i18n="navBlog">المنهجية</a></li><li><a href="#cta" data-i18n="navContact">تواصل</a></li></ul></div>
       <div class="fcol"><h5 data-i18n="fStart">ابدأ</h5><ul><li><a href="lessons/0001-linear-systems.html" data-i18n="fLesson1">الدرس 01</a></li><li><a href="#course" data-i18n="fDrills">بنك التدريبات</a></li>
-<li><a href="summary.html" data-i18n="navSummary">الملخص الشامل</a></li><li><a href="playground.html" data-i18n="fPlay">مشغّل بايثون</a></li><li><a href="review.html" data-i18n="fReview">مراجعة سريعة</a></li></ul></div>
+<li><a href="summary.html" data-i18n="navSummary">الملخص الشامل</a></li><li><a href="map.html" data-i18n="navMap">الخارطة الذهنية</a></li><li><a href="playground.html" data-i18n="fPlay">مشغّل بايثون</a></li><li><a href="review.html" data-i18n="fReview">مراجعة سريعة</a></li></ul></div>
       <div class="fcol"><h5 data-i18n="fFollow">تابع</h5><ul><li><a href="#top">RSS</a></li><li><a href="#top">GitHub</a></li><li><a href="#top" data-i18n="fNews">النشرة</a></li></ul></div>
       <div class="fcol"><h5 data-i18n="catFound">الأساسيات</h5><ul><li><a href="lessons/0001-linear-systems.html">تمييز الخطي</a></li><li><a href="lessons/0002-matrices-inverse.html">المصفوفات</a></li><li><a href="lessons/0003-gaussian-elimination.html">الحذف الغاوسي</a></li><li><a href="lessons/0004-matrix-properties.html">الخصائص والصفرية</a></li></ul></div>
       <div class="fcol"><h5 data-i18n="catVec">المتجهات والفضاءات</h5><ul><li><a href="lessons/0005-euclidean-spaces.html">الضرب الداخلي</a></li><li><a href="lessons/0006-subspaces.html">الفضاء الجزئي</a></li><li><a href="lessons/0007-linear-combinations.html">التركيب الخطي</a></li><li><a href="lessons/0008-span-independence.html">المولد والاستقلال</a></li></ul></div>
@@ -417,6 +526,7 @@
     kicker:"Interactive course from scratch · 11 lessons + 11 videos",
     heroL1:"Linear algebra",heroL2:"you can see.",
     tagline:"From your handwritten PDFs to eleven interactive lessons: one everyday analogy per idea, a hands-on lab, an Arabic-narrated video, and a Python exercise with its solution.",
+    navMap:"Concept map",dashLabel:"Your dashboard · stored in this browser only",dashH:"Where are you in the course?",dashP:"No sign-up, no account: your progress, scores and review schedule live locally in this browser, and show up here and on the concept map.",dashL1:"Concept map",dashL2:"Today's review session",j1H:"1 · Locate",j1P:"Open the map and see what a concept needs before it, and what is built on top of it.",j2H:"2 · Understand",j2P:"An interactive lesson with an everyday analogy and a hands-on panel per idea.",j3H:"3 · Watch",j3P:"Arabic-narrated video with captions — dual coding: picture and voice.",j4H:"4 · Apply",j4P:"Write the algorithm yourself in Python, in the browser; the test panel judges.",j5H:"5 · Retain",j5P:"Spaced cards: you review just before forgetting, not long before.",
     pill01:"Lesson 01",ben01:"Ten seconds to judge: linear or not.",h01:"Spotting linear",pill02:"Lesson 02",ben02:"The shape decides what is allowed, the determinant decides the inverse.",h02:"Matrices",pill03:"Lesson 03",ben03:"Three row moves to the triangle, then back-substitution.",h03:"Gaussian elimination",pill04:"Lesson 05",ben04:"The inner product detects perpendicularity.",h04:"Vectors",pill05:"Lesson 10",ben05:"One number: inverse, independence, area.",h05:"Determinants",
     maniLabel:"Manifesto",maniH:"We build the way we wish maths were taught.",maniP:"One lesson, one idea, no blind memorising. We start from your handwritten pages and rebuild them as something you can touch — from telling linear equations apart in ten seconds to computing determinants and areas.",
     modLabel:"Lesson catalogue · 11",modH:"Eleven lessons, each building on the last.",modP:"Three progressive groups: foundations, then vectors and spaces, then basis and determinants. Every card states its skill and ends with a video and an exercise.",
@@ -425,6 +535,7 @@
     pdf01:"File 01 · 10 pp",pdf02:"File 02 · 17 pp",pdf03:"File 03 · 11 pp",pdf04:"File 04 · handwritten",pdf05:"File 05 · 11 pp",pdf06:"File 06 · 9 pp",pdf07:"File 07 · 5 pp",pdf08:"File 08 · 13 pp",pdf09:"File 09 · 9 pp",pdf10:"File 10 · 11 pp",pdf11:"File 11 · 11 pp",stBuilt:"Built",stVideo:"Video",
     t1H:"1 · Reading handwriting",t1P:"Scanned pages hold no text layer, so each page is processed on its own:",t1L1:"Render every page at <code>300</code> dpi, deskew and fix contrast",t1L2:"Read Arabic and English, then <b>human-verify every formula</b>",t1L3:"Numbers and examples come from the pages themselves — never invented",t1L4:"When in doubt: reopen the original page and compare",
     t2H:"2 · Writing matrices correctly",t2P:"Math is set with <b>KaTeX</b>; lesson matrices use a light direction-safe component:",t2L3:"RTL rule: wrap every coordinate in <code>&lt;span class=\"coord\"&gt;</code> to isolate it",
+    t4H:"4 · The retention system",t4P:"The course is built on what learning research actually supports, not on impressions:",t4L1:"<b>Retrieval practice</b>: a quiz closes every lesson, and your score is stored and shown",t4L2:"<b>Spacing</b>: cards scheduled by <code>SM-2</code> return a term just before you forget it",t4L3:"<b>Dual coding</b>: one idea through three channels — text, an animated panel, a narrated video",t4L4:"<b>Interleaving</b>: the drills bank mixes the three modules instead of repeating one type",t4L5:"<b>Concept mapping</b>: a map showing what each idea needs and what is built on it",
     t3H:"3 · Motion & voice",t3P:"Videos are generated by code, not hand-edited:",t3L1:"Arabic narration with a natural voice and selective vowelling",t3L2:"Subtitles timed to the real spoken words — zero drift",t3L3:"Frames drawn programmatically at <code>24</code> fps",t3L4:"Before publishing: human review of narration, text and subtitles",t3L5:"Every lesson ends with a Python exercise, standard library only",
     ctaLabel:"Get started",ctaH:"Try lesson one.<br>No sign-up. No commitment.",ctaP1:"Lesson one assumes no prior knowledge: ten minutes are enough to judge linear equations with confidence.",ctaP2:"The original course PDFs stay with their owners — lessons re-derive every example and verify it.",
     ctaB1:"Browse the lessons",ctaB2:"Open lesson 01",ctaB3:"Open the course files",
@@ -437,6 +548,7 @@
     kicker:"مقرر تفاعلي من الصفر · 11 درساً + 11 فيديو",
     heroL1:"افهم الجبر الخطي",heroL2:"لا تحفظه.",
     tagline:"من ملفاتكم بخط اليد إلى أحد عشر درساً تفاعلياً: تشبيه لكل فكرة، مختبر عملي، فيديو بتعليق عربي، وتمرين بايثون مع الحلول.",
+    navMap:"الخارطة الذهنية",dashLabel:"لوحتك · محفوظة في متصفحك وحده",dashH:"أين أنت من المقرر الآن؟",dashP:"لا تسجيل ولا حساب: تقدّمك ودرجاتك وجدول مراجعتك محفوظة محلياً في هذا المتصفح، وتظهر هنا وعلى الخارطة الذهنية.",dashL1:"الخارطة الذهنية",dashL2:"جلسة مراجعة اليوم",j1H:"1 · تموضع",j1P:"افتح الخارطة واعرف ما يحتاجه المفهوم قبله وما يُبنى فوقه.",j2H:"2 · افهم",j2P:"درس تفاعلي بتشبيه من الحياة ولوحة عملية لكل فكرة.",j3H:"3 · شاهد",j3P:"فيديو بتعليق عربي وترجمة مصاحبة — ترميز مزدوج: صورة وصوت.",j4H:"4 · طبّق",j4P:"اكتب الخوارزمية بنفسك في بايثون داخل المتصفح، ولوحة الاختبارات تحكم.",j5H:"5 · ثبّت",j5P:"بطاقات مجدولة بالتباعد: تراجع قبل النسيان بقليل، لا قبله بكثير.",
     pill01:"الدرس 01",ben01:"عشر ثوانٍ وتصدر الحكم: خطية أم لا.",h01:"تمييز الخطي",pill02:"الدرس 02",ben02:"الشكل يقرر ما يُسمح به، والمحدد يقرر النظير.",h02:"المصفوفات",pill03:"الدرس 03",ben03:"ثلاث عمليات صفوف حتى المثلث، ثم تعويض خلفي.",h03:"الحذف الغاوسي",pill04:"الدرس 05",ben04:"الضرب الداخلي يكشف التعامد.",h04:"المتجهات",pill05:"الدرس 10",ben05:"رقم واحد: نظير، استقلال، ومساحة.",h05:"المحددات",
     maniLabel:"البيان",maniH:"نبني الطريقة التي نتمنى أن نتعلم بها الرياضيات.",maniP:"درس واحد، فكرة واحدة، بلا حفظ أعمى. نبدأ من ملفاتكم المكتوبة بخط اليد، ونعيد بناءها كتجربة تفاعلية يمكنك لمسها — من تمييز الخطي في عشر ثوانٍ إلى حساب المحددات والمساحات.",
     modLabel:"كتالوج الدروس · 11",modH:"أحد عشر درساً، كلٌّ يبني على ما قبله.",modP:"ثلاث مجموعات متدرجة: الأساسيات، ثم المتجهات والفضاءات، ثم الأساس والمحددات. كل بطاقة تحدد مهارتها، وتنتهي بفيديو وتمرين.",
@@ -445,6 +557,7 @@
     pdf01:"الملف 01 · 10 صفحات",pdf02:"الملف 02 · 17 صفحة",pdf03:"الملف 03 · 11 صفحة",pdf04:"الملف 04 · بخط اليد",pdf05:"الملف 05 · 11 صفحة",pdf06:"الملف 06 · 9 صفحات",pdf07:"الملف 07 · 5 صفحات",pdf08:"الملف 08 · 13 صفحة",pdf09:"الملف 09 · 9 صفحات",pdf10:"الملف 10 · 11 صفحة",pdf11:"الملف 11 · 11 صفحة",stBuilt:"مكتمل",stVideo:"فيديو",
     t1H:"1 · قراءة الخط اليدوي",t1P:"الصفحات الممسوحة بلا طبقة نص، فنعالجها صفحة صفحة:",t1L1:"تحويل كل صفحة إلى صورة بدقة <code>300</code> مع تصحيح الميل والتباين",t1L2:"قراءة العربية والإنجليزية، ثم <b>مراجعة بشرية لكل صيغة</b>",t1L3:"الأرقام والأمثلة تؤخذ من الصفحات كما هي — بلا اختراع",t1L4:"عند الشك: نعود إلى الصفحة الأصلية ونقارن",
     t2H:"2 · كتابة المصفوفات",t2P:"الرياضيات بـ <b>KaTeX</b>، ومصفوفات الدروس بمكوّن خفيف مضبوط الاتجاه:",t2L3:"قاعدة RTL: كل إحداثي داخل <code>&lt;span class=\"coord\"&gt;</code> ليعزل الاتجاه",
+    t4H:"4 · نظام التثبيت",t4P:"المقرر مبنيّ على ما تثبت أثره في أبحاث التعلّم، لا على الانطباع:",t4L1:"<b>الاسترجاع النشط</b>: اختبار في نهاية كل درس، ودرجتك محفوظة ومعروضة",t4L2:"<b>التباعد</b>: بطاقات مجدولة بخوارزمية <code>SM-2</code> تعيد المصطلح قبل نسيانه",t4L3:"<b>الترميز المزدوج</b>: فكرة واحدة بثلاث قنوات — نص ولوحة متحركة وفيديو معلّق",t4L4:"<b>التداخل</b>: بنك التدريبات يخلط المحاور بدل تكرار نوع واحد",t4L5:"<b>خرائط المفاهيم</b>: خارطة تُظهر متطلبات كل فكرة وما يُبنى فوقها",
     t3H:"3 · التحريك والصوت",t3P:"الفيديوهات مولّدة بالكود لا بالمونتاج اليدوي:",t3L1:"تعليق عربي بصوت طبيعي، وتشكيل انتقائي للكلمات الملتبسة",t3L2:"ترجمة بتوقيت الكلمات الفعلي من الصوت — بلا انزياح",t3L3:"رسم الإطارات برمجياً بمعدل <code>24</code> إطاراً في الثانية",t3L4:"قبل النشر: مراجعة بشرية للتعليق والنص والترجمة",t3L5:"كل درس ينتهي بتمرين بايثون بلا مكتبات خارجية",
     ctaLabel:"ابدأ الآن",ctaH:"جرّب الدرس الأول.<br>بلا تسجيل. بلا التزام.",ctaP1:"الدرس الأول لا يفترض أي معرفة سابقة: عشر دقائق تكفي لتميّز الخطي من غيره بحكم واثق.",ctaP2:"ملفات المقرر الأصلية محفوظة لأصحابها — والدروس تعيد اشتقاق الأمثلة كاملة وتتحقق منها.",
     ctaB1:"استعرض الدروس",ctaB2:"افتح الدرس 01",ctaB3:"افتح ملفات المقرر",
@@ -487,6 +600,72 @@
   }catch(err){}
 })();
 </script>
+<script src="assets/search-data.js"></script>
+<script src="assets/srs.js"></script>
 <script src="assets/site.js"></script>
+<script src="assets/ui.js"></script>
+<script>
+/* لوحة التقدّم: تُبنى من التخزين المحلي فقط، وتُحدَّث عند تغيّر اللغة أو التقدّم. */
+(function(){
+  "use strict";
+  var grid = document.getElementById('dashGrid');
+  if (!grid) return;
+  var IDS = ["0001","0002","0003","0004","0005","0006","0007","0008","0009","0010","0011"];
+  function read(k, fb){ try{ var v=JSON.parse(localStorage.getItem(k)); return v===null?fb:v; }catch(e){ return fb; } }
+
+  var T = {
+    ar: { done:"دروس أتممتها", due:"بطاقة مستحقّة اليوم", dueLink:"ابدأ جلسة المراجعة",
+          streak:"يوم متتابع", best:"أفضل سلسلة:", quiz:"متوسط درجات الاختبارات",
+          noQuiz:"لم تخض اختباراً بعد", ofTotal:"من 11", mapLink:"افتح الخارطة" },
+    en: { done:"lessons completed", due:"cards due today", dueLink:"Start review session",
+          streak:"day streak", best:"Best:", quiz:"average quiz score",
+          noQuiz:"No quiz taken yet", ofTotal:"of 11", mapLink:"Open the map" }
+  };
+
+  function render(){
+    var lang = (document.documentElement.lang || 'ar').indexOf('en') === 0 ? 'en' : 'ar';
+    var t = T[lang];
+    var done = read('linalg:done', {}) || {};
+    var quiz = read('linalg:quiz', {}) || {};
+    var streak = (window.linalgStreak && window.linalgStreak()) || { count:0, best:0 };
+
+    var nDone = IDS.filter(function(i){ return done[i]; }).length;
+    var pct = Math.round(nDone / IDS.length * 100);
+
+    var due = 0;
+    if (window.LinalgSRS && window.LINALG_DATA){
+      due = window.LinalgSRS.stats(window.LinalgSRS.buildDeck(window.LINALG_DATA)).due;
+    }
+
+    var qk = Object.keys(quiz), qAvg = null;
+    if (qk.length){
+      var c = 0, tt = 0;
+      qk.forEach(function(k){ c += quiz[k].correct; tt += quiz[k].total; });
+      qAvg = tt ? Math.round(c / tt * 100) : null;
+    }
+
+    grid.innerHTML =
+      '<div class="ring" style="--p:' + pct + '">' +
+        '<div class="dial" aria-hidden="true"><span>' + pct + '%</span></div>' +
+        '<div class="rt"><b>' + nDone + ' ' + t.ofTotal + '</b>' +
+        '<small>' + t.done + '</small></div>' +
+      '</div>' +
+      '<div class="dcard"><b>' + due + '</b><small>' + t.due +
+        ' — <a href="review.html#session">' + t.dueLink + '</a></small></div>' +
+      '<div class="dcard"><b>' + (streak.count || 0) + '</b><small>' + t.streak +
+        ' · ' + t.best + ' ' + (streak.best || 0) + '</small></div>' +
+      '<div class="dcard"><b>' + (qAvg === null ? '—' : qAvg + '%') + '</b><small>' +
+        (qAvg === null ? t.noQuiz : t.quiz) + ' · <a href="map.html">' + t.mapLink + '</a></small></div>';
+  }
+
+  render();
+  document.addEventListener('linalg:ui-ready', render);
+  addEventListener('storage', render);
+  /* إعادة الرسم بعد تبديل اللغة */
+  var langBtn = document.getElementById('langToggle'), langSel = document.getElementById('langSelect');
+  if (langBtn) langBtn.addEventListener('click', function(){ setTimeout(render, 0); });
+  if (langSel) langSel.addEventListener('change', function(){ setTimeout(render, 0); });
+})();
+</script>
 </body>
 </html>

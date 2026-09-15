@@ -1,0 +1,638 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الخارطة الذهنية الشاملة — كيف يترابط المقرر | مختبر الجبر الخطي</title>
+<meta name="description" content="خارطة معرفية تفاعلية لكل مفاهيم الجبر الخطي: المتطلبات السابقة، ما يُبنى فوق كل فكرة، وروابط مباشرة إلى الدرس والفيديو والملخص والتمرين وبطاقات المراجعة.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/map.html">
+<meta property="og:type" content="website">
+<meta property="og:title" content="الخارطة الذهنية الشاملة — مختبر الجبر الخطي">
+<meta property="og:description" content="لوحة واحدة تربط 28 مفهوماً في الجبر الخطي بدروسها وفيديوهاتها وتمارينها وبطاقات مراجعتها.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary_large_image">
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="assets/lesson-fonts.css">
+<style>
+  :root{
+    --paper:#faf7f2;--card:#ffffff;--ink:#141310;--soft:#6f6a5e;--line:#d8d4cc;
+    --accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f;--gold:#9a7320;
+    --m1:#1e4a4a;--m2:#6d4180;--m3:#a9531f;
+    --serif:"ThmanyahSerifDisplay",serif;--text:"ThmanyahSerifText",serif;
+    --sans:"ThmanyahSans",system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;
+    --th-sans:var(--sans);
+  }
+  [data-theme=dark]{--paper:#14130f;--card:#1d1c17;--ink:#f2efe6;--soft:#a7a396;--line:#3a382f;
+    --accent:#7fc9ae;--terra:#e0906a;--vio:#b39ce0;--gold:#e0c070;
+    --m1:#4e9d8c;--m2:#a98bc2;--m3:#d4884f}
+  *{box-sizing:border-box}
+  html{scroll-behavior:smooth}
+  @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);line-height:1.9;
+    transition:background .25s ease,color .25s ease}
+  a{color:inherit}
+  :focus-visible{outline:3px solid var(--accent);outline-offset:3px;border-radius:8px}
+
+  .wrap{max-width:1280px;margin:0 auto;padding:0 22px 70px}
+  .top{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:3px solid var(--ink);flex-wrap:wrap}
+  .brand{display:flex;align-items:center;gap:9px;text-decoration:none;font-family:var(--sans);font-weight:700;font-size:15px}
+  .mark{width:24px;height:24px;border-radius:8px;background:var(--ink);color:var(--paper);display:grid;place-items:center;font-size:15px;font-weight:900}
+  .top nav{margin-inline-start:auto;display:flex;gap:15px;font-family:var(--sans);font-size:13px;flex-wrap:wrap;align-items:center}
+  .top nav a{text-decoration:none;color:var(--soft)}
+  .top nav a:hover{color:var(--ink)}
+  .top nav .tchip{color:var(--ink)}
+
+  .hero{padding:34px 0 6px}
+  .kicker{font-family:var(--sans);font-size:11.5px;letter-spacing:.1em;color:var(--accent);font-weight:700}
+  h1{font-family:var(--serif);font-size:clamp(28px,5vw,44px);margin:8px 0 10px;line-height:1.35}
+  .lead{font-family:var(--sans);font-size:14.5px;color:var(--soft);margin:0;max-width:76ch;line-height:2}
+  .lead b{color:var(--ink)}
+
+  /* ---------- progress strip ---------- */
+  .stats{display:grid;grid-template-columns:repeat(auto-fit,minmax(168px,1fr));gap:12px;margin:24px 0 0}
+  .stat{background:var(--card);border:1px solid var(--line);border-radius:16px;padding:15px 17px;font-family:var(--sans)}
+  .stat b{display:block;font-size:24px;font-weight:800;line-height:1.2;direction:ltr;unicode-bidi:isolate;text-align:start}
+  .stat small{display:block;font-size:12px;color:var(--soft);margin-top:3px}
+  .stat.k1 b{color:var(--accent)} .stat.k2 b{color:var(--terra)} .stat.k3 b{color:var(--vio)} .stat.k4 b{color:var(--gold)}
+  .nextup{margin:14px 0 0;background:var(--card);border:1.5px solid var(--accent);border-radius:16px;
+    padding:15px 18px;font-family:var(--sans);font-size:13.5px;display:flex;gap:14px;align-items:center;flex-wrap:wrap}
+  .nextup b{font-size:14.5px}
+  .nextup .grow{flex:1;min-width:220px;line-height:1.9}
+  .nextup a{background:var(--accent);color:#fff;text-decoration:none;border-radius:999px;padding:9px 20px;font-size:12.5px;white-space:nowrap}
+
+  /* ---------- toolbar + legend ---------- */
+  .toolbar{display:flex;gap:9px;flex-wrap:wrap;align-items:center;margin:30px 0 10px;font-family:var(--sans);font-size:12.5px}
+  .tchip{font:inherit;border:1.5px solid var(--line);background:var(--card);color:var(--soft);
+    border-radius:999px;padding:7px 15px;cursor:pointer;display:inline-flex;align-items:center;gap:7px;
+    transition:border-color .18s ease,color .18s ease,background .18s ease}
+  .tchip:hover{border-color:var(--ink);color:var(--ink)}
+  .tchip[aria-pressed=true]{background:var(--ink);border-color:var(--ink);color:var(--paper)}
+  .tchip .sw{width:10px;height:10px;border-radius:3px;display:inline-block}
+  .tsep{width:1px;height:22px;background:var(--line);margin:0 4px}
+  .legend{display:flex;gap:18px;flex-wrap:wrap;font-family:var(--sans);font-size:11.5px;color:var(--soft);margin:0 0 12px}
+  .legend span{display:inline-flex;align-items:center;gap:7px}
+  .legend svg{flex:0 0 auto}
+
+  /* ---------- canvas + panel ---------- */
+  .board{display:grid;grid-template-columns:1fr 336px;gap:16px;align-items:start}
+  @media(max-width:1040px){.board{grid-template-columns:1fr}}
+  .canvas-wrap{position:relative;background:var(--card);border:1px solid var(--line);border-radius:20px;
+    overflow:auto;max-height:min(80vh,840px);overscroll-behavior:contain}
+  .canvas-wrap svg{display:block;width:100%;height:auto;direction:ltr}
+  .zoomer{position:sticky;top:12px;float:inline-start;inset-inline-start:12px;z-index:3;
+    display:flex;flex-direction:column;gap:6px;margin:12px 0 0 12px}
+  .zoomer button{width:34px;height:34px;border-radius:10px;border:1px solid var(--line);background:var(--card);
+    color:var(--ink);font-size:15px;cursor:pointer;display:grid;place-items:center;font-family:var(--sans);
+    box-shadow:0 4px 14px rgba(0,0,0,.08)}
+  .zoomer button:hover{background:var(--ink);color:var(--paper)}
+
+  /* node styling */
+  .nd{cursor:pointer}
+  .nd rect.box{fill:var(--card);stroke:var(--line);stroke-width:1.5;transition:stroke .18s ease,fill .18s ease}
+  .nd text.lb{font-family:var(--sans);font-weight:700;fill:var(--ink)}
+  .nd text.en{font-family:var(--mono);font-size:10.5px;fill:var(--soft);direction:ltr}
+  .nd text.ls{font-family:var(--sans);font-size:10px;fill:var(--soft)}
+  .nd:hover rect.box{stroke:var(--ink)}
+  .nd.sel rect.box{stroke:var(--accent);stroke-width:3}
+  .nd.done rect.box{fill:color-mix(in srgb,var(--accent) 13%,var(--card))}
+  .nd.dim{opacity:.15}
+  .nd.lit rect.box{stroke:var(--gold);stroke-width:2.5}
+  .nd .tick{font-family:var(--sans);font-size:13px;font-weight:800;fill:var(--accent)}
+  .nd:focus{outline:none}
+  .nd:focus rect.box{stroke:var(--accent);stroke-width:3;stroke-dasharray:6 3}
+
+  .edge{fill:none;stroke:var(--line);stroke-width:1.8;transition:stroke .18s ease,opacity .18s ease}
+  .edge.use{stroke-dasharray:8 5}
+  .edge.equiv{stroke-dasharray:2 5;stroke-linecap:round}
+  .edge.dim{opacity:.09}
+  .edge.lit{stroke:var(--gold);stroke-width:3;opacity:1}
+  .edge-lb{font-family:var(--sans);font-size:11px;fill:var(--gold);opacity:0;transition:opacity .2s ease;
+    paint-order:stroke;stroke:var(--card);stroke-width:5px;stroke-linejoin:round}
+  .edge-lb.show{opacity:1}
+
+  /* ---------- side panel ---------- */
+  .panel{background:var(--card);border:1px solid var(--line);border-radius:20px;padding:20px;
+    font-family:var(--sans);position:sticky;top:16px;max-height:calc(100vh - 32px);overflow:auto}
+  .panel .ptag{display:inline-block;font-size:10.5px;border-radius:999px;padding:4px 12px;color:#fff;margin-bottom:9px}
+  .panel h2{font-family:var(--serif);font-size:21px;margin:0 0 3px;line-height:1.4}
+  .panel .pen{font-family:var(--mono);font-size:11.5px;color:var(--soft);direction:ltr;display:block;margin-bottom:12px}
+  .panel .pwhy{font-size:13.5px;line-height:2;color:var(--ink);margin:0 0 14px}
+  .panel h3{font-size:11.5px;letter-spacing:.06em;color:var(--soft);margin:16px 0 8px;font-weight:700}
+  .keys{display:flex;flex-wrap:wrap;gap:6px;margin:0;padding:0;list-style:none}
+  .keys li{font-size:11.5px;border:1px solid var(--line);border-radius:8px;padding:4px 10px;color:var(--soft);
+    direction:ltr;unicode-bidi:isolate}
+  .plinks{list-style:none;margin:0;padding:0;display:grid;gap:4px}
+  .plinks a{display:flex;align-items:center;gap:9px;text-decoration:none;font-size:13px;padding:8px 10px;
+    border-radius:10px;color:var(--ink);border:1px solid transparent}
+  .plinks a:hover{background:color-mix(in srgb,var(--accent) 12%,transparent);border-color:var(--line)}
+  .plinks .ic{width:22px;text-align:center;flex:0 0 auto}
+  .pnote{font-size:12.5px;color:var(--soft);margin:0;line-height:1.95}
+  .pnote b{color:var(--ink)}
+  .rel{display:flex;flex-wrap:wrap;gap:6px;padding:0;margin:0;list-style:none}
+  .rel button{font:inherit;font-size:11.5px;border:1px solid var(--line);background:transparent;color:var(--soft);
+    border-radius:999px;padding:5px 12px;cursor:pointer}
+  .rel button:hover{border-color:var(--ink);color:var(--ink)}
+  .panel .empty{color:var(--soft);font-size:13.5px;line-height:2}
+  .panel .empty b{color:var(--ink);display:block;font-size:16px;margin-bottom:6px;font-family:var(--serif)}
+
+  /* ---------- text outline (a11y + print) ---------- */
+  .outline{margin:48px 0 0;border-top:1px solid var(--line);padding-top:28px}
+  .outline h2{font-family:var(--serif);font-size:24px;margin:0 0 6px}
+  .outline p.sub{font-family:var(--sans);font-size:13px;color:var(--soft);margin:0 0 20px;max-width:70ch;line-height:1.95}
+  .ol-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(285px,1fr));gap:14px}
+  .ol-card{border:1px solid var(--line);border-radius:16px;padding:16px 18px;background:var(--card);font-family:var(--sans)}
+  .ol-card h3{margin:0 0 4px;font-size:15.5px}
+  .ol-card .oen{font-family:var(--mono);font-size:10.5px;color:var(--soft);direction:ltr;display:block;margin-bottom:9px}
+  .ol-card p{font-size:12.5px;line-height:1.95;color:var(--soft);margin:0 0 10px}
+  .ol-card .needs{font-size:11.5px;color:var(--soft);line-height:1.95}
+  .ol-card .needs b{color:var(--ink)}
+  .ol-card .olinks{margin-top:10px;font-size:12.5px}
+  .ol-card .olinks a{color:var(--accent)}
+
+  .foot{margin-top:60px;border-top:1px solid var(--line);padding-top:18px;display:flex;justify-content:space-between;
+    gap:12px;flex-wrap:wrap;font-family:var(--sans);font-size:12px;color:var(--soft)}
+  .skip{position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0)}
+  .skip:focus{position:fixed;top:12px;inset-inline-start:12px;width:auto;height:auto;clip:auto;
+    background:var(--ink);color:var(--paper);padding:10px 16px;z-index:99;border-radius:10px}
+
+  @media print{
+    .top nav,.toolbar,.legend,.zoomer,.panel,.nextup,.ui-rail,.canvas-wrap{display:none}
+    body{background:#fff}
+    .outline{border-top:0;margin-top:10px}
+    .ol-card{break-inside:avoid}
+  }
+</style>
+<link rel="stylesheet" href="assets/ui.css">
+</head>
+<body data-page="map">
+<a class="skip" href="#board">تخطَّ إلى الخارطة</a>
+<div class="wrap">
+  <div class="top">
+    <a class="brand" href="index.html"><span class="mark">✳</span> مختبر الجبر الخطي</a>
+    <nav aria-label="تنقل">
+      <a href="index.html">الرئيسية</a>
+      <a href="summary.html">الملخص الشامل</a>
+      <a href="review.html">المراجعة</a>
+      <a href="search.html">بحث</a>
+      <a href="playground.html">شغّل بايثون</a>
+      <button class="tchip theme-btn" type="button">الوضع الداكن</button>
+    </nav>
+  </div>
+
+  <header class="hero">
+    <p class="kicker">الخارطة المعرفية · 28 مفهوماً · 37 علاقة · 11 مستوى بناء</p>
+    <h1>كيف يترابط المقرر كله في لوحة واحدة</h1>
+    <p class="lead">كل صندوق مفهوم واحد، وكل سهم علاقة اعتماد حقيقية: ما الذي يجب أن تفهمه <b>قبل</b> هذا، وما الذي يُبنى <b>فوقه</b>. المستويات محسوبة من العلاقات نفسها لا من ترتيب الفصول — لذلك يظهر «المتجه» في المستوى الأول مع «المعادلة الخطية»: لا يحتاج أحدهما الآخر. اضغط أي مفهوم لتفتح كل موارده دفعة واحدة: القسم الدقيق في الدرس، والفيديو، والملخص، والتمرين البرمجي، وبطاقات مراجعته.</p>
+    <div id="resumeSlot"></div>
+
+    <div class="stats" id="stats" aria-live="polite"></div>
+    <div class="nextup" id="nextUp" hidden></div>
+  </header>
+
+  <div class="toolbar" role="group" aria-label="أدوات الخارطة">
+    <button class="tchip" data-mod="1" aria-pressed="true"><span class="sw" style="background:var(--m1)"></span> المحور 1 · المنظومات</button>
+    <button class="tchip" data-mod="2" aria-pressed="true"><span class="sw" style="background:var(--m2)"></span> المحور 2 · الفضاءات</button>
+    <button class="tchip" data-mod="3" aria-pressed="true"><span class="sw" style="background:var(--m3)"></span> المحور 3 · الأساس والمحددات</button>
+    <span class="tsep" aria-hidden="true"></span>
+    <button class="tchip" id="btnNeeds" aria-pressed="false">أبرِز ما يحتاجه قبله</button>
+    <button class="tchip" id="btnBuilds" aria-pressed="false">أبرِز ما يُبنى فوقه</button>
+    <button class="tchip" id="btnProgress" aria-pressed="true">لوّن حسب تقدّمي</button>
+    <span class="tsep" aria-hidden="true"></span>
+    <button class="tchip" id="btnFit">اعرض الخارطة كاملة</button>
+  </div>
+
+  <div class="legend" aria-hidden="true">
+    <span><svg width="34" height="8"><line x1="1" y1="4" x2="33" y2="4" stroke="currentColor" stroke-width="1.8"/></svg> متطلّب سابق</span>
+    <span><svg width="34" height="8"><line x1="1" y1="4" x2="33" y2="4" stroke="currentColor" stroke-width="1.8" stroke-dasharray="8 5"/></svg> يستخدمه في الحل</span>
+    <span><svg width="34" height="8"><line x1="1" y1="4" x2="33" y2="4" stroke="currentColor" stroke-width="1.8" stroke-dasharray="2 5" stroke-linecap="round"/></svg> تكافؤ منطقي</span>
+    <span>✓ درس أتممته · • درس بدأته</span>
+    <span>اسحب داخل اللوحة للتمرير · Tab ثم Enter للتنقّل بلوحة المفاتيح</span>
+  </div>
+
+  <div class="board" id="board">
+    <div class="canvas-wrap" id="canvasWrap">
+      <div class="zoomer">
+        <button type="button" id="zIn"  aria-label="تكبير">+</button>
+        <button type="button" id="zOut" aria-label="تصغير">−</button>
+        <button type="button" id="zFit" aria-label="عرض الخارطة كاملة">⤢</button>
+      </div>
+      <svg id="map" role="img" aria-label="خارطة مفاهيم الجبر الخطي وعلاقاتها — النسخة النصية الكاملة أسفل الصفحة"></svg>
+    </div>
+
+    <aside class="panel" id="panel" aria-live="polite">
+      <div class="empty">
+        <b>اختر مفهوماً من الخارطة</b>
+        ستظهر هنا فكرته في سطر، ونقاطه المفتاحية، وكل موارده: القسم المعني في الدرس، والفيديو، والملخص، والتمرين، وبطاقات المراجعة — مع متطلباته السابقة وما يُبنى فوقه.
+      </div>
+    </aside>
+  </div>
+
+  <section class="outline" id="outline">
+    <h2>الخارطة مكتوبة — لكل مفهوم متطلباته</h2>
+    <p class="sub">نسخة نصية كاملة من الخارطة: تعمل مع قارئات الشاشة، وتُطبع مع الصفحة، وتُقرأ دون الحاجة إلى تحريك اللوحة.</p>
+    <div class="ol-grid" id="olGrid"></div>
+  </section>
+
+  <div class="foot">
+    <span>الخارطة مبنيّة على علاقات المقرر نفسه — لا على ترتيب الفصول فقط.</span>
+    <span><a href="index.html">الرئيسية</a> · <a href="review.html">المراجعة المتباعدة</a> · <a href="summary.html">الملخص</a></span>
+  </div>
+</div>
+
+<script src="assets/graph-data.js"></script>
+<script src="assets/search-data.js"></script>
+<script src="assets/srs.js"></script>
+<script src="assets/site.js"></script>
+<script src="assets/ui.js"></script>
+<script>
+(function(){
+  "use strict";
+  var G = window.LINALG_GRAPH;
+  var SRS = window.LinalgSRS;
+  var svg = document.getElementById("map");
+  var wrapEl = document.getElementById("canvasWrap");
+  var panel = document.getElementById("panel");
+  var NS = "http://www.w3.org/2000/svg";
+
+  /* ---------- أبعاد التخطيط ---------- */
+  var NW = 214, NH = 80, COL = 240, ROW = 158, CX = 690, TOP = 66;
+
+  function read(k, fb){ try{ var v=JSON.parse(localStorage.getItem(k)); return v===null?fb:v; }catch(e){ return fb; } }
+  function esc(s){ return String(s==null?"":s).replace(/&/g,"&amp;").replace(/</g,"&lt;").replace(/>/g,"&gt;"); }
+  function mk(tag, attrs, txt){
+    var n = document.createElementNS(NS, tag);
+    for (var k in attrs) n.setAttribute(k, attrs[k]);
+    if (txt != null) n.textContent = txt;
+    return n;
+  }
+
+  var done = read("linalg:done", {}) || {};
+  var seen = read("linalg:seen", {}) || {};
+  var quiz = read("linalg:quiz", {}) || {};
+
+  /* =================================================================
+     تخطيط طبقي محسوب من العلاقات: رتبة كل عقدة = أطول مسار يصل إليها.
+     يضمن أن كل سهم يتجه للأسفل، وأن أي مفهوم يقع تحت كل متطلباته.
+     ================================================================= */
+  var rank = {};
+  (function computeRanks(){
+    var memo = {};
+    function r(u){
+      if (memo[u] != null) return memo[u];
+      memo[u] = 0; /* حارس ضد أي دورة غير متوقعة */
+      var m = 0;
+      G.edges.forEach(function(e){ if (e.t === u) m = Math.max(m, r(e.f) + 1); });
+      return (memo[u] = m);
+    }
+    G.nodes.forEach(function(n){ rank[n.id] = r(n.id); });
+  })();
+
+  var byRank = {}, maxRank = 0;
+  G.nodes.forEach(function(n, i){
+    n._i = i;
+    (byRank[rank[n.id]] = byRank[rank[n.id]] || []).push(n);
+    if (rank[n.id] > maxRank) maxRank = rank[n.id];
+  });
+  Object.keys(byRank).forEach(function(k){
+    var row = byRank[k];
+    /* المحور 1 إلى أقصى اليمين (بداية القراءة في RTL)، ثم 2 ثم 3 */
+    row.sort(function(a,b){ return (a.module - b.module) || (a._i - b._i); });
+    row.forEach(function(n, i){
+      n.x = CX + ((row.length - 1) / 2 - i) * COL;
+      n.y = TOP + (+k) * ROW;
+    });
+  });
+
+  var VIEW = { x: CX - 2.5 * COL - 30, y: 10, w: 5 * COL + 60, h: TOP + maxRank * ROW + NH };
+  svg.setAttribute("viewBox", VIEW.x + " " + VIEW.y + " " + VIEW.w + " " + VIEW.h);
+  svg.setAttribute("preserveAspectRatio", "xMidYMin meet");
+
+  /* ---------- الرسم ---------- */
+  var defs = mk("defs");
+  [["line","var(--line)"],["gold","var(--gold)"]].forEach(function(p){
+    var m = mk("marker", { id: "arrow-" + p[0], viewBox: "0 0 10 10", refX: "9", refY: "5",
+                           markerWidth: "7", markerHeight: "7", orient: "auto-start-reverse" });
+    m.appendChild(mk("path", { d: "M 0 1 L 9 5 L 0 9 z", fill: p[1] }));
+    defs.appendChild(m);
+  });
+  svg.appendChild(defs);
+
+  var gEdges = mk("g", { id: "gEdges" }), gLabels = mk("g", { id: "gLabels" }), gNodes = mk("g", { id: "gNodes" });
+  svg.appendChild(gEdges); svg.appendChild(gLabels); svg.appendChild(gNodes);
+
+  function anchorPoint(n, tx, ty){
+    var dx = tx - n.x, dy = ty - n.y;
+    if (!dx && !dy) return { x: n.x, y: n.y };
+    var hw = NW/2 + 5, hh = NH/2 + 5;
+    var s = Math.min(dx ? hw/Math.abs(dx) : Infinity, dy ? hh/Math.abs(dy) : Infinity);
+    return { x: n.x + dx*s, y: n.y + dy*s };
+  }
+
+  var edgeEls = [], labelEls = [];
+  G.edges.forEach(function(ed){
+    var a = G.byId(ed.f), b = G.byId(ed.t);
+    if (!a || !b) return;
+    var p1 = anchorPoint(a, b.x, b.y), p2 = anchorPoint(b, a.x, a.y);
+    var mx = (p1.x + p2.x)/2, my = (p1.y + p2.y)/2;
+    var span = Math.abs(p1.x - p2.x);
+    var bow = span > 60 ? (p1.x < p2.x ? -Math.min(58, span*0.14) : Math.min(58, span*0.14)) : 0;
+    var d = "M " + p1.x.toFixed(1) + " " + p1.y.toFixed(1) + " Q " + (mx+bow).toFixed(1) + " " + my.toFixed(1) +
+            " " + p2.x.toFixed(1) + " " + p2.y.toFixed(1);
+    var path = mk("path", { d: d, class: "edge " + ed.k, "marker-end": "url(#arrow-line)" });
+    gEdges.appendChild(path);
+    edgeEls.push({ el: path, f: ed.f, t: ed.t });
+    if (ed.label){
+      var lb = mk("text", { class: "edge-lb", x: (mx + bow*0.55).toFixed(1), y: (my - 8).toFixed(1),
+                            "text-anchor": "middle" }, ed.label);
+      gLabels.appendChild(lb);
+      labelEls.push({ el: lb, f: ed.f, t: ed.t });
+    }
+  });
+
+  var nodeEls = {}, fitText = [];
+  G.nodes.forEach(function(n){
+    var g = mk("g", { class: "nd", id: "n-" + n.id, tabindex: "0", role: "button",
+                      "aria-label": n.label + " — " + n.en + " — الدرس " + n.lesson });
+    var x = n.x - NW/2, y = n.y - NH/2;
+    g.appendChild(mk("rect", { class: "box", x: x, y: y, width: NW, height: NH, rx: 14 }));
+    g.appendChild(mk("rect", { class: "bar", x: x + NW - 5, y: y, width: 5, height: NH, rx: 2.5,
+                               fill: "var(--m" + n.module + ")" }));
+    var right = x + NW - 16;                       /* حافة البداية في RTL */
+    var size = n.label.length > 18 ? 12.5 : (n.label.length > 14 ? 13.5 : 15);
+    var tLb = mk("text", { class: "lb", x: right, y: y + 28, "text-anchor": "end", "font-size": size }, n.label);
+    var tEn = mk("text", { class: "en", x: right, y: y + 47, "text-anchor": "end" }, n.en);
+    var tLs = mk("text", { class: "ls", x: right, y: y + 65, "text-anchor": "end" },
+                 "الدرس " + n.lesson + " · " + (G.lessonTitles[n.lesson] || ""));
+    g.appendChild(tLb); g.appendChild(tEn); g.appendChild(tLs);
+    fitText.push([tLb, NW - 46], [tEn, NW - 34], [tLs, NW - 34]);
+    var tick = mk("text", { class: "tick", x: x + 14, y: y + 26, "text-anchor": "start" }, "");
+    g.appendChild(tick);
+    g._tick = tick;
+    gNodes.appendChild(g);
+    nodeEls[n.id] = g;
+  });
+
+  /* لا يخرج أي نص عن صندوقه: نقيس فعلياً ثم نضغط ما تجاوز الحد */
+  function clampLabels(){
+    fitText.forEach(function(pair){
+      var el = pair[0], max = pair[1];
+      var w;
+      try { w = el.getComputedTextLength(); } catch (e) { return; }
+      if (w > max && w > 0){
+        el.setAttribute("textLength", max);
+        el.setAttribute("lengthAdjust", "spacingAndGlyphs");
+      }
+    });
+  }
+  if (document.fonts && document.fonts.ready) document.fonts.ready.then(clampLabels);
+  clampLabels();
+
+  /* =================== التقدّم =================== */
+  var showProgress = true;
+  function paintProgress(){
+    G.nodes.forEach(function(n){
+      var g = nodeEls[n.id];
+      var isDone = showProgress && !!done[n.lesson];
+      g.classList.toggle("done", isDone);
+      g._tick.textContent = isDone ? "✓" : (showProgress && seen[n.lesson] ? "•" : "");
+    });
+  }
+  paintProgress();
+
+  /* =================== التصفية =================== */
+  var modOn = { 1: true, 2: true, 3: true };
+  function applyFilter(){
+    G.nodes.forEach(function(n){ nodeEls[n.id].style.display = modOn[n.module] ? "" : "none"; });
+    function vis(f, t){ return modOn[G.byId(f).module] && modOn[G.byId(t).module]; }
+    edgeEls.forEach(function(e){ e.el.style.display = vis(e.f, e.t) ? "" : "none"; });
+    labelEls.forEach(function(l){ l.el.style.display = vis(l.f, l.t) ? "" : "none"; });
+  }
+  document.querySelectorAll("[data-mod]").forEach(function(btn){
+    btn.addEventListener("click", function(){
+      var m = btn.getAttribute("data-mod");
+      modOn[m] = !modOn[m];
+      btn.setAttribute("aria-pressed", modOn[m] ? "true" : "false");
+      applyFilter();
+    });
+  });
+
+  /* =================== الإبراز =================== */
+  var selected = null, litNeeds = false, litBuilds = false;
+  function clearLit(){
+    Object.keys(nodeEls).forEach(function(id){ nodeEls[id].classList.remove("dim","lit"); });
+    edgeEls.forEach(function(e){ e.el.classList.remove("dim","lit"); e.el.setAttribute("marker-end","url(#arrow-line)"); });
+    labelEls.forEach(function(l){ l.el.classList.remove("show"); });
+  }
+  function applyLit(){
+    clearLit();
+    if (!selected || (!litNeeds && !litBuilds)) return;
+    var set = {}; set[selected] = 1;
+    if (litNeeds)  G.ancestors(selected).forEach(function(i){ set[i] = 1; });
+    if (litBuilds) G.descendants(selected).forEach(function(i){ set[i] = 1; });
+    Object.keys(nodeEls).forEach(function(id){ nodeEls[id].classList.add(set[id] ? "lit" : "dim"); });
+    edgeEls.forEach(function(e){
+      if (set[e.f] && set[e.t]) { e.el.classList.add("lit"); e.el.setAttribute("marker-end","url(#arrow-gold)"); }
+      else e.el.classList.add("dim");
+    });
+    labelEls.forEach(function(l){ if (set[l.f] && set[l.t]) l.el.classList.add("show"); });
+  }
+  function needSelection(){
+    if (!selected && window.linalgToast) window.linalgToast("اختر مفهوماً من الخارطة أولاً");
+  }
+  document.getElementById("btnNeeds").addEventListener("click", function(){
+    litNeeds = !litNeeds; this.setAttribute("aria-pressed", litNeeds); needSelection(); applyLit();
+  });
+  document.getElementById("btnBuilds").addEventListener("click", function(){
+    litBuilds = !litBuilds; this.setAttribute("aria-pressed", litBuilds); needSelection(); applyLit();
+  });
+  document.getElementById("btnProgress").addEventListener("click", function(){
+    showProgress = !showProgress; this.setAttribute("aria-pressed", showProgress); paintProgress();
+  });
+
+  /* =================== لوحة التفاصيل =================== */
+  var ICONS = { lesson:"📘", video:"🎬", summary:"📝", practice:"🐍", quiz:"✅", review:"🗂️", glossary:"🔤" };
+  var ORDER = ["lesson","video","summary","practice","quiz","review","glossary"];
+
+  function deckStats(lesson){
+    if (!SRS || !window.LINALG_DATA) return null;
+    var deck = SRS.buildDeck(window.LINALG_DATA).filter(function(c){ return c.lesson === lesson; });
+    return deck.length ? SRS.stats(deck) : null;
+  }
+
+  function select(id, opts){
+    var n = G.byId(id);
+    if (!n) return;
+    opts = opts || {};
+    selected = id;
+    Object.keys(nodeEls).forEach(function(k){ nodeEls[k].classList.toggle("sel", k === id); });
+    applyLit();
+
+    var res = G.resources(n, "");
+    var needs  = G.edges.filter(function(e){ return e.t === id; }).map(function(e){ return G.byId(e.f); }).filter(Boolean);
+    var builds = G.edges.filter(function(e){ return e.f === id; }).map(function(e){ return G.byId(e.t); }).filter(Boolean);
+    var st = deckStats(n.lesson), q = quiz[n.lesson];
+
+    panel.innerHTML =
+      '<span class="ptag" style="background:var(--m' + n.module + ')">' +
+        esc(G.modules[n.module].short + " · الدرس " + n.lesson + " · المستوى " + (rank[id] + 1)) + '</span>' +
+      '<h2>' + esc(n.label) + '</h2>' +
+      '<span class="pen">' + esc(n.en) + '</span>' +
+      '<p class="pwhy">' + esc(n.why) + '</p>' +
+      (n.keys.length ? '<h3>النقاط المفتاحية</h3><ul class="keys">' +
+        n.keys.map(function(k){ return '<li>' + esc(k) + '</li>'; }).join("") + '</ul>' : "") +
+      '<h3>كل موارد هذا المفهوم</h3><ul class="plinks">' +
+        ORDER.map(function(k){
+          return '<li><a href="' + res[k].href + '"><span class="ic" aria-hidden="true">' + ICONS[k] + '</span>' +
+                 '<span>' + esc(res[k].label) + '</span></a></li>';
+        }).join("") + '</ul>' +
+      (st ? '<h3>بطاقاتك في هذا الدرس</h3><p class="pnote">مستحقّة الآن: <b>' + st.due +
+            '</b> · لم تبدأها: <b>' + st.fresh + '</b> · مجدولة لاحقاً: <b>' + st.later + '</b></p>' : "") +
+      (q ? '<h3>آخر نتيجة اختبار</h3><p class="pnote"><b>' + q.correct + ' من ' + q.total + '</b></p>' : "") +
+      (needs.length ? '<h3>يحتاج قبله</h3><ul class="rel">' + needs.map(function(x){
+          return '<li><button type="button" data-go="' + x.id + '">' + esc(x.label) + '</button></li>'; }).join("") + '</ul>' : "") +
+      (builds.length ? '<h3>يُبنى فوقه</h3><ul class="rel">' + builds.map(function(x){
+          return '<li><button type="button" data-go="' + x.id + '">' + esc(x.label) + '</button></li>'; }).join("") + '</ul>' : "");
+
+    if (!opts.silent){
+      if (history.replaceState) history.replaceState(null, "", "#n-" + id);
+      else location.hash = "#n-" + id;
+    }
+    if (opts.scroll && window.innerWidth <= 1040) panel.scrollIntoView({ block: "start" });
+  }
+
+  panel.addEventListener("click", function(e){
+    var b = e.target.closest ? e.target.closest("[data-go]") : null;
+    if (b){ var id = b.getAttribute("data-go"); select(id); reveal(id); }
+  });
+  gNodes.addEventListener("click", function(e){
+    var g = e.target.closest ? e.target.closest(".nd") : null;
+    if (g) select(g.id.replace(/^n-/, ""), { scroll: true });
+  });
+  gNodes.addEventListener("keydown", function(e){
+    var g = e.target.closest ? e.target.closest(".nd") : null;
+    if (g && (e.key === "Enter" || e.key === " ")){ e.preventDefault(); select(g.id.replace(/^n-/, ""), { scroll: true }); }
+  });
+
+  /* =================== التكبير والتمرير =================== */
+  var zoom = 1;
+  function setZoom(z){
+    zoom = Math.max(0.4, Math.min(2.6, z));
+    svg.style.width = (zoom * 100) + "%";
+    svg.style.minWidth = zoom > 1 ? (zoom * 100) + "%" : "";
+  }
+  function fitAll(){
+    /* عرض الخارطة كاملة: الارتفاع المعروض = العرض المعروض × (h/w) للوحة.
+       نريده ألا يتجاوز ارتفاع الإطار، فيكون معامل التكبير:
+         zoom = (ارتفاع الإطار × عرض اللوحة) ÷ (عرض الإطار × ارتفاع اللوحة) */
+    var h = wrapEl.clientHeight || 700, w = wrapEl.clientWidth || 900;
+    setZoom((h * VIEW.w) / (w * VIEW.h));
+    wrapEl.scrollTop = 0;
+    wrapEl.scrollLeft = 0;
+  }
+  function reveal(id){
+    var g = nodeEls[id];
+    if (!g) return;
+    var r = g.getBoundingClientRect(), wr = wrapEl.getBoundingClientRect();
+    wrapEl.scrollTop += (r.top + r.height/2) - (wr.top + wr.height/2);
+    wrapEl.scrollLeft += (r.left + r.width/2) - (wr.left + wr.width/2);
+  }
+  document.getElementById("zIn").onclick  = function(){ setZoom(zoom * 1.2); };
+  document.getElementById("zOut").onclick = function(){ setZoom(zoom / 1.2); };
+  document.getElementById("zFit").onclick = fitAll;
+  document.getElementById("btnFit").onclick = function(){ fitAll(); wrapEl.scrollIntoView({ block: "start" }); };
+  setZoom(1);
+
+  /* سحب بالفأرة داخل اللوحة (مع بقاء التمرير الطبيعي بالعجلة) */
+  var drag = null;
+  wrapEl.addEventListener("pointerdown", function(e){
+    if (e.target.closest && (e.target.closest(".nd") || e.target.closest(".zoomer"))) return;
+    drag = { x: e.clientX, y: e.clientY, sl: wrapEl.scrollLeft, st: wrapEl.scrollTop };
+    wrapEl.style.cursor = "grabbing";
+  });
+  wrapEl.addEventListener("pointermove", function(e){
+    if (!drag) return;
+    wrapEl.scrollLeft = drag.sl - (e.clientX - drag.x);
+    wrapEl.scrollTop  = drag.st - (e.clientY - drag.y);
+  });
+  ["pointerup","pointercancel","pointerleave"].forEach(function(ev){
+    wrapEl.addEventListener(ev, function(){ drag = null; wrapEl.style.cursor = ""; });
+  });
+
+  /* =================== الإحصاءات والخطوة القادمة =================== */
+  function renderStats(){
+    var ids = Object.keys(G.slugs);
+    var nDone = ids.filter(function(i){ return done[i]; }).length;
+    var deck = (SRS && window.LINALG_DATA) ? SRS.buildDeck(window.LINALG_DATA) : [];
+    var st = deck.length ? SRS.stats(deck) : { due:0, fresh:0, learned:0, total:0 };
+    var streak = (window.linalgStreak && window.linalgStreak()) || { count: 0 };
+
+    document.getElementById("stats").innerHTML =
+      '<div class="stat k1"><b>' + nDone + ' / 11</b><small>دروس أتممتها</small></div>' +
+      '<div class="stat k2"><b>' + st.due + '</b><small>بطاقة مستحقّة اليوم</small></div>' +
+      '<div class="stat k3"><b>' + st.learned + ' / ' + st.total + '</b><small>بطاقات بدأت حفظها</small></div>' +
+      '<div class="stat k4"><b>' + (streak.count || 0) + '</b><small>يوم متتابع من الدراسة</small></div>';
+
+    var box = document.getElementById("nextUp"), html;
+    if (st.due >= 5){
+      html = '<div class="grow"><b>ابدأ بمراجعة اليوم</b><br>' + st.due +
+             ' بطاقة مستحقّة. المراجعة المتباعدة قبل الدرس الجديد تثبّت ما بنيته بالفعل.</div>' +
+             '<a href="review.html#session">افتح جلسة المراجعة ←</a>';
+    } else {
+      var next = null;
+      for (var i = 0; i < ids.length; i++) if (!done[ids[i]]){ next = ids[i]; break; }
+      if (next){
+        var first = G.byLesson(next)[0];
+        html = '<div class="grow"><b>خطوتك القادمة: الدرس ' + next + '</b><br>' +
+               esc(G.lessonTitles[next]) + (first ? ' — يبدأ من مفهوم «' + esc(first.label) + '».' : '') + '</div>' +
+               '<a href="lessons/' + G.slugs[next] + '.html">افتح الدرس ←</a>';
+      } else {
+        html = '<div class="grow"><b>أتممت الأحد عشر درساً</b><br>ثبّت ما تعلّمته: ' +
+               (st.due || 0) + ' بطاقة مستحقّة، وبنك التدريبات يخلط المحاور كلها.</div>' +
+               '<a href="lessons/0011-drills.html">بنك التدريبات ←</a>';
+      }
+    }
+    box.innerHTML = html;
+    box.hidden = false;
+  }
+  renderStats();
+
+  /* =================== النسخة النصية =================== */
+  document.getElementById("olGrid").innerHTML = G.nodes.slice().sort(function(a,b){
+    return (rank[a.id] - rank[b.id]) || (a.module - b.module);
+  }).map(function(n){
+    var needs  = G.edges.filter(function(e){ return e.t === n.id; }).map(function(e){ var x=G.byId(e.f); return x?x.label:""; }).filter(Boolean);
+    var builds = G.edges.filter(function(e){ return e.f === n.id; }).map(function(e){ var x=G.byId(e.t); return x?x.label:""; }).filter(Boolean);
+    var res = G.resources(n, "");
+    return '<article class="ol-card" id="ol-' + n.id + '">' +
+      '<h3>' + esc(n.label) + '</h3>' +
+      '<span class="oen">' + esc(n.en) + ' · الدرس ' + n.lesson + ' · المستوى ' + (rank[n.id] + 1) + '</span>' +
+      '<p>' + esc(n.why) + '</p>' +
+      '<div class="needs"><b>يحتاج قبله:</b> ' + (needs.length ? esc(needs.join("، ")) : "لا شيء — نقطة بداية") + '</div>' +
+      '<div class="needs"><b>يُبنى فوقه:</b> ' + (builds.length ? esc(builds.join("، ")) : "نهاية مسار") + '</div>' +
+      '<div class="olinks"><a href="' + res.lesson.href + '">الدرس</a> · ' +
+      '<a href="' + res.summary.href + '">الملخص</a> · ' +
+      '<a href="' + res.practice.href + '">التمرين</a> · ' +
+      '<a href="' + res.review.href + '">البطاقات</a></div>' +
+      '</article>';
+  }).join("");
+
+  /* =================== الروابط العميقة =================== */
+  function fromHash(){
+    var h = location.hash || "";
+    var m = h.match(/^#n-(.+)$/);
+    if (m && G.byId(m[1])){ select(m[1], { silent: true }); reveal(m[1]); return true; }
+    var lm = h.match(/^#l(\d{4})$/);
+    if (lm){
+      var ns = G.byLesson(lm[1]);
+      if (ns.length){ select(ns[0].id, { silent: true }); reveal(ns[0].id); return true; }
+    }
+    return false;
+  }
+  fromHash();
+  addEventListener("hashchange", fromHash);
+})();
+</script>
+</body>
+</html>

@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0009 · الأساس والأبعاد — Basis & Dimension</title>
+<meta name="description" content="أصغر فريق يغطي الفضاء بلا هدر، والبعد هو عدد أعضائه مهما تغيّر الأساس.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0009-basis-dimension.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0009 · الأساس والأبعاد — مختبر الجبر الخطي">
+<meta property="og:description" content="أصغر فريق يغطي الفضاء بلا هدر، والبعد هو عدد أعضائه مهما تغيّر الأساس.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="../assets/lesson-fonts.css">
 <style>
@@ -62,15 +69,39 @@
   a{color:var(--accent)}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0009 · الأساس والأبعاد",
+ "alternateName": "Basis & Dimension",
+ "description": "أصغر فريق يغطي الفضاء بلا هدر، والبعد هو عدد أعضائه مهما تغيّر الأساس.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0009-basis-dimension.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "فيديو",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 9
+}
+</script>
 </head>
-<body>
+<body data-lesson-id="0009">
 <div class="wrap">
-  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0008-span-independence.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0010-determinants.html">التالي ←</a></div></div>
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0008-span-independence.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0009">الخارطة</a> · <a href="0010-determinants.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0009 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0009 · الأساس والمحددات</div>
     <h1>الأساس والأبعاد</h1>
     <span class="en-line" lang="en">Basis & Dimension — the smallest team that spans, and how to count it</span>
     <div class="rule"></div>
@@ -79,15 +110,15 @@
 
   <section id="s1">
     <h2><span class="num">١</span> الأساس: أصغر فريق يغطي الملعب<span class="en-sub" lang="en">Independent + spanning = basis; its size = dimension</span></h2>
-    <p>ال<span class="term">أساس</span> <span class="en" lang="en" dir="ltr">(basis)</span> فريق متجهات يحقق شرطين معاً: مستقل (لا هدر) ومولّد (تغطية كاملة). و<span class="term">البعد</span> <span class="en" lang="en" dir="ltr">(dimension)</span> هو عدد أعضاء أي أساس — وهو ثابت لا يتغير مهما بدّلت الفريق. أساس <span class="coord">R²</span> المعياري: <span class="coord">e₁ = (1,0)</span> و <span class="coord">e₂ = (0,1)</span>، فبعد <span class="coord">R²</span> هو <span class="coord">2</span>.</p>
+    <p>ال<span class="term">أساس</span> <span class="en" lang="en" dir="ltr">(basis)</span> فريق متجهات يحقق شرطين معاً: مستقل (لا هدر) ومولّد (تغطية كاملة). و<span class="term">البعد</span> <span class="en" lang="en" dir="ltr">(dimension)</span> هو عدد أعضاء أي أساس — وهو ثابت لا يتغير مهما بدّلت الفريق. أساس <span class="coord">ℝ²</span> المعياري: <span class="coord">e₁ = (1,0)</span> و <span class="coord">e₂ = (0,1)</span>، فبعد <span class="coord">ℝ²</span> هو <span class="coord">2</span>.</p>
     <div class="analogy"><b>تشبيه: فريق الإنقاذ</b><p>تريد تغطية جزيرة كاملة بأقل عدد من الأبراج، وبلا تداخل في الإرسال. برجان متداخلان هدر، وبرج واحد لا يغطي — الأساس هو التغطية الكاملة بأقل عدد. <span class="en" lang="en" dir="ltr">Full coverage, zero overlap, fewest towers.</span></p></div>
-    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> أساس = استقلال + توليد. والبعد يُقرأ من أي أساس: <span class="coord">Rⁿ</span> بعده <span class="coord">n</span>، والخط عبر الأصل بعده <span class="coord">1</span>، والنقطة وحدها بعدها <span class="coord">0</span>. <span class="en" lang="en" dir="ltr">(Count any basis — the number never changes.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> أساس = استقلال + توليد. والبعد يُقرأ من أي أساس: <span class="coord">ℝⁿ</span> بعده <span class="coord">n</span>، والخط عبر الأصل بعده <span class="coord">1</span>، والنقطة وحدها بعدها <span class="coord">0</span>. <span class="en" lang="en" dir="ltr">(Count any basis — the number never changes.)</span></p></div>
     <div class="kmath" id="k1"></div>
   </section>
 
   <section id="s2">
-    <h2><span class="num">٢</span> هل هذا أساس؟ المحكمة تنعقد<span class="en-sub" lang="en">Three candidates for a basis of R² — test both conditions</span></h2>
-    <p>ثلاثة مرشحين لأساس <span class="coord">R²</span>: الزوج المعياري، وزوج مائل، وزوج متوازٍ. اختر مرشحاً — اللوحة تختبر الاستقلال ثم التوليد وتصدر الحكم المزدوج.</p>
+    <h2><span class="num">٢</span> هل هذا أساس؟ المحكمة تنعقد<span class="en-sub" lang="en">Three candidates for a basis of ℝ² — test both conditions</span></h2>
+    <p>ثلاثة مرشحين لأساس <span class="coord">ℝ²</span>: الزوج المعياري، وزوج مائل، وزوج متوازٍ. اختر مرشحاً — اللوحة تختبر الاستقلال ثم التوليد وتصدر الحكم المزدوج.</p>
     <div class="demo" data-label="Court · BASIS">
       <h3>محكمة الأسس</h3>
       <p class="hint">اختر المرشح ثم اضغط «احكم» — شرطان لا شرط واحد</p>
@@ -104,7 +135,7 @@
       <h3>مُترجم الإحداثيات المائلة</h3>
       <p class="hint">الأساس ثابت (1,1),(1,−1) — أدخل هدفك (x,y)</p>
       <div class="controls"><label>x <input type="number" id="gx" value="4"></label><label>y <input type="number" id="gy" value="2"></label><button class="btn" id="gGo">جد الإحداثيات</button></div>
-      <div class="readout" id="gRO">coordinates = ?</div>
+      <div class="readout" id="gRO" style="direction:rtl;text-align:right">coordinates = ?</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الإحداثيات تتبع الأساس: النقطة نفسها <span class="coord">(4,2)</span> إحداثياتها <span class="coord">(4,2)</span> في المعياري و <span class="coord">(3,1)</span> في المائل. لا تخلط دفتر العناوين! <span class="en" lang="en" dir="ltr">(Same point, different address book.)</span></p></div>
   </section>
@@ -114,7 +145,7 @@
     <p class="hint">موشن جرافيك بتعليق عربي: الشرطان، والمرشحون، والإحداثيات</p>
     <video controls preload="metadata" poster="../video/outputs/0009-basis-dimension-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0009-basis-dimension-ar.mp4" type="video/mp4">
-      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0009-basis-dimension-subs.srt" default>
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0009-basis-dimension-subs.vtt" default>
     </video>
   </div>
 
@@ -131,13 +162,13 @@
     <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
     <div class="q" id="q1"><div class="prompt">ما شرطا الأساس؟</div>
       <button class="opt" data-q="q1" data-a="0">مستقل ومولّد معاً</button><button class="opt" data-q="q1" data-a="1">مستقل فقط</button><button class="opt" data-q="q1" data-a="2">مولّد فقط</button><button class="opt" data-q="q1" data-a="3">متعامد فقط</button><div class="feedback"></div></div>
-    <div class="q" id="q2"><div class="prompt">ما بُعد <span class="coord">R³</span>؟</div>
+    <div class="q" id="q2"><div class="prompt">ما بُعد <span class="coord">ℝ³</span>؟</div>
       <button class="opt" data-q="q2" data-a="0">3 — الأساس المعياري من ثلاثة متجهات</button><button class="opt" data-q="q2" data-a="1">2</button><button class="opt" data-q="q2" data-a="2">9</button><button class="opt" data-q="q2" data-a="3">لا نهائي</button><div class="feedback"></div></div>
-    <div class="q" id="q3"><div class="prompt">هل <span class="coord">(1,1),(2,2)</span> أساس لـ <span class="coord">R²</span>؟</div>
+    <div class="q" id="q3"><div class="prompt">هل <span class="coord">(1,1),(2,2)</span> أساس لـ <span class="coord">ℝ²</span>؟</div>
       <button class="opt" data-q="q3" data-a="0">لا — مرتبطان (متوازيان)</button><button class="opt" data-q="q3" data-a="1">نعم — مختلفان</button><button class="opt" data-q="q3" data-a="2">نعم — يولدان الخط y=x</button><button class="opt" data-q="q3" data-a="3">لا — لأنهما طويلان</button><div class="feedback"></div></div>
     <div class="q" id="q4"><div class="prompt">إحداثيات <span class="coord">(4,2)</span> في الأساس <span class="coord">(1,1),(1,−1)</span>؟</div>
       <button class="opt" data-q="q4" data-a="0"><span class="coord">(3,1)</span></button><button class="opt" data-q="q4" data-a="1"><span class="coord">(4,2)</span></button><button class="opt" data-q="q4" data-a="2"><span class="coord">(1,3)</span></button><button class="opt" data-q="q4" data-a="3"><span class="coord">(2,2)</span></button><div class="feedback"></div></div>
-    <div class="q" id="q5"><div class="prompt">ما بُعد الخط عبر الأصل في <span class="coord">R²</span>؟</div>
+    <div class="q" id="q5"><div class="prompt">ما بُعد الخط عبر الأصل في <span class="coord">ℝ²</span>؟</div>
       <button class="opt" data-q="q5" data-a="0">1 — يكفي متجه واحد غير صفري</button><button class="opt" data-q="q5" data-a="1">2</button><button class="opt" data-q="q5" data-a="2">0</button><button class="opt" data-q="q5" data-a="3">لا نهائي</button><div class="feedback"></div></div>
   </section>
 
@@ -153,6 +184,8 @@
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
     <a class="tool-btn" href="../playground.html?ex=0009-basis-dimension">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0009">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0009">بطاقات المراجعة</a>
     <button class="tool-btn done-toggle" type="button" data-lesson="0009" aria-pressed="false">أتممت الدرس</button>
   </div>
   <div class="refs">
@@ -178,13 +211,13 @@
   document.getElementById('bGo').onclick=function(){
     var k=document.getElementById('cand').value,c=C[k];
     tex(document.getElementById('bStage'),"\\det = "+c.det+" \\qquad "+c.v);
-    document.getElementById('bRO').innerHTML="مستقلان؟ "+(c.ind?"نعم — <span class='coord'>det = "+c.det+" ≠ 0</span>":"لا — <span class='coord'>det = 0</span>: متوازيان، أحدهما زائد")+" · يولدان <span class='coord'>R²</span>؟ "+(c.span?"نعم — أي نقطة تُبنى منهما":"لا — مولدهما خط واحد")+" → "+((c.ind&&c.span)?"أساس والبعد <span class='coord'>2</span>":"ليس أساساً: ينقصه شرط");
+    document.getElementById('bRO').innerHTML="مستقلان؟ "+(c.ind?"نعم — <span class='coord'>det = "+c.det+" ≠ 0</span>":"لا — <span class='coord'>det = 0</span>: متوازيان، أحدهما زائد")+" · يولدان <span class='coord'>ℝ²</span>؟ "+(c.span?"نعم — أي نقطة تُبنى منهما":"لا — مولدهما خط واحد")+" → "+((c.ind&&c.span)?"أساس والبعد <span class='coord'>2</span>":"ليس أساساً: ينقصه شرط");
   };
   document.getElementById('gGo').onclick=function(){
     var x=+document.getElementById('gx').value,y=+document.getElementById('gy').value;
     function fmt(v){return Math.round(v*1000)/1000;}
     var c1=fmt((x+y)/2),c2=fmt((x-y)/2);
-    document.getElementById('gRO').textContent="("+x+", "+y+") = "+c1+"(1,1) + "+c2+"(1,−1) → coords ("+c1+", "+c2+") · check: ("+fmt(c1+c2)+", "+fmt(c1-c2)+")";
+    var mn=function(v){return String(v).replace(/-/g,"\u2212");};document.getElementById('gRO').innerHTML="<span class='coord'>("+mn(x)+", "+mn(y)+") = "+mn(c1)+"(1,1) + "+mn(c2)+"(1,−1)</span> ← الإحداثيات <b><span class='coord'>("+mn(c1)+", "+mn(c2)+")</span></b> · التحقق بالتعويض: <span class='coord'>("+mn(fmt(c1+c2))+", "+mn(fmt(c1-c2))+")</span>";
   };
   var ANS={q1:{"0":["صحيح — الشرطان معاً لا أحدهما.",true],"1":["ناقص — أين التوليد؟",false],"2":["ناقص — أين الاستقلال؟",false],"3":["التعامد زينة لا شرط.",false]},
     q2:{"0":["صحيح — e₁,e₂,e₃.",true],"1":["هذا بعد المستوى.",false],"2":["هذا عدد عناصر مصفوفة 3×3.",false],"3":["البعد منتهٍ ومعروف.",false]},
@@ -202,5 +235,6 @@
 })();
 </script>
 <script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>

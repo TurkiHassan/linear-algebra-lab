@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0001 · منظومات المعادلات الخطية — Systems of Linear Equations</title>
+<meta name="description" content="تميّز المعادلة الخطية من غيرها في عشر ثوانٍ، وتحل منظومة 3×3 بالحذف الغاوسي والتعويض الخلفي.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0001-linear-systems.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0001 · منظومات المعادلات الخطية — مختبر الجبر الخطي">
+<meta property="og:description" content="تميّز المعادلة الخطية من غيرها في عشر ثوانٍ، وتحل منظومة 3×3 بالحذف الغاوسي والتعويض الخلفي.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="../assets/lesson-fonts.css">
 <style>
@@ -79,15 +86,39 @@
   a{color:var(--accent)}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0001 · منظومات المعادلات الخطية",
+ "alternateName": "Systems of Linear Equations",
+ "description": "تميّز المعادلة الخطية من غيرها في عشر ثوانٍ، وتحل منظومة 3×3 بالحذف الغاوسي والتعويض الخلفي.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0001-linear-systems.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "فيديو",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 1
+}
+</script>
 </head>
-<body>
+<body data-lesson-id="0001">
 <div class="wrap">
-  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div>الدرس 0001 · <a href="../index.html">الرئيسية</a></div></div>
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div>الدرس 0001 · <a href="../map.html#l0001">الخارطة</a> · <a href="../search.html">بحث</a> · <a href="../index.html">الرئيسية</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0001 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0001 · الأساسيات</div>
     <h1>منظومات المعادلات الخطية</h1>
     <span class="en-line" lang="en">Systems of Linear Equations — which equation counts as linear?</span>
     <div class="rule"></div>
@@ -104,7 +135,7 @@
 
   <section id="s2">
     <h2><span class="num">٢</span> جرّب بنفسك: خطية أم لا؟<span class="en-sub" lang="en">You predict, then the panel judges</span></h2>
-    <p>من ملف <span class="coord">CamScanner 02-17-2023</span> في مقرركم: إحدى عشرة معادلة مرشحة. تنقّل بينها بزرّي «التالي» و«السابق»، واحكم بنفسك قبل أن تضغط «اكشف الحكم».</p>
+    <p>من ملف <span class="coord">CamScanner 02-17-2023</span> في مقررك: إحدى عشرة معادلة مرشحة. تنقّل بينها بزرّي «التالي» و«السابق»، واحكم بنفسك قبل أن تضغط «اكشف الحكم».</p>
     <div class="demo" data-label="Try · PLAY">
       <h3>مختبر الإحدى عشرة</h3>
       <p class="hint">اختر حكمك أولاً، ثم اضغط «اكشف» لتتحقق</p>
@@ -135,7 +166,7 @@
     <p class="hint">موشن جرافيك بتعليق عربي: القاعدة الذهبية وست معادلات محكومة</p>
     <video controls preload="metadata" poster="../video/outputs/0001-linear-systems-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0001-linear-systems-ar.mp4" type="video/mp4">
-      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0001-linear-systems-subs.srt" default>
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0001-linear-systems-subs.vtt" default>
     </video>
   </div>
 
@@ -175,6 +206,8 @@
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
     <a class="tool-btn" href="../playground.html?ex=0001-linear-systems">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0001">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0001">بطاقات المراجعة</a>
     <button class="tool-btn done-toggle" type="button" data-lesson="0001" aria-pressed="false">أتممت الدرس</button>
   </div>
   <div class="refs">
@@ -293,5 +326,6 @@
 })();
 </script>
 <script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>

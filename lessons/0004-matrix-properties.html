@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0004 · خصائص المصفوفات والمصفوفة الصفرية — Matrix Properties</title>
+<meta name="description" content="ستة قوانين جبرية تنتقل من الأعداد إلى المصفوفات، وفخّ واحد: AB ≠ BA.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0004-matrix-properties.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0004 · خصائص المصفوفات والمصفوفة الصفرية — مختبر الجبر الخطي">
+<meta property="og:description" content="ستة قوانين جبرية تنتقل من الأعداد إلى المصفوفات، وفخّ واحد: AB ≠ BA.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="../assets/lesson-fonts.css">
 <style>
@@ -59,15 +66,39 @@
   a{color:var(--accent)}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0004 · خصائص المصفوفات والمصفوفة الصفرية",
+ "alternateName": "Matrix Properties & the Zero Matrix",
+ "description": "ستة قوانين جبرية تنتقل من الأعداد إلى المصفوفات، وفخّ واحد: AB ≠ BA.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0004-matrix-properties.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "فيديو",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 4
+}
+</script>
 </head>
-<body>
+<body data-lesson-id="0004">
 <div class="wrap">
-  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0003-gaussian-elimination.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0005-euclidean-spaces.html">التالي ←</a></div></div>
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0003-gaussian-elimination.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0004">الخارطة</a> · <a href="0005-euclidean-spaces.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0004 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0004 · الأساسيات</div>
     <h1>خصائص المصفوفات والمصفوفة الصفرية</h1>
     <span class="en-line" lang="en">Matrix Properties — the six algebraic laws plus the zero matrix</span>
     <div class="rule"></div>
@@ -110,7 +141,7 @@
     <p class="hint">موشن جرافيك بتعليق عربي: القوانين الستة وفخ إبدال الضرب</p>
     <video controls preload="metadata" poster="../video/outputs/0004-matrix-properties-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0004-matrix-properties-ar.mp4" type="video/mp4">
-      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0004-matrix-properties-subs.srt" default>
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0004-matrix-properties-subs.vtt" default>
     </video>
   </div>
 
@@ -127,7 +158,7 @@
     <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
     <div class="q" id="q1"><div class="prompt">أي مساواة صحيحة دائماً؟</div>
       <button class="opt" data-q="q1" data-a="0">A + B = B + A</button><button class="opt" data-q="q1" data-a="1">AB = BA</button><button class="opt" data-q="q1" data-a="2">A + B = A − B</button><button class="opt" data-q="q1" data-a="3">AB = A + B</button><div class="feedback"></div></div>
-    <div class="q" id="q2"><div class="prompt">مصفوفة الوحدة I من الرتبة 2 هي؟</div>
+    <div class="q" id="q2"><div class="prompt">مصفوفة الوحدة I من الحجم 2×2 هي؟</div>
       <button class="opt" data-q="q2" data-a="0"><span class="coord">[[1,0],[0,1]]</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">[[1,1],[1,1]]</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">[[0,0],[0,0]]</span></button><button class="opt" data-q="q2" data-a="3"><span class="coord">[[2,0],[0,2]]</span></button><div class="feedback"></div></div>
     <div class="q" id="q3"><div class="prompt">إذا كانت <span class="coord">cA = O</span> و <span class="coord">c = 5</span> فماذا عن <span class="coord">A</span>؟</div>
       <button class="opt" data-q="q3" data-a="0">A صفرية حتماً</button><button class="opt" data-q="q3" data-a="1">A = I حتماً</button><button class="opt" data-q="q3" data-a="2">لا نستطيع الجزم</button><button class="opt" data-q="q3" data-a="3">A شاذة</button><div class="feedback"></div></div>
@@ -149,6 +180,8 @@
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
     <a class="tool-btn" href="../playground.html?ex=0004-matrix-properties">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0004">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0004">بطاقات المراجعة</a>
     <button class="tool-btn done-toggle" type="button" data-lesson="0004" aria-pressed="false">أتممت الدرس</button>
   </div>
   <div class="refs">
@@ -211,5 +244,6 @@
 })();
 </script>
 <script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>

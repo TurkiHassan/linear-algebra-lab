@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0005 · فضاء المتجهات الإقليدي — Euclidean Vector Spaces</title>
+<meta name="description" content="الضرب الداخلي والطول والمسافة، وكاشف الزاوية القائمة بين متجهين.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0005-euclidean-spaces.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0005 · فضاء المتجهات الإقليدي — مختبر الجبر الخطي">
+<meta property="og:description" content="الضرب الداخلي والطول والمسافة، وكاشف الزاوية القائمة بين متجهين.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="../assets/lesson-fonts.css">
 <style>
@@ -62,15 +69,39 @@
   a{color:var(--accent)}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0005 · فضاء المتجهات الإقليدي",
+ "alternateName": "Euclidean Vector Spaces",
+ "description": "الضرب الداخلي والطول والمسافة، وكاشف الزاوية القائمة بين متجهين.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0005-euclidean-spaces.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "فيديو",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 5
+}
+</script>
 </head>
-<body>
+<body data-lesson-id="0005">
 <div class="wrap">
-  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0004-matrix-properties.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0006-subspaces.html">التالي ←</a></div></div>
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0004-matrix-properties.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0005">الخارطة</a> · <a href="0006-subspaces.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0005 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0005 · المتجهات والفضاءات</div>
     <h1>فضاء المتجهات الإقليدي</h1>
     <span class="en-line" lang="en">Euclidean Vector Spaces — inner product, length and distance</span>
     <div class="rule"></div>
@@ -78,8 +109,8 @@
   </header>
 
   <section id="s1">
-    <h2><span class="num">١</span> المتجه عنوان في الفضاء<span class="en-sub" lang="en">Rⁿ: (1,5,−2) lives in R³, (3,8) lives in R²</span></h2>
-    <p>من دفترك: <span class="coord">(1,5,−2)</span> متجه في <span class="coord">R³</span>، و <span class="coord">(1,5,−2,6)</span> في <span class="coord">R⁴</span>، و <span class="coord">(3,8)</span> في <span class="coord">R²</span>. التساوي عنصري: <span class="coord">u = v ⟺</span> كل عنصر يساوي نظيره. والجمع والضرب القياسي والطرح كلها عنصرية: <span class="coord">u+v = (u₁+v₁, u₂+v₂, …)</span> و <span class="coord">ku = (ku₁, ku₂, …)</span>.</p>
+    <h2><span class="num">١</span> المتجه عنوان في الفضاء<span class="en-sub" lang="en">ℝⁿ: (1,5,−2) lives in ℝ³, (3,8) lives in ℝ²</span></h2>
+    <p>من دفترك: <span class="coord">(1,5,−2)</span> متجه في <span class="coord">ℝ³</span>، و <span class="coord">(1,5,−2,6)</span> في <span class="coord">ℝ⁴</span>، و <span class="coord">(3,8)</span> في <span class="coord">ℝ²</span>. التساوي عنصري: <span class="coord">u = v ⟺</span> كل عنصر يساوي نظيره. والجمع والضرب القياسي والطرح كلها عنصرية: <span class="coord">u+v = (u₁+v₁, u₂+v₂, …)</span> و <span class="coord">ku = (ku₁, ku₂, …)</span>.</p>
     <div class="analogy"><b>تشبيه: إحداثيات المدينة</b><p>عنوانك «شارع 3، مبنى 8» لا يعني شيئاً إن بدّلت الرقمين — <span class="coord">(3,8)</span> ليست <span class="coord">(8,3)</span>. والانتقال من عنوان لآخر تجمع الفروق شارعاً بشارع. <span class="en" lang="en" dir="ltr">Order is the address; addition walks street by street.</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> كل عمليات المتجهات الأساسية تتم عنصراً بعنصر — ما عدا عمليتين جديدتين: الضرب الداخلي (يُخرج رقماً) والطول (يُخرج مسافة). <span class="en" lang="en" dir="ltr">(Everything is entrywise — except dot product and length.)</span></p></div>
     <div class="kmath" id="k1"></div>
@@ -87,7 +118,7 @@
 
   <section id="s2">
     <h2><span class="num">٢</span> مختبر الضرب الداخلي والطول<span class="en-sub" lang="en">Drag u and v — watch dot, lengths and distance update live</span></h2>
-    <p>من دفترك: <span class="term">الضرب الداخلي</span> <span class="en" lang="en" dir="ltr">(inner product)</span> هو <span class="coord">⟨u,v⟩ = u₁v₁ + u₂v₂ + …</span>، و<span class="term">الطول</span> <span class="en" lang="en" dir="ltr">(length)</span> هو <span class="coord">‖u‖ = √(u₁² + u₂² + …)</span>، و<span class="term">المسافة</span> <span class="en" lang="en" dir="ltr">(distance)</span> هي <span class="coord">d(u,v) = ‖u − v‖</span>. حرّك المتجهين على اللوحة وشاهد الأرقام الثلاثة تتحرك.</p>
+    <p>من دفترك: <span class="term">الضرب الداخلي</span> <span class="en" lang="en" dir="ltr">(inner product)</span> هو <span class="coord">u·v = u₁v₁ + u₂v₂ + …</span> (ويُكتب أيضاً <span class="coord">⟨u,v⟩</span> في بعض المراجع)، و<span class="term">الطول</span> <span class="en" lang="en" dir="ltr">(length)</span> هو <span class="coord">‖u‖ = √(u₁² + u₂² + …)</span>، و<span class="term">المسافة</span> <span class="en" lang="en" dir="ltr">(distance)</span> هي <span class="coord">d(u,v) = ‖u − v‖</span>. حرّك المتجهين على اللوحة وشاهد الأرقام الثلاثة تتحرك.</p>
     <div class="demo" data-label="Try · PLAY">
       <h3>ساحة المتجهات</h3>
       <p class="hint">حرّك المنزلقات — النقاط والأسهم والأرقام تتبعك لحظياً</p>
@@ -115,7 +146,7 @@
     <p class="hint">موشن جرافيك بتعليق عربي: الضرب الداخلي والطول والتعامد</p>
     <video controls preload="metadata" poster="../video/outputs/0005-euclidean-spaces-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0005-euclidean-spaces-ar.mp4" type="video/mp4">
-      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0005-euclidean-spaces-subs.srt" default>
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0005-euclidean-spaces-subs.vtt" default>
     </video>
   </div>
 
@@ -131,7 +162,7 @@
   <section id="quiz">
     <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
     <div class="q" id="q1"><div class="prompt"><span class="coord">(1,5,−2)</span> في أي فضاء؟</div>
-      <button class="opt" data-q="q1" data-a="0"><span class="coord">R³</span> — ثلاثة عناصر</button><button class="opt" data-q="q1" data-a="1"><span class="coord">R²</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">R⁴</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">R¹</span></button><div class="feedback"></div></div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">ℝ³</span> — ثلاثة عناصر</button><button class="opt" data-q="q1" data-a="1"><span class="coord">ℝ²</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">ℝ⁴</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">ℝ¹</span></button><div class="feedback"></div></div>
     <div class="q" id="q2"><div class="prompt">الضرب الداخلي لـ <span class="coord">(1,2)</span> و <span class="coord">(3,−1)</span>؟</div>
       <button class="opt" data-q="q2" data-a="0">1 — لأن <span class="coord">3 − 2 = 1</span></button><button class="opt" data-q="q2" data-a="1">5</button><button class="opt" data-q="q2" data-a="2">(3,−2)</button><button class="opt" data-q="q2" data-a="3">0</button><div class="feedback"></div></div>
     <div class="q" id="q3"><div class="prompt">طول <span class="coord">(3,4)</span>؟</div>
@@ -154,6 +185,8 @@
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
     <a class="tool-btn" href="../playground.html?ex=0005-euclidean-spaces">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0005">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0005">بطاقات المراجعة</a>
     <button class="tool-btn done-toggle" type="button" data-lesson="0005" aria-pressed="false">أتممت الدرس</button>
   </div>
   <div class="refs">
@@ -188,7 +221,7 @@
     function arrow(p,col){ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+p[0]*sc,oy-p[1]*sc);ctx.stroke();ctx.beginPath();ctx.arc(ox+p[0]*sc,oy-p[1]*sc,5,0,7);ctx.fill();}
     arrow(u,'#0d5c46');arrow(v,'#c2562f');
     var dot=u[0]*v[0]+u[1]*v[1],nu=Math.hypot(u[0],u[1]).toFixed(2),nv=Math.hypot(v[0],v[1]).toFixed(2),d=Math.hypot(u[0]-v[0],u[1]-v[1]).toFixed(2);
-    RO.innerHTML="<span class='coord'>u = ("+u+")</span> · <span class='coord'>v = ("+v+")</span> · <span class='coord'>u·v = "+dot+"</span> · <span class='coord'>‖u‖ = "+nu+"</span> · <span class='coord'>‖v‖ = "+nv+"</span> · <span class='coord'>d = "+d+"</span>"+(dot===0?" · <b>متعامدان ⊥</b>":"");
+    RO.innerHTML="<span class='coord'>u = ("+u+")</span> · <span class='coord'>v = ("+v+")</span> · الضرب الداخلي <span class='coord'>u·v = "+dot+"</span> · الطول <span class='coord'>‖u‖ = "+nu+"</span> و<span class='coord'>‖v‖ = "+nv+"</span> · المسافة <span class='coord'>d = "+d+"</span>"+(dot===0?" · <b>متعامدان ⊥</b>":"");
   }
   ['u1','u2','v1','v2'].forEach(function(id){document.getElementById(id).oninput=draw;});draw();
   var OU=null;
@@ -203,7 +236,7 @@
     if(!OU)return;
     document.getElementById('orthRO').innerHTML="<span class='coord'>u·v = ("+OU.a[0]+")("+OU.b[0]+") + ("+OU.a[1]+")("+OU.b[1]+") = "+OU.dot+"</span> → "+(OU.dot===0?"يساوي صفراً: متعامدان — الزاوية قائمة":"لا يساوي صفراً: غير متعامدين");
   };
-  var ANS={q1:{"0":["صحيح — عدّ العناصر يحدد الفضاء.",true],"1":["عنصران فقط في R².",false],"2":["أربعة عناصر في R⁴.",false],"3":["عنصر واحد في R¹.",false]},
+  var ANS={q1:{"0":["صحيح — عدّ العناصر يحدد الفضاء.",true],"1":["عنصران فقط في ℝ².",false],"2":["أربعة عناصر في ℝ⁴.",false],"3":["عنصر واحد في ℝ¹.",false]},
     q2:{"0":["صحيح — 1·3 + 2·(−1) = 1.",true],"1":["أعد الحساب: 3 − 2.",false],"2":["الناتج رقم لا متجه.",false],"3":["الصفر للتعامد فقط.",false]},
     q3:{"0":["صحيح — 3-4-5 مثلث فيثاغورس.",true],"1":["المجموع ليس الطول.",false],"2":["نسيت الجذر.",false],"3":["هذا حاصل الضرب.",false]},
     q4:{"0":["صحيح — الصفر هو كاشف الزاوية القائمة.",true],"1":["التساوي لا يعني التعامد.",false],"2":["الطول لا يحدد الزاوية.",false],"3":["هذا يعني v = −u.",false]},
@@ -219,5 +252,6 @@
 })();
 </script>
 <script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>

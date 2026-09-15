@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0010 · المحددات من 2×2 إلى 3×3 — Determinants</title>
+<meta name="description" content="رقم واحد يكشف النظير والاستقلال والمساحة، مع قاعدة ساروس لمحدد 3×3.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0010-determinants.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0010 · المحددات من 2×2 إلى 3×3 — مختبر الجبر الخطي">
+<meta property="og:description" content="رقم واحد يكشف النظير والاستقلال والمساحة، مع قاعدة ساروس لمحدد 3×3.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="../assets/lesson-fonts.css">
 <style>
@@ -63,15 +70,39 @@
   a{color:var(--accent)}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0010 · المحددات من 2×2 إلى 3×3",
+ "alternateName": "Determinants",
+ "description": "رقم واحد يكشف النظير والاستقلال والمساحة، مع قاعدة ساروس لمحدد 3×3.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0010-determinants.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "فيديو",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 10
+}
+</script>
 </head>
-<body>
+<body data-lesson-id="0010">
 <div class="wrap">
-  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0009-basis-dimension.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0011-drills.html">التالي ←</a></div></div>
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0009-basis-dimension.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0010">الخارطة</a> · <a href="0011-drills.html">التالي ←</a></div></div>
   <header class="hero">
-    <div class="kicker">الدرس 0010 · <bdi>Build</bdi></div>
+    <div class="kicker">الدرس 0010 · الأساس والمحددات</div>
     <h1>المحددات من 2×2 إلى 3×3</h1>
     <span class="en-line" lang="en">Determinants — one number that reports area, volume and invertibility</span>
     <div class="rule"></div>
@@ -94,7 +125,7 @@
       <p class="hint">حرّك عناصر العمود الثاني — راقب المساحة والمحدد معاً</p>
       <canvas id="dtCv" width="640" height="280"></canvas>
       <div class="controls"><label>c <input type="range" id="dc" min="-4" max="4" step="1" value="-3"></label><label>d <input type="range" id="dd" min="-4" max="4" step="1" value="2"></label></div>
-      <div class="readout" id="dtRO"></div>
+      <div class="readout" id="dtRO" style="direction:rtl;text-align:right"></div>
     </div>
   </section>
 
@@ -107,7 +138,7 @@
       <div class="controls"><label>a11 <input type="number" id="s11" value="2"></label><label>a12 <input type="number" id="s12" value="4"></label><label>a13 <input type="number" id="s13" value="6"></label><label>a21 <input type="number" id="s21" value="3"></label><label>a22 <input type="number" id="s22" value="8"></label><label>a23 <input type="number" id="s23" value="5"></label><label>a31 <input type="number" id="s31" value="-1"></label><label>a32 <input type="number" id="s32" value="1"></label><label>a33 <input type="number" id="s33" value="2"></label><button class="btn" id="sGo">احسب بساروس</button></div>
       <div class="readout" id="sRO" style="direction:rtl;text-align:right">مجموع النوازل − مجموع الصواعد = ؟</div>
     </div>
-    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>قاعدة ساروس صالحة للرتبة <span class="coord">3×3</span> فقط — لا تمددها إلى <span class="coord">4×4</span>؛ الرتب الأعلى تحتاج المفكوك (طريقة لابلاس). وخطأ الإشارة في الأقطار الصاعدة هو الفخ الأول. <span class="en" lang="en" dir="ltr">(Sarrus stops at 3×3; mind the minus signs.)</span></p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>قاعدة ساروس صالحة لمصفوفات <span class="coord">3×3</span> فقط — لا تمددها إلى <span class="coord">4×4</span>؛ والأحجام الأكبر تحتاج المفكوك (طريقة لابلاس). وخطأ الإشارة في الأقطار الصاعدة هو الفخ الأول. <span class="en" lang="en" dir="ltr">(Sarrus stops at 3×3; mind the minus signs.)</span></p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -115,7 +146,7 @@
     <p class="hint">موشن جرافيك بتعليق عربي: المساحة، وساروس، وحسم الصفر</p>
     <video controls preload="metadata" poster="../video/outputs/0010-determinants-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0010-determinants-ar.mp4" type="video/mp4">
-      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0010-determinants-subs.srt" default>
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0010-determinants-subs.vtt" default>
     </video>
   </div>
 
@@ -123,7 +154,7 @@
     <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
     <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
     <tr><td>محدد <span class="coord">2×2</span></td><td><span class="coord">ad − bc</span> محفوظة</td><td>مساحة متوازي الأضلاع بإشارة + كاشف الشذوذ</td></tr>
-    <tr><td>ساروس 3×3</td><td>وصفة طويلة</td><td>أقطار نازلة ناقص صاعدة — للرتبة 3 فقط</td></tr>
+    <tr><td>ساروس 3×3</td><td>وصفة طويلة</td><td>أقطار نازلة ناقص صاعدة — لمصفوفات 3×3 فقط</td></tr>
     <tr><td>الشذوذ</td><td>مصفوفة سيئة</td><td>محدد صفر = بلا نظير = أعمدة مرتبطة = مساحة مسطحة</td></tr></table>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> تحسب المحدد آلياً. <b>بعد هذا الدرس:</b> تراه مساحةً، وتتنبأ بالنظير قبل حسابه، وتنفذ ساروس بلا أخطاء إشارة.</p></div>
   </section>
@@ -153,6 +184,8 @@
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
     <a class="tool-btn" href="../playground.html?ex=0010-determinants">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0010">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0010">بطاقات المراجعة</a>
     <button class="tool-btn done-toggle" type="button" data-lesson="0010" aria-pressed="false">أتممت الدرس</button>
   </div>
   <div class="refs">
@@ -187,7 +220,7 @@
     ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+u[0],oy+u[1]);ctx.lineTo(ox+u[0]+v[0],oy+u[1]+v[1]);ctx.lineTo(ox+v[0],oy+v[1]);ctx.closePath();ctx.fill();
     ctx.strokeStyle='#0d5c46';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+u[0],oy+u[1]);ctx.stroke();
     ctx.strokeStyle='#c2562f';ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+v[0],oy+v[1]);ctx.stroke();
-    RO.textContent="A=[[2,"+c+"],[1,"+d+"]] · det = 2("+d+")−1("+c+") = "+det+" · area = "+Math.abs(det)+(det===0?" · FLAT — singular!":"");
+    var mn=function(v){return String(v).replace(/-/g,"\u2212");};RO.innerHTML="<span class='coord'>A = [[2, "+mn(c)+"], [1, "+mn(d)+"]]</span> · المحدد <span class='coord'>2("+mn(d)+") − 1("+mn(c)+") = "+mn(det)+"</span> · المساحة <span class='coord'>"+Math.abs(det)+"</span>"+(det===0?" ← <b>انهار إلى خط: المساحة صفر والمصفوفة شاذة</b>":"");
   }
   document.getElementById('dc').oninput=draw;document.getElementById('dd').oninput=draw;draw();
   function gv(id){return +document.getElementById(id).value;}
@@ -198,7 +231,7 @@
   };
   var ANS={q1:{"0":["صحيح — 2·2 − (−3)·1 = 7.",true],"1":["أعد: 4+3.",false],"2":["خطأ إشارة — السالب مع السالب.",false],"3":["الصفر للمصفوفة الثانية.",false]},
     q2:{"0":["صحيح — الصف الثاني ضعف الأول.",true],"1":["I ليست نظيراً تلقائياً.",false],"2":["الصفر يمنع النظير.",false],"3":["المساحة صفر هنا.",false]},
-    q3:{"0":["صحيح — هذا هو المعنى الهندسي.",true],"1":["القطر ليس المحدد.",false],"2":["الميل مفهوم آخر.",false],"3":["العدد يأتي من الرتبة.",false]},
+    q3:{"0":["صحيح — هذا هو المعنى الهندسي.",true],"1":["القطر ليس المحدد.",false],"2":["الميل مفهوم آخر.",false],"3":["عدد الحلول تحسمه المنظومة لا المساحة.",false]},
     q4:{"0":["صحيح — للأكبر استعمل المفكوك.",true],"1":["خاطئ — ساروس تنكسر بعد 3.",false],"2":["الصغرى لها ad−bc.",false],"3":["المحدد للمربعة فقط.",false]},
     q5:{"0":["صحيح — الحزمتان معاً.",true],"1":["التماثل غير مطلوب.",false],"2":["عكس الصحيح — الحل وحيد.",false],"3":["التعامد أقوى من اللازم.",false]}};
   document.querySelectorAll('.q').forEach(function(box){
@@ -212,5 +245,6 @@
 })();
 </script>
 <script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>
