@@ -128,20 +128,20 @@
       <p class="hint">غيّر الصفوف والأعمدة وشاهد الشكل يتحدث لحظياً</p>
       <div class="controls"><label>الصفوف <span class="coord">m</span>: <input type="range" id="mR" min="1" max="4" value="2"></label><label>الأعمدة <span class="coord">n</span>: <input type="range" id="mC" min="1" max="4" value="3"></label></div>
       <div class="mgrid2" id="mGrid"></div>
-      <div class="readout" id="mRO"></div>
+      <div class="readout" id="mRO" style="direction:rtl;text-align:right"></div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الفخ الأشهر: ضرب مصفوفة <span class="coord">(2 × 3)</span> في مصفوفة <span class="coord">(2 × 3)</span> <b>ممنوع</b> — الوسط <span class="coord">3 ≠ 2</span>. الترتيب يهم: <span class="coord">AB ≠ BA</span> غالباً حتى عندما يكون الضربان مسموحين. <span class="en" lang="en" dir="ltr">(Order matters in multiplication.)</span></p></div>
   </section>
 
   <section id="s3">
     <h2><span class="num">٣</span> النظير الضربي: زر التراجع<span class="en-sub" lang="en">The inverse A⁻¹ undoes A — but only sometimes</span></h2>
-    <p>ال<span class="term">نظير الضربي</span> <span class="en" lang="en" dir="ltr">(inverse, A⁻¹)</span> مصفوفة مربعة تُرجع الأصل: <span class="coord">A·A⁻¹ = I</span>. لمصفوفة <span class="coord">2×2</span>: اقلب القطر الرئيسي، اعكس إشارة القطر الآخر، واقسم على المحدد <span class="coord">ad − bc</span>. إن كان المحدد صفراً فلا نظير — المصفوفة <span class="term">شاذة</span> <span class="en" lang="en" dir="ltr">(singular)</span>.</p>
+    <p>ال<span class="term">نظير الضربي</span> <span class="en" lang="en" dir="ltr">(inverse, A⁻¹)</span> مصفوفة مربعة تُرجع الأصل: <span class="coord">A·A⁻¹ = I</span>. لمصفوفة <span class="coord">2×2</span>: <b>بادِل</b> طرفَي القطر الرئيسي (<span class="coord">a</span> و<span class="coord">d</span> يتبادلان موضعيهما — لا تأخذ مقلوبهما)، ثم <b>اعكس إشارة</b> <span class="coord">b</span> و<span class="coord">c</span>، ثم اقسم كل خلية على المحدد <span class="coord">ad − bc</span>. إن كان المحدد صفراً فلا نظير — المصفوفة <span class="term">شاذة</span> <span class="en" lang="en" dir="ltr">(singular)</span>.</p>
     <div class="demo" data-label="Compute · CALC">
       <h3>حاسبة النظير 2×2</h3>
       <p class="hint">أدخل العناصر الأربعة — هل يوجد نظير أم المصفوفة شاذة؟</p>
-      <div class="controls"><label>a <input type="number" id="ia" value="2"></label><label>b <input type="number" id="ib" value="1"></label><label>c <input type="number" id="ic" value="-3"></label><label>d <input type="number" id="id" value="2"></label><button class="btn" id="invGo">احسب النظير</button></div>
+      <div class="controls"><label>a <input type="number" id="ia" value="2"></label><label>b <input type="number" id="ib" value="-3"></label><label>c <input type="number" id="ic" value="1"></label><label>d <input type="number" id="id" value="2"></label><button class="btn" id="invGo">احسب النظير</button></div>
       <div class="kmath" id="invStage" style="min-height:60px"></div>
-      <div class="readout" id="invRO">det = ?</div>
+      <div class="readout" id="invRO" style="direction:rtl;text-align:right">det = ?</div>
       <div class="why" id="invWhy"></div>
     </div>
   </section>
@@ -175,7 +175,7 @@
     <div class="q" id="q4"><div class="prompt">محدد <span class="coord">[[2,1],[4,2]]</span> يساوي 0 — ماذا يعني؟</div>
       <button class="opt" data-q="q4" data-a="0">المصفوفة شاذة ولا نظير لها</button><button class="opt" data-q="q4" data-a="1">النظير هو المصفوفة الصفرية</button><button class="opt" data-q="q4" data-a="2">النظير موجود ويساوي I</button><button class="opt" data-q="q4" data-a="3">لا شيء — الصفر عادي</button><div class="feedback"></div></div>
     <div class="q" id="q5"><div class="prompt">لحساب نظير <span class="coord">[[a,b],[c,d]]</span>، ما أول خطوة؟</div>
-      <button class="opt" data-q="q5" data-a="0">القسمة على <span class="coord">(ad − bc)</span> مع قلب القطر</button><button class="opt" data-q="q5" data-a="1">تبديل كل إشارة بلا قسمة</button><button class="opt" data-q="q5" data-a="2">نقل المصفوفة كما هي</button><button class="opt" data-q="q5" data-a="3">ضرب كل عنصر في نفسه</button><div class="feedback"></div></div>
+      <button class="opt" data-q="q5" data-a="0">تبادل طرفَي القطر مع القسمة على <span class="coord">(ad − bc)</span></button><button class="opt" data-q="q5" data-a="1">تبديل كل إشارة بلا قسمة</button><button class="opt" data-q="q5" data-a="2">نقل المصفوفة كما هي</button><button class="opt" data-q="q5" data-a="3">ضرب كل عنصر في نفسه</button><div class="feedback"></div></div>
   </section>
 
   <section id="glossary">
@@ -215,19 +215,19 @@
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"(A)_{m\\times n} \\quad +: \\text{ same shape} \\qquad AB: (m\\times n)(n\\times p)=(m\\times p)");
   var mR=document.getElementById('mR'),mC=document.getElementById('mC'),mG=document.getElementById('mGrid'),mRO=document.getElementById('mRO');
-  function drawM(){var r=+mR.value,c=+mC.value;mG.style.gridTemplateColumns="repeat("+c+",44px)";mG.innerHTML="";for(var k=0;k<r*c;k++){var d=document.createElement('div');d.className='cell';d.textContent='a'+(Math.floor(k/c)+1)+','+((k%c)+1);mG.appendChild(d);}var okAdd=(r===2&&c===3);mRO.textContent="shape = ("+r+" × "+c+") → "+(r*c)+" cells · add with (2×3)? "+(okAdd?"YES":"NO");} 
+  function drawM(){var r=+mR.value,c=+mC.value;mG.style.gridTemplateColumns="repeat("+c+",44px)";mG.innerHTML="";for(var k=0;k<r*c;k++){var d=document.createElement('div');d.className='cell';d.textContent='a'+(Math.floor(k/c)+1)+','+((k%c)+1);mG.appendChild(d);}var okAdd=(r===2&&c===3);mRO.innerHTML="الشكل <span class='coord'>("+r+" × "+c+")</span> · عدد الخلايا <span class='coord'>"+(r*c)+"</span> · هل يجوز جمعها مع <span class='coord'>(2×3)</span>؟ <b>"+(okAdd?"نعم — الشكلان متطابقان":"لا — الشكلان مختلفان")+"</b>";} 
   mR.oninput=drawM;mC.oninput=drawM;drawM();
   document.getElementById('invGo').onclick=function(){
     var a=+document.getElementById('ia').value,b=+document.getElementById('ib').value,c=+document.getElementById('ic').value,d=+document.getElementById('id').value;
     var det=a*d-b*c,ro=document.getElementById('invRO'),why=document.getElementById('invWhy');
-    if(det===0){tex(document.getElementById('invStage'),"\\det = "+a+"\\cdot"+d+"-"+b+"\\cdot"+c+" = 0 \\Rightarrow \\text{singular — no inverse}");ro.textContent="det = 0 → singular, stop.";why.innerHTML="الحساب: <span class='coord'>"+a+"×"+d+" − "+b+"×"+c+" = "+det+"</span> — المحدد صفر، أي أن العمودين مرتبطان خطياً (متوازيان هنا)، فلا يوجد نظير. لا تكمل: القسمة على صفر ممنوعة.";}
-    else{tex(document.getElementById('invStage'),"A^{-1}=\\frac{1}{"+det+"}\\begin{bmatrix}"+d+"&"+(-b)+"\\\\"+(-c)+"&"+a+"\\end{bmatrix}");ro.textContent="det = "+det+" → inverse exists.";why.innerHTML="خطوتان فقط: أولاً المحدد <span class='coord'>"+a+"×"+d+" − ("+b+")×("+c+") = "+det+"</span>، ثم <b>اقلب القطر الرئيسي</b> <span class='coord'>("+a+","+d+") ← ("+d+","+a+")</span> <b>واعكس إشارة القطر الآخر</b> واقسم كل خلية على <span class='coord'>"+det+"</span>.";}
+    if(det===0){tex(document.getElementById('invStage'),"\\det = "+a+"\\cdot"+d+"-"+b+"\\cdot"+c+" = 0");ro.innerHTML="<span class='coord'>det = 0</span> ← المصفوفة <b>شاذة</b>: لا نظير لها، وتوقّف هنا.";why.innerHTML="الحساب: <span class='coord'>"+a+"×"+d+" − "+b+"×"+c+" = "+det+"</span> — المحدد صفر، أي أن العمودين مرتبطان خطياً (متوازيان هنا)، فلا يوجد نظير. لا تكمل: القسمة على صفر ممنوعة.";}
+    else{tex(document.getElementById('invStage'),"A^{-1}=\\frac{1}{"+det+"}\\begin{bmatrix}"+d+"&"+(-b)+"\\\\"+(-c)+"&"+a+"\\end{bmatrix}");ro.innerHTML="<span class='coord'>det = "+det+"</span> ← غير صفري، إذن <b>النظير موجود</b>.";why.innerHTML="خطوتان فقط: أولاً المحدد <span class='coord'>"+a+"×"+d+" − ("+b+")×("+c+") = "+det+"</span>، ثم <b>بادِل طرفَي القطر الرئيسي</b> <span class='coord'>("+a+","+d+") ← ("+d+","+a+")</span> <b>واعكس إشارة القطر الآخر</b> واقسم كل خلية على <span class='coord'>"+det+"</span>.";}
   };
   var ANS={q1:{"0":["صحيح — صفوف أولاً: (3×2).",true],"1":["معكوس — الصفوف أولاً.",false],"2":["ليست مربعة.",false],"3":["6 هو عدد الخلايا لا الشكل.",false]},
     q2:{"0":["صحيح — خلية بخلية يحتاج نفس العناوين.",true],"1":["الأعمدة وحدها لا تكفي.",false],"2":["الجمع مقيد بالشكل.",false],"3":["المربعة شرط للنظير لا للجمع.",false]},
     q3:{"0":["صحيح — الوسط 3 يسقط ويبقى (2×4).",true],"1":["هذا شكل آخر تماماً.",false],"2":["هذا شكل A وحدها.",false],"3":["الوسط متطابق: 3 = 3.",false]},
     q4:{"0":["صحيح — محدد صفر يعني شاذة بلا نظير.",true],"1":["الصفرية شيء آخر.",false],"2":["I هي المحايد لا النظير دائماً.",false],"3":["الصفر هنا حاسم.",false]},
-    q5:{"0":["صحيح — اقلب القطر واعكس الآخر واقسم على المحدد.",true],"1":["بدون القسمة على المحدد لا يكتمل.",false],"2":["النقل لا يتراجع عن الضرب.",false],"3":["هذا تربيع لا نظير.",false]}};
+    q5:{"0":["صحيح — بادِل a و d، واعكس إشارة b و c، ثم اقسم على المحدد.",true],"1":["بدون القسمة على المحدد لا يكتمل.",false],"2":["النقل لا يتراجع عن الضرب.",false],"3":["هذا تربيع لا نظير.",false]}};
   document.querySelectorAll('.q').forEach(function(box){
     var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
     opts.forEach(function(b){b.addEventListener('click',function(){

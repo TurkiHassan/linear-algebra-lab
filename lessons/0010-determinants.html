@@ -125,7 +125,7 @@
       <p class="hint">حرّك عناصر العمود الثاني — راقب المساحة والمحدد معاً</p>
       <canvas id="dtCv" width="640" height="280"></canvas>
       <div class="controls"><label>c <input type="range" id="dc" min="-4" max="4" step="1" value="-3"></label><label>d <input type="range" id="dd" min="-4" max="4" step="1" value="2"></label></div>
-      <div class="readout" id="dtRO"></div>
+      <div class="readout" id="dtRO" style="direction:rtl;text-align:right"></div>
     </div>
   </section>
 
@@ -220,7 +220,7 @@
     ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+u[0],oy+u[1]);ctx.lineTo(ox+u[0]+v[0],oy+u[1]+v[1]);ctx.lineTo(ox+v[0],oy+v[1]);ctx.closePath();ctx.fill();
     ctx.strokeStyle='#0d5c46';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+u[0],oy+u[1]);ctx.stroke();
     ctx.strokeStyle='#c2562f';ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+v[0],oy+v[1]);ctx.stroke();
-    RO.textContent="A=[[2,"+c+"],[1,"+d+"]] · det = 2("+d+")−1("+c+") = "+det+" · area = "+Math.abs(det)+(det===0?" · FLAT — singular!":"");
+    var mn=function(v){return String(v).replace(/-/g,"\u2212");};RO.innerHTML="<span class='coord'>A = [[2, "+mn(c)+"], [1, "+mn(d)+"]]</span> · المحدد <span class='coord'>2("+mn(d)+") − 1("+mn(c)+") = "+mn(det)+"</span> · المساحة <span class='coord'>"+Math.abs(det)+"</span>"+(det===0?" ← <b>انهار إلى خط: المساحة صفر والمصفوفة شاذة</b>":"");
   }
   document.getElementById('dc').oninput=draw;document.getElementById('dd').oninput=draw;draw();
   function gv(id){return +document.getElementById(id).value;}

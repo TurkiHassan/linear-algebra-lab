@@ -153,7 +153,7 @@
       <h3>مدقق الحل</h3>
       <p class="hint">أدخل مرشحك (x, y, z) واللوحة تعوّض في المنظومة الأصلية</p>
       <div class="controls"><label>x <input type="number" id="vx" value="3" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><label>y <input type="number" id="vy" value="1" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><label>z <input type="number" id="vz" value="2" style="width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr"></label><button class="btn" id="vGo">تحقق</button></div>
-      <div class="readout" id="vRO">2x+4y+6z = ? · 3x+8y+5z = ? · −x+y+2z = ?</div>
+      <div class="readout" id="vRO" style="direction:rtl;text-align:right">2x+4y+6z = ? · 3x+8y+5z = ? · −x+y+2z = ?</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>صف كامل أصفار مع ثابت غير صفري مثل <span class="coord">[0 0 0 | 5]</span> يعني: <b>لا حل</b> — حكم قاطع. أما صف الأصفار الكامل <span class="coord">[0 0 0 | 0]</span> فيعني أن معادلةً كانت <b>زائدة</b>، ولا يعني وحده وجود حلول لا نهائية. عُدّ القادة: إن نقصت عن عدد المتغيرات فالحلول لا نهائية، وإن ساوته فالحل وحيد رغم صف الأصفار. <span class="en" lang="en" dir="ltr">(0 = 5 is impossible; 0 = 0 only means one equation was redundant — count the pivots.)</span></p></div>
   </section>
@@ -277,7 +277,7 @@
     var x=+document.getElementById('vx').value,y=+document.getElementById('vy').value,z=+document.getElementById('vz').value;
     var r1=2*x+4*y+6*z,r2=3*x+8*y+5*z,r3=-x+y+2*z;
     var ok=(r1===22&&r2===27&&r3===2);
-    document.getElementById('vRO').textContent="2x+4y+6z = "+r1+" (want 22) · 3x+8y+5z = "+r2+" (want 27) · −x+y+2z = "+r3+" (want 2) → "+(ok?"CORRECT":"NOT YET");
+    document.getElementById('vRO').innerHTML="<span class='coord'>2x+4y+6z = "+r1+"</span> (المطلوب 22) · <span class='coord'>3x+8y+5z = "+r2+"</span> (المطلوب 27) · <span class='coord'>−x+y+2z = "+r3+"</span> (المطلوب 2) ← <b>"+(ok?"مطابق ✓ الحل صحيح":"ليس بعد — راجع التعويض")+"</b>";
   };
   var ANS={q1:{"0":["صحيح — الضرب في صفر يمحو المعادلة ويغيّر الحل.",true],"1":["مسموح — ثابت غير صفري.",false],"2":["مسموح — لا يغيّر الحل.",false],"3":["مسموح — قلب الحذف.",false]},
     q2:{"0":["صحيح — التطبيع أولاً دائماً.",true],"1":["لا حذف قبل التطبيع.",false],"2":["التبديل هنا غير لازم.",false],"3":["ممنوع — يمحو الصف.",false]},

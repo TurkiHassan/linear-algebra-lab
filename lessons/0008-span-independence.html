@@ -214,7 +214,7 @@
     document.getElementById('dRO').innerHTML="<span class='coord'>det = ("+a+")("+d+") − ("+b+")("+c+") = "+det+"</span> → "+(det===0?"صفر: مرتبطان — متوازيان ومولدهما خط واحد فقط":"غير صفري: مستقلان — يولدان المستوى كله <span class='coord'>ℝ²</span>");
   };
   var h1=document.getElementById('h1'),h2=document.getElementById('h2'),hRO=document.getElementById('hRO');
-  function hunt(){var a=+h1.value,b=+h2.value;var x=a*1+b*2,y=a*1+b*2;var zero=(x===0&&y===0),nontrivial=(a!==0||b!==0);hRO.innerHTML="<span class='coord'>"+a+"(1,1) + ("+b+")(2,2) = ("+x+", "+y+")</span> → "+((zero&&nontrivial)?"<b>صفر بأوزان غير صفرية — الارتباط مُثبت</b>":(zero?"أوزان صفرية فقط — هذا الحل التافه، واصل البحث":"ليست صفراً — واصل البحث"));}h1.oninput=hunt;h2.oninput=hunt;hunt();
+  function hunt(){var a=+h1.value,b=+h2.value;var x=a*1+b*2,y=a*1+b*2;var zero=(x===0&&y===0),nontrivial=(a!==0||b!==0);var mn=function(v){return String(v).replace(/-/g,"\u2212");};hRO.innerHTML="<span class='coord'>"+mn(a)+"(1,1) + ("+mn(b)+")(2,2) = ("+mn(x)+", "+mn(y)+")</span> → "+((zero&&nontrivial)?"<b>صفر بأوزان غير صفرية — الارتباط مُثبت</b>":(zero?"أوزان صفرية فقط — هذا الحل التافه، واصل البحث":"ليست صفراً — واصل البحث"));}h1.oninput=hunt;h2.oninput=hunt;hunt();
   var ANS={q1:{"0":["صحيح — كل (t,0) تركيب منه.",true],"1":["هذا مولد الزوج الكامل.",false],"2":["الأوزان كلها متاحة لا الصفر فقط.",false],"3":["المولد خط لا ربع.",false]},
     q2:{"0":["صحيح — الثاني ضعف الأول.",true],"1":["الاختلاف لا يكفي.",false],"2":["غياب الصفر لا يمنح الاستقلال.",false],"3":["الطول لا علاقة له.",false]},
     q3:{"0":["صحيح — هذا هو التعريف الحرفي.",true],"1":["التساوي حالة خاصة فقط.",false],"2":["التعامد استقلال لا ارتباط.",false],"3":["الموقع لا علاقة له.",false]},

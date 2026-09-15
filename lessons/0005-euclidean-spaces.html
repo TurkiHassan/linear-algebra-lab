@@ -221,7 +221,7 @@
     function arrow(p,col){ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+p[0]*sc,oy-p[1]*sc);ctx.stroke();ctx.beginPath();ctx.arc(ox+p[0]*sc,oy-p[1]*sc,5,0,7);ctx.fill();}
     arrow(u,'#0d5c46');arrow(v,'#c2562f');
     var dot=u[0]*v[0]+u[1]*v[1],nu=Math.hypot(u[0],u[1]).toFixed(2),nv=Math.hypot(v[0],v[1]).toFixed(2),d=Math.hypot(u[0]-v[0],u[1]-v[1]).toFixed(2);
-    RO.innerHTML="<span class='coord'>u = ("+u+")</span> · <span class='coord'>v = ("+v+")</span> · <span class='coord'>u·v = "+dot+"</span> · <span class='coord'>‖u‖ = "+nu+"</span> · <span class='coord'>‖v‖ = "+nv+"</span> · <span class='coord'>d = "+d+"</span>"+(dot===0?" · <b>متعامدان ⊥</b>":"");
+    RO.innerHTML="<span class='coord'>u = ("+u+")</span> · <span class='coord'>v = ("+v+")</span> · الضرب الداخلي <span class='coord'>u·v = "+dot+"</span> · الطول <span class='coord'>‖u‖ = "+nu+"</span> و<span class='coord'>‖v‖ = "+nv+"</span> · المسافة <span class='coord'>d = "+d+"</span>"+(dot===0?" · <b>متعامدان ⊥</b>":"");
   }
   ['u1','u2','v1','v2'].forEach(function(id){document.getElementById(id).oninput=draw;});draw();
   var OU=null;

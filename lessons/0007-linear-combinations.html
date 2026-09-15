@@ -125,7 +125,7 @@
       <p class="hint">حرّك الوزنين — النقطة الخضراء هي خلطتك</p>
       <canvas id="mxCv" width="640" height="300"></canvas>
       <div class="controls"><label>c₁ <input type="range" id="c1" min="-3" max="3" step="0.5" value="1.5"></label><label>c₂ <input type="range" id="c2" min="-3" max="3" step="0.5" value="2"></label></div>
-      <div class="readout" id="mxRO"></div>
+      <div class="readout" id="mxRO" style="direction:rtl;text-align:right"></div>
     </div>
   </section>
 
@@ -219,7 +219,7 @@
     function arrow(p,col,lw){ctx.strokeStyle=col;ctx.lineWidth=lw||3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+p[0]*sc,oy-p[1]*sc);ctx.stroke();}
     arrow([c1*v1[0],c1*v1[1]],'#5b3f8f',2);arrow([c2*v2[0],c2*v2[1]],'#c2562f',2);arrow(w,'#0d5c46',4);
     ctx.fillStyle='#0d5c46';ctx.beginPath();ctx.arc(ox+w[0]*sc,oy-w[1]*sc,6,0,7);ctx.fill();
-    RO.textContent="c1="+c1+" c2="+c2+" → w = ("+w[0].toFixed(1)+", "+w[1].toFixed(1)+")";
+    RO.innerHTML="الأوزان <span class='coord'>c₁ = "+c1+"</span> و<span class='coord'>c₂ = "+c2+"</span> ← الناتج <span class='coord'>w = ("+w[0].toFixed(1)+", "+w[1].toFixed(1)+")</span>";
   }
   document.getElementById('c1').oninput=draw;document.getElementById('c2').oninput=draw;draw();
   document.getElementById('wGo').onclick=function(){

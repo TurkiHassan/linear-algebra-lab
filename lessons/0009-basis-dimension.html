@@ -135,7 +135,7 @@
       <h3>مُترجم الإحداثيات المائلة</h3>
       <p class="hint">الأساس ثابت (1,1),(1,−1) — أدخل هدفك (x,y)</p>
       <div class="controls"><label>x <input type="number" id="gx" value="4"></label><label>y <input type="number" id="gy" value="2"></label><button class="btn" id="gGo">جد الإحداثيات</button></div>
-      <div class="readout" id="gRO">coordinates = ?</div>
+      <div class="readout" id="gRO" style="direction:rtl;text-align:right">coordinates = ?</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الإحداثيات تتبع الأساس: النقطة نفسها <span class="coord">(4,2)</span> إحداثياتها <span class="coord">(4,2)</span> في المعياري و <span class="coord">(3,1)</span> في المائل. لا تخلط دفتر العناوين! <span class="en" lang="en" dir="ltr">(Same point, different address book.)</span></p></div>
   </section>
@@ -217,7 +217,7 @@
     var x=+document.getElementById('gx').value,y=+document.getElementById('gy').value;
     function fmt(v){return Math.round(v*1000)/1000;}
     var c1=fmt((x+y)/2),c2=fmt((x-y)/2);
-    document.getElementById('gRO').textContent="("+x+", "+y+") = "+c1+"(1,1) + "+c2+"(1,−1) → coords ("+c1+", "+c2+") · check: ("+fmt(c1+c2)+", "+fmt(c1-c2)+")";
+    var mn=function(v){return String(v).replace(/-/g,"\u2212");};document.getElementById('gRO').innerHTML="<span class='coord'>("+mn(x)+", "+mn(y)+") = "+mn(c1)+"(1,1) + "+mn(c2)+"(1,−1)</span> ← الإحداثيات <b><span class='coord'>("+mn(c1)+", "+mn(c2)+")</span></b> · التحقق بالتعويض: <span class='coord'>("+mn(fmt(c1+c2))+", "+mn(fmt(c1-c2))+")</span>";
   };
   var ANS={q1:{"0":["صحيح — الشرطان معاً لا أحدهما.",true],"1":["ناقص — أين التوليد؟",false],"2":["ناقص — أين الاستقلال؟",false],"3":["التعامد زينة لا شرط.",false]},
     q2:{"0":["صحيح — e₁,e₂,e₃.",true],"1":["هذا بعد المستوى.",false],"2":["هذا عدد عناصر مصفوفة 3×3.",false],"3":["البعد منتهٍ ومعروف.",false]},
