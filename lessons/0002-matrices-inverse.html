@@ -4,6 +4,13 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>0002 · المصفوفات والعمليات والنظير الضربي — Matrices, Operations & Inverses</title>
+<meta name="description" content="شكل المصفوفة m×n يقرر ما يُسمح به، والمحدد يقرر وجود النظير A⁻¹.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0002-matrices-inverse.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0002 · المصفوفات والنظير الضربي — مختبر الجبر الخطي">
+<meta property="og:description" content="شكل المصفوفة m×n يقرر ما يُسمح به، والمحدد يقرر وجود النظير A⁻¹.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
 <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
 <link rel="stylesheet" href="../assets/lesson-fonts.css">
 <style>
@@ -66,13 +73,37 @@
   .why b{color:var(--ink)}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
 <link rel="manifest" href="../manifest.webmanifest">
 <meta name="theme-color" content="#faf7f2">
 <link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0002 · المصفوفات والنظير الضربي",
+ "alternateName": "Matrices & the Multiplicative Inverse",
+ "description": "شكل المصفوفة m×n يقرر ما يُسمح به، والمحدد يقرر وجود النظير A⁻¹.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0002-matrices-inverse.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "فيديو",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 2
+}
+</script>
 </head>
-<body>
+<body data-lesson-id="0002">
 <div class="wrap">
-  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0001-linear-systems.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="0003-gaussian-elimination.html">التالي ←</a></div></div>
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0001-linear-systems.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0002">الخارطة</a> · <a href="0003-gaussian-elimination.html">التالي ←</a></div></div>
   <header class="hero">
     <div class="kicker">الدرس 0002 · <bdi>Build</bdi></div>
     <h1>المصفوفات والعمليات والنظير الضربي</h1>
@@ -120,7 +151,7 @@
     <p class="hint">موشن جرافيك بتعليق عربي: الشكل، والضرب، والنظير، والشاذة</p>
     <video controls preload="metadata" poster="../video/outputs/0002-matrices-inverse-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0002-matrices-inverse-ar.mp4" type="video/mp4">
-      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0002-matrices-inverse-subs.srt" default>
+      <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0002-matrices-inverse-subs.vtt" default>
     </video>
   </div>
 
@@ -160,6 +191,8 @@
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
     <a class="tool-btn" href="../playground.html?ex=0002-matrices-inverse">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0002">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0002">بطاقات المراجعة</a>
     <button class="tool-btn done-toggle" type="button" data-lesson="0002" aria-pressed="false">أتممت الدرس</button>
   </div>
   <div class="refs">
@@ -206,5 +239,6 @@
 })();
 </script>
 <script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
 </body>
 </html>

@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>الصفحة غير موجودة — مختبر الجبر الخطي</title>
+<meta name="description" content="الصفحة المطلوبة غير موجودة. عُد إلى فهرس الدروس أو ابحث في محتوى المقرر.">
+<meta name="robots" content="noindex">
+<script>
+/* صفحة 404 تُقدَّم من أي عمق في المسار، فالروابط النسبية تنكسر.
+   نستنتج جذر الموقع مرة واحدة ونضبط <base> قبل تحميل أي مورد:
+   على GitHub Pages الجذر هو المقطع الأول من المسار، وعلى نطاق مخصّص هو "/". */
+(function(){
+  var seg = location.pathname.split("/")[1] || "";
+  var root = (/\.github\.io$/i.test(location.hostname) && seg) ? "/" + seg + "/" : "/";
+  var b = document.createElement("base");
+  b.setAttribute("href", root);
+  document.head.appendChild(b);
+})();
+</script>
+<link rel="manifest" href="manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="assets/icons/icon-192.png">
+<link rel="stylesheet" href="assets/lesson-fonts.css">
+<link rel="stylesheet" href="assets/ui.css">
+<style>
+  :root{--paper:#faf7f2;--card:#fff;--ink:#141310;--soft:#6f6a5e;--line:#d8d4cc;--accent:#0d5c46;
+    --serif:"ThmanyahSerifDisplay",serif;--text:"ThmanyahSerifText",serif;--sans:"ThmanyahSans",system-ui,sans-serif}
+  [data-theme=dark]{--paper:#14130f;--card:#1d1c17;--ink:#f2efe6;--soft:#a7a396;--line:#3a382f;--accent:#7fc9ae}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--text);line-height:1.9;
+    min-height:100vh;display:grid;place-items:center;padding:40px 22px}
+  a{color:inherit}
+  .box{max-width:640px;width:100%}
+  .code{font-family:var(--sans);font-size:13px;letter-spacing:.14em;color:var(--accent);font-weight:700}
+  h1{font-family:var(--serif);font-size:clamp(30px,6vw,52px);margin:10px 0 14px;line-height:1.3}
+  p{font-family:var(--sans);font-size:14.5px;color:var(--soft);margin:0 0 26px;line-height:2}
+  .row{display:flex;gap:10px;flex-wrap:wrap}
+  .btn{font-family:var(--sans);font-size:13px;border:1.5px solid var(--ink);border-radius:999px;
+    padding:11px 22px;text-decoration:none;display:inline-flex;align-items:center;transition:background .2s ease,color .2s ease}
+  .btn:hover{background:var(--ink);color:var(--paper)}
+  .btn.solid{background:var(--ink);color:var(--paper)}
+  .btn.solid:hover{background:#000}
+  [data-theme=dark] .btn.solid{background:var(--ink);color:#14130f}
+  ul{list-style:none;padding:0;margin:30px 0 0;font-family:var(--sans);font-size:13px;
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(200px,1fr));gap:8px}
+  ul a{display:block;background:var(--card);border:1px solid var(--line);border-radius:12px;
+    padding:11px 15px;text-decoration:none}
+  ul a:hover{border-color:var(--ink)}
+  ul small{display:block;color:var(--soft);font-size:11.5px}
+</style>
+</head>
+<body>
+<div class="box">
+  <p class="code">404</p>
+  <h1>هذه الصفحة غير موجودة</h1>
+  <p>الرابط الذي فتحته لا يقابل صفحة في هذا المقرر — ربما تغيّر اسمه أو كُتب ناقصاً. اضغط <span style="border:1px solid var(--line);border-radius:5px;padding:1px 7px;font-family:ui-monospace,monospace;font-size:11.5px;direction:ltr;display:inline-block">Ctrl + K</span> للبحث في كل محتوى المقرر، أو ابدأ من إحدى النقاط التالية.</p>
+  <div class="row">
+    <a class="btn solid" href="index.html">فهرس الدروس</a>
+    <a class="btn" href="map.html">الخارطة الذهنية</a>
+    <a class="btn" href="search.html">ابحث في المحتوى</a>
+  </div>
+  <ul>
+    <li><a href="lessons/0001-linear-systems.html">الدرس 0001<small>منظومات المعادلات الخطية</small></a></li>
+    <li><a href="summary.html">الملخص الشامل<small>مرجع دراسي كامل</small></a></li>
+    <li><a href="review.html#session">المراجعة المتباعدة<small>بطاقات مجدولة</small></a></li>
+    <li><a href="playground.html">مشغّل بايثون<small>التمارين في المتصفح</small></a></li>
+  </ul>
+</div>
+<script src="assets/site.js"></script>
+<script src="assets/ui.js"></script>
+</body>
+</html>

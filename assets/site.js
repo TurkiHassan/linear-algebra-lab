@@ -102,6 +102,12 @@
       acceptNode: function(node) {
         var p = node.parentElement;
         if (!p) return NodeFilter.FILTER_REJECT;
+        /* SVG text is not HTML: injecting <bdi> into it renders nothing at all,
+           which silently erased labels such as "|A| = 7" on the home page and
+           every label on the concept map. Leave any non-HTML namespace alone. */
+        if (p.namespaceURI && p.namespaceURI !== "http://www.w3.org/1999/xhtml") {
+          return NodeFilter.FILTER_REJECT;
+        }
         var tag = p.tagName.toLowerCase();
         if (tag === 'script' || tag === 'style' || tag === 'textarea' || tag === 'code' || tag === 'bdi' || tag === 'noscript') {
           return NodeFilter.FILTER_REJECT;

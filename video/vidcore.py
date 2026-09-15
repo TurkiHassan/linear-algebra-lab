@@ -463,6 +463,13 @@ def build_video(slug, scenes, outdir, tmpbase, tag="GAUSS 0003",
     with open(os.path.join(outdir, slug + "-subs.srt"), "w") as f:
         for i, (a, b, tx) in enumerate(srt, 1):
             f.write("%d\n%s --> %s\n%s\n\n" % (i, ts(a), ts(b), "\n".join(tx)))
+    # WebVTT as well: <track> in every browser accepts VTT only, never SRT.
+    # The .srt stays for download and for external players.
+    with open(os.path.join(outdir, slug + "-subs.vtt"), "w") as f:
+        f.write("WEBVTT\nKind: subtitles\nLanguage: ar\n\n")
+        for i, (a, b, tx) in enumerate(srt, 1):
+            f.write("%d\n%s --> %s\n%s\n\n"
+                    % (i, ts(a).replace(",", "."), ts(b).replace(",", "."), "\n".join(tx)))
     img, d = base(tag, head_ar)
     pick = scenes[-2] if len(scenes) > 1 else scenes[-1]
     pick["draw"](img, d, 99, 99)
