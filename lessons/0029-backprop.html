@@ -1,0 +1,385 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0029 · الانتشار الخلفي والاشتقاق التلقائي — Backpropagation & Automatic Differentiation</title>
+<meta name="description" content="بيان الحساب ومثال المحاضرة خطوة بخطوة، والمرور الأمامي والخلفي، وضرب المتجه في الجاكوبي، ولماذا يفوز الاتجاه الخلفي.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0029-backprop.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0029 · الانتشار الخلفي والاشتقاق التلقائي — مختبر الجبر الخطي">
+<meta property="og:description" content="بيان الحساب ومثال المحاضرة خطوة بخطوة، والمرور الأمامي والخلفي، وضرب المتجه في الجاكوبي، ولماذا يفوز الاتجاه الخلفي.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
+  .figcap .coord{background:none;padding:0}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0029 · الانتشار الخلفي والاشتقاق التلقائي",
+ "alternateName": "Backpropagation & Automatic Differentiation",
+ "description": "بيان الحساب ومثال المحاضرة خطوة بخطوة، والمرور الأمامي والخلفي، وضرب المتجه في الجاكوبي، ولماذا يفوز الاتجاه الخلفي.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0029-backprop.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 29
+}
+</script>
+</head>
+<body data-lesson-id="0029">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0028-jacobian.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0029">الخارطة</a> · <a href="0030-hessian-taylor.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0029 · حساب المتجهات</div>
+    <h1>الانتشار الخلفي والاشتقاق التلقائي</h1>
+    <span class="en-line" lang="en">Backpropagation & Automatic Differentiation — the chain rule on a computation graph, walked from the output back to the input</span>
+    <div class="rule"></div>
+    <p class="meta">~35 دقيقة · المتطلب: الدرس 0028 (جاكوبي وتدرّجات الدوال المتجهة)</p>
+  </header>
+
+
+  <section id="s1">
+    <h2><span class="num">١</span> الشبكة تركيبٌ من دوال، والتدريب اشتقاق تركيب<span class="en-sub" lang="en">A deep network is a composition, and training differentiates it</span></h2>
+    <p>الشبكة العصبية ليست شيئاً جديداً رياضياً: هي تركيب دوال بعضها فوق بعض. <span class="coord">y = (f_K ∘ f_{K−1} ∘ ⋯ ∘ f₁)(x)</span>، حيث <span class="coord">f₀ = x</span> و<span class="coord">f_i = σ_i(A_{i−1}f_{i−1} + b_{i−1})</span>. الدالة <span class="coord">σ_i</span> هي <span class="term">دالة التنشيط</span> <span class="en" lang="en" dir="ltr">(activation)</span>، والمعاملات <span class="coord">θ = {A₀, b₀, …, A_{K−1}, b_{K−1}}</span>.</p>
+    <p>والتدريب تصغير خسارة: <span class="coord">min_θ L(θ)</span> حيث <span class="coord">L(θ) = ‖y − f_K(θ, x)‖²</span>. فالسؤال العملي الوحيد هو: كيف نحسب <span class="coord">dL/dθ</span> بكفاءة على حاسوب؟ لأن الطريقة الساذجة — اشتقاق الصيغة رمزياً — تنتج تعبيراً ينفجر حجمه مع عدد الطبقات.</p>
+    <div class="analogy"><b>تشبيه: سلسلة تروس</b><p>عشرون ترساً متصلة. لتعرف كم يدور الأخير حين يدور الأول، اضرب نسب التروس كلها. قاعدة السلسلة هي هذا الضرب، والانتشار الخلفي مجرد اختيار ذكي لترتيب الضرب: من آخر ترس إلى أوله. <span class="en" lang="en" dir="ltr">(Same product, cheaper order.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> الانتشار الخلفي ليس قاعدة اشتقاق جديدة. هو قاعدة السلسلة نفسها من الدرس <span class="coord">0026</span>، مطبَّقة على بيان حساب، ومحسوبة من المخرج إلى المدخل لأن هذا الترتيب أرخص.</p></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>شبكة مدخلها مليون عدد ومخرجها عدد واحد (الخسارة). أيّهما أرخص: حساب التدرّج بالمرور للأمام مرة لكل مدخل، أم بالمرور للخلف مرة واحدة؟</p>
+      <details><summary>اكشف الجواب</summary><p>الخلف، بفارق مليون ضعف. المرور الأمامي يعطيك أثر <b>مدخل واحد</b> على كل المخارج، فتحتاج مليون مرور. والمرور الخلفي يعطيك أثر <b>كل المداخل</b> على مخرج واحد، فيكفي مرور واحد. ولمّا كانت الخسارة عدداً واحداً دائماً، فالاتجاه الخلفي هو الرابح دائماً في تعلّم الآلة. <span class="en" lang="en" dir="ltr">(Reverse mode wins when the output is scalar.)</span></p></details></div>
+    <div class="kmath" id="k1"></div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> بيان الحساب: فكّك الدالة إلى عمليات أولية<span class="en-sub" lang="en">The computation graph, and the slide's own example</span></h2>
+    <p>خذ دالة المحاضرة: <span class="coord">f(x) = √(x² + exp(x²)) + cos(x² + exp(x²))</span>. تبدو معقدة، لكنها ستّ عمليات أولية متسلسلة: <span class="coord">a = x²</span>، <span class="coord">b = exp(a)</span>، <span class="coord">c = a + b</span>، <span class="coord">d = √c</span>، <span class="coord">e = cos(c)</span>، <span class="coord">f = d + e</span>. هذا هو ال<span class="term">بيان الحسابي</span> <span class="en" lang="en" dir="ltr">(computation graph)</span>: عقدة لكل متغير وسيط، وحافة لكل اعتماد.</p>
+    <p>ثم اشتق كل عملية أولية بالنسبة إلى مدخلها — وكلها مشتقات معروفة بسطر واحد. وأخيراً امشِ من المخرج إلى المدخل مجمّعاً حاصلات الضرب: هذا هو ال<span class="term">الاشتقاق التلقائي</span> <span class="en" lang="en" dir="ltr">(automatic differentiation)</span>، وهو عدديٌّ لا رمزي: لا يبني صيغة، بل يحسب قيمة.</p>
+    <div class="demo" data-label="Graph · BACKPROP">
+      <h3>بيان الحساب أماماً وخلفاً</h3>
+      <p class="hint">اسحب <span class="coord">x</span> واختر ما تعرضه اللوحة — القيم الأمامية، أو المرافقات الخلفية، أو كليهما</p>
+      <div class="controls"><label>العرض
+        <select id="bView">
+          <option value="both">forward values and backward adjoints</option>
+          <option value="fwd">forward values only</option>
+          <option value="bwd">backward adjoints only</option>
+        </select></label>
+        <label><span class="coord">x</span> <input type="range" id="bX" min="0.2" max="1.8" step="0.02" value="1"></label><span class="coord" id="bXv">1</span></div>
+      <canvas id="bCv" width="640" height="380" role="img"
+              aria-label="بيان الحساب بعقده الستة، وقيم المرور الأمامي فوق كل عقدة ومرافقات المرور الخلفي تحتها"></canvas>
+      <p class="figcap">الأخضر قيمة أمامية، والبنفسجي مرافقٌ خلفي <span class="coord">∂f/∂node</span> — والسهام تمشي أماماً والحساب يمشي خلفاً</p>
+      <div class="readout" id="bRO" style="direction:rtl;text-align:right">البيان…</div>
+    </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>مثال الشرائح كاملاً عند <span class="coord">x = 1</span>: مرور أمامي، ثم مشتقات موضعية، ثم مرور خلفي:</p>
+      <pre dir="ltr">THE GRAPH        a = x^2 , b = exp(a) , c = a + b , d = sqrt(c) , e = cos(c) , f = d + e
+
+FORWARD PASS at x = 1
+
+  a = 1^2                = 1
+  b = exp(1)             = 2.7182818
+  c = 1 + 2.7182818      = 3.7182818
+  d = sqrt(3.7182818)    = 1.9282847
+  e = cos(3.7182818)     = -0.8382725
+  f = 1.9282847 - 0.8382725 = 1.0900122
+
+LOCAL DERIVATIVES - one line each, all elementary
+
+  da/dx = 2x          = 2
+  db/da = exp(a)      = 2.7182818
+  dc/da = 1           dc/db = 1
+  dd/dc = 1/(2 sqrt c)= 0.2592978
+  de/dc = -sin(c)     = 0.5452516
+  df/dd = 1           df/de = 1
+
+BACKWARD PASS - start at the output with df/df = 1
+
+  df/dd = 1                                        df/de = 1
+
+  df/dc = (df/dd)(dd/dc) + (df/de)(de/dc)
+        = 1 * 0.2592978 + 1 * 0.5452516
+        = 0.8045494                                 two paths, so two terms
+
+  df/db = (df/dc)(dc/db) = 0.8045494 * 1 = 0.8045494
+
+  df/da = (df/db)(db/da) + (df/dc)(dc/da)
+        = 0.8045494 * 2.7182818 + 0.8045494 * 1
+        = 2.9915413
+
+  df/dx = (df/da)(da/dx) = 2.9915413 * 2 = 5.9830826
+
+CHECK with a central difference, h = 1e-6
+
+  ( f(1+h) - f(1-h) ) / (2h) = 5.9830826        agrees to seven digits</pre>
+      <p class="worked-note">القاعدة الوحيدة المستعملة هنا هي قاعدة السلسلة، والقاعدة الوحيدة الإضافية أن عقدة تغذّي عقدتين يُجمع أثراها — كما في <span class="coord">c</span> و<span class="coord">a</span>.</p></div>
+    <div class="demo" data-label="Verify · NUMERIC">
+      <h3>فاحص المرور الخلفي</h3>
+      <p class="hint">أدخل نقطة: اللوحة تحسب المشتقة بالانتشار الخلفي ثم تقارنها بفرق مركزي مستقل</p>
+      <div class="controls"><label><span class="coord">x</span> <input type="number" id="nX" value="1" step="0.1"></label>
+        <button class="btn" id="nGo">قارن الطريقتين</button></div>
+      <div class="readout" id="nRO" style="direction:rtl;text-align:right">المقارنة…</div>
+    </div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> لماذا خلفاً؟ ضرب متجه في جاكوبي<span class="en-sub" lang="en">Vector-Jacobian products, and why reverse mode is cheap</span></h2>
+    <p>بلغة الدرس <span class="coord">0028</span>: لكل طبقة جاكوبي <span class="coord">J_i = df_i/df_{i−1}</span>، وجاكوبي التركيب حاصل ضربها كلها: <span class="coord">df_K/dx = J_K J_{K−1} ⋯ J₁</span>. لكن تخزين هذه الجاكوبيات مستحيل عملياً — جاكوبي طبقة بألف وحدة مصفوفة بمليون عنصر.</p>
+    <p>والحيلة أن الانتشار الخلفي لا يبني الجاكوبي أصلاً، بل يحسب <span class="term">ضرب متجه في جاكوبي</span> <span class="en" lang="en" dir="ltr">(vector-Jacobian product)</span>: <span class="coord">dL/df_{i−1} = (dL/df_i) · J_i</span>، صفٌّ في مصفوفة يعطي صفاً. فالمخزَّن صفٌّ واحد لا مصفوفة، والتكلفة من رتبة المرور الأمامي نفسه — وهذه هي الجملة التي جعلت التعلّم العميق ممكناً.</p>
+    <div class="demo" data-label="Cost · MODES">
+      <h3>ميزان الاتجاهين</h3>
+      <p class="hint">أدخل بعد المدخل وبعد المخرج: اللوحة تقدّر عدد المرورات اللازمة في كل اتجاه</p>
+      <div class="controls"><label>بعد المدخل <input type="number" id="cIn" value="1000000" step="1000"></label>
+        <label>بعد المخرج <input type="number" id="cOut" value="1" step="1"></label>
+        <button class="btn" id="cGo">قارن</button></div>
+      <div class="readout" id="cRO" style="direction:rtl;text-align:right">التكلفة…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الانتشار الخلفي يشترط أن تكون العمليات الأولية قابلة للاشتقاق. ودالة مثل القيمة المطلقة أو <span class="coord">ReLU</span> غير قابلة للاشتقاق عند نقطة واحدة، فتُعالج باصطلاح صريح — لا بتجاهل المسألة. وحيث يكسر البيان قابلية الاشتقاق يلزم عناية خاصة. <span class="en" lang="en" dir="ltr">(Non-differentiable points need a convention.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>كل إطار تعلّم عميق يفعل هذا حرفياً: يبني بيان الحساب أثناء المرور الأمامي، ويحتفظ بالقيم الوسيطة، ثم يمشي عليه عكسياً مجمّعاً المرافقات. ما تسمّيه الأطر <span class="coord">autograd</span> هو هذا الدرس مكتوباً بلغة برمجة.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>الانتشار الخلفي</td><td>خوارزمية سحرية للشبكات</td><td>قاعدة السلسلة على بيان حساب، محسوبة من المخرج إلى المدخل</td></tr>
+    <tr><td>الاشتقاق التلقائي</td><td>اشتقاق رمزي بالحاسوب</td><td>حساب عددي للقيمة عبر متغيرات وسيطة — بلا بناء صيغة</td></tr>
+    <tr><td>بيان الحساب</td><td>مخطط توضيحي</td><td>بنية البيانات التي تُحفظ فعلاً أثناء المرور الأمامي ليُمشى عليها خلفاً</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> الانتشار الخلفي اسمٌ غامض في التعلّم العميق. <b>بعد هذا الدرس:</b> هو قاعدة السلسلة مرتّبة عكسياً على بيان، وتستطيع تنفيذه بنفسك في ثلاثين سطراً.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">على أي قاعدة يقوم الانتشار الخلفي؟</div>
+      <button class="opt" data-q="q1" data-a="0">قاعدة السلسلة، مطبَّقة من المخرج إلى المدخل</button><button class="opt" data-q="q1" data-a="1">قاعدة الضرب وحدها</button><button class="opt" data-q="q1" data-a="2">قاعدة جديدة خاصة بالشبكات</button><button class="opt" data-q="q1" data-a="3">الاشتقاق الرمزي</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">في البيان <span class="coord">c = a + b</span> و<span class="coord">d = √c</span> و<span class="coord">e = cos(c)</span> و<span class="coord">f = d + e</span> — ما <span class="coord">∂f/∂c</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">(∂f/∂d)(∂d/∂c) + (∂f/∂e)(∂e/∂c)</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">(∂f/∂d)(∂d/∂c)</span> وحده</button><button class="opt" data-q="q2" data-a="2"><span class="coord">(∂d/∂c)(∂e/∂c)</span></button><button class="opt" data-q="q2" data-a="3"><span class="coord">1</span></button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">متى يكون المرور الخلفي أرخص من الأمامي؟</div>
+      <button class="opt" data-q="q3" data-a="0">حين يكون بعد المخرج أصغر بكثير من بعد المدخل، كما في الخسارة العددية</button><button class="opt" data-q="q3" data-a="1">دائماً بلا شرط</button><button class="opt" data-q="q3" data-a="2">حين تكون الدالة خطية</button><button class="opt" data-q="q3" data-a="3">حين يكون عدد الطبقات فردياً</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">ما الذي يحسبه الانتشار الخلفي فعلياً في كل طبقة؟</div>
+      <button class="opt" data-q="q4" data-a="0">ضرب متجه في جاكوبي، فلا يُبنى الجاكوبي كاملاً</button><button class="opt" data-q="q4" data-a="1">الجاكوبي كاملاً ثم يخزّنه</button><button class="opt" data-q="q4" data-a="2">محدد الجاكوبي</button><button class="opt" data-q="q4" data-a="3">معكوس الجاكوبي</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">ما الفرق بين الاشتقاق التلقائي والاشتقاق الرمزي؟</div>
+      <button class="opt" data-q="q5" data-a="0">التلقائي يحسب قيمة عددية عبر متغيرات وسيطة، والرمزي يبني تعبيراً قد ينفجر حجمه</button><button class="opt" data-q="q5" data-a="1">لا فرق بينهما</button><button class="opt" data-q="q5" data-a="2">التلقائي تقريبي كالفرق المحدود</button><button class="opt" data-q="q5" data-a="3">الرمزي أسرع دائماً</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>بيان الحساب</td><td><span class="en" lang="en" dir="ltr">computation graph</span></td><td>عقدة لكل عملية أولية وحافة لكل اعتماد بينها</td></tr>
+    <tr><td>الانتشار الخلفي</td><td><span class="en" lang="en" dir="ltr">backpropagation</span></td><td>تجميع قاعدة السلسلة من المخرج إلى المدخل</td></tr>
+    <tr><td>المرافق</td><td><span class="en" lang="en" dir="ltr">adjoint</span></td><td>حساسية المخرج لعقدة وسيطة، أي <span class="coord">∂f/∂node</span></td></tr></table>
+  </section>
+
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0029-backprop.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>forward_pass</code> — قيم العقد الست بالترتيب</li>
+      <li><code>local_derivatives</code> — مشتقة كل عملية أولية بالنسبة إلى مدخلها</li>
+      <li><code>backward_pass</code> — المرافقات من المخرج إلى المدخل</li>
+      <li><code>numeric_derivative</code> — فرق مركزي مستقل للمقارنة</li>
+      <li><code>agrees</code> — هل يتطابق الطريقان ضمن سماح</li>
+      <li><code>chain_product</code> — حاصل ضرب مشتقات سلسلة طبقات</li>
+      <li><code>vjp</code> — ضرب متجه صف في جاكوبي</li>
+      <li><code>cheaper_mode</code> — أي الاتجاهين أرخص لهذين البعدين</li>
+    </ul></div>
+
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0029-backprop">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0029">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0029">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0029" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span> — الفصل الخامس: Vector Calculus</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0028-jacobian.html" rel="prev"><small>الدرس السابق</small>جاكوبي وتدرّجات الدوال المتجهة</a>
+    <a class="next" href="0030-hessian-taylor.html" rel="next"><small>الدرس التالي</small>هسي والتخطيط وتايلور متعددة المتغيرات</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0029 · الانتشار الخلفي والاشتقاق التلقائي</span><span>التمرين: <code lang="en">python3 practice/0029-backprop.py</code> · <a href="../playground.html?ex=0029-backprop">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
+  tex(document.getElementById('k1'),"y=(f_K\\circ f_{K-1}\\circ\\cdots\\circ f_1)(x) \\qquad \\underbrace{\\frac{dL}{df_{i-1}}}_{1\\times d_{i-1}}=\\underbrace{\\frac{dL}{df_i}}_{1\\times d_i}\\underbrace{J_i}_{d_i\\times d_{i-1}}");
+  function mn(v){return String(Math.round(v*1000000)/1000000).replace(/-/g,"−");}
+
+  function fwd(x){
+    var a=x*x, b=Math.exp(a), c=a+b, d=Math.sqrt(c), e=Math.cos(c), f=d+e;
+    return {x:x,a:a,b:b,c:c,d:d,e:e,f:f};
+  }
+  function bwd(V){
+    var df_d=1, df_e=1;
+    var df_c=df_d*(1/(2*Math.sqrt(V.c)))+df_e*(-Math.sin(V.c));
+    var df_b=df_c*1;
+    var df_a=df_b*Math.exp(V.a)+df_c*1;
+    var df_x=df_a*2*V.x;
+    return {d:df_d,e:df_e,c:df_c,b:df_b,a:df_a,x:df_x,f:1};
+  }
+  function fOf(x){var V=fwd(x);return V.f;}
+
+  /* ٢ · بيان الحساب */
+  var NP={x:[-3.1,0],a:[-1.8,0],b:[-0.6,1.15],c:[0.5,0],d:[1.7,1.15],e:[1.7,-1.15],f:[2.9,0]};
+  var EDG=[["x","a"],["a","b"],["a","c"],["b","c"],["c","d"],["c","e"],["d","f"],["e","f"]];
+  var bF=FIG('bCv'), bX=document.getElementById('bX'), bXv=document.getElementById('bXv'),
+      bView=document.getElementById('bView');
+  function box(fig,p,col){
+    var w=0.42,h=0.26;
+    fig.poly([[p[0]-w,p[1]-h],[p[0]+w,p[1]-h],[p[0]+w,p[1]+h],[p[0]-w,p[1]+h]],col,null,2);
+  }
+  function bDraw(){
+    if(!bF) return;
+    var C=bF.col(), x=+bX.value; bXv.textContent=mn(x);
+    var V=fwd(x), B=bwd(V), view=bView.value, keys=["x","a","b","c","d","e","f"], k;
+    bF.fit([[-3.7,-1.7],[3.5,1.7]],26,120).clear();
+    EDG.forEach(function(ed){
+      var p=NP[ed[0]], q=NP[ed[1]];
+      var dx=q[0]-p[0], dy=q[1]-p[1], n=Math.hypot(dx,dy);
+      var s=[p[0]+dx/n*0.5,p[1]+dy/n*0.32], t=[q[0]-dx/n*0.5,q[1]-dy/n*0.32];
+      bF.arrow(s,t,C.line,2);
+    });
+    for(k=0;k<keys.length;k++){
+      var key=keys[k], p=NP[key];
+      box(bF,p,key==="x"?C.terra:(key==="f"?C.accent:C.soft));
+      bF.tag(p,key,C.ink,0,0);
+      if(view!=="bwd") bF.tag(p,mn(Math.round(V[key]*10000)/10000),C.accent,0,-24);
+      if(view!=="fwd") bF.tag(p,mn(Math.round(B[key]*10000)/10000),C.vio,0,26);
+    }
+    bF.note(12,12,'f(x) = sqrt(x^2 + exp(x^2)) + cos(x^2 + exp(x^2))',C.ink);
+    if(view!=="bwd") bF.note(12,30,'forward: value at each node',C.accent);
+    if(view!=="fwd") bF.note(12,48,'backward: df/dnode at each node',C.vio);
+    bF.note(12,66,'df/dx = '+mn(B.x),C.terra);
+    document.getElementById('bRO').innerHTML=
+      "عند <span class='coord'>x = "+mn(x)+"</span>: <span class='coord'>a = "+mn(V.a)+"</span> · <span class='coord'>b = "+mn(V.b)+"</span> · <span class='coord'>c = "+mn(V.c)+"</span> · <span class='coord'>d = "+mn(V.d)+"</span> · <span class='coord'>e = "+mn(V.e)+"</span> · <span class='coord'>f = "+mn(V.f)+"</span>"+
+      "<br>المرافقات خلفاً: <span class='coord'>∂f/∂c = "+mn(B.c)+"</span> · <span class='coord'>∂f/∂b = "+mn(B.b)+"</span> · <span class='coord'>∂f/∂a = "+mn(B.a)+"</span> · <span class='coord'>∂f/∂x = "+mn(B.x)+"</span>"+
+      "<br>العقدتان <span class='coord'>c</span> و<span class='coord'>a</span> تغذّيان عقدتين، فمرافقهما مجموع مسارين لا مسار واحد.";
+  }
+  [bX,bView].forEach(function(el){el.addEventListener('input',bDraw);});
+  onTheme(bDraw); bDraw();
+
+  /* ٢ب · الفاحص العددي */
+  document.getElementById('nGo').onclick=function(){
+    var x=+document.getElementById('nX').value||0, h=1e-6;
+    var back=bwd(fwd(x)).x, num=(fOf(x+h)-fOf(x-h))/(2*h), gap=Math.abs(back-num);
+    document.getElementById('nRO').innerHTML=
+      "بالانتشار الخلفي: <span class='coord'>"+mn(back)+"</span><br>"+
+      "بالفرق المركزي: <span class='coord'>"+mn(num)+"</span><br>"+
+      "الفرق: <span class='coord'>"+mn(gap)+"</span> → "+
+      (gap<1e-5?"<b>متطابقان</b> — والفارق كله من خطأ التقريب العددي لا من الانتشار الخلفي"
+              :"فرق ملحوظ — راجع النقطة")+
+      "<br>والفرق المركزي يحتاج مرورين لكل متغير، بينما الانتشار الخلفي يعطي كل المتغيرات بمرور واحد.";
+  };
+  document.getElementById('nGo').click();
+
+  /* ٣ · ميزان الاتجاهين */
+  document.getElementById('cGo').onclick=function(){
+    var n=Math.max(1,Math.round(+document.getElementById('cIn').value||1)),
+        m=Math.max(1,Math.round(+document.getElementById('cOut').value||1));
+    var win=m<=n?"الخلفي":"الأمامي", ratio=m<=n?(n/m):(m/n);
+    document.getElementById('cRO').innerHTML=
+      "بعد المدخل <span class='coord'>n = "+n+"</span> · بعد المخرج <span class='coord'>m = "+m+"</span><br>"+
+      "المرور الأمامي يحتاج <span class='coord'>"+n+"</span> مروراً (واحداً لكل مدخل)، والخلفي يحتاج <span class='coord'>"+m+"</span> مروراً (واحداً لكل مخرج).<br>"+
+      "الأرخص هنا: <b>"+win+"</b> بنسبة <span class='coord'>"+(Math.round(ratio*100)/100)+"</span> تقريباً."+
+      (m===1?"<br>وهذه حالة تعلّم الآلة المعتادة: الخسارة عدد واحد، فالخلفي يفوز دائماً.":"");
+  };
+  document.getElementById('cGo').click();
+
+  var ANS={q1:{"0":["صحيح — لا قاعدة جديدة، بل ترتيب أرخص للضرب.",true],"1":["الضرب واحدة من أربع، والسلسلة هي المحور.",false],"2":["ليست قاعدة جديدة بل قديمة بترتيب ذكي.",false],"3":["الرمزي يبني تعبيراً، والانتشار الخلفي يحسب قيمة.",false]},
+    q2:{"0":["صحيح — مساران من c إلى f، فيُجمع أثراهما.",true],"1":["نسيت المسار عبر e.",false],"2":["المسارات تُجمع لا تُضرب.",false],"3":["هذا مرافق f نفسها.",false]},
+    q3:{"0":["صحيح — والخسارة عدد واحد، فالخلفي يفوز في التدريب دائماً.",true],"1":["لو كان المخرج أكبر بكثير لانقلبت الكفة.",false],"2":["الخطية لا علاقة لها بالاتجاه الأرخص.",false],"3":["عدد الطبقات لا يغيّر الاتجاه الأرخص.",false]},
+    q4:{"0":["صحيح — صفٌّ مضروب في جاكوبي يعطي صفاً، فلا حاجة لتخزين المصفوفة.",true],"1":["تخزين الجاكوبي كاملاً هو ما يتجنبه الانتشار الخلفي.",false],"2":["المحدد لا دخل له.",false],"3":["لا نعكس جاكوبيات في الانتشار الخلفي.",false]},
+    q5:{"0":["صحيح — التلقائي عددي بلا تقريب، والرمزي يبني تعبيراً.",true],"1":["الفرق جوهري في الطريقة والتكلفة.",false],"2":["التلقائي دقيق كالصيغة المغلقة، بخلاف الفرق المحدود.",false],"3":["الرمزي ينفجر حجمه مع عمق التركيب.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

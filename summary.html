@@ -1383,6 +1383,16 @@
           </div>
         </div>
         <div class="toc-group">
+          <span class="toc-group-label">المحور 7: حساب المتجهات</span>
+          <div class="toc-links">
+            <a href="#c0026" data-target="c0026">26 · الاشتقاق ومتسلسلة تايلور</a>
+            <a href="#c0027" data-target="c0027">27 · الاشتقاق الجزئي والتدرّج</a>
+            <a href="#c0028" data-target="c0028">28 · جاكوبي والدوال المتجهة</a>
+            <a href="#c0029" data-target="c0029">29 · الانتشار الخلفي</a>
+            <a href="#c0030" data-target="c0030">30 · هسي والتخطيط وتايلور</a>
+          </div>
+        </div>
+        <div class="toc-group">
           <span class="toc-group-label">الخاتمة</span>
           <div class="toc-links">
             <a href="#grand-unification" data-target="grand-unification">🌟 لوحة التكافؤ الشامل</a>
@@ -4223,6 +4233,415 @@
     </article>
   </section>
 
+  <section class="section-block" id="mod7">
+    <div class="sec-header">
+      <span class="sec-num">المحور السابع · الدروس 26 إلى 30</span>
+      <h2 class="sec-title">حساب المتجهات: من الميل إلى الانحناء</h2>
+      <p class="sec-desc">حاصل الفرق يصير حدّاً، والتدرّج يعمّم الميل على ملايين المداخل، وجاكوبي يعمّمه على مخرج متجه، والانتشار الخلفي يجعله رخيصاً — وتنتهي السلسلة عند هسي الذي يرى الانحناء.</p>
+    </div>
+
+    <!-- Lesson 0026 -->
+    <article class="lcard" id="c0026">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0026</span>
+          <h3 class="ltitle">الاشتقاق ومتسلسلة تايلور (Derivatives &amp; Taylor)</h3>
+          <span class="len">Differentiation &amp; Taylor Series — the difference quotient becomes a limit</span>
+        </div>
+        <a class="lopen" href="lessons/0026-derivatives-taylor.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0026 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0026 · الاشتقاق ومتسلسلة تايلور (Derivatives &amp; Taylor)</div>
+          <div class="mindmap-root-badge">🌱 المحور: الميل المتوسط يصير لحظياً، والدالة تُبنى من مشتقاتها</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">عدّاد السرعة: المسافة على الزمن سرعةٌ متوسطة، وقراءة العدّاد في لحظة هي المشتقة — المتوسط حين تنعدم الفترة.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: الوتر بين نقطتين يستدير حتى ينطبق على المماس</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تحويل الميل من فكرة هندسية إلى حدٍّ قابل للحساب</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">ما تقوله التعاريف بالضبط:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\frac{df}{dx} = \lim_{h \to 0} \frac{f(x+h) - f(x)}{h}$ — حدُّ حاصل الفرق</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$T_n(x) = \sum_{k=0}^{n} \frac{f^{(k)}(x_0)}{k!}(x - x_0)^k$ — والعاملي يطابق المشتقات</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>متسلسلة تايلور وعدٌ محليٌّ: $1/(1-x)$ تتقارب داخل $|x| &lt; 1$ وحدها</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">الإجراء:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>احسب حاصل الفرق ثم صغّر الفترة حتى يستقر الناتج</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>لتايلور: احسب المشتقات عند $x_0$، واقسم كلاً على عامليها</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>للتركيب: طبّق القواعد الأربع — جمع، ضرب، قسمة، سلسلة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الثمرة في تعلّم الآلة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>قاعدة السلسلة هي الانتشار الخلفي قبل أن يُسمّى كذلك</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>قطع تايلور عند الحد الأول هو التخطيط، وعند الثاني هو النموذج التربيعي</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطأ القطع عند الدرجة $n$ بحجم الحد $n+1$ — قاعدة تقدير عملية</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0026 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: حاصل الفرق للدالة $f(x) = x^2$ عند $x = 2$، ثم $T_3$ للأسّية</h4>
+          <span class="ex-badge">مثال الدرس</span>
+        </div>
+        <p>نبسّط حاصل الفرق جبرياً، ثم نبني كثيرة تايلور ونقيس خطأها.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>حاصل الفرق مبسّطاً:</b><br>$$\frac{(2+h)^2 - 4}{h} = \frac{4h + h^2}{h} = 4 + h$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>الحدّ:</b><br>عند $h \to 0$ يصير $4$، وهو $f'(2) = 2x$ عند $x = 2$ ✓</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>تايلور للأسّية عند الصفر:</b><br>$$T_3(x) = 1 + x + \frac{x^2}{2} + \frac{x^3}{6}, \qquad T_3(0.5) = 1.6458333$$ والقيمة الحقيقية $1.6487213$، فالخطأ $0.0028880$ — بحجم الحد المهمل $x^4/24 = 0.0026042$ ✓</div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <!-- Lesson 0027 -->
+    <article class="lcard" id="c0027">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0027</span>
+          <h3 class="ltitle">الاشتقاق الجزئي والتدرّج (Partial &amp; Gradient)</h3>
+          <span class="len">Partial Differentiation &amp; Gradients — freeze every axis but one</span>
+        </div>
+        <a class="lopen" href="lessons/0027-partial-gradients.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0027 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0027 · الاشتقاق الجزئي والتدرّج (Partial &amp; Gradient)</div>
+          <div class="mindmap-root-badge">🌱 المحور: جمّد كل المحاور إلا واحداً، ثم اجمع الميول في صف</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">مقابض الدشّ: ثبّت التدفّق وأدِر الحرارة وحدها لتقيس أثرها — هذه مشتقة جزئية، وجمع الأثرين تدرّج.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: مقبض واحد يتحرك والبقية ثابتة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تعميم الميل على دالة بملايين المداخل</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">ما يجب أن يثبت:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\nabla_x f \in \mathbb{R}^{1 \times n}$ — <b>متجه صف</b> لا عمود، كما نصّت المحاضرة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التدرّج عمودي دائماً على خط المستوى المار بالنقطة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\frac{df}{dt} = \sum_i \frac{\partial f}{\partial x_i}\frac{\partial x_i}{\partial t}$ — حدٌّ لكل مسار</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">الإجراء:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>اشتق بالنسبة لكل متغير على حدة، والبقية أعداد ثابتة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>اصفف النتائج في صف واحد بالترتيب</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>للهبوط: $\theta \leftarrow \theta - \eta (\nabla f)^\top$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الثمرة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التدرّج بوصلة التدريب: معاكسه أسرع طريق للنزول</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الأودية الضيقة تُنتج تعرّجاً لأن التدرّج ينحرف عن اتجاه القاع</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>كون التدرّج صفاً يجعل أبعاد قاعدة السلسلة تتراصّ بلا منقولات</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0027 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: تدرّج $f(x,y) = (x + 2y^3)^2$ عند $(1, 1)$</h4>
+          <span class="ex-badge">مثال الدرس</span>
+        </div>
+        <p>مثال المحاضرة حرفياً: طبقتان متداخلتان، وقاعدة السلسلة على كل متغير.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>المشتقة بالنسبة إلى $x$:</b><br>$$\frac{\partial f}{\partial x} = 2(x + 2y^3)\cdot 1 = 2(x + 2y^3)$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>المشتقة بالنسبة إلى $y$:</b><br>$$\frac{\partial f}{\partial y} = 2(x + 2y^3)\cdot 6y^2 = 12(x + 2y^3)y^2$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>عند $(1,1)$ حيث $x + 2y^3 = 3$:</b><br>$$\nabla f = \begin{bmatrix} 6 & 36 \end{bmatrix}$$ والفرق سببه أن المكعّب يضخّم أثر $y$ ستة أضعاف ✓</div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <!-- Lesson 0028 -->
+    <article class="lcard" id="c0028">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0028</span>
+          <h3 class="ltitle">جاكوبي وتدرّجات الدوال المتجهة (Jacobian)</h3>
+          <span class="len">Gradients of Vector-Valued Functions — the Jacobian is m x n</span>
+        </div>
+        <a class="lopen" href="lessons/0028-jacobian.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0028 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0028 · جاكوبي وتدرّجات الدوال المتجهة (Jacobian)</div>
+          <div class="mindmap-root-badge">🌱 المحور: صفٌّ لكل مخرج وعمودٌ لكل مدخل</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">لوحة مازج الصوت: لكل مقبض أثرٌ في كل قناة، وجدول هذه الآثار هو الجاكوبي.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: جدول أثر كل مدخل في كل مخرج</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: مشتقة تصلح حين يكون المخرج متجهاً لا عدداً</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">قواعد الشكل:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$J = \nabla_x \mathbf{f} \in \mathbb{R}^{m \times n}$، و$J_{ij} = \partial f_i / \partial x_j$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>لـ $\mathbf{f}(x) = Ax$ يكون $J = A$ عند كل $x$ — التطبيق الخطي هو تخطيطه</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$dA/dB$ موتر رباعي الأبعاد في $\mathbb{R}^{(m \times n)\times(p \times q)}$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">الإجراء:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>اشتق كل مركّبة مخرج بالنسبة لكل متغير مدخل</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>رتّبها: صفٌّ لكل مخرج، عمودٌ لكل مدخل</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>افحص الأبعاد قبل الجبر: البعد الداخلي يجب أن يتطابق</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الثمرة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>تدرّج المربعات الصغرى ضرب جاكوبيين: $(1 \times N)(N \times D)$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>محدد الجاكوبي هو معامل تمدد المساحة — وهو ما يظهر في تغيير المتغيرات</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الدرس $0019$ حلّ المربعات الصغرى بالإسقاط، وهنا نحلّها بالتدرّج</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0028 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: تدرّج خسارة المربعات الصغرى $L = \|y - \Phi\theta\|^2$</h4>
+          <span class="ex-badge">مثال الدرس</span>
+        </div>
+        <p>بيانات صغيرة تُحسب باليد: $\Phi = [1, 2, 3]^\top$ و$y = [2, 4, 7]^\top$ عند $\theta = 1$.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>البواقي والخسارة:</b><br>$$e = y - \Phi\theta = [1, 2, 4]^\top, \qquad L = e^\top e = 21$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>عاملا قاعدة السلسلة:</b><br>$$\frac{\partial L}{\partial e} = 2e^\top \in \mathbb{R}^{1\times 3}, \qquad \frac{\partial e}{\partial \theta} = -\Phi \in \mathbb{R}^{3\times 1}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>الضرب:</b><br>$$\frac{\partial L}{\partial \theta} = -2(1\cdot 1 + 2\cdot 2 + 4\cdot 3) = -34$$ وخطوة بـ $\eta = 0.01$ ترفع $\theta$ إلى $1.34$، والحل المغلق $31/14 = 2.2142857$ ✓</div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <!-- Lesson 0029 -->
+    <article class="lcard" id="c0029">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0029</span>
+          <h3 class="ltitle">الانتشار الخلفي والاشتقاق التلقائي (Backprop)</h3>
+          <span class="len">Backpropagation &amp; Automatic Differentiation — the chain rule, walked backward</span>
+        </div>
+        <a class="lopen" href="lessons/0029-backprop.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0029 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0029 · الانتشار الخلفي والاشتقاق التلقائي (Backprop)</div>
+          <div class="mindmap-root-badge">🌱 المحور: قاعدة السلسلة على بيان، محسوبة من المخرج إلى المدخل</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">سلسلة تروس: لتعرف دوران الأخير اضرب النسب كلها — والانتشار الخلفي مجرد ترتيب أرخص للضرب نفسه.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: الضرب نفسه بترتيب معاكس</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تدرّج ملايين المعاملات بتكلفة مرور أمامي واحد</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">ما يجب أن يثبت:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>العقدة التي تغذّي عقدتين يُجمع أثراها — مسارٌ لكل حدّ</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\frac{dL}{df_{i-1}} = \frac{dL}{df_i} J_i$ — صفٌّ في مصفوفة يعطي صفاً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>يشترط أن تكون العمليات الأولية قابلة للاشتقاق</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">الإجراء:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فكّك الدالة إلى عمليات أولية واحفظ قيمها في المرور الأمامي</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>اكتب مشتقة كل عملية بالنسبة إلى مدخلها</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>ابدأ من $\partial f/\partial f = 1$ وامشِ عكسياً مجمّعاً حاصلات الضرب</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الثمرة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الخسارة عدد واحد دائماً، فالاتجاه الخلفي يفوز في التدريب دائماً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>ما تسمّيه الأطر autograd هو هذا الدرس مكتوباً بلغة برمجة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التكلفة من رتبة المرور الأمامي نفسه — وهذا ما جعل التعلّم العميق ممكناً</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0029 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: مثال المحاضرة عند $x = 1$: $f = \sqrt{c} + \cos(c)$ حيث $c = x^2 + e^{x^2}$</h4>
+          <span class="ex-badge">مثال الدرس</span>
+        </div>
+        <p>ستّ عمليات أولية: $a = x^2$، $b = e^a$، $c = a + b$، $d = \sqrt{c}$، $e = \cos c$، $f = d + e$.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>المرور الأمامي:</b><br>$$a = 1,\; b = 2.7182818,\; c = 3.7182818,\; d = 1.9282847,\; e = -0.8382725,\; f = 1.0900122$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>العقدة ذات المسارين:</b><br>$$\frac{\partial f}{\partial c} = 1\cdot\frac{1}{2\sqrt c} + 1\cdot(-\sin c) = 0.2592978 + 0.5452516 = 0.8045494$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>إلى المدخل:</b><br>$$\frac{\partial f}{\partial a} = 0.8045494\, e^a + 0.8045494 = 2.9915413, \qquad \frac{\partial f}{\partial x} = 2.9915413 \times 2 = 5.9830826$$ والفرق المركزي يعطي العدد نفسه إلى سبع خانات ✓</div>
+          </div>
+        </div>
+      </div>
+    </article>
+    <!-- Lesson 0030 -->
+    <article class="lcard" id="c0030">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0030</span>
+          <h3 class="ltitle">هسي والتخطيط وتايلور متعددة المتغيرات (Hessian)</h3>
+          <span class="len">Higher-Order Derivatives, Linearization &amp; Multivariate Taylor</span>
+        </div>
+        <a class="lopen" href="lessons/0030-hessian-taylor.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0030 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0030 · هسي والتخطيط وتايلور متعددة المتغيرات (Hessian)</div>
+          <div class="mindmap-root-badge">🌱 المحور: الميل رتبة أولى والانحناء رتبة ثانية</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">السيارة على الطريق: السرعة مشتقة أولى، والتسارع ثانية — والأولى تقول أين تمضي والثانية متى تُبطئ.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: الانحناء هو ما لا يراه الميل</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: نموذج يرى المنعطف قبل أن يصله</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">ما يجب أن يثبت:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\nabla^2_x f$ <b>متماثلة دائماً</b> لدالة قابلة للاشتقاق مرتين</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>إشارات القيم الذاتية تصنّف: كلها موجبة صغرى، كلها سالبة عظمى، مختلطة سرج</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\Delta^* = -(\nabla^2 L)^{-1}(\nabla L)^\top$ — وثمنها عكس مصفوفة $P \times P$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">الإجراء:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>احسب كل المشتقات الثانية ورتّبها في مصفوفة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>للتخطيط: $f(x) \approx f(x_0) + \nabla f(x_0)(x - x_0)$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>للرتبة الثانية: أضف $\tfrac{1}{2}\delta^\top H \delta$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الثمرة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>القيمة الذاتية الكبرى هي الحدّة، وهي التي تقيّد معدّل التعلّم</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الاتجاهات المسطّحة يُعتقد أنها تحكم قدرة النموذج على التعميم</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>تقريب هسي منخفض الرتبة $\nabla^2 \approx U_k\Lambda_k U_k^\top + \lambda I$ هو الدرس $0025$ عائداً</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0030 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: هسي $f(x_1,x_2) = x_1^2 x_2 + x_1 x_2^3$ عند $(1,1)$ وتقريب الرتبة الثانية</h4>
+          <span class="ex-badge">مثال الدرس</span>
+        </div>
+        <p>الدالة نفسها من الدرس $0027$، لكن بمشتقة ثانية هذه المرة.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>هسي:</b><br>$$H = \begin{bmatrix} 2x_2 & 2x_1 + 3x_2^2 \\ 2x_1 + 3x_2^2 & 6x_1x_2 \end{bmatrix}_{(1,1)} = \begin{bmatrix} 2 & 5 \\ 5 & 6 \end{bmatrix}$$ متماثلة ✓، وأثرها $8$ ومحددها $-13$ — فالإشارتان مختلفتان والنقطة سرج</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>تايلور من الرتبة الثانية بـ $\delta = (0.1, 0.1)$:</b><br>$$f \approx 2 + 0.7 + \tfrac{1}{2}(0.02 + 0.1 + 0.06) = 2.79$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>المقارنة:</b><br>القيمة الحقيقية $f(1.1,1.1) = 2.7951$، فخطأ الرتبة الثانية $0.0051$ بينما خطأ الرتبة الأولى $0.0951$ — تسعة عشر ضعفاً ✓</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
   <!-- ================================================================= -->
   <!-- GRAND UNIFICATION MATRIX -->
   <!-- ================================================================= -->
@@ -4428,6 +4847,11 @@ document.addEventListener("DOMContentLoaded", function() {
     "c0023": "23 · القطرنة والنظرية الطيفية",
     "c0024": "24 · تحليل القيم المفردة",
     "c0025": "25 · التقريب منخفض الرتبة",
+    "c0026": "26 · الاشتقاق ومتسلسلة تايلور",
+    "c0027": "27 · الاشتقاق الجزئي والتدرّج",
+    "c0028": "28 · جاكوبي والدوال المتجهة",
+    "c0029": "29 · الانتشار الخلفي",
+    "c0030": "30 · هسي والتخطيط وتايلور",
     "grand-unification": "لوحة التكافؤ الذهبي الكبرى"
   };
 

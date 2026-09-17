@@ -1,0 +1,425 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0026 · الاشتقاق ومتسلسلة تايلور — Differentiation & Taylor Series</title>
+<meta name="description" content="حاصل الفرق والمشتقة، وكثيرة تايلور ومتسلسلتها، والقواعد الأربع للاشتقاق: الجمع والضرب والقسمة والسلسلة.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0026-derivatives-taylor.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0026 · الاشتقاق ومتسلسلة تايلور — مختبر الجبر الخطي">
+<meta property="og:description" content="حاصل الفرق والمشتقة، وكثيرة تايلور ومتسلسلتها، والقواعد الأربع للاشتقاق: الجمع والضرب والقسمة والسلسلة.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
+  .figcap .coord{background:none;padding:0}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0026 · الاشتقاق ومتسلسلة تايلور",
+ "alternateName": "Differentiation & Taylor Series",
+ "description": "حاصل الفرق والمشتقة، وكثيرة تايلور ومتسلسلتها، والقواعد الأربع للاشتقاق: الجمع والضرب والقسمة والسلسلة.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0026-derivatives-taylor.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 26
+}
+</script>
+</head>
+<body data-lesson-id="0026">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0025-low-rank.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0026">الخارطة</a> · <a href="0027-partial-gradients.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0026 · حساب المتجهات</div>
+    <h1>الاشتقاق ومتسلسلة تايلور</h1>
+    <span class="en-line" lang="en">Differentiation & Taylor Series — the difference quotient becomes a limit, and a function is rebuilt from its derivatives at one point</span>
+    <div class="rule"></div>
+    <p class="meta">~35 دقيقة · المتطلب: الدرس 0013 (التطبيقات الخطية)</p>
+  </header>
+
+
+  <section id="s1">
+    <h2><span class="num">١</span> حاصل الفرق: ميلٌ متوسط يصير ميلاً لحظياً<span class="en-sub" lang="en">Difference quotient, then the limit: the derivative</span></h2>
+    <p>خذ دالة <span class="coord">f</span> ونقطتين على منحناها: عند <span class="coord">x</span> وعند <span class="coord">x + δx</span>. الوتر الواصل بينهما ميله <span class="coord">δy/δx = (f(x + δx) − f(x)) / δx</span>، وهذا هو ال<span class="term">حاصل الفرق</span> <span class="en" lang="en" dir="ltr">(difference quotient)</span>: متوسط الميل على الفترة كلها لا عند نقطة بعينها.</p>
+    <p>الآن قرّب النقطتين حتى تكادا تلتقيان. الوتر يستدير شيئاً فشيئاً حتى ينطبق على المماس، وحدّه هو ال<span class="term">مشتقة</span> <span class="en" lang="en" dir="ltr">(derivative)</span>: <span class="coord">df/dx = limₕ→₀ (f(x + h) − f(x)) / h</span>. والمشتقة تشير إلى <b>اتجاه أشد صعود</b> للدالة، ومن هذه الجملة وحدها يولد هبوط التدرّج كله.</p>
+    <div class="analogy"><b>تشبيه: عدّاد السرعة</b><p>المسافة مقسومة على الزمن تعطيك سرعتك المتوسطة في الرحلة كلها — هذا حاصل الفرق. أما عدّاد السرعة في لحظة بعينها فهو المشتقة: المتوسط حين تصير الفترة الزمنية معدومة. <span class="en" lang="en" dir="ltr">(Average speed vs. the speedometer reading.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> المشتقة حدُّ حاصل الفرق حين تؤول الفترة إلى الصفر: <span class="coord">f′(x) = limₕ→₀ (f(x+h) − f(x)) / h</span>. وهي ميل المماس، وهي اتجاه أشد صعود، وهي معدّل التغير — ثلاث عبارات لشيء واحد.</p></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>للدالة <span class="coord">f(x) = x²</span> عند <span class="coord">x = 2</span>: كم يساوي حاصل الفرق حين <span class="coord">h = 0.1</span>؟ وهل يقترب من عدد بعينه كلما صغُر <span class="coord">h</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p>حاصل الفرق يبسّط إلى <span class="coord">4 + h</span> بالضبط، فعند <span class="coord">h = 0.1</span> يساوي <span class="coord">4.1</span>، وعند <span class="coord">h = 0.01</span> يساوي <span class="coord">4.01</span>. والحد الواضح هو <span class="coord">4</span>، وهو <span class="coord">f′(2) = 2x</span> عند <span class="coord">x = 2</span>. لاحظ أن الخطأ يساوي <span class="coord">h</span> نفسه — فالتقريب يتحسّن خطياً. <span class="en" lang="en" dir="ltr">(The quotient is exactly 4 + h.)</span></p></details></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Secant · TANGENT">
+      <h3>الوتر الذي يصير مماساً</h3>
+      <p class="hint">اسحب <span class="coord">h</span> نحو الصفر وراقب الوتر الأحمر يلتف حتى ينطبق على المماس الأخضر</p>
+      <div class="controls"><label>الدالة
+        <select id="dFn">
+          <option value="sq">f(x) = x^2</option>
+          <option value="cube">f(x) = x^3</option>
+          <option value="sin">f(x) = sin(x)</option>
+          <option value="exp">f(x) = exp(x)</option>
+        </select></label>
+        <label><span class="coord">x</span> <input type="number" id="dX" value="2" step="0.25"></label></div>
+      <div class="controls"><label><span class="coord">h</span> <input type="range" id="dH" min="-2" max="0.3" step="0.02" value="0"></label><span class="coord" id="dHv">1</span><button class="btn ghost" id="dZero">قرّب إلى الصفر</button></div>
+      <canvas id="dCv" width="640" height="360" role="img"
+              aria-label="منحنى الدالة، والوتر بين نقطتين، والمماس عند النقطة الأولى"></canvas>
+      <p class="figcap">الأحمر وترٌ بين نقطتين، والأخضر مماسٌ عند نقطة واحدة — والفرق بينهما هو كل ما يفعله الحدّ</p>
+      <div class="readout" id="dRO" style="direction:rtl;text-align:right">الميلان…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> متسلسلة تايلور: دالة كاملة من مشتقاتها عند نقطة واحدة<span class="en-sub" lang="en">Taylor polynomial and Taylor series — rebuild f from its derivatives at one point</span></h2>
+    <p>إن عرفت قيمة الدالة ومشتقاتها كلها عند نقطة واحدة <span class="coord">x₀</span>، فهل تعرف الدالة في كل مكان؟ ال<span class="term">كثيرة تايلور</span> <span class="en" lang="en" dir="ltr">(Taylor polynomial)</span> من الدرجة <span class="coord">n</span> هي محاولة الجواب: <span class="coord">Tₙ(x) = Σₖ₌₀ⁿ f⁽ᵏ⁾(x₀)/k! · (x − x₀)ᵏ</span>. كل حدّ يضيف انحناءً من رتبة أعلى.</p>
+    <p>وحين تمدّ المجموع إلى ما لا نهاية تحصل على ال<span class="term">متسلسلة</span> <span class="en" lang="en" dir="ltr">(Taylor series)</span>. فإن ساوت المتسلسلة الدالةَ فعلاً سُمّيت الدالة <b>تحليلية</b> <span class="en" lang="en" dir="ltr">(analytic)</span>. وفي تعلّم الآلة نادراً ما نمدّ المجموع: نقطعه عند الحد الأول أو الثاني، فنحصل على التخطيط والنموذج التربيعي اللذين تبنى عليهما خوارزميات التحسين.</p>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>المعامل <span class="coord">f⁽ᵏ⁾(x₀)/k!</span> ليس زينة: العاملي <span class="coord">k!</span> هو بالضبط ما يلغيه اشتقاق <span class="coord">(x − x₀)ᵏ</span> <span class="coord">k</span> مرة، فتتطابق مشتقات <span class="coord">Tₙ</span> مع مشتقات <span class="coord">f</span> عند <span class="coord">x₀</span> حتى الرتبة <span class="coord">n</span>. التقريب مبنيّ على المطابقة لا على الحظ.</p></div>
+    <div class="demo" data-label="Taylor · APPROXIMATE">
+      <h3>مقرّب تايلور</h3>
+      <p class="hint">ارفع الدرجة وراقب الكثيرة تلتصق بالمنحنى ثم تنفصل عنه بعيداً عن نقطة الانطلاق</p>
+      <div class="controls"><label>الدالة
+        <select id="tFn">
+          <option value="exp">f(x) = exp(x)</option>
+          <option value="sin">f(x) = sin(x)</option>
+          <option value="cos">f(x) = cos(x)</option>
+          <option value="geo">f(x) = 1 / (1 - x)</option>
+        </select></label>
+        <label>الدرجة <span class="coord">n</span> <input type="range" id="tN" min="0" max="8" step="1" value="3"></label><span class="coord" id="tNv">3</span></div>
+      <canvas id="tCv" width="640" height="360" role="img"
+              aria-label="منحنى الدالة وكثيرة تايلور المقابلة له حول نقطة الانطلاق"></canvas>
+      <p class="figcap">الخط المتقطّع هو <span class="coord">Tₙ</span>، والدائرة هي <span class="coord">x₀</span> — التصاقٌ تام عندها وانفراجٌ كلما ابتعدت</p>
+      <div class="kmath" id="tStage" style="min-height:52px"></div>
+      <div class="readout" id="tRO" style="direction:rtl;text-align:right">التقريب…</div>
+    </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>من حاصل الفرق إلى الحدّ، ثم كثيرة تايلور للأسّية عند الصفر:</p>
+      <pre dir="ltr">PART 1 - the difference quotient of f(x) = x^2 at x = 2
+
+  ( f(2+h) - f(2) ) / h
+    = ( (2+h)^2 - 4 ) / h
+    = ( 4 + 4h + h^2 - 4 ) / h
+    = ( 4h + h^2 ) / h
+    = 4 + h                       exact, for every h != 0
+
+  h = 0.1    ->  4.1
+  h = 0.01   ->  4.01
+  h = 0.001  ->  4.001
+  h -> 0     ->  4                 and f'(x) = 2x gives f'(2) = 4   OK
+
+PART 2 - Taylor polynomial of f(x) = exp(x) at x0 = 0
+
+  every derivative of exp is exp, and exp(0) = 1
+
+  f(0) = f'(0) = f''(0) = f'''(0) = 1
+
+  T3(x) = 1 + x + x^2/2! + x^3/3!
+        = 1 + x + x^2/2 + x^3/6
+
+  evaluate at x = 0.5
+
+  T3(0.5) = 1 + 0.5 + 0.125 + 0.0208333
+          = 1.6458333
+  exp(0.5) = 1.6487213
+  error    = 0.0028880            next term x^4/24 = 0.0026042  same size
+
+PART 3 - the chain rule on h(x) = sqrt(x^2 + 1)
+
+  outer g(u) = sqrt(u)   ->  g'(u) = 1 / (2 sqrt(u))
+  inner f(x) = x^2 + 1   ->  f'(x) = 2x
+
+  h'(x) = g'(f(x)) * f'(x) = 2x / (2 sqrt(x^2+1)) = x / sqrt(x^2+1)
+
+  at x = 2 :  2 / sqrt(5) = 0.8944272</pre>
+      <p class="worked-note">لاحظ في الجزء الثاني أن الخطأ يقارب الحدّ المهمل الأول في الحجم — وهذه قاعدة عملية: خطأ القطع عند الدرجة <span class="coord">n</span> بحجم الحد <span class="coord">n + 1</span>.</p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>متسلسلة تايلور محلية لا عالمية. متسلسلة <span class="coord">1/(1 − x)</span> عند الصفر تتقارب داخل <span class="coord">|x| &lt; 1</span> فقط، وتنفجر خارجها مهما رفعت الدرجة. فالتقريب وعدٌ بجوار النقطة وحدها، والخروج من الجوار يبطله. <span class="en" lang="en" dir="ltr">(Taylor is a local promise.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> أربع قواعد تبني كل مشتقة تحتاجها<span class="en-sub" lang="en">Product, quotient, sum and chain — the whole toolbox</span></h2>
+    <p>لا تحفظ مشتقات، بل احفظ أربع قواعد تركّب المعروف منها: <b>الجمع</b> <span class="coord">(f + g)′ = f′ + g′</span>، و<b>الضرب</b> <span class="coord">(fg)′ = f′g + fg′</span>، و<b>القسمة</b> <span class="coord">(f/g)′ = (f′g − fg′) / g²</span>، و<b>السلسلة</b> <span class="coord">(g(f(x)))′ = g′(f(x)) · f′(x)</span>.</p>
+    <p>الرابعة أهمها بفارق كبير. ال<span class="term">قاعدة السلسلة</span> <span class="en" lang="en" dir="ltr">(chain rule)</span> تقول إن مشتقة التركيب حاصل ضرب مشتقتين: واحدة للغلاف الخارجي مقيَّمة عند الداخل، وواحدة للداخل. وحين تكون الطبقات عشرين بدل اثنتين، فحاصل الضرب يصير عشرين عاملاً — وهذا بالضبط ما تفعله الشبكة العصبية في كل خطوة تدريب.</p>
+    <div class="demo" data-label="Rules · COMPOSE">
+      <h3>آلة القواعد الأربع</h3>
+      <p class="hint">اختر قاعدة، ثم أدخل النقطة — اللوحة تطبّق القاعدة رمزياً ثم تقارنها بمشتقة عددية</p>
+      <div class="controls"><label>القاعدة
+        <select id="rPick">
+          <option value="prod">product : (f g)' = f' g + f g'</option>
+          <option value="quot">quotient : (f/g)' = (f' g - f g') / g^2</option>
+          <option value="sum">sum : (f + g)' = f' + g'</option>
+          <option value="chain">chain : g(f(x))' = g'(f(x)) f'(x)</option>
+        </select></label>
+        <label><span class="coord">x</span> <input type="number" id="rX" value="2" step="0.25"></label>
+        <button class="btn" id="rGo">طبّق</button></div>
+      <div class="readout" id="rRO" style="direction:rtl;text-align:right">القاعدة…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>قاعدة السلسلة هي الانتشار الخلفي قبل أن يُسمّى كذلك. شبكةٌ بطبقات <span class="coord">f₁, f₂, …, f_K</span> مشتقتها حاصل ضرب مشتقات الطبقات، وترتيب الضرب من آخر طبقة إلى أولها هو ما يجعل الحساب رخيصاً — وهذا موضوع الدرس <span class="coord">0029</span>.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>المشتقة</td><td>قاعدة نحفظها للاشتقاق</td><td>حدُّ حاصل الفرق — ميل المماس واتجاه أشد صعود</td></tr>
+    <tr><td>متسلسلة تايلور</td><td>صيغة طويلة في كتاب التفاضل</td><td>إعادة بناء الدالة من مشتقاتها عند نقطة، وأصل كل تقريب في التحسين</td></tr>
+    <tr><td>قاعدة السلسلة</td><td>قاعدة من أربع</td><td>القاعدة التي يقوم عليها تدريب كل شبكة عصبية</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> المشتقة عملية جبرية على رمز. <b>بعد هذا الدرس:</b> المشتقة حدُّ ميلٍ متوسط، وتايلور يعيد بناء الدالة منها، والقواعد الأربع تركّب أي تعقيد من قطع بسيطة.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما حاصل الفرق للدالة <span class="coord">f(x) = x²</span> عند <span class="coord">x = 2</span> وبفترة <span class="coord">h</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">4 + h</span></button><button class="opt" data-q="q1" data-a="1"><span class="coord">4</span> مهما كان <span class="coord">h</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">2 + h</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">h²</span></button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">ما معامل الحد <span class="coord">(x − x₀)ᵏ</span> في كثيرة تايلور؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">f⁽ᵏ⁾(x₀) / k!</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">f⁽ᵏ⁾(x₀) · k!</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">f(x₀) / k</span></button><button class="opt" data-q="q2" data-a="3"><span class="coord">f⁽ᵏ⁾(x)</span></button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">ما مشتقة <span class="coord">h(x) = g(f(x))</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0"><span class="coord">g′(f(x)) · f′(x)</span></button><button class="opt" data-q="q3" data-a="1"><span class="coord">g′(x) · f′(x)</span></button><button class="opt" data-q="q3" data-a="2"><span class="coord">g′(f′(x))</span></button><button class="opt" data-q="q3" data-a="3"><span class="coord">g(f′(x))</span></button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">كثيرة تايلور من الدرجة الثالثة للأسّية عند الصفر، مقيَّمة عند <span class="coord">x = 0.5</span> — كم خطؤها تقريباً؟</div>
+      <button class="opt" data-q="q4" data-a="0">بحجم الحد المهمل الأول، أي نحو <span class="coord">0.0026</span></button><button class="opt" data-q="q4" data-a="1">صفر تماماً</button><button class="opt" data-q="q4" data-a="2">أكبر من <span class="coord">0.5</span></button><button class="opt" data-q="q4" data-a="3">لا يمكن تقديره</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">لماذا يُقال إن المشتقة تشير إلى اتجاه أشد صعود؟</div>
+      <button class="opt" data-q="q5" data-a="0">لأن إشارتها تدل على جهة ازدياد الدالة، ومقدارها على سرعة الازدياد</button><button class="opt" data-q="q5" data-a="1">لأنها دائماً موجبة</button><button class="opt" data-q="q5" data-a="2">لأنها تساوي قيمة الدالة</button><button class="opt" data-q="q5" data-a="3">لأنها تنعدم عند القمم فقط</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>حاصل الفرق</td><td><span class="en" lang="en" dir="ltr">difference quotient</span></td><td>ميل الوتر بين نقطتين — متوسط التغير على فترة</td></tr>
+    <tr><td>المشتقة</td><td><span class="en" lang="en" dir="ltr">derivative</span></td><td>حدُّ حاصل الفرق — ميل المماس واتجاه أشد صعود</td></tr>
+    <tr><td>متسلسلة تايلور</td><td><span class="en" lang="en" dir="ltr">Taylor series</span></td><td>إعادة بناء الدالة من مشتقاتها عند نقطة واحدة</td></tr></table>
+  </section>
+
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0026-derivatives-taylor.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>difference_quotient</code> — ميل الوتر على فترة <span class="coord">h</span></li>
+      <li><code>derivative</code> — مشتقة عددية بفرق مركزي</li>
+      <li><code>poly_eval</code> — تقييم كثيرة حدود من معاملاتها</li>
+      <li><code>poly_derivative</code> — معاملات مشتقة كثيرة الحدود</li>
+      <li><code>factorial</code> — العاملي المستعمل في معامل تايلور</li>
+      <li><code>taylor_coeffs</code> — معاملات تايلور من قائمة المشتقات</li>
+      <li><code>taylor_eval</code> — تقييم كثيرة تايلور عند نقطة</li>
+      <li><code>product_rule</code> — قاعدة الضرب</li>
+      <li><code>quotient_rule</code> — قاعدة القسمة</li>
+      <li><code>chain_rule</code> — قاعدة السلسلة</li>
+    </ul></div>
+
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0026-derivatives-taylor">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0026">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0026">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0026" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span> — الفصل الخامس: Vector Calculus</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0025-low-rank.html" rel="prev"><small>الدرس السابق</small>التقريب منخفض الرتبة</a>
+    <a class="next" href="0027-partial-gradients.html" rel="next"><small>الدرس التالي</small>الاشتقاق الجزئي والتدرّج</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0026 · الاشتقاق ومتسلسلة تايلور</span><span>التمرين: <code lang="en">python3 practice/0026-derivatives-taylor.py</code> · <a href="../playground.html?ex=0026-derivatives-taylor">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
+  tex(document.getElementById('k1'),"\\frac{\\delta y}{\\delta x}=\\frac{f(x+\\delta x)-f(x)}{\\delta x} \\qquad \\frac{df}{dx}=\\lim_{h\\to 0}\\frac{f(x+h)-f(x)}{h} \\qquad T_n(x)=\\sum_{k=0}^{n}\\frac{f^{(k)}(x_0)}{k!}(x-x_0)^k");
+  function mn(v){return String(Math.round(v*10000)/10000).replace(/-/g,"−");}
+
+  /* ١ · الوتر والمماس */
+  var FNS={sq:{f:function(x){return x*x;},d:function(x){return 2*x;},s:"x^2"},
+           cube:{f:function(x){return x*x*x;},d:function(x){return 3*x*x;},s:"x^3"},
+           sin:{f:Math.sin,d:Math.cos,s:"sin(x)"},
+           exp:{f:Math.exp,d:Math.exp,s:"exp(x)"}};
+  var dF=FIG('dCv'), dFn=document.getElementById('dFn'), dX=document.getElementById('dX'),
+      dH=document.getElementById('dH'), dHv=document.getElementById('dHv');
+  function hVal(){return Math.pow(10,+dH.value);}
+  function dDraw(){
+    if(!dF) return;
+    var C=dF.col(), F=FNS[dFn.value], x=+dX.value||0, h=hVal();
+    dHv.textContent=mn(h);
+    var y=F.f(x), y2=F.f(x+h), sec=(y2-y)/h, tan=F.d(x);
+    var lo=x-2.4, hi=x+2.4, i, pts=[[lo,F.f(lo)],[hi,F.f(hi)],[x,y],[x+h,y2]];
+    for(i=0;i<=24;i++){var t=lo+(hi-lo)*i/24; pts.push([t,F.f(t)]);}
+    dF.fit(pts,36,120).clear().grid();
+    var prev=null;
+    for(i=0;i<=260;i++){var t2=lo+(hi-lo)*i/260, cur=[t2,F.f(t2)];
+      if(prev) dF.line(prev,cur,C.ink,2.4); prev=cur;}
+    var k=2.2;
+    dF.line([x-k,y-k*tan],[x+k,y+k*tan],C.accent,2.2);
+    dF.line([x-k,y-k*sec],[x+k,y+k*sec],C.terra,2,[7,6]);
+    dF.dot([x,y],C.ink,5).dot([x+h,y2],C.terra,5);
+    dF.note(12,12,'f(x) = '+F.s,C.ink);
+    dF.note(12,30,'secant slope = '+mn(sec),C.terra);
+    dF.note(12,48,'tangent slope = '+mn(tan),C.accent);
+    dF.note(12,66,'gap = '+mn(Math.abs(sec-tan)),C.soft);
+    document.getElementById('dRO').innerHTML=
+      "عند <span class='coord'>h = "+mn(h)+"</span>: ميل الوتر <span class='coord'>"+mn(sec)+"</span> وميل المماس <span class='coord'>"+mn(tan)+"</span>، والفرق بينهما <span class='coord'>"+mn(Math.abs(sec-tan))+"</span>."+
+      "<br>صغّر <span class='coord'>h</span> عشر مرات يصغر الفرق عشر مرات — وهذا معنى الحدّ عملياً.";
+  }
+  [dFn,dX].forEach(function(el){el.addEventListener('input',dDraw);});
+  dH.addEventListener('input',dDraw);
+  document.getElementById('dZero').onclick=function(){dH.value=-2;dDraw();};
+  onTheme(dDraw); dDraw();
+
+  /* ٢ · مقرّب تايلور */
+  function fact(n){var r=1,i;for(i=2;i<=n;i++)r*=i;return r;}
+  var TF={
+    exp:{f:Math.exp,c:function(k){return 1/fact(k);},x0:0,s:"exp(x)",tex:"e^x",lo:-2.2,hi:2.2},
+    sin:{f:Math.sin,c:function(k){return (k%2===0)?0:(k%4===1?1:-1)/fact(k);},x0:0,s:"sin(x)",tex:"\\sin x",lo:-6.2,hi:6.2},
+    cos:{f:Math.cos,c:function(k){return (k%2===1)?0:(k%4===0?1:-1)/fact(k);},x0:0,s:"cos(x)",tex:"\\cos x",lo:-6.2,hi:6.2},
+    geo:{f:function(x){return 1/(1-x);},c:function(){return 1;},x0:0,s:"1/(1-x)",tex:"\\frac{1}{1-x}",lo:-1.6,hi:0.92}};
+  var tF=FIG('tCv'), tFn=document.getElementById('tFn'), tN=document.getElementById('tN'), tNv=document.getElementById('tNv');
+  function tPoly(T,n,x){var s=0,k;for(k=0;k<=n;k++)s+=T.c(k)*Math.pow(x-T.x0,k);return s;}
+  function tDraw(){
+    if(!tF) return;
+    var C=tF.col(), T=TF[tFn.value], n=+tN.value; tNv.textContent=n;
+    var lo=T.lo, hi=T.hi, i, pts=[];
+    for(i=0;i<=24;i++){var t=lo+(hi-lo)*i/24; var v=T.f(t); if(isFinite(v)&&Math.abs(v)<9) pts.push([t,v]);}
+    pts.push([T.x0,T.f(T.x0)]);
+    tF.fit(pts,36,110).clear().grid();
+    var prev=null;
+    for(i=0;i<=300;i++){var t2=lo+(hi-lo)*i/300, v2=T.f(t2);
+      var cur=(isFinite(v2)&&Math.abs(v2)<40)?[t2,v2]:null;
+      if(prev&&cur) tF.line(prev,cur,C.ink,2.4); prev=cur;}
+    prev=null;
+    for(i=0;i<=300;i++){var t3=lo+(hi-lo)*i/300, v3=tPoly(T,n,t3);
+      var cur3=(isFinite(v3)&&Math.abs(v3)<40)?[t3,v3]:null;
+      if(prev&&cur3) tF.line(prev,cur3,C.vio,2.2,[7,6]); prev=cur3;}
+    tF.dot([T.x0,T.f(T.x0)],C.terra,6);
+    var probe=T.x0+(hi-T.x0)*0.62, err=Math.abs(T.f(probe)-tPoly(T,n,probe));
+    tF.dot([probe,T.f(probe)],C.ink,4).dot([probe,tPoly(T,n,probe)],C.vio,4)
+      .line([probe,T.f(probe)],[probe,tPoly(T,n,probe)],C.soft,1.6,[4,4]);
+    tF.note(12,12,'f(x) = '+T.s,C.ink);
+    tF.note(12,30,'T'+n+'(x) around x0 = '+T.x0,C.vio);
+    tF.note(12,48,'gap at x = '+mn(probe)+'  ->  '+mn(err),C.soft);
+    var terms=[],k;
+    for(k=0;k<=Math.min(n,5);k++){var c=T.c(k); if(Math.abs(c)>1e-12) terms.push((c>0&&terms.length?"+":"")+(Math.round(c*1000)/1000)+(k?("x^{"+k+"}"):""));}
+    tex(document.getElementById('tStage'),"T_{"+n+"}(x)="+(terms.join("")||"0")+(n>5?"+\\cdots":""));
+    document.getElementById('tRO').innerHTML=
+      "الدرجة <span class='coord'>n = "+n+"</span>: الفجوة عند <span class='coord'>x = "+mn(probe)+"</span> صارت <span class='coord'>"+mn(err)+"</span>."+
+      (tFn.value==="geo"?"<br>هذه الدالة تتقارب داخل <span class='coord'>|x| &lt; 1</span> وحدها — جرّب الاقتراب من الواحد ترَ التقريب ينهار مهما رفعت الدرجة."
+        :"<br>كل درجة إضافية تشدّ المنحنيين إلى بعضهما قرب <span class='coord'>x₀</span> قبل أن تشدّهما بعيداً عنها.");
+  }
+  tFn.addEventListener('input',tDraw); tN.addEventListener('input',tDraw);
+  onTheme(tDraw); tDraw();
+
+  /* ٣ · القواعد الأربع */
+  document.getElementById('rGo').onclick=function(){
+    var x=+document.getElementById('rX').value||0, kind=document.getElementById('rPick').value;
+    var f=function(t){return t*t;}, df=function(t){return 2*t;},
+        g=function(t){return Math.exp(t);}, dg=function(t){return Math.exp(t);};
+    var sym, val, H, num, h=1e-6;
+    if(kind==="prod"){ H=function(t){return f(t)*g(t);};
+      val=df(x)*g(x)+f(x)*dg(x); sym="f′g + fg′ = "+mn(df(x))+"·"+mn(g(x))+" + "+mn(f(x))+"·"+mn(dg(x)); }
+    else if(kind==="quot"){ H=function(t){return f(t)/g(t);};
+      val=(df(x)*g(x)-f(x)*dg(x))/(g(x)*g(x)); sym="(f′g − fg′)/g² = ("+mn(df(x))+"·"+mn(g(x))+" − "+mn(f(x))+"·"+mn(dg(x))+") / "+mn(g(x)*g(x)); }
+    else if(kind==="sum"){ H=function(t){return f(t)+g(t);};
+      val=df(x)+dg(x); sym="f′ + g′ = "+mn(df(x))+" + "+mn(dg(x)); }
+    else { H=function(t){return g(f(t));};
+      val=dg(f(x))*df(x); sym="g′(f(x))·f′(x) = "+mn(dg(f(x)))+"·"+mn(df(x)); }
+    num=(H(x+h)-H(x-h))/(2*h);
+    document.getElementById('rRO').innerHTML=
+      "<span class='coord'>f(x) = x²</span> و<span class='coord'>g(x) = exp(x)</span> عند <span class='coord'>x = "+mn(x)+"</span><br>"+
+      "بالقاعدة: <span class='coord'>"+sym+" = "+mn(val)+"</span><br>"+
+      "عددياً بفرق مركزي: <span class='coord'>"+mn(num)+"</span> — "+
+      (Math.abs(num-val)<1e-4?"<b>مطابق</b>، فالقاعدة ليست وصفة بل حقيقة قابلة للقياس":"فرق ملحوظ — راجع النقطة");
+  };
+  document.getElementById('rGo').click();
+
+  var ANS={q1:{"0":["صحيح — التبسيط يعطي 4 + h بالضبط، والحدّ عند الصفر هو 4.",true],"1":["هذه قيمة الحدّ لا حاصل الفرق نفسه.",false],"2":["هذا ميل دالة أخرى.",false],"3":["البسط والمقام يختصران إلى 4 + h.",false]},
+    q2:{"0":["صحيح — المشتقة الكاف مقسومة على عاملي الكاف.",true],"1":["العاملي في المقام لا البسط.",false],"2":["المشتقة من الرتبة k لا قيمة الدالة.",false],"3":["المشتقة تُقيَّم عند x₀ لا عند x.",false]},
+    q3:{"0":["صحيح — الخارجية عند الداخل، مضروبة في مشتقة الداخل.",true],"1":["الخارجية تُقيَّم عند f(x) لا عند x.",false],"2":["لا تُركّب المشتقات بعضها في بعض.",false],"3":["g نفسها لا مشتقتها.",false]},
+    q4:{"0":["صحيح — الحد التالي x⁴/24 يساوي 0.0026 عند 0.5، والخطأ الفعلي 0.0029.",true],"1":["الصفر يعني تطابقاً تاماً، وهذا لا يحدث عند الدرجة الثالثة.",false],"2":["هذا أكبر بمئتي مرة من الخطأ الفعلي.",false],"3":["الحد المهمل الأول يقدّره جيداً.",false]},
+    q5:{"0":["صحيح — الإشارة جهة والمقدار سرعة.",true],"1":["المشتقة سالبة حيث تتناقص الدالة.",false],"2":["القيمة والميل شيئان مختلفان.",false],"3":["انعدامها عند القمم نتيجة لا سبب.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>
