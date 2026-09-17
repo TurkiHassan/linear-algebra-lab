@@ -202,23 +202,28 @@
   <footer class="footer"><span>الدرس 0007 · التركيب الخطي</span><span>التمرين: <code lang="en">python3 practice/0007-linear-combinations.py</code> · <a href="../playground.html?ex=0007-linear-combinations">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  /* ألوان اللوحة من متغيّرات CSS، فتتبع الوضع الداكن بدل تثبيتها */
+  function CVAR(n,fb){var c=getComputedStyle(document.documentElement).getPropertyValue(n).trim();return c||fb;}
+  function C(k){return {line:CVAR('--line','#ded4c2'),ink:CVAR('--ink','#1c1a15'),soft:CVAR('--soft','#6f6757'),
+    accent:CVAR('--accent','#0d5c46'),terra:CVAR('--terra','#c2562f'),vio:CVAR('--vio','#5b3f8f')}[k];}
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"w = c_1v_1 + c_2v_2 + \\cdots + c_kv_k \\qquad \\text{weights } c_i \\in \\mathbb{R}");
   var cv=document.getElementById('mxCv'),ctx=cv.getContext('2d'),RO=document.getElementById('mxRO');
   function draw(){
     var c1=+document.getElementById('c1').value,c2=+document.getElementById('c2').value;
     var v1=[2,0],v2=[0,1],w=[c1*v1[0]+c2*v2[0],c1*v1[1]+c2*v2[1]];
-    var W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
+    var _d=window.LinalgHiDPI(cv,ctx)||{W:cv.width,H:cv.height},W=_d.W,H=_d.H;ctx.clearRect(0,0,W,H);
     var sc=36,ox=W/2,oy=H/2,i;
-    ctx.strokeStyle='#ded4c2';ctx.lineWidth=1;
+    ctx.strokeStyle=C('line');ctx.lineWidth=1;
     for(i=-9;i<=9;i++){ctx.beginPath();ctx.moveTo(ox+i*sc,0);ctx.lineTo(ox+i*sc,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,oy+i*sc);ctx.lineTo(W,oy+i*sc);ctx.stroke();}
-    ctx.strokeStyle='#1c1a15';ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,oy);ctx.lineTo(W,oy);ctx.stroke();ctx.beginPath();ctx.moveTo(ox,0);ctx.lineTo(ox,H);ctx.stroke();
+    ctx.strokeStyle=C('ink');ctx.lineWidth=2;ctx.beginPath();ctx.moveTo(0,oy);ctx.lineTo(W,oy);ctx.stroke();ctx.beginPath();ctx.moveTo(ox,0);ctx.lineTo(ox,H);ctx.stroke();
     function arrow(p,col,lw){ctx.strokeStyle=col;ctx.lineWidth=lw||3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+p[0]*sc,oy-p[1]*sc);ctx.stroke();}
-    arrow([c1*v1[0],c1*v1[1]],'#5b3f8f',2);arrow([c2*v2[0],c2*v2[1]],'#c2562f',2);arrow(w,'#0d5c46',4);
-    ctx.fillStyle='#0d5c46';ctx.beginPath();ctx.arc(ox+w[0]*sc,oy-w[1]*sc,6,0,7);ctx.fill();
+    arrow([c1*v1[0],c1*v1[1]],C('vio'),2);arrow([c2*v2[0],c2*v2[1]],C('terra'),2);arrow(w,C('accent'),4);
+    ctx.fillStyle=C('accent');ctx.beginPath();ctx.arc(ox+w[0]*sc,oy-w[1]*sc,6,0,7);ctx.fill();
     RO.innerHTML="الأوزان <span class='coord'>c₁ = "+c1+"</span> و<span class='coord'>c₂ = "+c2+"</span> ← الناتج <span class='coord'>w = ("+w[0].toFixed(1)+", "+w[1].toFixed(1)+")</span>";
   }
   document.getElementById('c1').oninput=draw;document.getElementById('c2').oninput=draw;draw();
@@ -241,6 +246,9 @@
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+  new MutationObserver(draw).observe(document.documentElement,
+    {attributes:true,attributeFilter:['data-theme']});
+  addEventListener('resize',function(){clearTimeout(window.__rt);window.__rt=setTimeout(draw,120);});
 })();
 </script>
 <script src="../assets/site.js"></script>

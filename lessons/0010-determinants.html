@@ -202,24 +202,29 @@
   <footer class="footer"><span>الدرس 0010 · المحددات من 2×2 إلى 3×3</span><span>التمرين: <code lang="en">python3 practice/0010-determinants.py</code> · <a href="../playground.html?ex=0010-determinants">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  /* ألوان اللوحة من متغيّرات CSS، فتتبع الوضع الداكن بدل تثبيتها */
+  function CVAR(n,fb){var c=getComputedStyle(document.documentElement).getPropertyValue(n).trim();return c||fb;}
+  function C(k){return {line:CVAR('--line','#ded4c2'),ink:CVAR('--ink','#1c1a15'),soft:CVAR('--soft','#6f6757'),
+    accent:CVAR('--accent','#0d5c46'),terra:CVAR('--terra','#c2562f'),vio:CVAR('--vio','#5b3f8f')}[k];}
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"|A| = ad-bc \\qquad |B|_{3\\times3} = \\downarrow_1+\\downarrow_2+\\downarrow_3 - \\uparrow_1-\\uparrow_2-\\uparrow_3");
   var cv=document.getElementById('dtCv'),ctx=cv.getContext('2d'),RO=document.getElementById('dtRO');
   function draw(){
     var a=2,b=1,c=+document.getElementById('dc').value,d=+document.getElementById('dd').value;
     var det=a*d-b*c;
-    var W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
+    var _d=window.LinalgHiDPI(cv,ctx)||{W:cv.width,H:cv.height},W=_d.W,H=_d.H;ctx.clearRect(0,0,W,H);
     var sc=30,ox=W/2-40,oy=H/2+40;
-    ctx.strokeStyle='#ded4c2';ctx.lineWidth=1;var i;
+    ctx.strokeStyle=C('line');ctx.lineWidth=1;var i;
     for(i=-10;i<=10;i++){ctx.beginPath();ctx.moveTo(ox+i*sc,0);ctx.lineTo(ox+i*sc,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,oy+i*sc);ctx.lineTo(W,oy+i*sc);ctx.stroke();}
     var u=[a*sc,-b*sc],v=[c*sc,-d*sc];
-    ctx.fillStyle=det===0?'#c2562f44':'#0d5c4633';
+    ctx.fillStyle=det===0?C('terra')+'44':C('accent')+'33';
     ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+u[0],oy+u[1]);ctx.lineTo(ox+u[0]+v[0],oy+u[1]+v[1]);ctx.lineTo(ox+v[0],oy+v[1]);ctx.closePath();ctx.fill();
-    ctx.strokeStyle='#0d5c46';ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+u[0],oy+u[1]);ctx.stroke();
-    ctx.strokeStyle='#c2562f';ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+v[0],oy+v[1]);ctx.stroke();
+    ctx.strokeStyle=C('accent');ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+u[0],oy+u[1]);ctx.stroke();
+    ctx.strokeStyle=C('terra');ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+v[0],oy+v[1]);ctx.stroke();
     var mn=function(v){return String(v).replace(/-/g,"\u2212");};RO.innerHTML="<span class='coord'>A = [[2, "+mn(c)+"], [1, "+mn(d)+"]]</span> · المحدد <span class='coord'>2("+mn(d)+") − 1("+mn(c)+") = "+mn(det)+"</span> · المساحة <span class='coord'>"+Math.abs(det)+"</span>"+(det===0?" ← <b>انهار إلى خط: المساحة صفر والمصفوفة شاذة</b>":"");
   }
   document.getElementById('dc').oninput=draw;document.getElementById('dd').oninput=draw;draw();
@@ -242,6 +247,9 @@
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+  new MutationObserver(draw).observe(document.documentElement,
+    {attributes:true,attributeFilter:['data-theme']});
+  addEventListener('resize',function(){clearTimeout(window.__rt);window.__rt=setTimeout(draw,120);});
 })();
 </script>
 <script src="../assets/site.js"></script>

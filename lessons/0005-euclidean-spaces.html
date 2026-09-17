@@ -203,23 +203,28 @@
   <footer class="footer"><span>الدرس 0005 · فضاء المتجهات الإقليدي</span><span>التمرين: <code lang="en">python3 practice/0005-euclidean-spaces.py</code> · <a href="../playground.html?ex=0005-euclidean-spaces">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  /* ألوان اللوحة من متغيّرات CSS، فتتبع الوضع الداكن بدل تثبيتها */
+  function CVAR(n,fb){var c=getComputedStyle(document.documentElement).getPropertyValue(n).trim();return c||fb;}
+  function C(k){return {line:CVAR('--line','#ded4c2'),ink:CVAR('--ink','#1c1a15'),soft:CVAR('--soft','#6f6757'),
+    accent:CVAR('--accent','#0d5c46'),terra:CVAR('--terra','#c2562f'),vio:CVAR('--vio','#5b3f8f')}[k];}
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"\\langle u,v\\rangle = u_1v_1+u_2v_2+\\cdots \\qquad \\|u\\| = \\sqrt{u_1^2+u_2^2+\\cdots} \\qquad d(u,v)=\\|u-v\\|");
   var cv=document.getElementById('vsCv'),ctx=cv.getContext('2d'),RO=document.getElementById('vsRO');
   function g(id){return +document.getElementById(id).value;}
   function draw(){
     var u=[g('u1'),g('u2')],v=[g('v1'),g('v2')];
-    var W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
+    var _d=window.LinalgHiDPI(cv,ctx)||{W:cv.width,H:cv.height},W=_d.W,H=_d.H;ctx.clearRect(0,0,W,H);
     var sc=34,ox=W/2,oy=H/2;
-    ctx.strokeStyle='#ded4c2';ctx.lineWidth=1;
+    ctx.strokeStyle=C('line');ctx.lineWidth=1;
     for(var i=-9;i<=9;i++){ctx.beginPath();ctx.moveTo(ox+i*sc,0);ctx.lineTo(ox+i*sc,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,oy+i*sc);ctx.lineTo(W,oy+i*sc);ctx.stroke();}
-    ctx.strokeStyle='#1c1a15';ctx.lineWidth=2;
+    ctx.strokeStyle=C('ink');ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(0,oy);ctx.lineTo(W,oy);ctx.stroke();ctx.beginPath();ctx.moveTo(ox,0);ctx.lineTo(ox,H);ctx.stroke();
     function arrow(p,col){ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=3;ctx.beginPath();ctx.moveTo(ox,oy);ctx.lineTo(ox+p[0]*sc,oy-p[1]*sc);ctx.stroke();ctx.beginPath();ctx.arc(ox+p[0]*sc,oy-p[1]*sc,5,0,7);ctx.fill();}
-    arrow(u,'#0d5c46');arrow(v,'#c2562f');
+    arrow(u,C('accent'));arrow(v,C('terra'));
     var dot=u[0]*v[0]+u[1]*v[1],nu=Math.hypot(u[0],u[1]).toFixed(2),nv=Math.hypot(v[0],v[1]).toFixed(2),d=Math.hypot(u[0]-v[0],u[1]-v[1]).toFixed(2);
     RO.innerHTML="<span class='coord'>u = ("+u+")</span> · <span class='coord'>v = ("+v+")</span> · الضرب الداخلي <span class='coord'>u·v = "+dot+"</span> · الطول <span class='coord'>‖u‖ = "+nu+"</span> و<span class='coord'>‖v‖ = "+nv+"</span> · المسافة <span class='coord'>d = "+d+"</span>"+(dot===0?" · <b>متعامدان ⊥</b>":"");
   }
@@ -249,6 +254,9 @@
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+  new MutationObserver(draw).observe(document.documentElement,
+    {attributes:true,attributeFilter:['data-theme']});
+  addEventListener('resize',function(){clearTimeout(window.__rt);window.__rt=setTimeout(draw,120);});
 })();
 </script>
 <script src="../assets/site.js"></script>

@@ -134,7 +134,7 @@
     <p>أسرع اختبار في المقرر: إن لم تحوِ المجموعة الصفر فهي خارج المنافسة فوراً — لأن <span class="coord">0·u = 0</span> يجب أن يبقى داخل أي فضاء جزئي. الخط <span class="coord">y = x + 1</span> لا يحوي <span class="coord">(0,0)</span>، إذن مرفوض في ثانية. والربع الأول يحوي الصفر لكنه يسقط في الضرب القياسي: <span class="coord">(−1)·(1,1) = (−1,−1)</span> خارجه.</p>
     <div class="demo" data-label="Counter · PROOF">
       <h3>صانع الأمثلة المضادة</h3>
-      <p class="hint">حرّك k لتضرب المتجه (1,1) — هل تبقى النتيجة في الربع الأول؟</p>
+      <p class="hint">حرّك <span class="coord">k</span> لتضرب المتجه <span class="coord">(1,1)</span> — هل تبقى النتيجة في الربع الأول؟</p>
       <div class="controls"><label>k: <input type="range" id="ck" min="-3" max="3" step="1" value="-1"></label></div>
       <div class="readout" id="cRO" style="direction:rtl;text-align:right"></div>
     </div>
@@ -203,26 +203,31 @@
   <footer class="footer"><span>الدرس 0006 · الفضاء الجزئي</span><span>التمرين: <code lang="en">python3 practice/0006-subspaces.py</code> · <a href="../playground.html?ex=0006-subspaces">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  /* ألوان اللوحة من متغيّرات CSS، فتتبع الوضع الداكن بدل تثبيتها */
+  function CVAR(n,fb){var c=getComputedStyle(document.documentElement).getPropertyValue(n).trim();return c||fb;}
+  function C(k){return {line:CVAR('--line','#ded4c2'),ink:CVAR('--ink','#1c1a15'),soft:CVAR('--soft','#6f6757'),
+    accent:CVAR('--accent','#0d5c46'),terra:CVAR('--terra','#c2562f'),vio:CVAR('--vio','#5b3f8f')}[k];}
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"W \\le V \\iff 0\\in W \\;\\; u,v\\in W \\Rightarrow u+v\\in W \\;\\; u\\in W \\Rightarrow ku\\in W");
   var cv=document.getElementById('subCv'),ctx=cv.getContext('2d'),RO=document.getElementById('subRO');
   function draw(kind){
-    var W=cv.width,H=cv.height;ctx.clearRect(0,0,W,H);
+    var _d=window.LinalgHiDPI(cv,ctx)||{W:cv.width,H:cv.height},W=_d.W,H=_d.H;ctx.clearRect(0,0,W,H);
     var sc=30,ox=W/2,oy=H/2,i;
-    ctx.strokeStyle='#ded4c2';ctx.lineWidth=1;
+    ctx.strokeStyle=C('line');ctx.lineWidth=1;
     for(i=-10;i<=10;i++){ctx.beginPath();ctx.moveTo(ox+i*sc,0);ctx.lineTo(ox+i*sc,H);ctx.stroke();ctx.beginPath();ctx.moveTo(0,oy+i*sc);ctx.lineTo(W,oy+i*sc);ctx.stroke();}
-    ctx.strokeStyle='#1c1a15';ctx.lineWidth=2;
+    ctx.strokeStyle=C('ink');ctx.lineWidth=2;
     ctx.beginPath();ctx.moveTo(0,oy);ctx.lineTo(W,oy);ctx.stroke();ctx.beginPath();ctx.moveTo(ox,0);ctx.lineTo(ox,H);ctx.stroke();
-    ctx.strokeStyle='#0d5c46';ctx.lineWidth=4;ctx.beginPath();
+    ctx.strokeStyle=C('accent');ctx.lineWidth=4;ctx.beginPath();
     if(kind==='line0'){ctx.moveTo(ox-9*sc,oy+9*sc);ctx.lineTo(ox+9*sc,oy-9*sc);}
     else if(kind==='line1'){ctx.moveTo(ox-9*sc,oy+9*sc-sc);ctx.lineTo(ox+9*sc,oy-9*sc-sc);}
     else if(kind==='xaxis'){ctx.moveTo(0,oy);ctx.lineTo(W,oy);}
-    else{ctx.fillStyle='#0d5c4633';ctx.fillRect(ox,0,W-ox,oy);}
+    else{ctx.fillStyle=C('accent')+'33';ctx.fillRect(ox,0,W-ox,oy);}
     if(kind!=='quad')ctx.stroke();
-    ctx.fillStyle='#c2562f';ctx.beginPath();ctx.arc(ox,oy,6,0,7);ctx.fill();
+    ctx.fillStyle=C('terra');ctx.beginPath();ctx.arc(ox,oy,6,0,7);ctx.fill();
   }
   var VERD={
     line0:"الخط <span class='coord'>y = x</span>: الصفر موجود · الجمع مغلق <span class='coord'>(1,1)+(2,2)=(3,3)</span> على الخط · الضرب مغلق <span class='coord'>5·(1,1)</span> على الخط → <b>فضاء جزئي</b>",
@@ -246,6 +251,9 @@
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+  new MutationObserver(draw).observe(document.documentElement,
+    {attributes:true,attributeFilter:['data-theme']});
+  addEventListener('resize',function(){clearTimeout(window.__rt);window.__rt=setTimeout(draw,120);});
 })();
 </script>
 <script src="../assets/site.js"></script>
