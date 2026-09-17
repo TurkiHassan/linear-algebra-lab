@@ -57,7 +57,7 @@
       return f;};
     f.X=function(x){return f.ox+x*f.sc;};
     f.Y=function(y){return f.oy-y*f.sc;};
-    f.clear=function(){f.hidpi();var c=f.col();ctx.clearRect(0,0,f.W,f.H);ctx.fillStyle=c.paper;ctx.fillRect(0,0,f.W,f.H);};
+    f.clear=function(){f.hidpi();var c=f.col();ctx.clearRect(0,0,f.W,f.H);ctx.fillStyle=c.paper;ctx.fillRect(0,0,f.W,f.H);return f;};
     f.grid=function(){
       var c=f.col(),i;ctx.save();ctx.strokeStyle=c.line;ctx.lineWidth=1;
       for(i=Math.ceil(-f.ox/f.sc);f.X(i)<f.W;i++){ctx.beginPath();ctx.moveTo(f.X(i),0);ctx.lineTo(f.X(i),f.H);ctx.stroke();}
@@ -107,6 +107,9 @@
       ctx.save();ctx.fillStyle=col;ctx.font='600 13px ui-monospace,Menlo,Consolas,monospace';
       ctx.textAlign='center';ctx.textBaseline='middle';
       ctx.fillText(s,f.X(p[0])+(dx||0),f.Y(p[1])+(dy||0));ctx.restore();return f;};
+    f.label=function(p,s,col,d){ /* وسم مزاح بعيداً عن الأصل في اتجاه p — فلا يركب السهم */
+      var n=Math.hypot(p[0],p[1])||1, k=(d==null?26:d);
+      return f.tag(p,s,col,p[0]/n*k,-p[1]/n*k);};
     f.note=function(px,py,s,col){
       ctx.save();ctx.fillStyle=col;ctx.font='12px ui-monospace,Menlo,Consolas,monospace';
       ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText(s,px,py);ctx.restore();return f;};

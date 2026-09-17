@@ -138,6 +138,11 @@
       <h3>كاشف التعامد</h3>
       <p class="hint">اضغط لتوليد زوج عشوائي — خمّن أولاً ثم اكشف</p>
       <div class="controls"><button class="btn" id="orthGo">ولّد زوجاً</button><button class="btn ghost" id="orthReveal">اكشف التعامد</button></div>
+      <div class="controls"><label>أو جرّب زوجك <span class="coord">u</span>
+        <input type="number" id="otu1" value="3"><input type="number" id="otu2" value="4"></label>
+        <label><span class="coord">v</span>
+        <input type="number" id="otv1" value="-4"><input type="number" id="otv2" value="3"></label>
+        <button class="btn" id="orthTry">افحص هذا الزوج</button></div>
       <div class="kmath" id="orthStage" style="min-height:56px"></div>
       <div class="readout" id="orthRO" style="direction:rtl;text-align:right">خمّن أولاً، ثم اكشف…</div>
     </div>
@@ -287,6 +292,15 @@ Pythagoras, because they are perpendicular
   new MutationObserver(draw).observe(document.documentElement,
     {attributes:true,attributeFilter:['data-theme']});
   addEventListener('resize',function(){clearTimeout(window.__rt);window.__rt=setTimeout(draw,120);});
+
+  /* زوج من عند المتعلم لا من المولّد العشوائي */
+  document.getElementById('orthTry').onclick=function(){
+    var a=[+document.getElementById('otu1').value,+document.getElementById('otu2').value],
+        b=[+document.getElementById('otv1').value,+document.getElementById('otv2').value];
+    OU={a:a,b:b,dot:a[0]*b[0]+a[1]*b[1]};
+    tex(document.getElementById('orthStage'),"u=("+a+") \\quad v=("+b+") \\quad u\\cdot v = ?");
+    document.getElementById('orthRO').innerHTML="زوجك جاهز — خمّن أولاً، ثم اضغط «اكشف التعامد».";
+  };
 })();
 </script>
 <script src="../assets/site.js"></script>

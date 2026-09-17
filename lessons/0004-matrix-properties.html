@@ -111,6 +111,22 @@
     <div class="analogy"><b>تشبيه: قوانين المرور</b><p>الإبدال كطريق ذي اتجاهين للجمع فقط — أما الضرب فطريق واحد: <span class="coord">AB ≠ BA</span> غالباً. الوحدة <span class="coord">I</span> كالدوار الذي يعيدك إلى نفس الشارع. <span class="en" lang="en" dir="ltr">Addition commutes, multiplication usually does not, I is the roundabout back to A.</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> كل قوانين الأعداد المدرسية تنتقل للمصفوفات <b>إلا</b> إبدال الضرب. قبل أن تبادل <span class="coord">AB</span> إلى <span class="coord">BA</span> توقف واسأل. <span class="en" lang="en" dir="ltr">(Everything transfers except AB = BA.)</span></p></div>
     <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Law · CELL BY CELL">
+      <h3>الطرفان خلية بخلية</h3>
+      <p class="hint">اختر القانون وحرّك <span class="coord">c</span> — اللوحة تحسب الطرفين وتلوّن كل خلية: أخضر إن تطابقا، طيني إن اختلفا</p>
+      <div class="controls"><label>القانون
+        <select id="lwPick">
+          <option value="comm">A + B = B + A</option>
+          <option value="dist">c(A + B) = cA + cB</option>
+          <option value="neg">A + (−A) = 0</option>
+          <option value="czero">cA — متى يكون صفراً؟</option>
+        </select></label>
+        <label><span class="coord">c</span> <input type="range" id="lwC" min="-3" max="3" step="1" value="2"></label><span class="coord" id="lwCval">2</span></div>
+      <canvas id="lwCanvas" width="640" height="300" role="img"
+              aria-label="شبكتان من أربع خلايا لكل طرف من طرفي القانون، وكل خلية ملوّنة بحسب تطابق الطرفين"></canvas>
+      <p class="figcap">المصفوفتان ثابتتان: <span class="coord">A = [[1,2],[3,4]]</span> و<span class="coord">B = [[0,5],[−1,2]]</span> — وهما مصفوفتا المثال المحسوب</p>
+      <div class="readout" id="lwRO" style="direction:rtl;text-align:right">اختر قانوناً…</div>
+    </div>
   </section>
 
   <section id="s2">
@@ -236,9 +252,11 @@ and the zero family, on the same A
   <footer class="footer"><span>الدرس 0004 · خصائص المصفوفات والمصفوفة الصفرية</span><span>التمرين: <code lang="en">python3 practice/0004-matrix-properties.py</code> · <a href="../playground.html?ex=0004-matrix-properties">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme;
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"A{+}B{=}B{+}A \\;\\; (cd)A{=}c(dA) \\;\\; IA{=}A \\;\\; c(A{+}B){=}cA{+}cB");
   function rnd(n){var a=[];for(var i=0;i<n;i++)a.push(Math.floor(Math.random()*7)-3);return a;}
@@ -279,6 +297,58 @@ and the zero family, on the same A
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+
+  /* القانون خلية بخلية: الطرفان محسوبان ومرسومان جنباً إلى جنب */
+  var lwF = FIG('lwCanvas'), lwPick = document.getElementById('lwPick'),
+      lwC = document.getElementById('lwC'), lwCval = document.getElementById('lwCval'),
+      lwRO = document.getElementById('lwRO'),
+      LW_A = [[1,2],[3,4]], LW_B = [[0,5],[-1,2]];
+  function lwMap(M,fn){return M.map(function(r,i){return r.map(function(v,j){return fn(v,i,j);});});}
+  function lwAdd(M,N){return lwMap(M,function(v,i,j){return v+N[i][j];});}
+  function lwScale(M,c){return lwMap(M,function(v){return c*v;});}
+  function lwSides(){
+    var c=+lwC.value;
+    switch(lwPick.value){
+      case 'comm':  return {L:lwAdd(LW_A,LW_B), R:lwAdd(LW_B,LW_A),
+                            lt:'A + B', rt:'B + A',
+                            say:'الجمع إبدالي لأنه يجري خلية بخلية، والأعداد إبدالية.'};
+      case 'dist':  return {L:lwScale(lwAdd(LW_A,LW_B),c), R:lwAdd(lwScale(LW_A,c),lwScale(LW_B,c)),
+                            lt:'c(A + B)', rt:'cA + cB',
+                            say:'التوزيع يصح لأيّ <span class="coord">c</span> — جرّب الصفر والسالب.'};
+      case 'neg':   return {L:lwAdd(LW_A,lwScale(LW_A,-1)), R:[[0,0],[0,0]],
+                            lt:'A + (-A)', rt:'0',
+                            say:'المقابل يلغي كل خلية على حدة، فالناتج المصفوفة الصفرية.'};
+      default:      return {L:lwScale(LW_A,c), R:[[0,0],[0,0]],
+                            lt:'cA', rt:'0',
+                            say:(c===0?'عند <span class="coord">c = 0</span> فقط يتساوى الطرفان، و<span class="coord">A</span> غير صفرية — فالصفر جاء من العدد لا من المصفوفة.'
+                                      :'الطرفان مختلفان ما دام <span class="coord">c ≠ 0</span> — حرّك <span class="coord">c</span> إلى الصفر.')};
+    }
+  }
+  function lwGrid(M,x0,same,C){                 /* شبكة 2×2 عند x0، وكل خلية بلونها */
+    for(var i=0;i<2;i++) for(var j=0;j<2;j++){
+      var x=x0+j, y=1-i, ok=same[i][j];
+      lwF.poly([[x,y],[x+1,y],[x+1,y-1],[x,y-1]], ok?C.accent:C.terra, (ok?C.accent:C.terra)+'1e', 1.8);
+      lwF.tag([x+.5,y-.5], String(Math.round(M[i][j]*100)/100), ok?C.accent:C.terra);
+    }
+  }
+  function lwDraw(){
+    if(!lwF) return;
+    var C=lwF.col(), S=lwSides(), all=true;
+    lwCval.textContent = lwC.value;
+    var same=[[0,0],[0,0]].map(function(r,i){return r.map(function(_,j){
+      var eq=Math.abs(S.L[i][j]-S.R[i][j])<1e-9; if(!eq) all=false; return eq;});});
+    lwF.view(Math.min(82,(lwF.W-40)/7.4,(lwF.H-96)/2), lwF.W/2, lwF.H/2+14).clear();
+    lwGrid(S.L,-3.7,same,C);
+    lwGrid(S.R, 1.7,same,C);
+    lwF.tag([0,0], all?'=':'≠', all?C.accent:C.terra, 0, 0);
+    lwF.note(lwF.X(-3.7), lwF.Y(1)-26, S.lt, C.ink);
+    lwF.note(lwF.X(1.7),  lwF.Y(1)-26, S.rt, C.ink);
+    lwRO.innerHTML = (all?'الطرفان متطابقان خلية بخلية. ':'الطرفان مختلفان. ') + S.say;
+    lwRO.style.color = all?C.accent:C.terra;
+  }
+  lwPick.addEventListener('change',lwDraw);
+  lwC.addEventListener('input',lwDraw);
+  onTheme(lwDraw); lwDraw();
 })();
 </script>
 <script src="../assets/site.js"></script>

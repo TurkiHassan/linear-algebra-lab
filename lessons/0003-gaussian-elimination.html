@@ -131,6 +131,15 @@
     <div class="analogy"><b>تشبيه: ترتيب المكتبة</b><p>لا ترمي الكتب ولا تشتري جديدة — فقط رتّب: ضاعف رفاً، أو بدّل رفين، أو انقل نسخاً من رف إلى آخر. المحتوى الكلي ثابت، وفي النهاية يبقى في كل رف كتاب واحد فقط. <span class="en" lang="en" dir="ltr">Reorganise, never discard: the solution set stays identical.</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> اجعل <span class="term">القائد</span> <span class="en" lang="en" dir="ltr">(pivot)</span> يساوي <span class="coord">1</span>، ثم صفّر كل ما تحته، عموداً بعد عمود، من اليسار إلى اليمين. <span class="en" lang="en" dir="ltr">(Ones on the diagonal, zeros below — left to right.)</span></p></div>
     <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Row op · INVARIANT">
+      <h3>لماذا لا تغيّر الحركات الحل؟</h3>
+      <p class="hint">حرّك <span class="coord">λ</span> في <span class="coord">R₂ ← R₂ + λ·R₁</span> — الخط الثاني يدور حول التقاطع، والتقاطع لا يتحرك</p>
+      <div class="controls"><label><span class="coord">λ</span> <input type="range" id="roL" min="-3" max="3" step="0.25" value="0"></label><span class="coord" id="roLv">0</span><button class="btn ghost" id="roZero">أعِد λ إلى الصفر</button></div>
+      <canvas id="roCv" width="640" height="360" role="img"
+              aria-label="خطان يمثلان معادلتي المنظومة، والخط الثاني يدور حول نقطة التقاطع بتغير معامل الحركة"></canvas>
+      <p class="figcap">المنظومة <span class="coord">x + y = 3</span> و<span class="coord">x − y = 1</span> — والنقطة <span class="coord">(2, 1)</span> ثابتة مهما كان <span class="coord">λ</span></p>
+      <div class="readout" id="roRO" style="direction:rtl;text-align:right">المعادلة الثانية…</div>
+    </div>
   </section>
 
   <section id="s2">
@@ -272,9 +281,11 @@ check  1 + 4 + 3 = 8   OK
   <footer class="footer"><span>الدرس 0003 · الحذف الغاوسي خطوة بخطوة</span><span>التمرين: <code lang="en">python3 practice/0003-gaussian-elimination.py</code> · <a href="../playground.html?ex=0003-gaussian-elimination">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme;
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   function mxHTML(rows,piv,chg){
     var n=rows[0].length;
@@ -344,6 +355,37 @@ check  1 + 4 + 3 = 8   OK
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+
+  /* الحركة الصفّية لا تحرّك الحل: الخط يدور حول نقطة التقاطع */
+  var roF = FIG('roCv'), roL = document.getElementById('roL'),
+      roLv = document.getElementById('roLv'), roRO = document.getElementById('roRO');
+  function roSeg(a,b,c,k){
+    if(Math.abs(b)>=Math.abs(a)){ if(Math.abs(b)<1e-9) return null;
+      return [[-k,(c+a*k)/b],[k,(c-a*k)/b]]; }
+    return [[(c+b*k)/a,-k],[(c-b*k)/a,k]];
+  }
+  function roDraw(){
+    if(!roF) return;
+    var L=+roL.value, C=roF.col();
+    var a=1+L, b=-1+L, c=1+3*L;          /* R2 + λ·R1 على x−y=1 و x+y=3 */
+    roLv.textContent = L;
+    roF.fit([[2,1],[0,0],[4,4],[-2,-2]],34,52).clear().grid();
+    var k=(roF.W+roF.H)/roF.sc;
+    var s1=roSeg(1,1,3,k); if(s1) roF.line(s1[0],s1[1],C.accent,2.4);
+    var s0=roSeg(1,-1,1,k); if(s0) roF.line(s0[0],s0[1],C.line,2,[5,5]);
+    var s2=roSeg(a,b,c,k); if(s2) roF.line(s2[0],s2[1],C.terra,2.6);
+    roF.dot([2,1],C.ink,6).tag([2,1],'(2, 1)',C.ink,34,-20);
+    roF.note(12,12,'R1 :  x + y = 3',C.accent);
+    roF.note(12,30,'R2 :  x - y = 1   (original, dashed)',C.soft);
+    roF.note(12,48,'R2 + '+L+'*R1',C.terra);
+    var f=function(v){return (Math.round(v*100)/100);};
+    roRO.innerHTML = 'الثانية صارت <span class="coord">'+f(a)+'x + '+f(b)+'y = '+f(c)+'</span> — '+
+      (Math.abs(a-1)<1e-9&&Math.abs(b+1)<1e-9 ? 'وهي المعادلة الأصلية نفسها' :
+       'وما زالت تمر بالنقطة نفسها: <span class="coord">'+f(a)+'·2 + '+f(b)+'·1 = '+f(2*a+b)+'</span>');
+  }
+  roL.addEventListener('input',roDraw);
+  document.getElementById('roZero').onclick=function(){roL.value=0;roDraw();};
+  onTheme(roDraw); roDraw();
 })();
 </script>
 <script src="../assets/site.js"></script>

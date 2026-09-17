@@ -145,6 +145,9 @@
       <div class="controls"><label>a <input type="number" id="ia" value="2"></label><label>b <input type="number" id="ib" value="-3"></label><label>c <input type="number" id="ic" value="1"></label><label>d <input type="number" id="id" value="2"></label><button class="btn" id="invGo">احسب النظير</button></div>
       <div class="kmath" id="invStage" style="min-height:60px"></div>
       <div class="readout" id="invRO" style="direction:rtl;text-align:right">det = ?</div>
+      <canvas id="invCv" width="640" height="340" role="img"
+              aria-label="مربع الوحدة وصورته تحت المصفوفة، ومساحة الصورة تساوي القيمة المطلقة للمحدد"></canvas>
+      <p class="figcap">مربع الوحدة الرمادي وصورته الخضراء تحت <span class="coord">A</span> — ومساحتها <span class="coord">|det A|</span>؛ فإذا انهارت الصورة إلى قطعة فالمحدد صفر ولا نظير</p>
       <div class="why" id="invWhy"></div>
     </div>
     <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
@@ -244,9 +247,11 @@ A * A^-1 = [ 1  0 ] = I   OK
   <footer class="footer"><span>الدرس 0002 · المصفوفات والعمليات والنظير الضربي</span><span>التمرين: <code lang="en">python3 practice/0002-matrices-inverse.py</code> · <a href="../playground.html?ex=0002-matrices-inverse">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme;
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"(A)_{m\\times n} \\quad +: \\text{ same shape} \\qquad AB: (m\\times n)(n\\times p)=(m\\times p)");
   var mR=document.getElementById('mR'),mC=document.getElementById('mC'),mG=document.getElementById('mGrid'),mRO=document.getElementById('mRO');
@@ -271,6 +276,27 @@ A * A^-1 = [ 1  0 ] = I   OK
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+
+  /* المحدد مساحةً: مربع الوحدة وصورته تحت A */
+  var ivF = FIG('invCv'), ivIn = ['ia','ib','ic','id'].map(function(i){return document.getElementById(i);});
+  function ivDraw(){
+    if(!ivF) return;
+    var a=+ivIn[0].value,b=+ivIn[1].value,c=+ivIn[2].value,d=+ivIn[3].value,C=ivF.col();
+    var A=[0,0], e1=[a,c], e2=[b,d], e12=[a+b,c+d];        /* أعمدة A هما صورتا e1 و e2 */
+    var det=a*d-b*c, flat=Math.abs(det)<1e-9;
+    ivF.fit([e1,e2,e12,[1,1],[-1,-1]],30,120).clear().grid();
+    ivF.poly([[0,0],[1,0],[1,1],[0,1]],C.soft,null,1.6,[5,5]);
+    ivF.tag([.5,.5],'1',C.soft);
+    ivF.poly([A,e1,e12,e2],flat?C.terra:C.accent,(flat?C.terra:C.accent)+'22',2.4);
+    ivF.arrow(A,e1,C.accent).label(e1,'A e1',C.accent,30);
+    ivF.arrow(A,e2,C.vio).label(e2,'A e2',C.vio,30);
+    ivF.note(12,12,'det A = '+(Math.round(det*1000)/1000),flat?C.terra:C.ink);
+    ivF.note(12,30,flat?'area 0  ->  collapsed, no inverse':'area = |det A| = '+(Math.round(Math.abs(det)*1000)/1000),
+             flat?C.terra:C.soft);
+  }
+  ivIn.forEach(function(el){el.addEventListener('input',ivDraw);});
+  var ivB=document.getElementById('invGo'); if(ivB) ivB.addEventListener('click',ivDraw);
+  onTheme(ivDraw); ivDraw();
 })();
 </script>
 <script src="../assets/site.js"></script>

@@ -189,6 +189,8 @@ the same thing as a matrix
       <h3>آلة الدوران</h3>
       <p class="hint">أدخل متجهاً وزاوية بالدرجات — اللوحة تدوّره وتتحقق من حفظ الطول</p>
       <div class="controls"><label>x <input type="number" id="r1" value="1"><input type="number" id="r2" value="0"></label><label>θ° <input type="number" id="rt" value="45" step="15"></label><button class="btn" id="rGo">أدِر</button></div>
+      <div class="controls"><label>أو اسحب الزاوية
+        <input type="range" id="rtRange" min="-180" max="180" step="5" value="45"></label><span class="coord" id="rtRv">45°</span></div>
       <canvas id="rtCv" width="640" height="340" role="img"
               aria-label="المتجه قبل الدوران وبعده على دائرة نصف قطرها طوله، والقوس يبيّن الزاوية"></canvas>
       <p class="figcap">الطرفان على الدائرة نفسها: الدوران يغيّر الاتجاه ولا يمسّ الطول</p>
@@ -366,6 +368,14 @@ the same thing as a matrix
       opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
+  });
+
+  /* سحب الزاوية: النقطة تركب الدائرة والطول لا يتغير */
+  var rtRange=document.getElementById('rtRange'), rtRv=document.getElementById('rtRv');
+  rtRange.addEventListener('input',function(){
+    rtRv.textContent=rtRange.value+'°';
+    document.getElementById('rt').value=rtRange.value;
+    document.getElementById('rGo').click();
   });
 })();
 </script>

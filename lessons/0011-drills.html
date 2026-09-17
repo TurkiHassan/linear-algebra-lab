@@ -175,6 +175,9 @@ answer   basis: yes       [x]_B = (2, 1)</pre>
       <div class="kmath" id="drStage" style="min-height:56px"></div>
       <div class="controls"><label>إجابتك <input type="number" id="drAns" value="0"></label><button class="btn" id="drCheck">صحح</button></div>
       <div class="score" id="drScore">النقاط: 0 / 0</div>
+      <canvas id="drCv" width="640" height="320" role="img"
+              aria-label="التدريب الحالي مرسوماً: متجهان ومتوازي الأضلاع بينهما أو الزاوية بينهما"></canvas>
+      <p class="figcap">التدريب نفسه مرسوماً: المحدد مساحةً، والضرب الداخلي زاويةً — اضغط «تدريب جديد» ليتغيّر الرسم معه</p>
       <div class="readout" id="drRO" style="direction:rtl;text-align:right">اختر مهارة ثم اضغط «تدريب جديد»…</div>
     </div>
   </section>
@@ -246,9 +249,11 @@ answer   basis: yes       [x]_B = (2, 1)</pre>
   <footer class="footer"><span>الدرس 0011 · بنك التدريبات مع الحلول</span><span>التمرين: <code lang="en">python3 practice/0011-drills.py</code> · <a href="../playground.html?ex=0011-drills">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme;
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   var cur=null,got=0,total=0;
   function rnd(a,b){return Math.floor(Math.random()*(b-a+1))+a;}
@@ -288,6 +293,36 @@ answer   basis: yes       [x]_B = (2, 1)</pre>
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+
+  /* التدريب الحالي مرسوماً — الرقم الذي تحسبه له صورة */
+  var drF = FIG('drCv');
+  function drDraw(){
+    if(!drF) return;
+    var C=drF.col();
+    if(!cur){ drF.fit([[1,1],[-1,-1]],30,70).clear().grid();
+      drF.note(12,12,'press "new drill" to see it drawn',C.soft); return; }
+    var u=[cur.a,cur.b], v=[cur.c,cur.d], det=cur.a*cur.d-cur.b*cur.c;
+    drF.fit([u,v,[u[0]+v[0],u[1]+v[1]],[1,1],[-1,-1]],30,64).clear().grid();
+    if(cur.sk==='dot'){
+      var nu=Math.hypot(u[0],u[1]), nv=Math.hypot(v[0],v[1]), dp=cur.a*cur.c+cur.b*cur.d;
+      if(nu>1e-9&&nv>1e-9){
+        var a0=Math.atan2(u[1],u[0]), a1=Math.atan2(v[1],v[0]);
+        drF.arc(Math.min(a0,a1),Math.max(a0,a1),Math.min(nu,nv)*.4,C.soft);
+        drF.note(12,30,'angle = '+(Math.round(Math.acos(Math.max(-1,Math.min(1,dp/(nu*nv))))*180/Math.PI*10)/10)+' deg',C.soft);
+      }
+      drF.note(12,12,'dot = '+dp,C.ink);
+    } else {
+      var flat=Math.abs(det)<1e-9;
+      drF.poly([[0,0],u,[u[0]+v[0],u[1]+v[1]],v], flat?C.terra:C.accent, (flat?C.terra:C.accent)+'1e', 2);
+      drF.note(12,12,'det = '+det+(flat?'   ->  flat, dependent':'   ->  area = '+Math.abs(det)),flat?C.terra:C.ink);
+    }
+    drF.arrow([0,0],u,C.accent).label(u,'u',C.accent,22);
+    drF.arrow([0,0],v,C.vio).label(v,'v',C.vio,22);
+  }
+  var drNew=document.getElementById('newD'), drPrev=drNew.onclick;
+  drNew.onclick=function(e){ if(drPrev) drPrev.call(this,e); drDraw(); };
+  document.getElementById('skill').addEventListener('change',drDraw);
+  onTheme(drDraw); drDraw();
 })();
 </script>
 <script src="../assets/site.js"></script>

@@ -123,6 +123,13 @@
       <h3>المساطر الثلاث</h3>
       <p class="hint">أدخل متجهاً — اللوحة تقيسه بالمعايير الثلاثة وترتّبها</p>
       <div class="controls"><label>x₁ <input type="number" id="v1" value="3"></label><label>x₂ <input type="number" id="v2" value="-4"></label><label>x₃ <input type="number" id="v3" value="0"></label><button class="btn" id="vGo">قِس</button></div>
+      <div class="controls"><label>أبرِز المسطرة
+        <select id="nbPick">
+          <option value="all">الثلاث معاً</option>
+          <option value="l1">‎ℓ₁‎ — المعيّن</option>
+          <option value="l2">‎ℓ₂‎ — الدائرة</option>
+          <option value="li">‎ℓ∞‎ — المربع</option>
+        </select></label></div>
       <canvas id="nbCv" width="640" height="340" role="img"
               aria-label="كرات الوحدة الثلاث في المستوى: معيّن لمعيار المجموع، ودائرة للإقليدي، ومربع لمعيار الأكبر"></canvas>
       <p class="figcap">كرة الوحدة لكل مسطرة: <span class="coord">ℓ₁</span> معيّن، و <span class="coord">ℓ₂</span> دائرة، و <span class="coord">ℓ∞</span> مربع — وزوايا المعيّن على المحاور هي سرّ التخلخل</p>
@@ -261,9 +268,12 @@ lies inside [-1, 1]  -&gt;  an angle exists:  w = 116.57 degrees</pre>
     var col=fig.col();
     fig.view(Math.min(110,(fig.H/2-34)/1.45),fig.W/2,fig.H/2);
     fig.clear();fig.grid();
-    fig.poly([[1,0],[0,1],[-1,0],[0,-1]],col.terra,col.terra+'18',2.4);
-    fig.circle(1,col.accent,2.4);
-    fig.poly([[1,1],[-1,1],[-1,-1],[1,-1]],col.vio,null,2.2,[7,5]);
+    var pick=(document.getElementById('nbPick')||{}).value||'all';
+    var on=function(k){return pick==='all'||pick===k;};
+    var dim=function(c){return c+'33';};          /* المسطرة غير المختارة تبهت */
+    fig.poly([[1,0],[0,1],[-1,0],[0,-1]],on('l1')?col.terra:dim(col.terra),on('l1')?col.terra+'18':null,on('l1')?2.8:1.4);
+    fig.circle(1,on('l2')?col.accent:dim(col.accent),on('l2')?2.8:1.4);
+    fig.poly([[1,1],[-1,1],[-1,-1],[1,-1]],on('li')?col.vio:dim(col.vio),null,on('li')?2.6:1.4,[7,5]);
     fig.tag([0.62,0.62],'L1',col.terra,0,0);
     fig.tag([0,1],'L2',col.accent,0,-16);
     fig.tag([1,1],'Linf',col.vio,-4,-14);
@@ -279,6 +289,7 @@ lies inside [-1, 1]  -&gt;  an angle exists:  w = 116.57 degrees</pre>
   }
   onTheme(drawBalls);
   ['v1','v2'].forEach(function(id){document.getElementById(id).oninput=drawBalls;});
+  document.getElementById('nbPick').addEventListener('change',drawBalls);
   drawBalls();
   document.getElementById('vGo').onclick=function(){
     var x=[+document.getElementById('v1').value,+document.getElementById('v2').value,+document.getElementById('v3').value];

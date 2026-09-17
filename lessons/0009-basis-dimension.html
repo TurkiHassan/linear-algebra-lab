@@ -139,6 +139,9 @@
       <p class="hint">الأساس ثابت <span class="coord">(1,1), (1,−1)</span> — أدخل هدفك <span class="coord">(x,y)</span></p>
       <div class="controls"><label>x <input type="number" id="gx" value="4"></label><label>y <input type="number" id="gy" value="2"></label><button class="btn" id="gGo">جد الإحداثيات</button></div>
       <div class="readout" id="gRO" style="direction:rtl;text-align:right">coordinates = ?</div>
+      <canvas id="coCv" width="640" height="340" role="img"
+              aria-label="شبكة الأساس المائل والنقطة الهدف، ومركّبتاها على متجهي الأساس"></canvas>
+      <p class="figcap">النقطة نفسها بعنوانين: الشبكة الرمادية هي الأساس المعياري، والخضراء المائلة هي <span class="coord">(1,1), (1,−1)</span></p>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الإحداثيات تتبع الأساس: النقطة نفسها <span class="coord">(4,2)</span> إحداثياتها <span class="coord">(4,2)</span> في المعياري و <span class="coord">(3,1)</span> في المائل. لا تخلط دفتر العناوين! <span class="en" lang="en" dir="ltr">(Same point, different address book.)</span></p></div>
     <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
@@ -241,9 +244,11 @@ same point, new address book:
   <footer class="footer"><span>الدرس 0009 · الأساس والأبعاد</span><span>التمرين: <code lang="en">python3 practice/0009-basis-dimension.py</code> · <a href="../playground.html?ex=0009-basis-dimension">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme;
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"\\mathcal{B} \\text{ basis} \\iff \\text{independent } + \\text{ spanning} \\qquad \\dim V = |\\mathcal{B}|");
   var C={std:{v:"(1,0),(0,1)",det:1,ind:true,span:true},tilt:{v:"(1,1),(1,−1)",det:-2,ind:true,span:true},par:{v:"(1,1),(2,2)",det:0,ind:false,span:false}};
@@ -271,6 +276,36 @@ same point, new address book:
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+
+  /* عنوانان لنقطة واحدة: الشبكة المعيارية والشبكة المائلة */
+  var coF = FIG('coCv'), coX = document.getElementById('gx'), coY = document.getElementById('gy'),
+      CO_B1 = [1,1], CO_B2 = [1,-1];
+  function coDraw(){
+    if(!coF) return;
+    var x=[+coX.value,+coY.value], C=coF.col();
+    var det=CO_B1[0]*CO_B2[1]-CO_B1[1]*CO_B2[0];
+    var c1=(x[0]*CO_B2[1]-x[1]*CO_B2[0])/det, c2=(CO_B1[0]*x[1]-CO_B1[1]*x[0])/det;
+    var p1=[c1*CO_B1[0],c1*CO_B1[1]];
+    coF.fit([x,p1,CO_B1,CO_B2,[-1,-1]],32,80).clear().grid();
+    var i,k=7;                                   /* شبكة الأساس المائل */
+    for(i=-k;i<=k;i++){
+      coF.line([i*CO_B1[0]-k*CO_B2[0], i*CO_B1[1]-k*CO_B2[1]],
+               [i*CO_B1[0]+k*CO_B2[0], i*CO_B1[1]+k*CO_B2[1]], C.accent+'33', 1);
+      coF.line([i*CO_B2[0]-k*CO_B1[0], i*CO_B2[1]-k*CO_B1[1]],
+               [i*CO_B2[0]+k*CO_B1[0], i*CO_B2[1]+k*CO_B1[1]], C.accent+'33', 1);
+    }
+    coF.arrow([0,0],CO_B1,C.accent).label(CO_B1,'b1',C.accent,26);
+    coF.arrow([0,0],CO_B2,C.vio).label(CO_B2,'b2',C.vio,26);
+    coF.line([0,0],p1,C.accent,2.6);
+    coF.line(p1,x,C.vio,2.6);
+    coF.dot(x,C.ink,6).tag(x,'('+x[0]+', '+x[1]+')',C.ink,34,-20);
+    var f=function(v){return Math.round(v*1000)/1000;};
+    coF.note(12,12,'standard : ('+x[0]+', '+x[1]+')',C.soft);
+    coF.note(12,30,'in B     : ('+f(c1)+', '+f(c2)+')',C.ink);
+  }
+  [coX,coY].forEach(function(el){el.addEventListener('input',coDraw);});
+  var coB=document.getElementById('gGo'); if(coB) coB.addEventListener('click',coDraw);
+  onTheme(coDraw); coDraw();
 })();
 </script>
 <script src="../assets/site.js"></script>

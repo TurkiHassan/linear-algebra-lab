@@ -26,9 +26,11 @@ section{scroll-margin-top:24px}
 .pager .next{margin-inline-start:auto;text-align:left}
 .pager .home{flex:0 0 auto;display:inline-flex;align-items:center;padding-inline:22px}
 
-/* Canvas demos must keep their intrinsic aspect ratio (the parallelogram
-   area demo is geometrically distorted by a forced CSS height). */
-canvas{height:auto}
+/* One canvas contract for every lesson. A forced CSS height distorts the
+   figure, and a canvas with no max-width feeds its own hi-DPI resize: the
+   backing store grows the CSS box, which grows the backing store again. */
+canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;direction:ltr}
 
 /* --- small screens ----------------------------------------------------- */
 @media(max-width:700px){
