@@ -116,6 +116,9 @@
     <div class="analogy"><b>تشبيه: ثلاث طرق لقياس المسافة في المدينة</b><p><span class="coord">ℓ₂</span> مسافة الطائر في خط مستقيم، و <span class="coord">ℓ₁</span> مسافة سيارة الأجرة عبر الشوارع المتعامدة (ولهذا تُسمى «معيار مانهاتن»)، و <span class="coord">ℓ∞</span> أطول ضلع في الرحلة. ثلاث مساطر صادقة لمسافة واحدة. <span class="en" lang="en" dir="ltr">(Bird, taxi, longest leg.)</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> شكل «كرة الوحدة» يفضح طبيعة المعيار: مربّع مائل (معيّن) لـ <span class="coord">ℓ₁</span>، ودائرة لـ <span class="coord">ℓ₂</span>، ومربّع قائم لـ <span class="coord">ℓ∞</span>. وزوايا معيّن <span class="coord">ℓ₁</span> تقع على المحاور — ولهذا يولّد <span class="term">التخلخل</span> <span class="en" lang="en" dir="ltr">(sparsity)</span> في <span class="coord">Lasso</span>.</p></div>
     <div class="kmath" id="k1"></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>متجه معياره <span class="coord">ℓ∞</span> يساوي <span class="coord">4</span>. ماذا تعرف عن معياره <span class="coord">ℓ₂</span> قبل أن تحسبه؟</p>
+      <details><summary>اكشف الجواب</summary><p>أنه لا يقل عن <span class="coord">4</span>. الترتيب <span class="coord">‖x‖∞ ≤ ‖x‖₂ ≤ ‖x‖₁</span> يصح لكل متجه: المساطر الثلاث تقيس الحجم نفسه لكن بأسقف مختلفة. <span class="en" lang="en" dir="ltr">(The three norms are ordered, always.)</span></p></details></div>
     <div class="demo" data-label="Measure · NORMS">
       <h3>المساطر الثلاث</h3>
       <p class="hint">أدخل متجهاً — اللوحة تقيسه بالمعايير الثلاثة وترتّبها</p>
@@ -151,6 +154,33 @@
       <div class="readout" id="cRO" style="direction:rtl;text-align:right">الطرفان…</div>
     </div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>ال<span class="term">مسافة</span> تُبنى من المعيار: <span class="coord">d(x,y) = ‖x − y‖</span>. وأي دالة تحقق التعريف الموجب والتماثل ومتباينة المثلث تُسمى <span class="term">مترية</span> <span class="en" lang="en" dir="ltr">(metric)</span> — والمعيار طريق إليها لا شرط لها.</p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>متجه واحد على المساطر الثلاث، ثم كوشي–شفارتز تُختبر عليه:</p>
+      <pre dir="ltr">x = (3, -4)
+
+the three rulers
+
+  ||x||_1    = |3| + |-4|          = 3 + 4      = 7
+  ||x||_2    = sqrt(3^2 + (-4)^2)  = sqrt(25)   = 5
+  ||x||_inf  = max(|3|, |-4|)      = max(3, 4)  = 4
+
+they are always ordered this way
+
+  ||x||_inf  &lt;=  ||x||_2  &lt;=  ||x||_1
+      4      &lt;=     5     &lt;=     7        OK
+
+
+Cauchy-Schwarz, with y = (1, 2)
+
+  &lt;x, y&gt;              = 3*1 + (-4)*2 = 3 - 8 = -5
+  |&lt;x, y&gt;|            = 5
+  ||x||_2 * ||y||_2   = 5 * sqrt(1 + 4) = 5 * 2.2361 = 11.1803
+
+  5  &lt;=  11.1803        OK
+
+so the ratio &lt;x,y&gt; / (||x|| ||y||) = -5 / 11.1803 = -0.4472
+lies inside [-1, 1]  -&gt;  an angle exists:  w = 116.57 degrees</pre>
+      <p class="worked-note">كوشي–شفارتز ليست متباينة زائدة: هي التي تضمن أن النسبة تقع في <span class="coord">[−1, 1]</span> — ولولاها لما كان لـ <span class="coord">arccos</span> معنى، ولما وُجدت زاوية أصلاً.</p></div>
   </section>
 
   <section id="gain">
@@ -184,6 +214,17 @@
     <tr><td>كوشي–شفارتز</td><td><span class="en" lang="en" dir="ltr">Cauchy–Schwarz</span></td><td><span class="coord">|⟨x,y⟩| ≤ ‖x‖‖y‖</span></td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0016-norms-inner-products.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>norm_l1</code> — معيار مجموع القيم المطلقة</li>
+      <li><code>norm_l2</code> — المعيار الإقليدي</li>
+      <li><code>norm_linf</code> — معيار أكبر مركبة</li>
+      <li><code>inner_A</code> — الضرب الداخلي ‎⟨x,y⟩ = xᵀAy‎</li>
+      <li><code>is_positive_definite2</code> — هل ‎A‎ معرّفة موجبة؟</li>
+      <li><code>cauchy_schwarz_holds</code> — تحقق المتباينة عدديّاً</li>
+      <li><code>distance</code> — المسافة المستحثّة من المعيار</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

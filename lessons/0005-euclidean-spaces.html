@@ -119,6 +119,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> مختبر الضرب الداخلي والطول<span class="en-sub" lang="en">Drag u and v — watch dot, lengths and distance update live</span></h2>
     <p>من دفترك: <span class="term">الضرب الداخلي</span> <span class="en" lang="en" dir="ltr">(inner product)</span> هو <span class="coord">u·v = u₁v₁ + u₂v₂ + …</span> (ويُكتب أيضاً <span class="coord">⟨u,v⟩</span> في بعض المراجع)، و<span class="term">الطول</span> <span class="en" lang="en" dir="ltr">(length)</span> هو <span class="coord">‖u‖ = √(u₁² + u₂² + …)</span>، و<span class="term">المسافة</span> <span class="en" lang="en" dir="ltr">(distance)</span> هي <span class="coord">d(u,v) = ‖u − v‖</span>. حرّك المتجهين على اللوحة وشاهد الأرقام الثلاثة تتحرك.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>متجهان في <span class="coord">ℝ²</span> طول كلٍّ منهما <span class="coord">5</span>، والمسافة بينهما <span class="coord">7.071</span>. هل هما متعامدان؟</p>
+      <details><summary>اكشف الجواب</summary><p>نعم. <span class="coord">5² + 5² = 50</span> و<span class="coord">7.071² = 50</span>. فيثاغورس لا يتحقق إلا عند الزاوية القائمة، فتحقّقه شهادة تعامد. <span class="en" lang="en" dir="ltr">(Pythagoras holds exactly when the dot product vanishes.)</span></p></details></div>
     <div class="demo" data-label="Try · PLAY">
       <h3>ساحة المتجهات</h3>
       <p class="hint">حرّك المنزلقات — النقاط والأسهم والأرقام تتبعك لحظياً</p>
@@ -139,6 +142,25 @@
       <div class="readout" id="orthRO" style="direction:rtl;text-align:right">خمّن أولاً، ثم اكشف…</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>المتجه الصفري <span class="coord">(0,0)</span> طوله صفر وعمودي على الجميع — لكنه لا يصلح اتجاهاً ولا يُوحَّد (القسمة على صفر ممنوعة). <span class="en" lang="en" dir="ltr">(Zero vector: length 0, direction none.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>متجهان، وأربعة أرقام تُقرأ منهما: الضرب الداخلي والطولان والمسافة.</p>
+      <pre dir="ltr">u = ( 3,  4)        v = (-4,  3)
+
+dot
+  u . v = 3*(-4) + 4*3 = -12 + 12 = 0        -&gt; perpendicular
+
+lengths
+  ||u|| = sqrt(3^2 + 4^2)    = sqrt(9 + 16)  = sqrt(25) = 5
+  ||v|| = sqrt((-4)^2 + 3^2) = sqrt(16 + 9)  = sqrt(25) = 5
+
+distance
+  u - v    = (3 - (-4),  4 - 3) = (7, 1)
+  d(u, v)  = sqrt(7^2 + 1^2) = sqrt(50) = 7.0711
+
+Pythagoras, because they are perpendicular
+  ||u||^2 + ||v||^2 = 25 + 25 = 50
+  d(u, v)^2         = 50                      equal   OK</pre>
+      <p class="worked-note">الضرب الداخلي صفر واحد يختصر «الزاوية قائمة». وهو الرقم نفسه الذي يظهر في اللوحة أعلاه عند سحب المتجهين.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -181,6 +203,14 @@
     <tr><td>المسافة</td><td><span class="en" lang="en" dir="ltr">distance</span></td><td>طول الفرق بين متجهين</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0005-euclidean-spaces.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>dot</code> — الضرب الداخلي</li>
+      <li><code>norm</code> — طول المتجه</li>
+      <li><code>distance</code> — المسافة بين نقطتين</li>
+      <li><code>is_orthogonal</code> — هل الضرب الداخلي صفر؟</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

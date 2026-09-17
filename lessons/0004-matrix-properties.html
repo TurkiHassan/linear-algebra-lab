@@ -116,6 +116,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> مختبر التحقق العددي<span class="en-sub" lang="en">The panel checks each law on real numbers</span></h2>
     <p>اختر قانوناً — اللوحة تولّد مصفوفتين وثوابت عشوائية وتحسب الطرفين أمامك. كرر الضغط: إن تطابقا دائماً فالقانون صامد.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>المصفوفتان <span class="coord">A</span> و<span class="coord">B</span> كلتاهما غير صفرية. هل يمكن أن يكون <span class="coord">AB = 0</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p>نعم. خذ <span class="coord">A = [[1,0],[0,0]]</span> و<span class="coord">B = [[0,0],[0,1]]</span> فيكون <span class="coord">AB = 0</span>. الأعداد لا تحتمل هذا، أما المصفوفات فتحتمله — ولهذا لا يجوز «الاختصار» في المعادلات المصفوفية. <span class="en" lang="en" dir="ltr">(Matrices have zero divisors.)</span></p></details></div>
     <div class="demo" data-label="Verify · CHECK">
       <h3>فاحص القوانين</h3>
       <p class="hint">اختر القانون ثم اضغط «تحقق بأرقام جديدة» عدة مرات</p>
@@ -123,6 +126,33 @@
       <div class="readout" id="lawRO" style="direction:rtl;text-align:right">اختر قانوناً…</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>لا تختبر <span class="coord">AB = BA</span> هنا — ستجد مثالاً مضاداً بسرعة. جرّب <span class="coord">A = [[1,2],[0,1]]</span> و <span class="coord">B = [[0,1],[1,0]]</span> واحسب الطرفين. <span class="en" lang="en" dir="ltr">(One counterexample kills a false law.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>قانون التوزيع <span class="coord">c(A + B) = cA + cB</span> مُتحقَّقاً بالأرقام:</p>
+      <pre dir="ltr">A = [ 1  2 ]    B = [  0  5 ]    c = 3
+    [ 3  4 ]        [ -1  2 ]
+
+left-hand side
+  A + B    = [ 1+0   2+5 ] = [ 1  7 ]
+             [ 3-1   4+2 ]   [ 2  6 ]
+  c(A + B) = [ 3*1  3*7 ]  = [ 3  21 ]
+             [ 3*2  3*6 ]    [ 6  18 ]
+
+right-hand side
+  cA = [ 3   6 ]      cB = [  0  15 ]
+       [ 9  12 ]           [ -3   6 ]
+
+  cA + cB = [ 3+0    6+15 ] = [ 3  21 ]
+            [ 9-3   12+6  ]   [ 6  18 ]
+
+equal   OK
+
+and the zero family, on the same A
+  A + 0     = A
+  A + (-A)  = [ 1-1  2-2 ] = [ 0  0 ] = 0
+              [ 3-3  4-4 ]   [ 0  0 ]
+  0 * A     = 0
+  c * A = 0 with A nonzero  -&gt;  c must be 0</pre>
+      <p class="worked-note">آخر سطرين هما «مستنتج الأصفار»: من <span class="coord">cA = 0</span> و<span class="coord">A ≠ 0</span> يلزم <span class="coord">c = 0</span> — وهذا يصح للعدد لا للمصفوفة.</p></div>
   </section>
 
   <section id="s3">
@@ -176,6 +206,14 @@
     <tr><td>المصفوفة الصفرية</td><td><span class="en" lang="en" dir="ltr">zero matrix O</span></td><td>كلها أصفار — محايد الجمع</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0004-matrix-properties.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>is_zero_matrix</code> — هل كل عناصرها أصفار؟</li>
+      <li><code>neg_matrix</code> — المصفوفة المقابلة ‎−A‎</li>
+      <li><code>mat_add</code> — جمع مصفوفتين</li>
+      <li><code>scalar_zero_deduce</code> — استنتاج أيّ العاملين صفر من ‎cA = 0‎</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

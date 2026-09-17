@@ -116,6 +116,9 @@
     <div class="analogy"><b>تشبيه: ظلّ الشمس عند الظهيرة</b><p>الشمس فوق رأسك مباشرة، فيسقط ظلّك على الأرض عمودياً — وهذا الظل أقرب نقطة على الأرض إليك. الإسقاط المتعامد هو ظلّ المتجه على الفضاء الجزئي. <span class="en" lang="en" dir="ltr">(The shadow is the nearest point.)</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> الضرب الداخلي نفسه إسقاط: <span class="coord">⟨x,b⟩ = ‖π_b(x)‖ · ‖b‖</span>. أي أن الضرب الداخلي هو طول الظلّ مضروباً في طول ما سقط عليه.</p></div>
     <div class="kmath" id="k1"></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>أسقطتَ متجهاً على خط، ثم أسقطتَ الناتج على الخط نفسه مرة أخرى. ماذا يتغير؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا شيء. <span class="coord">P² = P</span> — الناتج صار على الخط أصلاً، فإسقاطه يعيده كما هو. هذه خاصية كل إسقاط، وهي اختبار سريع لأي مصفوفة تدّعي أنها إسقاط. <span class="en" lang="en" dir="ltr">(Projection matrices are idempotent.)</span></p></details></div>
     <div class="demo" data-label="Cast · PROJECT">
       <h3>آلة الإسقاط على خط</h3>
       <p class="hint">أدخل <span class="coord">x</span> و <span class="coord">b</span> في <span class="coord">ℝ³</span> — اللوحة تحسب المعامل والظل والبقية</p>
@@ -126,6 +129,44 @@
       <p class="figcap">الظل هو أقرب نقطة على الخط، والفرق عمودي عليه — مرسوماً داخل المستوى الذي يحدّده <span class="coord">x</span> و <span class="coord">b</span></p>
       <div class="readout" id="pRO" style="direction:rtl;text-align:right">الظل…</div>
     </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>إسقاط على خط: المعامل، ثم النقطة، ثم المتبقّي الذي يثبت أن الإسقاط صحيح.</p>
+      <pre dir="ltr">b = (1, 2)          the line is span{b}
+x = (4, 3)          the point we project
+
+the scalar
+
+  lambda = &lt;b, x&gt; / ||b||^2
+         = (1*4 + 2*3) / (1 + 4)
+         = 10 / 5
+         = 2
+
+the projected point
+
+  p = lambda * b = 2 * (1, 2) = (2, 4)
+
+the residual  --  the part that did not fit on the line
+
+  r = x - p = (4 - 2,  3 - 4) = (2, -1)
+
+  &lt;r, b&gt; = 2*1 + (-1)*2 = 2 - 2 = 0      perpendicular   OK
+  (this is exactly why p is the CLOSEST point on the line)
+
+  distance from x to the line = ||r|| = sqrt(4 + 1) = 2.2361
+
+the same thing as a matrix
+
+  P = b b^T / ||b||^2 = (1/5) [ 1  2 ]
+                              [ 2  4 ]
+
+  P x = (1/5) * ( 1*4 + 2*3 ,  2*4 + 4*3 )
+      = (1/5) * ( 10 , 20 )
+      = (2, 4)                    same p    OK
+
+  P * P = (1/25) [ 1  2 ] [ 1  2 ] = (1/25) [  5  10 ] = (1/5) [ 1  2 ]
+                 [ 2  4 ] [ 2  4 ]          [ 10  20 ]         [ 2  4 ]
+        = P                       idempotent   OK</pre>
+      <p class="worked-note">المتبقّي العمودي هو البرهان: لو لم يكن <span class="coord">⟨r, b⟩ = 0</span> لوُجدت نقطة أقرب على الخط. وهذا بعينه ما تفعله المربعات الصغرى في بُعد أعلى.</p></div>
   </section>
 
   <section id="s2">
@@ -188,6 +229,17 @@
     <tr><td>مصفوفة الدوران</td><td><span class="en" lang="en" dir="ltr">rotation matrix</span></td><td>متعامدة محددها <span class="coord">+1</span> تحفظ الهندسة</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0019-projections-rotations.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>dot</code> — الضرب الداخلي</li>
+      <li><code>projection_scalar</code> — المعامل ‎λ‎</li>
+      <li><code>project_on_line</code> — الإسقاط على خط</li>
+      <li><code>projection_matrix_line</code> — مصفوفة الإسقاط ‎bbᵀ/‖b‖²‎</li>
+      <li><code>residual</code> — المتبقّي العمودي</li>
+      <li><code>project_on_plane</code> — الإسقاط على مستوٍ</li>
+      <li><code>rotate</code> — الدوران بزاوية</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

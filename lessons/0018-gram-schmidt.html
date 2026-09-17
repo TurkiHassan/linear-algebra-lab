@@ -122,6 +122,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> غرام–شميت: اطرح الإسقاط يبقَ العمودي<span class="en-sub" lang="en">uₖ = bₖ − Σ (⟨bₖ,uᵢ⟩ / ⟨uᵢ,uᵢ⟩) uᵢ, then normalise</span></h2>
     <p>خوارزمية <span class="term">غرام–شميت</span> <span class="en" lang="en" dir="ltr">(Gram–Schmidt)</span> تحوّل أي أساس إلى أساس متعامد ببناء تدريجي: خذ <span class="coord">u₁ = b₁</span>، ثم لكل متجه تالٍ اطرح منه إسقاطه على ما سبق: <span class="coord">uₖ = bₖ − Σᵢ (⟨bₖ,uᵢ⟩ / ⟨uᵢ,uᵢ⟩)·uᵢ</span>. ما يتبقى عمودي على كل ما سبق بالضرورة. ثم قسّم كلاً على طوله لتحصل على التجانس.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>هل يغيّر غرام–شميت المولّد <span class="coord">span{b₁, b₂}</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. كل <span class="coord">uₖ</span> هو <span class="coord">bₖ</span> ناقص تركيب من السابقين، فهو يبقى داخل المولّد نفسه والعملية عكوسة. يتغيّر الأساس لا الفضاء. <span class="en" lang="en" dir="ltr">(Gram-Schmidt rotates the basis inside the same span.)</span></p></details></div>
     <div class="demo" data-label="Build · GRAM-SCHMIDT">
       <h3>آلة غرام–شميت</h3>
       <p class="hint">متجهان مستقلان في <span class="coord">ℝ³</span> — اللوحة تنفّذ الخطوات وتتحقق من التعامد</p>
@@ -134,6 +137,43 @@
       <div class="readout" id="gRO" style="direction:rtl;text-align:right">النتيجة…</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>غرام–شميت يشترط دخلاً مستقلاً خطياً. فإن كان أحد المتجهات تركيباً من سابقيه خرج <span class="coord">uₖ = 0</span> — والصفر لا يُقسم على طوله. ظهور الصفر ليس عطلاً، بل هو الكاشف عن الارتباط. <span class="en" lang="en" dir="ltr">(A zero vector means dependence.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>غرام–شميت على متجهين في <span class="coord">ℝ³</span>: اطرح الإسقاط، يبقَ العمودي.</p>
+      <pre dir="ltr">b1 = (1, 1, 0)        b2 = (1, 0, 1)
+
+step 1   keep the first vector as it is
+  u1 = b1 = (1, 1, 0)
+
+step 2   remove from b2 whatever points along u1
+
+  &lt;b2, u1&gt; = 1*1 + 0*1 + 1*0 = 1
+  &lt;u1, u1&gt; = 1 + 1 + 0       = 2
+
+  proj = ( &lt;b2,u1&gt; / &lt;u1,u1&gt; ) * u1
+       = (1/2) * (1, 1, 0)
+       = (0.5, 0.5, 0)
+
+  u2 = b2 - proj
+     = (1 - 0.5,  0 - 0.5,  1 - 0)
+     = (0.5, -0.5, 1)
+
+check orthogonality   -- this is the whole point
+  &lt;u1, u2&gt; = 1*0.5 + 1*(-0.5) + 0*1 = 0.5 - 0.5 = 0    OK
+
+step 3   normalise, to get an orthoNORMAL basis
+
+  ||u1|| = sqrt(2)               = 1.4142
+  q1     = (0.7071, 0.7071, 0)
+
+  ||u2|| = sqrt(0.25 + 0.25 + 1) = sqrt(1.5) = 1.2247
+  q2     = (0.4082, -0.4082, 0.8165)
+
+check   &lt;q1, q1&gt; = 0.5 + 0.5 = 1
+        &lt;q2, q2&gt; = 0.1667 + 0.1667 + 0.6667 = 1
+        &lt;q1, q2&gt; = 0.2887 - 0.2887 + 0 = 0             OK
+
+span{q1, q2} = span{b1, b2}   -- same plane, better axes</pre>
+      <p class="worked-note">في أساس متعامد متجانس تصير الإحداثيات ضرباً داخلياً مباشراً: <span class="coord">cᵢ = ⟨x, qᵢ⟩</span> — بلا حلّ منظومة ولا مصفوفة نظيرة.</p></div>
   </section>
 
   <section id="s3">
@@ -180,6 +220,17 @@
     <tr><td>متمم التعامد</td><td><span class="en" lang="en" dir="ltr">orthogonal complement</span></td><td>كل ما يتعامد مع الفضاء كاملاً</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0018-gram-schmidt.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>dot</code> — الضرب الداخلي</li>
+      <li><code>normalize</code> — توحيد الطول إلى ‎1‎</li>
+      <li><code>project_onto</code> — إسقاط متجه على آخر</li>
+      <li><code>gram_schmidt</code> — التعامد بلا تجانس</li>
+      <li><code>orthonormalize</code> — التعامد مع التجانس</li>
+      <li><code>coords_in_orthonormal</code> — الإحداثيات بالضرب الداخلي</li>
+      <li><code>normal_vector</code> — متجه عمودي على المولّد</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

@@ -120,6 +120,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> مختبر المساحة الحية<span class="en-sub" lang="en">Drag the columns — the parallelogram area equals |det|</span></h2>
     <p>عمودا المصفوفة <span class="coord">2×2</span> ضلعا متوازي أضلاع — ومساحته تساوي القيمة المطلقة للمحدد. حرّك أركان العمود الثاني وشاهد المساحة تنكمش إلى صفر عندما يتوازى العمودان (الشذوذ مرئياً!).</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مصفوفة <span class="coord">3×3</span> أحد صفوفها يساوي مجموع الصفين الآخرين. ما محددها؟</p>
+      <details><summary>اكشف الجواب</summary><p>صفر، بلا حساب. الصفوف مرتبطة، فالمتوازي الذي تحدّده منهار الحجم، والمصفوفة غير قابلة للعكس. <span class="en" lang="en" dir="ltr">(A dependent row forces det = 0.)</span></p></details></div>
     <div class="demo" data-label="Area · PLAY">
       <h3>متوازي الأضلاع الحي</h3>
       <p class="hint">حرّك عناصر العمود الثاني — راقب المساحة والمحدد معاً</p>
@@ -139,6 +142,40 @@
       <div class="readout" id="sRO" style="direction:rtl;text-align:right">مجموع النوازل − مجموع الصواعد = ؟</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>قاعدة ساروس صالحة لمصفوفات <span class="coord">3×3</span> فقط — لا تمددها إلى <span class="coord">4×4</span>؛ والأحجام الأكبر تحتاج المفكوك (طريقة لابلاس). وخطأ الإشارة في الأقطار الصاعدة هو الفخ الأول. <span class="en" lang="en" dir="ltr">(Sarrus stops at 3×3; mind the minus signs.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>قاعدة ساروس على مصفوفة <span class="coord">3×3</span>، أقطاراً أقطاراً:</p>
+      <pre dir="ltr">A = [ 1  2   3 ]
+    [ 4  5   6 ]
+    [ 7  8  10 ]
+
+copy the first two columns to the right
+
+  1   2   3  |  1   2
+  4   5   6  |  4   5
+  7   8  10  |  7   8
+
+diagonals going down  (add)
+  1 * 5 * 10  =  50
+  2 * 6 *  7  =  84
+  3 * 4 *  8  =  96
+                 ---
+                 230
+
+diagonals going up    (subtract)
+  7 * 5 *  3  = 105
+  8 * 6 *  1  =  48
+ 10 * 4 *  2  =  80
+                 ---
+                 233
+
+det A = 230 - 233 = -3        nonzero  -&gt;  invertible
+
+cross-check by cofactor expansion along the first row
+  1*(5*10 - 6*8) - 2*(4*10 - 6*7) + 3*(4*8 - 5*7)
+= 1*(50 - 48)    - 2*(40 - 42)    + 3*(32 - 35)
+= 2 + 4 - 9
+= -3                                   same   OK</pre>
+      <p class="worked-note">ساروس لمصفوفات <span class="coord">3×3</span> فقط. لا تمدّها إلى <span class="coord">4×4</span> — القاعدة تنهار هناك، والتفكيك بالعوامل المرافقة هو الطريق.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -180,6 +217,13 @@
     <tr><td>قاعدة ساروس</td><td><span class="en" lang="en" dir="ltr">Sarrus rule</span></td><td>وصفة الأقطار لمحدد 3×3</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0010-determinants.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>det2</code> — محدد ‎2×2‎</li>
+      <li><code>det3_sarrus</code> — محدد ‎3×3‎ بقاعدة ساروس</li>
+      <li><code>is_invertible_2</code> — هل المصفوفة قابلة للعكس؟</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

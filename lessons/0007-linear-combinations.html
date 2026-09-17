@@ -120,6 +120,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> خلاط المتجهات<span class="en-sub" lang="en">Two weights, two vectors — every reachable point appears</span></h2>
     <p>المتجهان <span class="coord">v₁ = (2,0)</span> و <span class="coord">v₂ = (0,1)</span> ثابتان. حرّك الوزنين <span class="coord">c₁, c₂</span> وشاهد النقطة الناتجة <span class="coord">w</span> ترقص على الشبكة — كل نقطة تصلها هي تركيب خطي منهما.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>المتجهان <span class="coord">v₁ = (1,2)</span> و<span class="coord">v₂ = (2,4)</span>. هل تصل تركيباتهما إلى <span class="coord">(5,3)</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. <span class="coord">v₂ = 2·v₁</span>، فكل تركيباتهما تقع على المستقيم <span class="coord">y = 2x</span> وحده، و<span class="coord">(5,3)</span> ليست عليه لأن <span class="coord">3 ≠ 10</span>. متجه زائد لا يعني اتجاهاً زائداً. <span class="en" lang="en" dir="ltr">(A duplicate direction adds nothing to the span.)</span></p></details></div>
     <div class="demo" data-label="Mix · MIX">
       <h3>الخلاط الحي</h3>
       <p class="hint">حرّك الوزنين — النقطة الخضراء هي خلطتك</p>
@@ -139,6 +142,28 @@
       <div class="readout" id="wRO" style="direction:rtl;text-align:right">الهدف w = ؟</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>إن كان المتجهان على نفس الخط (مثل <span class="coord">(1,1)</span> و <span class="coord">(2,2)</span>) فالأهداف خارج الخط مستحيلة — سترى قسمة على صفر في الحل. هذا هو الاستقلال الخطي في الدرس القادم. <span class="en" lang="en" dir="ltr">(Parallel ingredients cannot leave their line.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>هل <span class="coord">(5,3)</span> تركيب خطي من <span class="coord">(1,2)</span> و<span class="coord">(3,−1)</span>؟ الجواب هو حلّ منظومة:</p>
+      <pre dir="ltr">c1 * (1, 2) + c2 * (3, -1) = (5, 3)
+
+read it coordinate by coordinate
+  first  coordinate:   c1 + 3*c2 = 5
+  second coordinate: 2*c1 -   c2 = 3
+
+from the second row:   c2 = 2*c1 - 3
+
+substitute into the first
+  c1 + 3*(2*c1 - 3) = 5
+  c1 + 6*c1 - 9     = 5
+  7*c1              = 14
+  c1 = 2
+  c2 = 2*2 - 3 = 1
+
+check
+  2*(1, 2) + 1*(3, -1) = (2 + 3,  4 - 1) = (5, 3)   OK
+
+the weights are (c1, c2) = (2, 1)  -- the recipe of the mixture</pre>
+      <p class="worked-note">«هل هذا المتجه تركيب منهما؟» ليست سؤالاً جديداً: هي منظومة معادلات خطية في ثوب آخر، وتُحلّ بالحذف نفسه.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -180,6 +205,12 @@
     <tr><td>الأوزان</td><td><span class="en" lang="en" dir="ltr">weights / coefficients</span></td><td>مقادير الخلطة — مجاهيل تُحل</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0007-linear-combinations.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>lincomb</code> — احسب التركيب من متجهات وأوزان</li>
+      <li><code>weights_2d</code> — استخرج الوزنين اللذين يصنعان متجهاً هدفاً</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

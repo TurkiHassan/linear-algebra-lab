@@ -116,6 +116,9 @@
     <div class="analogy"><b>تشبيه: بوصلتان</b><p>لا يهم طول إبرة البوصلة، بل الاتجاه الذي تشير إليه. قسمةُ الضرب الداخلي على الطولين هي بالضبط «تحييد الطول» لنقارن الاتجاه وحده. <span class="en" lang="en" dir="ltr">(Divide out the lengths, keep the direction.)</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> <span class="coord">⟨x,y⟩ = 0 ⟺ x ⊥ y</span>. وإذا كان مع ذلك <span class="coord">‖x‖ = ‖y‖ = 1</span> فهما <span class="term">متعامدان متجانسان</span> <span class="en" lang="en" dir="ltr">(orthonormal)</span>.</p></div>
     <div class="kmath" id="k1"></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>أعمدة مصفوفة <span class="coord">2×2</span> متعامدة بعضها على بعض، وطول كل عمود <span class="coord">2</span>. هل <span class="coord">A⁻¹ = Aᵀ</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. <span class="coord">AᵀA = 4I</span> لا <span class="coord">I</span>، فالنظير هو <span class="coord">Aᵀ/4</span>. التعامد وحده لا يكفي: المصفوفة المتعامدة تشترط التجانس أيضاً — طول كل عمود <span class="coord">1</span>. <span class="en" lang="en" dir="ltr">(Orthogonal columns are not enough; they must be orthonormal.)</span></p></details></div>
     <div class="demo" data-label="Angle · COSINE">
       <h3>مقياس الزاوية</h3>
       <p class="hint">متجهان في <span class="coord">ℝ³</span> — اللوحة تحسب الزاوية بالدرجات وتحكم على التعامد</p>
@@ -150,6 +153,39 @@
       <div class="readout" id="oRO" style="direction:rtl;text-align:right">الفحص…</div>
     </div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>لأن المصفوفة المتعامدة تحفظ المعيار، تُستعمل في <span class="term">التهيئة المتعامدة</span> <span class="en" lang="en" dir="ltr">(orthogonal initialization)</span> للشبكات العميقة: الأوزان لا تضخّم التدرّج ولا تخنقه أثناء الانتشار الخلفي.</p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>زاوية تُقرأ من رقم واحد، ثم مصفوفة تُفحص بعمودين:</p>
+      <pre dir="ltr">x = (1, 0, 1)      y = (0, 1, 0)
+
+  &lt;x, y&gt;  = 1*0 + 0*1 + 1*0 = 0        -&gt; orthogonal
+  ||x||   = sqrt(1 + 0 + 1) = sqrt(2) = 1.4142
+  ||y||   = 1
+
+  cos w   = 0 / (1.4142 * 1) = 0   -&gt;   w = 90 degrees
+
+Pythagoras must then hold
+
+  x + y         = (1, 1, 1)
+  ||x + y||^2   = 1 + 1 + 1 = 3
+  ||x||^2 + ||y||^2 = 2 + 1 = 3            equal   OK
+
+
+now a matrix
+
+A = [ 0.7071  -0.7071 ]
+    [ 0.7071   0.7071 ]
+
+  col1 . col1 = 0.5 + 0.5 = 1          unit length
+  col2 . col2 = 0.5 + 0.5 = 1          unit length
+  col1 . col2 = 0.7071*(-0.7071) + 0.7071*0.7071 = 0     orthogonal
+
+  =&gt; A^T A = I   -&gt;  A is an orthogonal matrix,  A^-1 = A^T
+
+  det A = 0.7071*0.7071 - (-0.7071)*0.7071 = 0.5 + 0.5 = +1
+
+  det = +1  -&gt;  a rotation (by 45 degrees)
+  det = -1  would mean a reflection</pre>
+      <p class="worked-note">الفحص عمليّاً ثلاثة ضروب داخلية: طول، طول، وتعامد. ولو فشل واحد منها سقطت الصفة كلها ومعها <span class="coord">A⁻¹ = Aᵀ</span>.</p></div>
   </section>
 
   <section id="gain">
@@ -183,6 +219,17 @@
     <tr><td>مصفوفة متعامدة</td><td><span class="en" lang="en" dir="ltr">orthogonal matrix</span></td><td><span class="coord">AᵀA = I</span> — تحفظ الطول والزاوية</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0017-orthogonality.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>dot</code> — الضرب الداخلي</li>
+      <li><code>angle_deg</code> — الزاوية بالدرجات</li>
+      <li><code>are_orthogonal</code> — هل المتجهان متعامدان؟</li>
+      <li><code>is_orthonormal_pair</code> — متعامدان ومتجانسان؟</li>
+      <li><code>is_orthogonal_matrix2</code> — هل ‎AᵀA = I‎؟</li>
+      <li><code>rotation_or_reflection</code> — دوران أم انعكاس من إشارة المحدد</li>
+      <li><code>pythagoras_holds</code> — تحقق فيثاغورس عدديّاً</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

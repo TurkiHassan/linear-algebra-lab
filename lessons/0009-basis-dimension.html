@@ -119,6 +119,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> هل هذا أساس؟ المحكمة تنعقد<span class="en-sub" lang="en">Three candidates for a basis of ℝ² — test both conditions</span></h2>
     <p>ثلاثة مرشحين لأساس <span class="coord">ℝ²</span>: الزوج المعياري، وزوج مائل، وزوج متوازٍ. اختر مرشحاً — اللوحة تختبر الاستقلال ثم التوليد وتصدر الحكم المزدوج.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>المجموعة <span class="coord">{(1,0), (0,1), (1,1)}</span> تغطي <span class="coord">ℝ²</span> كله. هل هي أساس له؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. تغطي نعم، لكنها مرتبطة لأن <span class="coord">(1,1) = (1,0) + (0,1)</span>. والأساس أصغر فريق يغطي، فحجمه هنا <span class="coord">2</span> لا <span class="coord">3</span>. <span class="en" lang="en" dir="ltr">(Spanning is not enough — it must also be independent.)</span></p></details></div>
     <div class="demo" data-label="Court · BASIS">
       <h3>محكمة الأسس</h3>
       <p class="hint">اختر المرشح ثم اضغط «احكم» — شرطان لا شرط واحد</p>
@@ -138,6 +141,35 @@
       <div class="readout" id="gRO" style="direction:rtl;text-align:right">coordinates = ?</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الإحداثيات تتبع الأساس: النقطة نفسها <span class="coord">(4,2)</span> إحداثياتها <span class="coord">(4,2)</span> في المعياري و <span class="coord">(3,1)</span> في المائل. لا تخلط دفتر العناوين! <span class="en" lang="en" dir="ltr">(Same point, different address book.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>النقطة نفسها بعنوانين: مرة بالأساس القياسي، ومرة بأساس مائل.</p>
+      <pre dir="ltr">B = { b1 = (1, 1),  b2 = (1, -1) }
+
+is it a basis of R^2 ?
+  det [ 1   1 ]  =  1*(-1) - 1*1  =  -2  != 0   -&gt; independent
+      [ 1  -1 ]
+  two independent vectors in a 2-dimensional space  -&gt;  basis
+
+
+the point x = (4, 2), written in B
+
+  c1*(1, 1) + c2*(1, -1) = (4, 2)
+
+    c1 + c2 = 4          (first  coordinate)
+    c1 - c2 = 2          (second coordinate)
+
+  add the two rows:       2*c1 = 6   -&gt;  c1 = 3
+  subtract them:          2*c2 = 2   -&gt;  c2 = 1
+
+check
+  3*(1, 1) + 1*(1, -1) = (3 + 1,  3 - 1) = (4, 2)   OK
+
+[x]_B = (3, 1)
+
+same point, new address book:
+  in the standard basis  x = (4, 2)
+  in B                   x = (3, 1)</pre>
+      <p class="worked-note">الإحداثيات وحيدة: لو وُجد عنوانان مختلفان للنقطة نفسها لكان الفرق بينهما تركيباً صفرياً بأوزان غير صفرية — أي ارتباطاً، وهو مستحيل في الأساس.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -180,6 +212,13 @@
     <tr><td>الإحداثيات</td><td><span class="en" lang="en" dir="ltr">coordinates</span></td><td>عنوان المتجه بلغة أساس معين</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0009-basis-dimension.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>det2</code> — محدد المصفوفة ‎2×2‎</li>
+      <li><code>is_basis_2d</code> — هل المتجهان أساس لـ ‎ℝ²‎؟</li>
+      <li><code>coords_tilted</code> — إحداثيات نقطة في أساس مائل</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

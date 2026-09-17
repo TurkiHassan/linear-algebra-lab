@@ -136,6 +136,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> غرفة العمليات: أنت الجرّاح<span class="en-sub" lang="en">Pick the right row move at each stage</span></h2>
     <p>المصفوفة الموسعة لمنظومة التدريبات أمامك. في كل مرحلة اختر العملية الصحيحة من الأزرار الثلاثة — اللوحة ترفض الخطأ وتشرح الصواب.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>أثناء الحذف ظهر السطر <span class="coord">0 0 0 | 5</span>. كم حلاً للمنظومة؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا حل. السطر يقول <span class="coord">0 = 5</span> وهو تناقض. أما <span class="coord">0 0 0 | 0</span> فسطر زائد لا تناقض فيه، ويعني حلولاً لا نهائية متى بقي متغير حر. <span class="en" lang="en" dir="ltr">(Contradiction row vs. redundant row.)</span></p></details></div>
     <div class="demo" data-label="Operate · STEPS">
       <h3>اختر العملية الصحيحة</h3>
       <p class="hint">اقرأ المرحلة، ثم اضغط الزر المناسب — الدائرة تحيط بما غيّرته حركتك، والشرح يفصّل الحساب</p>
@@ -156,6 +159,48 @@
       <div class="readout" id="vRO" style="direction:rtl;text-align:right">2x+4y+6z = ? · 3x+8y+5z = ? · −x+y+2z = ?</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>صف كامل أصفار مع ثابت غير صفري مثل <span class="coord">[0 0 0 | 5]</span> يعني: <b>لا حل</b> — حكم قاطع. أما صف الأصفار الكامل <span class="coord">[0 0 0 | 0]</span> فيعني أن معادلةً كانت <b>زائدة</b>، ولا يعني وحده وجود حلول لا نهائية. عُدّ القادة: إن نقصت عن عدد المتغيرات فالحلول لا نهائية، وإن ساوته فالحل وحيد رغم صف الأصفار. <span class="en" lang="en" dir="ltr">(0 = 5 is impossible; 0 = 0 only means one equation was redundant — count the pivots.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>منظومة <span class="coord">3×3</span> كاملة: حذف نزولاً، ثم تعويض صعوداً.</p>
+      <pre dir="ltr"> x + 2y +  z =  8
+2x +  y -  z =  1
+3x -  y + 2z =  7
+
+[ 1   2   1 |   8 ]
+[ 2   1  -1 |   1 ]
+[ 3  -1   2 |   7 ]
+
+R2 &lt;- R2 - 2*R1
+R3 &lt;- R3 - 3*R1
+[ 1   2   1 |   8 ]
+[ 0  -3  -3 | -15 ]
+[ 0  -7  -1 | -17 ]
+
+R2 &lt;- R2 / (-3)
+[ 1   2   1 |   8 ]
+[ 0   1   1 |   5 ]
+[ 0  -7  -1 | -17 ]
+
+R3 &lt;- R3 + 7*R2
+[ 1   2   1 |   8 ]
+[ 0   1   1 |   5 ]
+[ 0   0   6 |  18 ]
+
+R3 &lt;- R3 / 6              upper triangular — elimination done
+[ 1   2   1 |  8 ]
+[ 0   1   1 |  5 ]
+[ 0   0   1 |  3 ]
+
+back-substitution, bottom row first
+  z = 3
+  y + z = 5           -&gt;  y = 5 - 3 = 2
+  x + 2y + z = 8      -&gt;  x = 8 - 4 - 3 = 1
+
+(x, y, z) = (1, 2, 3)
+
+check  1 + 4 + 3 = 8   OK
+       2 + 2 - 3 = 1   OK
+       3 - 2 + 6 = 7   OK</pre>
+      <p class="worked-note">لاحظ الترتيب: الحذف يمشي نزولاً حتى المثلثية، والتعويض يعود صعوداً. عكس الاتجاه في أي منهما يُفسد العمل.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -198,6 +243,13 @@
     <tr><td>التعويض الخلفي</td><td><span class="en" lang="en" dir="ltr">back substitution</span></td><td>الصعود من z إلى x بالتعويض</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0003-gaussian-elimination.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>row_scale</code> — ضرب صف في عدد غير صفري</li>
+      <li><code>row_add</code> — إضافة مضاعف صف إلى صف آخر</li>
+      <li><code>back_substitute</code> — التعويض الخلفي على مصفوفة مثلثية عليا</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

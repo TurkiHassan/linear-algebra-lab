@@ -123,6 +123,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> مستكشف الشكل<span class="en-sub" lang="en">Change rows and columns, watch the shape change</span></h2>
     <p>حرّك المنزلقين: لاحظ كيف يتغير الشكل <span class="coord">(m × n)</span> وعدد الخلايا، واسأل نفسك قبل كل تغيير: هل يجوز جمع هذه مع مصفوفة <span class="coord">(2 × 3)</span>؟</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>المصفوفة <span class="coord">A</span> بحجم <span class="coord">2×3</span> والمصفوفة <span class="coord">B</span> بحجم <span class="coord">3×2</span>. ما شكل <span class="coord">AB</span>؟ وما شكل <span class="coord">BA</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p>الأولى <span class="coord">2×2</span> والثانية <span class="coord">3×3</span>. الضرب المصفوفي لا يبدّل ترتيبه حتى في الشكل: الناتج يرث صفوف الأولى وأعمدة الثانية. <span class="en" lang="en" dir="ltr">(AB and BA need not even have the same size.)</span></p></details></div>
     <div class="demo" data-label="Try · PLAY">
       <h3>صانع المصفوفات</h3>
       <p class="hint">غيّر الصفوف والأعمدة وشاهد الشكل يتحدث لحظياً</p>
@@ -144,6 +147,30 @@
       <div class="readout" id="invRO" style="direction:rtl;text-align:right">det = ?</div>
       <div class="why" id="invWhy"></div>
     </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>نظير مصفوفة <span class="coord">2×2</span> من أول سطر إلى التحقق:</p>
+      <pre dir="ltr">A = [ 4  7 ]
+    [ 2  6 ]
+
+det A = 4*6 - 7*2 = 24 - 14 = 10        nonzero -&gt; invertible
+
+swap the diagonal, negate the other two, divide by det
+
+A^-1 = (1/10) [  6  -7 ]
+              [ -2   4 ]
+
+     = [  0.6  -0.7 ]
+       [ -0.2   0.4 ]
+
+check  A * A^-1
+  row1 col1 :  4*0.6  + 7*(-0.2) =  2.4 - 1.4 = 1
+  row1 col2 :  4*(-0.7) + 7*0.4  = -2.8 + 2.8 = 0
+  row2 col1 :  2*0.6  + 6*(-0.2) =  1.2 - 1.2 = 0
+  row2 col2 :  2*(-0.7) + 6*0.4  = -1.4 + 2.4 = 1
+
+A * A^-1 = [ 1  0 ] = I   OK
+           [ 0  1 ]</pre>
+      <p class="worked-note">لو كان المحدد صفراً لتوقّف السطر الثالث عند القسمة — ولهذا «غير قابلة للعكس» و«محددها صفر» عبارتان عن شيء واحد.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -187,6 +214,14 @@
     <tr><td>شاذة</td><td><span class="en" lang="en" dir="ltr">singular</span></td><td>محددها صفر — بلا نظير</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0002-matrices-inverse.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>mat_shape</code> — شكل المصفوفة ‎(m, n)‎</li>
+      <li><code>mat_add</code> — جمع مصفوفتين عنصراً بعنصر</li>
+      <li><code>mat_mul</code> — الضرب المصفوفي — صف في عمود</li>
+      <li><code>inv_2x2</code> — النظير الضربي لمصفوفة ‎2×2‎</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

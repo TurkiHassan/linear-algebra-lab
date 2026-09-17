@@ -119,6 +119,9 @@
     <div class="analogy"><b>تشبيه: فريق العمل</b><p>في فريق من خمسة موظفين، قد يكون ثلاثة منهم فقط يؤدون مهامّ مختلفة حقاً، والباقيان يكرّران عمل غيرهما. الرتبة هي عدد «المهام المختلفة» لا عدد الموظفين. <span class="en" lang="en" dir="ltr">(Five columns, but maybe only three distinct directions.)</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> احذف غاوسياً، ثم عُدّ القادة — هذا هو <span class="coord">rk(A)</span>. ودائماً <span class="coord">rk(A) ≤ min(m, n)</span>، وعند المساواة نقول إن المصفوفة <span class="term">تامة الرتبة</span> <span class="en" lang="en" dir="ltr">(full rank)</span>.</p></div>
     <div class="kmath" id="k1"></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مصفوفة <span class="coord">A</span> بحجم <span class="coord">3×3</span> رتبتها <span class="coord">2</span>، ورتبة الموسّعة <span class="coord">rk(A|b) = 3</span>. كم حلاً؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا حل. اختلاف الرتبتين يعني أن الحذف أنتج سطراً صورته <span class="coord">0 = c</span> بعدد غير صفري. المساواة شرط الحلّية، والمساواة مع <span class="coord">n</span> شرط الوحدانية. <span class="en" lang="en" dir="ltr">(rk(A) &lt; rk(A|b) means inconsistent.)</span></p></details></div>
     <div class="demo" data-label="Count · RANK">
       <h3>عدّاد الرتبة</h3>
       <p class="hint">أدخل مصفوفة <span class="coord">3×3</span> — اللوحة تحذف غاوسياً وتعدّ القادة</p>
@@ -143,6 +146,41 @@
       <div class="readout" id="cRO" style="direction:rtl;text-align:right">قارن الرتبتين…</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الرتبة تقول <b>هل يوجد حل</b>، ولا تقول <b>ما هو الحل</b>. هي كاشف وجود لا آلة حساب — بعدها تعود إلى الحذف الغاوسي لتستخرج القيم. <span class="en" lang="en" dir="ltr">(Rank answers «does a solution exist», not «what is it».)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>رتبتان تُقرآن من صورة درجية واحدة، ثم يُقرأ الحكم منهما:</p>
+      <pre dir="ltr">A = [ 1  2  1 ]      b = [ 4 ]
+    [ 2  4  3 ]          [ 9 ]
+    [ 1  2  2 ]          [ 5 ]
+
+[A|b] = [ 1  2  1 | 4 ]
+        [ 2  4  3 | 9 ]
+        [ 1  2  2 | 5 ]
+
+R2 &lt;- R2 - 2*R1     -&gt;   [ 0  0  1 | 1 ]
+R3 &lt;- R3 -   R1     -&gt;   [ 0  0  1 | 1 ]
+
+        [ 1  2  1 | 4 ]
+        [ 0  0  1 | 1 ]
+        [ 0  0  1 | 1 ]
+
+R3 &lt;- R3 - R2       -&gt;   [ 0  0  0 | 0 ]
+
+row echelon form
+        [ 1  2  1 | 4 ]      pivot in column 1
+        [ 0  0  1 | 1 ]      pivot in column 3
+        [ 0  0  0 | 0 ]      a redundant row, not a contradiction
+
+read the ranks
+  rk(A)    = 2        (two pivots on the left block)
+  rk(A|b)  = 2        (the last row is all zeros, right side included)
+  n        = 3        (three unknowns)
+
+the verdict
+  rk(A) = rk(A|b)          -&gt;  solvable
+  rk = 2  &lt;  n = 3         -&gt;  not unique: infinitely many
+  free variables = n - rk  =  3 - 2  =  1
+  the solution set is a line in R^3</pre>
+      <p class="worked-note">الرتبة الواحدة تُقرأ من عدد المحاور لا من عدد الصفوف. وصفٌ صار أصفاراً كلها ليس خطأ — هو إخبار بأن معادلة كانت مكرّرة.</p></div>
   </section>
 
   <section id="s3">
@@ -188,6 +226,15 @@
     <tr><td>المتغير الحر</td><td><span class="en" lang="en" dir="ltr">free variable</span></td><td>عمود بلا قائد — يولّد اللانهاية في الحلول</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0012-rank.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>row_echelon</code> — الصورة الدرجية بالحذف</li>
+      <li><code>rank</code> — الرتبة = عدد المحاور</li>
+      <li><code>augment</code> — بناء المصفوفة الموسّعة ‎(A|b)‎</li>
+      <li><code>solution_case</code> — الحكم: لا حل · وحيد · لا نهائي</li>
+      <li><code>nullity</code> — بُعد فضاء الحل ‎n − rk(A)‎</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

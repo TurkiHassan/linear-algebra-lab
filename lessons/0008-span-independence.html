@@ -119,6 +119,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> مختبر الاستقلال لمتجهين<span class="en-sub" lang="en">Parallel ⟺ dependent in ℝ² — test it with the determinant</span></h2>
     <p>لمتجهين في <span class="coord">ℝ²</span> الاختبار فوري: متوازيان ⟺ مرتبطان خطياً <span class="en" lang="en" dir="ltr">(dependent)</span>، وغير متوازيين ⟺ مستقلان <span class="en" lang="en" dir="ltr">(independent)</span>. والمحدد يحسم: <span class="coord">det = 0 ⟺</span> مرتبطان. أدخل أي زوجين واحكم.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>ثلاثة متجهات مختلفة في <span class="coord">ℝ²</span>. هل يمكن أن تكون مستقلة خطياً؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا، مهما اخترتها. بُعد <span class="coord">ℝ²</span> هو <span class="coord">2</span>، فأي ثلاثة متجهات فيه مرتبطة حتماً — أحدها تركيب من الآخرين. <span class="en" lang="en" dir="ltr">(More vectors than the dimension is always dependent.)</span></p></details></div>
     <div class="demo" data-label="Judge · TEST">
       <h3>ميزان الاستقلال</h3>
       <p class="hint">أدخل المتجهين — اللوحة تحسب المحدد وتصدر الحكم</p>
@@ -138,6 +141,29 @@
       <div class="readout" id="hRO" style="direction:rtl;text-align:right"></div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>أي مجموعة تحوي الصفري <span class="coord">0</span> مرتبطة تلقائياً (خذ وزنه <span class="coord">1</span> والبقية <span class="coord">0</span>). وأي متجه منفرد غير صفري مستقل وحده. <span class="en" lang="en" dir="ltr">(Zero poisons independence; a lone nonzero vector is independent.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>زوجان في <span class="coord">ℝ²</span>: الأول مرتبط والثاني مستقل — والفرق رقم واحد.</p>
+      <pre dir="ltr">pair 1     v1 = (2, 1)     v2 = (6, 3)
+
+det [ 2  6 ]  =  2*3 - 6*1  =  6 - 6  =  0     -&gt; dependent
+    [ 1  3 ]
+
+find a nonzero weight pair that kills them
+  c1*(2,1) + c2*(6,3) = (0,0)
+  take c2 = 1  -&gt;  c1*(2,1) = -(6,3)  -&gt;  c1 = -3
+  check: -3*(2,1) + 1*(6,3) = (-6+6, -3+3) = (0, 0)   OK
+  a nonzero solution exists  =&gt;  dependent
+  span{v1, v2} = a single line, not all of R^2
+
+
+pair 2     w1 = (2, 1)     w2 = (1, 3)
+
+det [ 2  1 ]  =  2*3 - 1*1  =  6 - 1  =  5  !=  0   -&gt; independent
+    [ 1  3 ]
+
+  c1*(2,1) + c2*(1,3) = (0,0) forces c1 = c2 = 0
+  span{w1, w2} = all of R^2</pre>
+      <p class="worked-note">المحدد يجيب عن السؤالين معاً: صفرٌ يعني مرتبطين ومولّدهما خط، وغير الصفر يعني مستقلين ومولّدهما المستوى كله.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -180,6 +206,13 @@
     <tr><td>الارتباط الخطي</td><td><span class="en" lang="en" dir="ltr">linear dependence</span></td><td>هدر: أحدهم يُبنى من البقية</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0008-span-independence.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>det2</code> — محدد المصفوفة ‎2×2‎</li>
+      <li><code>is_independent_2d</code> — هل المتجهان مستقلان؟</li>
+      <li><code>dependence_weights</code> — أوزان غير صفرية تحقق ‎c₁v₁ + c₂v₂ = 0‎</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

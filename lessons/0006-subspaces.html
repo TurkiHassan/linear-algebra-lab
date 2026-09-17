@@ -120,6 +120,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> محكمة الفضاءات الجزئية<span class="en-sub" lang="en">Four suspects — only the closed ones walk free</span></h2>
     <p>أربعة مشتبهين في <span class="coord">ℝ²</span>: خط يمر بالأصل، خط لا يمر بالأصل، الربع الأول، والمحور السيني. اختر مشتبهاً — اللوحة ترسمه وتُجري الاختبارات الثلاثة وتُصدر الحكم.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مجموعة كل متجهات <span class="coord">ℝ²</span> التي مجموع مركبتيها يساوي <span class="coord">1</span>. هل هي فضاء جزئي؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا، وفحصها يستغرق ثانية. المتجه <span class="coord">(0,0)</span> مجموعه <span class="coord">0</span> لا <span class="coord">1</span>، فتسقط عند الشرط الأول قبل أن نفكر في الإغلاق أصلاً. <span class="en" lang="en" dir="ltr">(No zero vector, no subspace.)</span></p></details></div>
     <div class="demo" data-label="Judge · COURT">
       <h3>قاعة المحكمة</h3>
       <p class="hint">اختر المجموعة ثم اضغط «أصدر الحكم»</p>
@@ -127,6 +130,33 @@
       <canvas id="subCv" width="640" height="280"></canvas>
       <div class="readout" id="subRO" style="direction:rtl;text-align:right">الجلسة منعقدة…</div>
     </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>مجموعتان متشابهتان في الشكل، مختلفتان في الحكم — والفرق إزاحة واحدة:</p>
+      <pre dir="ltr">W  = { (x, y) in R^2 : y = 2x }         a line through the origin
+
+1  zero vector ?
+     (0, 0):   0 = 2*0        true        pass
+2  closed under addition ?
+     (1, 2) + (3, 6) = (4, 8)
+     8 = 2*4                  true        pass
+3  closed under scaling ?
+     5 * (1, 2) = (5, 10)
+     10 = 2*5                 true        pass
+
+=&gt; W IS a subspace
+
+
+W' = { (x, y) in R^2 : y = 2x + 1 }     the same line, shifted up by 1
+
+1  zero vector ?
+     (0, 0):   0 = 2*0 + 1 = 1   FALSE    fail
+
+=&gt; W' is NOT a subspace          -- stopped at step 1
+
+(and indeed closure fails too:
+   (0, 1) and (1, 3) are both in W'
+   (0, 1) + (1, 3) = (1, 4),  but 2*1 + 1 = 3  !=  4 )</pre>
+      <p class="worked-note">الشرط الأول أرخص الثلاثة، فابدأ به دائماً: مجموعة بلا صفر ساقطة فوراً مهما بدت منتظمة.</p></div>
   </section>
 
   <section id="s3">
@@ -181,6 +211,15 @@
     <tr><td>الفضاء الصفري</td><td><span class="en" lang="en" dir="ltr">zero subspace {0}</span></td><td>أصغر فضاء جزئي ممكن</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0006-subspaces.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>on_line_through_origin</code> — هل النقطة على مستقيم يمر بالأصل؟</li>
+      <li><code>on_offset_line</code> — هل النقطة على مستقيم مزاح؟</li>
+      <li><code>closed_under_add</code> — اختبار الإغلاق تحت الجمع</li>
+      <li><code>closed_under_scale</code> — اختبار الإغلاق تحت الضرب بعدد</li>
+      <li><code>is_subspace</code> — الحكم النهائي بالشروط الثلاثة</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>

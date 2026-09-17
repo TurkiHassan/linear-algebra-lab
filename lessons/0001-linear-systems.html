@@ -136,6 +136,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> جرّب بنفسك: خطية أم لا؟<span class="en-sub" lang="en">You predict, then the panel judges</span></h2>
     <p>من ملف <span class="coord">CamScanner 02-17-2023</span> في مقررك: إحدى عشرة معادلة مرشحة. تنقّل بينها بزرّي «التالي» و«السابق»، واحكم بنفسك قبل أن تضغط «اكشف الحكم».</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>قبل أن تفتح اللوحة: المعادلة <span class="coord">x·y = 6</span> فيها مجهولان ودرجة كل منهما واحد. هل هي خطية؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. الخطية لا تمنع الدرجة الأولى فحسب، بل تمنع أن يضرب مجهول في مجهول. المسموح: ضرب المجهول في <b>عدد ثابت</b> ثم الجمع. <span class="en" lang="en" dir="ltr">(x·y is a product of unknowns — not linear.)</span></p></details></div>
     <div class="demo" data-label="Try · PLAY">
       <h3>مختبر الإحدى عشرة</h3>
       <p class="hint">اختر حكمك أولاً، ثم اضغط «اكشف» لتتحقق</p>
@@ -159,6 +162,33 @@
       <div class="readout" id="gNote" style="direction:rtl;text-align:right">نقسم الصف الأول على 2 — لنجعل القائد 1</div>
       <p class="hint" style="margin-top:10px">تفضل المشاهدة؟ <a href="0003-gaussian-elimination.html">فيديو موشن جرافيك بتعليق عربي لنفس الحل (دقيقة و45 ثانية)</a></p>
     </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>منظومة من معادلتين، محلولة بالحذف حتى آخر سطر:</p>
+      <pre dir="ltr">2x +  y = 5
+ x -  y = 1
+
+[ 2   1 | 5 ]
+[ 1  -1 | 1 ]
+
+R1 &lt;-&gt; R2                 swap: we want a pivot of 1
+[ 1  -1 | 1 ]
+[ 2   1 | 5 ]
+
+R2 &lt;- R2 - 2*R1           kill the 2 under the pivot
+[ 1  -1 | 1 ]
+[ 0   3 | 3 ]
+
+R2 &lt;- R2 / 3              normalise the second pivot
+[ 1  -1 | 1 ]
+[ 0   1 | 1 ]
+
+back-substitution
+  row 2:  y = 1
+  row 1:  x - y = 1  -&gt;  x = 1 + 1 = 2
+
+check   2*2 + 1 = 5   OK
+        2   - 1 = 1   OK</pre>
+      <p class="worked-note">الخطوتان الوحيدتان هنا: تبديل صفين، وطرح مضاعف صف من صف. لا شيء غيرهما في الحذف الغاوسي كله.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -202,6 +232,14 @@
     <tr><td>العنصر القائد</td><td><span class="en" lang="en" dir="ltr">pivot</span></td><td>أول رقم غير صفري نرتّب عليه الصف</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0001-linear-systems.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>is_linear_flags</code> — تحكم على كل معادلة: خطية أم لا</li>
+      <li><code>det_2x2</code> — محدد المصفوفة ‎2×2‎ — يكشف وجود حل وحيد</li>
+      <li><code>gauss_pivot_first_row</code> — خطوة حذف واحدة تحت المحور</li>
+      <li><code>back_substitute_triangular</code> — تعويض خلفي على منظومة مثلثية</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
