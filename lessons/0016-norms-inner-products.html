@@ -67,6 +67,9 @@
   th{background:#00000008}
   .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
   a{color:var(--accent)}
+  canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:12px;direction:ltr}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
 <link rel="stylesheet" href="../assets/ui.css">
@@ -113,10 +116,23 @@
     <div class="analogy"><b>تشبيه: ثلاث طرق لقياس المسافة في المدينة</b><p><span class="coord">ℓ₂</span> مسافة الطائر في خط مستقيم، و <span class="coord">ℓ₁</span> مسافة سيارة الأجرة عبر الشوارع المتعامدة (ولهذا تُسمى «معيار مانهاتن»)، و <span class="coord">ℓ∞</span> أطول ضلع في الرحلة. ثلاث مساطر صادقة لمسافة واحدة. <span class="en" lang="en" dir="ltr">(Bird, taxi, longest leg.)</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> شكل «كرة الوحدة» يفضح طبيعة المعيار: مربّع مائل (معيّن) لـ <span class="coord">ℓ₁</span>، ودائرة لـ <span class="coord">ℓ₂</span>، ومربّع قائم لـ <span class="coord">ℓ∞</span>. وزوايا معيّن <span class="coord">ℓ₁</span> تقع على المحاور — ولهذا يولّد <span class="term">التخلخل</span> <span class="en" lang="en" dir="ltr">(sparsity)</span> في <span class="coord">Lasso</span>.</p></div>
     <div class="kmath" id="k1"></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>متجه معياره <span class="coord">ℓ∞</span> يساوي <span class="coord">4</span>. ماذا تعرف عن معياره <span class="coord">ℓ₂</span> قبل أن تحسبه؟</p>
+      <details><summary>اكشف الجواب</summary><p>أنه لا يقل عن <span class="coord">4</span>. الترتيب <span class="coord">‖x‖∞ ≤ ‖x‖₂ ≤ ‖x‖₁</span> يصح لكل متجه: المساطر الثلاث تقيس الحجم نفسه لكن بأسقف مختلفة. <span class="en" lang="en" dir="ltr">(The three norms are ordered, always.)</span></p></details></div>
     <div class="demo" data-label="Measure · NORMS">
       <h3>المساطر الثلاث</h3>
       <p class="hint">أدخل متجهاً — اللوحة تقيسه بالمعايير الثلاثة وترتّبها</p>
       <div class="controls"><label>x₁ <input type="number" id="v1" value="3"></label><label>x₂ <input type="number" id="v2" value="-4"></label><label>x₃ <input type="number" id="v3" value="0"></label><button class="btn" id="vGo">قِس</button></div>
+      <div class="controls"><label>أبرِز المسطرة
+        <select id="nbPick">
+          <option value="all">الثلاث معاً</option>
+          <option value="l1">‎ℓ₁‎ — المعيّن</option>
+          <option value="l2">‎ℓ₂‎ — الدائرة</option>
+          <option value="li">‎ℓ∞‎ — المربع</option>
+        </select></label></div>
+      <canvas id="nbCv" width="640" height="340" role="img"
+              aria-label="كرات الوحدة الثلاث في المستوى: معيّن لمعيار المجموع، ودائرة للإقليدي، ومربع لمعيار الأكبر"></canvas>
+      <p class="figcap">كرة الوحدة لكل مسطرة: <span class="coord">ℓ₁</span> معيّن، و <span class="coord">ℓ₂</span> دائرة، و <span class="coord">ℓ∞</span> مربع — وزوايا المعيّن على المحاور هي سرّ التخلخل</p>
       <div class="readout" id="vRO" style="direction:rtl;text-align:right">ثلاث مساطر…</div>
     </div>
   </section>
@@ -145,6 +161,33 @@
       <div class="readout" id="cRO" style="direction:rtl;text-align:right">الطرفان…</div>
     </div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>ال<span class="term">مسافة</span> تُبنى من المعيار: <span class="coord">d(x,y) = ‖x − y‖</span>. وأي دالة تحقق التعريف الموجب والتماثل ومتباينة المثلث تُسمى <span class="term">مترية</span> <span class="en" lang="en" dir="ltr">(metric)</span> — والمعيار طريق إليها لا شرط لها.</p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>متجه واحد على المساطر الثلاث، ثم كوشي–شفارتز تُختبر عليه:</p>
+      <pre dir="ltr">x = (3, -4)
+
+the three rulers
+
+  ||x||_1    = |3| + |-4|          = 3 + 4      = 7
+  ||x||_2    = sqrt(3^2 + (-4)^2)  = sqrt(25)   = 5
+  ||x||_inf  = max(|3|, |-4|)      = max(3, 4)  = 4
+
+they are always ordered this way
+
+  ||x||_inf  &lt;=  ||x||_2  &lt;=  ||x||_1
+      4      &lt;=     5     &lt;=     7        OK
+
+
+Cauchy-Schwarz, with y = (1, 2)
+
+  &lt;x, y&gt;              = 3*1 + (-4)*2 = 3 - 8 = -5
+  |&lt;x, y&gt;|            = 5
+  ||x||_2 * ||y||_2   = 5 * sqrt(1 + 4) = 5 * 2.2361 = 11.1803
+
+  5  &lt;=  11.1803        OK
+
+so the ratio &lt;x,y&gt; / (||x|| ||y||) = -5 / 11.1803 = -0.4472
+lies inside [-1, 1]  -&gt;  an angle exists:  w = 116.57 degrees</pre>
+      <p class="worked-note">كوشي–شفارتز ليست متباينة زائدة: هي التي تضمن أن النسبة تقع في <span class="coord">[−1, 1]</span> — ولولاها لما كان لـ <span class="coord">arccos</span> معنى، ولما وُجدت زاوية أصلاً.</p></div>
   </section>
 
   <section id="gain">
@@ -178,6 +221,17 @@
     <tr><td>كوشي–شفارتز</td><td><span class="en" lang="en" dir="ltr">Cauchy–Schwarz</span></td><td><span class="coord">|⟨x,y⟩| ≤ ‖x‖‖y‖</span></td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0016-norms-inner-products.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>norm_l1</code> — معيار مجموع القيم المطلقة</li>
+      <li><code>norm_l2</code> — المعيار الإقليدي</li>
+      <li><code>norm_linf</code> — معيار أكبر مركبة</li>
+      <li><code>inner_A</code> — الضرب الداخلي ‎⟨x,y⟩ = xᵀAy‎</li>
+      <li><code>is_positive_definite2</code> — هل ‎A‎ معرّفة موجبة؟</li>
+      <li><code>cauchy_schwarz_holds</code> — تحقق المتباينة عدديّاً</li>
+      <li><code>distance</code> — المسافة المستحثّة من المعيار</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -200,14 +254,46 @@
   <footer class="footer"><span>الدرس 0016 · المعايير والضرب الداخلي المجرد</span><span>التمرين: <code lang="en">python3 practice/0016-norms-inner-products.py</code> · <a href="../playground.html?ex=0016-norms-inner-products">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
   tex(document.getElementById('k1'),"\\|x\\|_1=\\sum_i |x_i| \\qquad \\|x\\|_2=\\sqrt{\\sum_i x_i^2} \\qquad \\|x\\|_\\infty=\\max_i |x_i|");
   function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  var fig=FIG('nbCv');
+  function drawBalls(){
+    if(!fig)return;
+    var col=fig.col();
+    fig.view(Math.min(110,(fig.H/2-34)/1.45),fig.W/2,fig.H/2);
+    fig.clear();fig.grid();
+    var pick=(document.getElementById('nbPick')||{}).value||'all';
+    var on=function(k){return pick==='all'||pick===k;};
+    var dim=function(c){return c+'33';};          /* المسطرة غير المختارة تبهت */
+    fig.poly([[1,0],[0,1],[-1,0],[0,-1]],on('l1')?col.terra:dim(col.terra),on('l1')?col.terra+'18':null,on('l1')?2.8:1.4);
+    fig.circle(1,on('l2')?col.accent:dim(col.accent),on('l2')?2.8:1.4);
+    fig.poly([[1,1],[-1,1],[-1,-1],[1,-1]],on('li')?col.vio:dim(col.vio),null,on('li')?2.6:1.4,[7,5]);
+    fig.tag([0.62,0.62],'L1',col.terra,0,0);
+    fig.tag([0,1],'L2',col.accent,0,-16);
+    fig.tag([1,1],'Linf',col.vio,-4,-14);
+    /* اتجاه المتجه المُدخل داخل المستوى (x1, x2) */
+    var x=[+document.getElementById('v1').value,+document.getElementById('v2').value];
+    var n=Math.hypot(x[0],x[1]);
+    if(n>1e-9){
+      var u=[x[0]/n,x[1]/n];
+      fig.arrow([0,0],[u[0]*1.32,u[1]*1.32],col.ink,2.4).tag([u[0]*1.32,u[1]*1.32],'x',col.ink,16,-12);
+      fig.dot(u,col.accent,5);
+    }
+    fig.note(14,14,'every ruler agrees the ball is centred at 0 — they disagree on its shape',col.soft);
+  }
+  onTheme(drawBalls);
+  ['v1','v2'].forEach(function(id){document.getElementById(id).oninput=drawBalls;});
+  document.getElementById('nbPick').addEventListener('change',drawBalls);
+  drawBalls();
   document.getElementById('vGo').onclick=function(){
     var x=[+document.getElementById('v1').value,+document.getElementById('v2').value,+document.getElementById('v3').value];
+    drawBalls();
     var n1=x.reduce(function(s,v){return s+Math.abs(v);},0);
     var n2=Math.sqrt(x.reduce(function(s,v){return s+v*v;},0));
     var ni=Math.max.apply(null,x.map(Math.abs));

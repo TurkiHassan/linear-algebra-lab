@@ -123,6 +123,9 @@
   <section id="s2">
     <h2><span class="num">٢</span> مستكشف الشكل<span class="en-sub" lang="en">Change rows and columns, watch the shape change</span></h2>
     <p>حرّك المنزلقين: لاحظ كيف يتغير الشكل <span class="coord">(m × n)</span> وعدد الخلايا، واسأل نفسك قبل كل تغيير: هل يجوز جمع هذه مع مصفوفة <span class="coord">(2 × 3)</span>؟</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>المصفوفة <span class="coord">A</span> بحجم <span class="coord">2×3</span> والمصفوفة <span class="coord">B</span> بحجم <span class="coord">3×2</span>. ما شكل <span class="coord">AB</span>؟ وما شكل <span class="coord">BA</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p>الأولى <span class="coord">2×2</span> والثانية <span class="coord">3×3</span>. الضرب المصفوفي لا يبدّل ترتيبه حتى في الشكل: الناتج يرث صفوف الأولى وأعمدة الثانية. <span class="en" lang="en" dir="ltr">(AB and BA need not even have the same size.)</span></p></details></div>
     <div class="demo" data-label="Try · PLAY">
       <h3>صانع المصفوفات</h3>
       <p class="hint">غيّر الصفوف والأعمدة وشاهد الشكل يتحدث لحظياً</p>
@@ -142,8 +145,35 @@
       <div class="controls"><label>a <input type="number" id="ia" value="2"></label><label>b <input type="number" id="ib" value="-3"></label><label>c <input type="number" id="ic" value="1"></label><label>d <input type="number" id="id" value="2"></label><button class="btn" id="invGo">احسب النظير</button></div>
       <div class="kmath" id="invStage" style="min-height:60px"></div>
       <div class="readout" id="invRO" style="direction:rtl;text-align:right">det = ?</div>
+      <canvas id="invCv" width="640" height="340" role="img"
+              aria-label="مربع الوحدة وصورته تحت المصفوفة، ومساحة الصورة تساوي القيمة المطلقة للمحدد"></canvas>
+      <p class="figcap">مربع الوحدة الرمادي وصورته الخضراء تحت <span class="coord">A</span> — ومساحتها <span class="coord">|det A|</span>؛ فإذا انهارت الصورة إلى قطعة فالمحدد صفر ولا نظير</p>
       <div class="why" id="invWhy"></div>
     </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>نظير مصفوفة <span class="coord">2×2</span> من أول سطر إلى التحقق:</p>
+      <pre dir="ltr">A = [ 4  7 ]
+    [ 2  6 ]
+
+det A = 4*6 - 7*2 = 24 - 14 = 10        nonzero -&gt; invertible
+
+swap the diagonal, negate the other two, divide by det
+
+A^-1 = (1/10) [  6  -7 ]
+              [ -2   4 ]
+
+     = [  0.6  -0.7 ]
+       [ -0.2   0.4 ]
+
+check  A * A^-1
+  row1 col1 :  4*0.6  + 7*(-0.2) =  2.4 - 1.4 = 1
+  row1 col2 :  4*(-0.7) + 7*0.4  = -2.8 + 2.8 = 0
+  row2 col1 :  2*0.6  + 6*(-0.2) =  1.2 - 1.2 = 0
+  row2 col2 :  2*(-0.7) + 6*0.4  = -1.4 + 2.4 = 1
+
+A * A^-1 = [ 1  0 ] = I   OK
+           [ 0  1 ]</pre>
+      <p class="worked-note">لو كان المحدد صفراً لتوقّف السطر الثالث عند القسمة — ولهذا «غير قابلة للعكس» و«محددها صفر» عبارتان عن شيء واحد.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -187,6 +217,14 @@
     <tr><td>شاذة</td><td><span class="en" lang="en" dir="ltr">singular</span></td><td>محددها صفر — بلا نظير</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0002-matrices-inverse.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>mat_shape</code> — شكل المصفوفة ‎(m, n)‎</li>
+      <li><code>mat_add</code> — جمع مصفوفتين عنصراً بعنصر</li>
+      <li><code>mat_mul</code> — الضرب المصفوفي — صف في عمود</li>
+      <li><code>inv_2x2</code> — النظير الضربي لمصفوفة ‎2×2‎</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -209,9 +247,11 @@
   <footer class="footer"><span>الدرس 0002 · المصفوفات والعمليات والنظير الضربي</span><span>التمرين: <code lang="en">python3 practice/0002-matrices-inverse.py</code> · <a href="../playground.html?ex=0002-matrices-inverse">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme;
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"(A)_{m\\times n} \\quad +: \\text{ same shape} \\qquad AB: (m\\times n)(n\\times p)=(m\\times p)");
   var mR=document.getElementById('mR'),mC=document.getElementById('mC'),mG=document.getElementById('mGrid'),mRO=document.getElementById('mRO');
@@ -236,6 +276,27 @@
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+
+  /* المحدد مساحةً: مربع الوحدة وصورته تحت A */
+  var ivF = FIG('invCv'), ivIn = ['ia','ib','ic','id'].map(function(i){return document.getElementById(i);});
+  function ivDraw(){
+    if(!ivF) return;
+    var a=+ivIn[0].value,b=+ivIn[1].value,c=+ivIn[2].value,d=+ivIn[3].value,C=ivF.col();
+    var A=[0,0], e1=[a,c], e2=[b,d], e12=[a+b,c+d];        /* أعمدة A هما صورتا e1 و e2 */
+    var det=a*d-b*c, flat=Math.abs(det)<1e-9;
+    ivF.fit([e1,e2,e12,[1,1],[-1,-1]],30,120).clear().grid();
+    ivF.poly([[0,0],[1,0],[1,1],[0,1]],C.soft,null,1.6,[5,5]);
+    ivF.tag([.5,.5],'1',C.soft);
+    ivF.poly([A,e1,e12,e2],flat?C.terra:C.accent,(flat?C.terra:C.accent)+'22',2.4);
+    ivF.arrow(A,e1,C.accent).label(e1,'A e1',C.accent,30);
+    ivF.arrow(A,e2,C.vio).label(e2,'A e2',C.vio,30);
+    ivF.note(12,12,'det A = '+(Math.round(det*1000)/1000),flat?C.terra:C.ink);
+    ivF.note(12,30,flat?'area 0  ->  collapsed, no inverse':'area = |det A| = '+(Math.round(Math.abs(det)*1000)/1000),
+             flat?C.terra:C.soft);
+  }
+  ivIn.forEach(function(el){el.addEventListener('input',ivDraw);});
+  var ivB=document.getElementById('invGo'); if(ivB) ivB.addEventListener('click',ivDraw);
+  onTheme(ivDraw); ivDraw();
 })();
 </script>
 <script src="../assets/site.js"></script>

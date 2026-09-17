@@ -67,6 +67,9 @@
   th{background:#00000008}
   .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
   a{color:var(--accent)}
+  canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:12px;direction:ltr}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
 <link rel="stylesheet" href="../assets/ui.css">
@@ -113,6 +116,9 @@
     <div class="analogy"><b>تشبيه: سعر الصرف</b><p>تحويل الريال إلى الدولار خطي: صرف ألفين مرة واحدة كصرف ألف مرتين، ومضاعفة المبلغ تضاعف الناتج. أما ضريبة ثابتة تُضاف بعد التحويل فتكسر الخطية فوراً — لأن الصفر لم يعد يذهب إلى الصفر. <span class="en" lang="en" dir="ltr">(A fixed fee breaks linearity.)</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> كل تطبيق خطي يحقق <span class="coord">Φ(0) = 0</span> بالضرورة. فإن وجدت دالة لا ترسل الصفر إلى الصفر فقد انتهى الفحص — ليست خطية.</p></div>
     <div class="kmath" id="k1"></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>تطبيق خطي من <span class="coord">ℝ³</span> إلى <span class="coord">ℝ²</span>. هل يمكن أن تكون نواته <span class="coord">{0}</span> فقط؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. الصورة تسكن <span class="coord">ℝ²</span> فبعدها <span class="coord">≤ 2</span>، ونظرية الرتبة والنواة تعطي <span class="coord">dim ker = 3 − dim Im ≥ 1</span>. لا بد أن ينهار اتجاه واحد على الأقل. <span class="en" lang="en" dir="ltr">(Squeezing 3 dimensions into 2 must collapse something.)</span></p></details></div>
     <div class="demo" data-label="Test · LINEAR">
       <h3>فاحص الخطية</h3>
       <p class="hint">اختر دالة مرشحة — اللوحة تختبر الشرطين بأرقام حقيقية</p>
@@ -128,6 +134,9 @@
       <h3>مقصّ النواة والصورة</h3>
       <p class="hint">أدخل مصفوفة <span class="coord">2×2</span> — اللوحة تحسب النواة والصورة وأبعادهما</p>
       <div class="controls"><label>a <input type="number" id="ma" value="1"></label><label>b <input type="number" id="mb" value="2"></label><label>c <input type="number" id="mc" value="2"></label><label>d <input type="number" id="md" value="4"></label><button class="btn" id="mGo">حلّل</button></div>
+      <canvas id="kiCv" width="640" height="360" role="img"
+              aria-label="مربع الوحدة وصورته تحت المصفوفة، والنواة مرسومة خطاً متقطعاً عند انهيار البعد"></canvas>
+      <p class="figcap">المتقطّع رمادياً مربع الوحدة، والملوّن صورته تحت <span class="coord">A</span> — فإن انهار إلى خط ظهرت النواة بنفسجية</p>
       <div class="readout" id="mRO" style="direction:rtl;text-align:right">ker = ؟ · Im = ؟</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>النواة ليست «مجموعة فارغة» أبداً: هي تحوي الصفر دائماً. فرقٌ حاسم بين <span class="coord">ker = {0}</span> (نواة صغرى، والتطبيق متباين) و«نواة فارغة» (شيء غير موجود أصلاً). <span class="en" lang="en" dir="ltr">(The kernel always contains 0.)</span></p></div>
@@ -143,6 +152,36 @@
       <div class="readout" id="dRO" style="direction:rtl;text-align:right">الميزان…</div>
     </div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>فضاءان منتهيا البعد <span class="term">متشاكلان</span> <span class="en" lang="en" dir="ltr">(isomorphic)</span> إذا وفقط إذا تساوى بعداهما. لهذا كل فضاء بعده <span class="coord">n</span> هو «نسخة» من <span class="coord">ℝⁿ</span> مهما بدا مختلفاً — كثيرات الحدود أو المصفوفات أو الإشارات.</p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>تطبيق ينهار: نحسب نواته وصورته ثم نرى النظرية تُغلق الحساب.</p>
+      <pre dir="ltr">A = [ 1  2 ]        Phi(x) = A x ,  from R^2 to R^2
+    [ 2  4 ]
+
+the kernel — what is sent to zero
+
+  A x = 0
+    x1 + 2*x2 = 0
+  2*x1 + 4*x2 = 0        row 2 is exactly 2 * row 1: no new information
+
+  so one equation only:  x1 = -2*x2
+  take x2 = 1  -&gt;  x1 = -2
+
+  ker(Phi) = span{ (-2, 1) }          dim ker = 1
+
+the image — what can be reached
+
+  columns of A are (1, 2) and (2, 4) = 2 * (1, 2)
+  only one independent direction
+
+  Im(Phi) = span{ (1, 2) }            dim Im = rk(A) = 1
+
+rank-nullity
+
+  dim ker + dim Im  =  1 + 1  =  2  =  dim R^2      OK
+
+check a kernel vector
+  A * (-2, 1) = ( 1*(-2) + 2*1 ,  2*(-2) + 4*1 ) = (0, 0)   OK</pre>
+      <p class="worked-note">الميزان لا يختل: ما يُهدَم زائد ما يُبنى يساوي بُعد الفضاء الأصلي دائماً. فإن رأيت الصورة تضيق، فاعلم أن النواة اتّسعت بالقدر نفسه.</p></div>
   </section>
 
   <section id="gain">
@@ -176,6 +215,15 @@
     <tr><td>الصورة</td><td><span class="en" lang="en" dir="ltr">image</span></td><td>كل ما يمكن الوصول إليه — مولد الأعمدة</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0013-linear-mappings.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>apply2</code> — تطبيق مصفوفة ‎2×2‎ على متجه</li>
+      <li><code>is_linear</code> — اختبار الجمع والضرب بعدد</li>
+      <li><code>kernel_dim2</code> — بُعد النواة</li>
+      <li><code>image_dim2</code> — بُعد الصورة</li>
+      <li><code>rank_nullity_holds</code> — تحقق النظرية عدديّاً</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -198,10 +246,12 @@
   <footer class="footer"><span>الدرس 0013 · التطبيقات الخطية: النواة والصورة</span><span>التمرين: <code lang="en">python3 practice/0013-linear-mappings.py</code> · <a href="../playground.html?ex=0013-linear-mappings">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
   tex(document.getElementById('k1'),"\\Phi(x+y)=\\Phi(x)+\\Phi(y) \\quad \\Phi(\\lambda x)=\\lambda\\Phi(x) \\quad\\Longrightarrow\\quad \\Phi(0)=0");
   var F={
     m:{f:function(x,y){return [2*x+y,x-y];},lin:true,why:"مصفوفية خالصة — الشرطان يتحققان"},
@@ -220,10 +270,45 @@
       "<br>القياسي: <span class='coord'>Φ(3u) = "+vs(p1)+"</span> مقابل <span class='coord'>3Φ(u) = "+vs(p2)+"</span> → "+(okB?"متطابق ✓":"مختلف ✗")+
       "<br>الحكم: <b>"+(c.lin?"تطبيق خطي":"ليس خطياً")+"</b> — "+c.why;
   };
+  var fig=FIG('kiCv');
+  function drawMap(){
+    if(!fig)return;
+    var a=+document.getElementById('ma').value,b=+document.getElementById('mb').value,
+        c=+document.getElementById('mc').value,d=+document.getElementById('md').value;
+    var col=fig.col(),det=a*d-b*c;
+    fig.fit([[1,1],[a,c],[b,d],[a+b,c+d],[-1,-1]],40,150);
+    fig.clear();fig.grid();
+    fig.poly([[0,0],[1,0],[1,1],[0,1]],col.line,null,2,[5,4]);
+    var P=[[0,0],[a,c],[a+b,c+d],[b,d]];
+    if(Math.abs(det)>1e-9){
+      fig.poly(P,col.accent,col.accent+'22',2.4);
+    }else{
+      var dir=(Math.abs(a)>1e-9||Math.abs(c)>1e-9)?[a,c]:[b,d];
+      if(Math.hypot(dir[0],dir[1])>1e-9) fig.rayAt([0,0],dir,col.accent,null);
+      var kx,ky;
+      if(Math.abs(a)>1e-9||Math.abs(b)>1e-9){kx=-b;ky=a;}
+      else if(Math.abs(c)>1e-9||Math.abs(d)>1e-9){kx=-d;ky=c;}
+      else {kx=1;ky=0;}
+      if(Math.hypot(kx,ky)>1e-9){
+        fig.ray([kx,ky],col.vio,[8,6]);
+        var n=Math.hypot(kx,ky),kk=1.35;
+        fig.tag([kx/n*kk,ky/n*kk],'ker',col.vio,0,-15);
+      }
+    }
+    /* ارسم الأطول أولاً حتى لا يطمس الأقصر عند تطابق الاتجاهين */
+    var c1={p:[a,c],col:col.accent,lab:'Ae1'}, c2={p:[b,d],col:col.terra,lab:'Ae2'};
+    var order=(Math.hypot(a,c)>=Math.hypot(b,d))?[c1,c2]:[c2,c1];
+    order.forEach(function(o){fig.arrow([0,0],o.p,o.col,3).tag(o.p,o.lab,o.col,20,-12);});
+    fig.note(14,14,'det = '+(Math.round(det*100)/100)+'   area scale = '+(Math.round(Math.abs(det)*100)/100),col.soft);
+  }
+  onTheme(drawMap);
+  ['ma','mb','mc','md'].forEach(function(id){document.getElementById(id).oninput=drawMap;});
+  drawMap();
   document.getElementById('mGo').onclick=function(){
     var a=+document.getElementById('ma').value,b=+document.getElementById('mb').value,
         c=+document.getElementById('mc').value,d=+document.getElementById('md').value;
     var det=a*d-b*c,el=document.getElementById('mRO');
+    drawMap();
     if(Math.abs(det)>1e-9){
       el.innerHTML="<span class='coord'>det = "+det+" ≠ 0</span> → الرتبة <span class='coord'>2</span> · <b>النواة</b> <span class='coord'>{0}</span> بعدها <span class='coord'>0</span> · <b>الصورة</b> كل <span class='coord'>ℝ²</span> بعدها <span class='coord'>2</span> · التطبيق تقابل";
       return;

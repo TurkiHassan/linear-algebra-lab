@@ -119,12 +119,18 @@
   <section id="s2">
     <h2><span class="num">٢</span> مختبر الاستقلال لمتجهين<span class="en-sub" lang="en">Parallel ⟺ dependent in ℝ² — test it with the determinant</span></h2>
     <p>لمتجهين في <span class="coord">ℝ²</span> الاختبار فوري: متوازيان ⟺ مرتبطان خطياً <span class="en" lang="en" dir="ltr">(dependent)</span>، وغير متوازيين ⟺ مستقلان <span class="en" lang="en" dir="ltr">(independent)</span>. والمحدد يحسم: <span class="coord">det = 0 ⟺</span> مرتبطان. أدخل أي زوجين واحكم.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>ثلاثة متجهات مختلفة في <span class="coord">ℝ²</span>. هل يمكن أن تكون مستقلة خطياً؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا، مهما اخترتها. بُعد <span class="coord">ℝ²</span> هو <span class="coord">2</span>، فأي ثلاثة متجهات فيه مرتبطة حتماً — أحدها تركيب من الآخرين. <span class="en" lang="en" dir="ltr">(More vectors than the dimension is always dependent.)</span></p></details></div>
     <div class="demo" data-label="Judge · TEST">
       <h3>ميزان الاستقلال</h3>
       <p class="hint">أدخل المتجهين — اللوحة تحسب المحدد وتصدر الحكم</p>
       <div class="controls"><label>u₁ <input type="number" id="du1" value="1"></label><label>u₂ <input type="number" id="du2" value="1"></label><label>v₁ <input type="number" id="dv1" value="2"></label><label>v₂ <input type="number" id="dv2" value="2"></label><button class="btn" id="dGo">احكم</button></div>
       <div class="kmath" id="dStage" style="min-height:56px"></div>
       <div class="readout" id="dRO" style="direction:rtl;text-align:right">det = ؟</div>
+      <canvas id="spCv" width="640" height="340" role="img"
+              aria-label="المتجهان ومولّدهما: خط واحد إن كانا مرتبطين، والمستوى كله إن كانا مستقلين"></canvas>
+      <p class="figcap">المولّد مرسوماً: خط منقّط إن كان المحدد صفراً، ومتوازي أضلاع يغطي المستوى إن لم يكن</p>
     </div>
   </section>
 
@@ -133,11 +139,34 @@
     <p>التعريف الدقيق: المجموعة <span class="term">مرتبطة خطياً</span> إذا وُجدت أوزان ليست كلها صفراً تحقق <span class="coord">c₁v₁ + c₂v₂ = 0</span>، و<span class="term">مستقلة</span> إذا كان الحل الوحيد هو الأوزان الصفرية. مثال: <span class="coord">(1,1)</span> و <span class="coord">(2,2)</span> مرتبطان لأن <span class="coord">2·(1,1) − 1·(2,2) = 0</span> بأوزان غير صفرية. حرّك الأوزان وجرب إصابة الصفر بغير الصفرية.</p>
     <div class="demo" data-label="Hunt · ZERO">
       <h3>صيد الصفر بغير الصفرية</h3>
-      <p class="hint">المتجهان (1,1) و (2,2) — حرّك الأوزان وحاول بلوغ (0,0) دون تصفيرهما</p>
+      <p class="hint">المتجهان <span class="coord">(1,1)</span> و <span class="coord">(2,2)</span> — حرّك الأوزان وحاول بلوغ <span class="coord">(0,0)</span> دون تصفيرهما</p>
       <div class="controls"><label>c₁ <input type="range" id="h1" min="-3" max="3" step="1" value="2"></label><label>c₂ <input type="range" id="h2" min="-3" max="3" step="1" value="-1"></label></div>
       <div class="readout" id="hRO" style="direction:rtl;text-align:right"></div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>أي مجموعة تحوي الصفري <span class="coord">0</span> مرتبطة تلقائياً (خذ وزنه <span class="coord">1</span> والبقية <span class="coord">0</span>). وأي متجه منفرد غير صفري مستقل وحده. <span class="en" lang="en" dir="ltr">(Zero poisons independence; a lone nonzero vector is independent.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>زوجان في <span class="coord">ℝ²</span>: الأول مرتبط والثاني مستقل — والفرق رقم واحد.</p>
+      <pre dir="ltr">pair 1     v1 = (2, 1)     v2 = (6, 3)
+
+det [ 2  6 ]  =  2*3 - 6*1  =  6 - 6  =  0     -&gt; dependent
+    [ 1  3 ]
+
+find a nonzero weight pair that kills them
+  c1*(2,1) + c2*(6,3) = (0,0)
+  take c2 = 1  -&gt;  c1*(2,1) = -(6,3)  -&gt;  c1 = -3
+  check: -3*(2,1) + 1*(6,3) = (-6+6, -3+3) = (0, 0)   OK
+  a nonzero solution exists  =&gt;  dependent
+  span{v1, v2} = a single line, not all of R^2
+
+
+pair 2     w1 = (2, 1)     w2 = (1, 3)
+
+det [ 2  1 ]  =  2*3 - 1*1  =  6 - 1  =  5  !=  0   -&gt; independent
+    [ 1  3 ]
+
+  c1*(2,1) + c2*(1,3) = (0,0) forces c1 = c2 = 0
+  span{w1, w2} = all of R^2</pre>
+      <p class="worked-note">المحدد يجيب عن السؤالين معاً: صفرٌ يعني مرتبطين ومولّدهما خط، وغير الصفر يعني مستقلين ومولّدهما المستوى كله.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -180,6 +209,13 @@
     <tr><td>الارتباط الخطي</td><td><span class="en" lang="en" dir="ltr">linear dependence</span></td><td>هدر: أحدهم يُبنى من البقية</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0008-span-independence.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>det2</code> — محدد المصفوفة ‎2×2‎</li>
+      <li><code>is_independent_2d</code> — هل المتجهان مستقلان؟</li>
+      <li><code>dependence_weights</code> — أوزان غير صفرية تحقق ‎c₁v₁ + c₂v₂ = 0‎</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -202,9 +238,11 @@
   <footer class="footer"><span>الدرس 0008 · المولد والاستقلال الخطي</span><span>التمرين: <code lang="en">python3 practice/0008-span-independence.py</code> · <a href="../playground.html?ex=0008-span-independence">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme;
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
   tex(document.getElementById('k1'),"\\mathrm{span}\\{v_1,v_2\\} = \\{c_1v_1+c_2v_2\\} \\qquad c_1v_1+c_2v_2=0 \\Rightarrow c_1=c_2=0 \\;\\; (\\text{independent})");
   document.getElementById('dGo').onclick=function(){
@@ -228,6 +266,29 @@
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+
+  /* المولّد مرسوماً: خط عند الارتباط، ومستوٍ عند الاستقلال */
+  var spF = FIG('spCv'), spIn = ['du1','du2','dv1','dv2'].map(function(i){return document.getElementById(i);});
+  function spDraw(){
+    if(!spF) return;
+    var u=[+spIn[0].value,+spIn[1].value], v=[+spIn[2].value,+spIn[3].value], C=spF.col();
+    var det=u[0]*v[1]-u[1]*v[0], dep=Math.abs(det)<1e-9;
+    spF.fit([u,v,[u[0]+v[0],u[1]+v[1]],[1,1],[-1,-1]],30,110).clear().grid();
+    if(dep){
+      var d=(Math.hypot(u[0],u[1])>1e-9)?u:v;
+      if(Math.hypot(d[0],d[1])>1e-9) spF.ray(d,C.terra,[8,6]);
+      spF.note(12,30,'span = a single line',C.terra);
+    } else {
+      spF.poly([[0,0],u,[u[0]+v[0],u[1]+v[1]],v],C.accent,C.accent+'1e',2);
+      spF.note(12,30,'span = all of R^2',C.accent);
+    }
+    spF.arrow([0,0],u,C.accent).label(u,'u',C.accent,22);
+    spF.arrow([0,0],v,C.vio).label(v,'v',C.vio,22);
+    spF.note(12,12,'det = '+(Math.round(det*1000)/1000)+(dep?'   ->  dependent':'   ->  independent'),dep?C.terra:C.ink);
+  }
+  spIn.forEach(function(el){el.addEventListener('input',spDraw);});
+  var spB=document.getElementById('dGo'); if(spB) spB.addEventListener('click',spDraw);
+  onTheme(spDraw); spDraw();
 })();
 </script>
 <script src="../assets/site.js"></script>

@@ -67,6 +67,9 @@
   th{background:#00000008}
   .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
   a{color:var(--accent)}
+  canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:12px;direction:ltr}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
 <link rel="stylesheet" href="../assets/ui.css">
@@ -113,11 +116,17 @@
     <div class="analogy"><b>تشبيه: بوصلتان</b><p>لا يهم طول إبرة البوصلة، بل الاتجاه الذي تشير إليه. قسمةُ الضرب الداخلي على الطولين هي بالضبط «تحييد الطول» لنقارن الاتجاه وحده. <span class="en" lang="en" dir="ltr">(Divide out the lengths, keep the direction.)</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> <span class="coord">⟨x,y⟩ = 0 ⟺ x ⊥ y</span>. وإذا كان مع ذلك <span class="coord">‖x‖ = ‖y‖ = 1</span> فهما <span class="term">متعامدان متجانسان</span> <span class="en" lang="en" dir="ltr">(orthonormal)</span>.</p></div>
     <div class="kmath" id="k1"></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>أعمدة مصفوفة <span class="coord">2×2</span> متعامدة بعضها على بعض، وطول كل عمود <span class="coord">2</span>. هل <span class="coord">A⁻¹ = Aᵀ</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. <span class="coord">AᵀA = 4I</span> لا <span class="coord">I</span>، فالنظير هو <span class="coord">Aᵀ/4</span>. التعامد وحده لا يكفي: المصفوفة المتعامدة تشترط التجانس أيضاً — طول كل عمود <span class="coord">1</span>. <span class="en" lang="en" dir="ltr">(Orthogonal columns are not enough; they must be orthonormal.)</span></p></details></div>
     <div class="demo" data-label="Angle · COSINE">
       <h3>مقياس الزاوية</h3>
       <p class="hint">متجهان في <span class="coord">ℝ³</span> — اللوحة تحسب الزاوية بالدرجات وتحكم على التعامد</p>
       <div class="controls"><label>x <input type="number" id="ax1" value="1"><input type="number" id="ax2" value="0"><input type="number" id="ax3" value="1"></label></div>
       <div class="controls"><label>y <input type="number" id="ay1" value="0"><input type="number" id="ay2" value="1"><input type="number" id="ay3" value="0"></label><button class="btn" id="aGo">احسب الزاوية</button></div>
+      <canvas id="agCv" width="640" height="340" role="img"
+              aria-label="المتجهان مرسومان داخل المستوى المشترك بينهما، والقوس يبيّن الزاوية الحقيقية"></canvas>
+      <p class="figcap">مرسومان داخل المستوى الذي يحدّدانه — فالزاوية المعروضة هي زاويتهما الحقيقية في <span class="coord">ℝ³</span> لا إسقاطاً لها</p>
       <div class="readout" id="aRO" style="direction:rtl;text-align:right">الزاوية…</div>
     </div>
   </section>
@@ -141,9 +150,44 @@
       <h3>فاحص المصفوفة المتعامدة</h3>
       <p class="hint">أدخل مصفوفة <span class="coord">2×2</span> — اللوحة تفحص <span class="coord">AᵀA = I</span> وتحكم: دوران أم انعكاس</p>
       <div class="controls"><label>a <input type="number" id="oa" value="0.7071" step="0.1"></label><label>b <input type="number" id="ob" value="-0.7071" step="0.1"></label><label>c <input type="number" id="oc" value="0.7071" step="0.1"></label><label>d <input type="number" id="od" value="0.7071" step="0.1"></label><button class="btn" id="oGo">افحص</button></div>
+      <div class="controls"><label>أو ركّب مصفوفة دوران <span class="coord">R(θ)</span>
+        <input type="range" id="othR" min="0" max="180" step="5" value="45"></label><span class="coord" id="othV">45°</span></div>
       <div class="readout" id="oRO" style="direction:rtl;text-align:right">الفحص…</div>
     </div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>لأن المصفوفة المتعامدة تحفظ المعيار، تُستعمل في <span class="term">التهيئة المتعامدة</span> <span class="en" lang="en" dir="ltr">(orthogonal initialization)</span> للشبكات العميقة: الأوزان لا تضخّم التدرّج ولا تخنقه أثناء الانتشار الخلفي.</p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>زاوية تُقرأ من رقم واحد، ثم مصفوفة تُفحص بعمودين:</p>
+      <pre dir="ltr">x = (1, 0, 1)      y = (0, 1, 0)
+
+  &lt;x, y&gt;  = 1*0 + 0*1 + 1*0 = 0        -&gt; orthogonal
+  ||x||   = sqrt(1 + 0 + 1) = sqrt(2) = 1.4142
+  ||y||   = 1
+
+  cos w   = 0 / (1.4142 * 1) = 0   -&gt;   w = 90 degrees
+
+Pythagoras must then hold
+
+  x + y         = (1, 1, 1)
+  ||x + y||^2   = 1 + 1 + 1 = 3
+  ||x||^2 + ||y||^2 = 2 + 1 = 3            equal   OK
+
+
+now a matrix
+
+A = [ 0.7071  -0.7071 ]
+    [ 0.7071   0.7071 ]
+
+  col1 . col1 = 0.5 + 0.5 = 1          unit length
+  col2 . col2 = 0.5 + 0.5 = 1          unit length
+  col1 . col2 = 0.7071*(-0.7071) + 0.7071*0.7071 = 0     orthogonal
+
+  =&gt; A^T A = I   -&gt;  A is an orthogonal matrix,  A^-1 = A^T
+
+  det A = 0.7071*0.7071 - (-0.7071)*0.7071 = 0.5 + 0.5 = +1
+
+  det = +1  -&gt;  a rotation (by 45 degrees)
+  det = -1  would mean a reflection</pre>
+      <p class="worked-note">الفحص عمليّاً ثلاثة ضروب داخلية: طول، طول، وتعامد. ولو فشل واحد منها سقطت الصفة كلها ومعها <span class="coord">A⁻¹ = Aᵀ</span>.</p></div>
   </section>
 
   <section id="gain">
@@ -177,6 +221,17 @@
     <tr><td>مصفوفة متعامدة</td><td><span class="en" lang="en" dir="ltr">orthogonal matrix</span></td><td><span class="coord">AᵀA = I</span> — تحفظ الطول والزاوية</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0017-orthogonality.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>dot</code> — الضرب الداخلي</li>
+      <li><code>angle_deg</code> — الزاوية بالدرجات</li>
+      <li><code>are_orthogonal</code> — هل المتجهان متعامدان؟</li>
+      <li><code>is_orthonormal_pair</code> — متعامدان ومتجانسان؟</li>
+      <li><code>is_orthogonal_matrix2</code> — هل ‎AᵀA = I‎؟</li>
+      <li><code>rotation_or_reflection</code> — دوران أم انعكاس من إشارة المحدد</li>
+      <li><code>pythagoras_holds</code> — تحقق فيثاغورس عدديّاً</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -199,15 +254,46 @@
   <footer class="footer"><span>الدرس 0017 · الزوايا والتعامد والمصفوفات المتعامدة</span><span>التمرين: <code lang="en">python3 practice/0017-orthogonality.py</code> · <a href="../playground.html?ex=0017-orthogonality">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
   tex(document.getElementById('k1'),"\\cos\\omega=\\frac{\\langle x,y\\rangle}{\\|x\\|\\,\\|y\\|} \\in [-1,1] \\qquad x\\perp y \\iff \\langle x,y\\rangle=0");
   function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  var fig=FIG('agCv');
+  function drawAngle(){
+    if(!fig)return;
+    var x=[+document.getElementById('ax1').value,+document.getElementById('ax2').value,+document.getElementById('ax3').value];
+    var y=[+document.getElementById('ay1').value,+document.getElementById('ay2').value,+document.getElementById('ay3').value];
+    var col=fig.col(), pl=plane(x,y);
+    fig.clear();
+    if(!pl){fig.grid();fig.note(14,14,'the first vector is zero — no direction, no angle',col.soft);return;}
+    var A=pl.A,B=pl.B;
+    fig.fit([A,B],48,170);
+    fig.grid();
+    var ip=x.reduce(function(s2,v,i){return s2+v*y[i];},0);
+    var perp=Math.abs(ip)<1e-9;
+    var ang=Math.atan2(B[1],B[0]);
+    fig.arc(Math.min(0,ang),Math.max(0,ang),Math.min(Math.hypot(A[0],A[1]),Math.hypot(B[0],B[1]))*0.34,
+            perp?col.accent:col.vio);
+    if(perp){
+      var s2=Math.min(Math.hypot(A[0],A[1]),Math.hypot(B[0],B[1]))*0.22;
+      fig.right([0,0],A,B,col.accent,s2/Math.max(1e-9,1));
+    }
+    fig.arrow([0,0],A,col.accent,3).tag(A,'x',col.accent,18,-12);
+    fig.arrow([0,0],B,col.terra,3).tag(B,'y',col.terra,18,-12);
+    var deg=Math.acos(Math.max(-1,Math.min(1,ip/(Math.hypot.apply(null,x)*Math.hypot.apply(null,y)||1))))*180/Math.PI;
+    fig.note(14,14,'angle = '+(Math.round(deg*10)/10)+' deg'+(perp?'   (orthogonal)':''),col.soft);
+  }
+  onTheme(drawAngle);
+  ['ax1','ax2','ax3','ay1','ay2','ay3'].forEach(function(id){document.getElementById(id).oninput=drawAngle;});
+  drawAngle();
   document.getElementById('aGo').onclick=function(){
     var x=[+document.getElementById('ax1').value,+document.getElementById('ax2').value,+document.getElementById('ax3').value];
     var y=[+document.getElementById('ay1').value,+document.getElementById('ay2').value,+document.getElementById('ay3').value];
+    drawAngle();
     var ip=x[0]*y[0]+x[1]*y[1]+x[2]*y[2];
     var nx=Math.sqrt(x[0]*x[0]+x[1]*x[1]+x[2]*x[2]),ny=Math.sqrt(y[0]*y[0]+y[1]*y[1]+y[2]*y[2]);
     var el=document.getElementById('aRO');
@@ -246,6 +332,16 @@
       opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
+  });
+
+  /* كل R(θ) متعامدة — املأ الخانات منها وشاهد الفحص يمر دائماً */
+  var othR=document.getElementById('othR'), othV=document.getElementById('othV');
+  othR.addEventListener('input',function(){
+    var th=(+othR.value)*Math.PI/180, c=Math.cos(th), s2=Math.sin(th), r=function(v){return Math.round(v*10000)/10000;};
+    othV.textContent=othR.value+'°';
+    document.getElementById('oa').value=r(c);  document.getElementById('ob').value=r(-s2);
+    document.getElementById('oc').value=r(s2); document.getElementById('od').value=r(c);
+    document.getElementById('oGo').click();
   });
 })();
 </script>

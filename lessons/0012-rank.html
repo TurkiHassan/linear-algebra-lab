@@ -67,9 +67,12 @@
   th{background:#00000008}
   .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
   a{color:var(--accent)}
-  #rSteps{white-space:pre-wrap;line-height:1.7}
+  canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:12px;direction:ltr}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
   #rGrid{display:grid;grid-template-columns:repeat(3,auto);justify-content:center;gap:8px;direction:ltr}
   #rGrid input[type=number]{width:72px;text-align:center}
+  #rSteps{white-space:pre-wrap;line-height:1.7}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
 <link rel="stylesheet" href="../assets/ui.css">
@@ -116,11 +119,17 @@
     <div class="analogy"><b>تشبيه: فريق العمل</b><p>في فريق من خمسة موظفين، قد يكون ثلاثة منهم فقط يؤدون مهامّ مختلفة حقاً، والباقيان يكرّران عمل غيرهما. الرتبة هي عدد «المهام المختلفة» لا عدد الموظفين. <span class="en" lang="en" dir="ltr">(Five columns, but maybe only three distinct directions.)</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> احذف غاوسياً، ثم عُدّ القادة — هذا هو <span class="coord">rk(A)</span>. ودائماً <span class="coord">rk(A) ≤ min(m, n)</span>، وعند المساواة نقول إن المصفوفة <span class="term">تامة الرتبة</span> <span class="en" lang="en" dir="ltr">(full rank)</span>.</p></div>
     <div class="kmath" id="k1"></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مصفوفة <span class="coord">A</span> بحجم <span class="coord">3×3</span> رتبتها <span class="coord">2</span>، ورتبة الموسّعة <span class="coord">rk(A|b) = 3</span>. كم حلاً؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا حل. اختلاف الرتبتين يعني أن الحذف أنتج سطراً صورته <span class="coord">0 = c</span> بعدد غير صفري. المساواة شرط الحلّية، والمساواة مع <span class="coord">n</span> شرط الوحدانية. <span class="en" lang="en" dir="ltr">(rk(A) &lt; rk(A|b) means inconsistent.)</span></p></details></div>
     <div class="demo" data-label="Count · RANK">
       <h3>عدّاد الرتبة</h3>
       <p class="hint">أدخل مصفوفة <span class="coord">3×3</span> — اللوحة تحذف غاوسياً وتعدّ القادة</p>
       <div class="controls" id="rGrid"></div>
       <div class="controls"><button class="btn" id="rGo">احسب الرتبة</button><button class="btn ghost" id="rEx">مثال المحاضرة</button></div>
+      <canvas id="rkCv" width="640" height="240" role="img"
+              aria-label="سلّم الصورة الدرجية: الخلايا القائدة مطوّقة بدائرة، وعددها هو الرتبة"></canvas>
+      <p class="figcap">الخلايا المطوّقة هي القادة — وعددها هو الرتبة</p>
       <div class="readout" id="rSteps">…</div>
       <div class="readout" id="rRO" style="direction:rtl;text-align:right">الرتبة = ؟</div>
     </div>
@@ -137,6 +146,41 @@
       <div class="readout" id="cRO" style="direction:rtl;text-align:right">قارن الرتبتين…</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الرتبة تقول <b>هل يوجد حل</b>، ولا تقول <b>ما هو الحل</b>. هي كاشف وجود لا آلة حساب — بعدها تعود إلى الحذف الغاوسي لتستخرج القيم. <span class="en" lang="en" dir="ltr">(Rank answers «does a solution exist», not «what is it».)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>رتبتان تُقرآن من صورة درجية واحدة، ثم يُقرأ الحكم منهما:</p>
+      <pre dir="ltr">A = [ 1  2  1 ]      b = [ 4 ]
+    [ 2  4  3 ]          [ 9 ]
+    [ 1  2  2 ]          [ 5 ]
+
+[A|b] = [ 1  2  1 | 4 ]
+        [ 2  4  3 | 9 ]
+        [ 1  2  2 | 5 ]
+
+R2 &lt;- R2 - 2*R1     -&gt;   [ 0  0  1 | 1 ]
+R3 &lt;- R3 -   R1     -&gt;   [ 0  0  1 | 1 ]
+
+        [ 1  2  1 | 4 ]
+        [ 0  0  1 | 1 ]
+        [ 0  0  1 | 1 ]
+
+R3 &lt;- R3 - R2       -&gt;   [ 0  0  0 | 0 ]
+
+row echelon form
+        [ 1  2  1 | 4 ]      pivot in column 1
+        [ 0  0  1 | 1 ]      pivot in column 3
+        [ 0  0  0 | 0 ]      a redundant row, not a contradiction
+
+read the ranks
+  rk(A)    = 2        (two pivots on the left block)
+  rk(A|b)  = 2        (the last row is all zeros, right side included)
+  n        = 3        (three unknowns)
+
+the verdict
+  rk(A) = rk(A|b)          -&gt;  solvable
+  rk = 2  &lt;  n = 3         -&gt;  not unique: infinitely many
+  free variables = n - rk  =  3 - 2  =  1
+  the solution set is a line in R^3</pre>
+      <p class="worked-note">الرتبة الواحدة تُقرأ من عدد المحاور لا من عدد الصفوف. وصفٌ صار أصفاراً كلها ليس خطأ — هو إخبار بأن معادلة كانت مكرّرة.</p></div>
   </section>
 
   <section id="s3">
@@ -182,6 +226,15 @@
     <tr><td>المتغير الحر</td><td><span class="en" lang="en" dir="ltr">free variable</span></td><td>عمود بلا قائد — يولّد اللانهاية في الحلول</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0012-rank.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>row_echelon</code> — الصورة الدرجية بالحذف</li>
+      <li><code>rank</code> — الرتبة = عدد المحاور</li>
+      <li><code>augment</code> — بناء المصفوفة الموسّعة ‎(A|b)‎</li>
+      <li><code>solution_case</code> — الحكم: لا حل · وحيد · لا نهائي</li>
+      <li><code>nullity</code> — بُعد فضاء الحل ‎n − rk(A)‎</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -204,16 +257,18 @@
   <footer class="footer"><span>الدرس 0012 · الرتبة وحلّية المنظومة</span><span>التمرين: <code lang="en">python3 practice/0012-rank.py</code> · <a href="../playground.html?ex=0012-rank">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
   tex(document.getElementById('k1'),"\\mathrm{rk}(A) = \\#\\text{pivots} \\le \\min(m,n) \\qquad \\dim\\ker(A) = n - \\mathrm{rk}(A)");
   var g=document.getElementById('rGrid'),cells=[];
   var DEF=[[1,2,1],[-2,-3,1],[3,5,0]];
   for(var i=0;i<3;i++){for(var j=0;j<3;j++){var inp=document.createElement('input');inp.type='number';inp.value=DEF[i][j];inp.style.width='58px';g.appendChild(inp);cells.push(inp);}}
   function rref(M){
-    var m=M.length,n=M[0].length,r=0,steps=[],piv=[];
+    var m=M.length,n=M[0].length,r=0,steps=[],piv=[],pivRow={};
     function show(tag){steps.push(tag+': '+M.map(function(row){return '['+row.map(function(v){return (Math.round(v*100)/100);}).join(' ')+']';}).join(' '));}
     show('start');
     for(var c=0;c<n&&r<m;c++){
@@ -222,16 +277,54 @@
       if(best!==r){var t=M[best];M[best]=M[r];M[r]=t;show('swap R'+(r+1)+'↔R'+(best+1));}
       var p=M[r][c];for(var j=0;j<n;j++)M[r][j]/=p;
       for(var k=0;k<m;k++){if(k===r)continue;var f=M[k][c];if(Math.abs(f)>1e-12)for(var j2=0;j2<n;j2++)M[k][j2]-=f*M[r][j2];}
-      show('pivot col'+(c+1));piv.push(c+1);r++;
+      show('pivot col'+(c+1));piv.push(c+1);pivRow[c+1]=r;r++;
     }
-    return {rank:r,steps:steps,piv:piv};
+    return {rank:r,steps:steps,piv:piv,pivRow:pivRow};
   }
   function runRank(){
     var M=[];for(var i=0;i<3;i++){M.push([+cells[i*3].value,+cells[i*3+1].value,+cells[i*3+2].value]);}
-    var res=rref(M.map(function(r){return r.slice();}));
+    var work=M.map(function(r){return r.slice();});
+    var res=rref(work);
+    LAST={M:work,piv:res.piv,rank:res.rank,pivRow:res.pivRow};
+    drawRank();
     document.getElementById('rSteps').textContent=res.steps.join('\n');
     document.getElementById('rRO').innerHTML="عدد القادة <span class='coord'>"+res.rank+"</span> في الأعمدة <span class='coord'>"+(res.piv.join(', ')||'—')+"</span> → <b>الرتبة <span class='coord'>rk(A) = "+res.rank+"</span></b> · بعد فضاء الحل <span class='coord'>"+(3-res.rank)+"</span> · "+(res.rank===3?"تامة الرتبة، ولها نظير":"ناقصة الرتبة، ومحددها صفر");
   }
+  var fig=FIG('rkCv');
+  var LAST={M:null,piv:[],rank:0,pivRow:{}};
+  function drawRank(){
+    if(!fig)return;
+    var c=fig.col(),ctx=fig.ctx;fig.clear();
+    var M=LAST.M;
+    if(!M){fig.note(16,16,'enter a matrix, then press the button',c.soft);return;}
+    var cw=112,ch=52,x0=(fig.W-3*cw)/2,y0=34;
+    ctx.save();
+    ctx.font='600 15px ui-monospace,Menlo,Consolas,monospace';
+    ctx.textAlign='center';ctx.textBaseline='middle';
+    for(var i=0;i<3;i++){for(var j=0;j<3;j++){
+      var cx=x0+j*cw+cw/2, cy=y0+i*ch+ch/2, val=Math.round(M[i][j]*100)/100;
+      var isPiv=(LAST.piv.indexOf(j+1)>=0)&&(LAST.pivRow[j+1]===i);
+      ctx.strokeStyle=c.line;ctx.lineWidth=1;ctx.strokeRect(x0+j*cw,y0+i*ch,cw,ch);
+      if(isPiv){ctx.save();ctx.strokeStyle=c.accent;ctx.lineWidth=2.4;
+        ctx.beginPath();ctx.arc(cx,cy,19,0,7);ctx.stroke();ctx.restore();}
+      ctx.fillStyle=Math.abs(val)<1e-9?c.line:(isPiv?c.accent:c.ink);
+      ctx.fillText(String(val).replace('-','\u2212'),cx,cy);
+    }}
+    if(LAST.piv.length){
+      ctx.save();ctx.strokeStyle=c.terra;ctx.lineWidth=2.4;ctx.setLineDash([6,5]);
+      ctx.beginPath();var started=false;
+      LAST.piv.forEach(function(col,k){
+        var px=x0+(col-1)*cw, py=y0+k*ch;
+        if(!started){ctx.moveTo(px,py);started=true;}else{ctx.lineTo(px,py);}
+        ctx.lineTo(px+cw,py);ctx.lineTo(px+cw,py+ch);
+      });
+      ctx.stroke();ctx.restore();
+    }
+    ctx.restore();
+    fig.note(16,y0+3*ch+14,'rank = '+LAST.rank+'   pivots in columns: '+(LAST.piv.join(', ')||'none'),c.soft);
+  }
+  onTheme(drawRank);
+  drawRank();
   document.getElementById('rGo').onclick=runRank;
   document.getElementById('rEx').onclick=function(){for(var i=0;i<3;i++)for(var j=0;j<3;j++)cells[i*3+j].value=DEF[i][j];runRank();};
   var CASES={

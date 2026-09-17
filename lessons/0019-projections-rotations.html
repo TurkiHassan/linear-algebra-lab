@@ -67,6 +67,9 @@
   th{background:#00000008}
   .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
   a{color:var(--accent)}
+  canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:12px;direction:ltr}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
 <link rel="stylesheet" href="../assets/ui.css">
@@ -113,13 +116,57 @@
     <div class="analogy"><b>تشبيه: ظلّ الشمس عند الظهيرة</b><p>الشمس فوق رأسك مباشرة، فيسقط ظلّك على الأرض عمودياً — وهذا الظل أقرب نقطة على الأرض إليك. الإسقاط المتعامد هو ظلّ المتجه على الفضاء الجزئي. <span class="en" lang="en" dir="ltr">(The shadow is the nearest point.)</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> الضرب الداخلي نفسه إسقاط: <span class="coord">⟨x,b⟩ = ‖π_b(x)‖ · ‖b‖</span>. أي أن الضرب الداخلي هو طول الظلّ مضروباً في طول ما سقط عليه.</p></div>
     <div class="kmath" id="k1"></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>أسقطتَ متجهاً على خط، ثم أسقطتَ الناتج على الخط نفسه مرة أخرى. ماذا يتغير؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا شيء. <span class="coord">P² = P</span> — الناتج صار على الخط أصلاً، فإسقاطه يعيده كما هو. هذه خاصية كل إسقاط، وهي اختبار سريع لأي مصفوفة تدّعي أنها إسقاط. <span class="en" lang="en" dir="ltr">(Projection matrices are idempotent.)</span></p></details></div>
     <div class="demo" data-label="Cast · PROJECT">
       <h3>آلة الإسقاط على خط</h3>
       <p class="hint">أدخل <span class="coord">x</span> و <span class="coord">b</span> في <span class="coord">ℝ³</span> — اللوحة تحسب المعامل والظل والبقية</p>
       <div class="controls"><label>x <input type="number" id="x1" value="1"><input type="number" id="x2" value="1"><input type="number" id="x3" value="1"></label></div>
       <div class="controls"><label>b <input type="number" id="b1" value="1"><input type="number" id="b2" value="2"><input type="number" id="b3" value="2"></label><button class="btn" id="pGo">أسقِط</button></div>
+      <canvas id="pjCv" width="640" height="340" role="img"
+              aria-label="المتجه وظلّه على الخط، والفرق بينهما عمودي على الخط"></canvas>
+      <p class="figcap">الظل هو أقرب نقطة على الخط، والفرق عمودي عليه — مرسوماً داخل المستوى الذي يحدّده <span class="coord">x</span> و <span class="coord">b</span></p>
       <div class="readout" id="pRO" style="direction:rtl;text-align:right">الظل…</div>
     </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>إسقاط على خط: المعامل، ثم النقطة، ثم المتبقّي الذي يثبت أن الإسقاط صحيح.</p>
+      <pre dir="ltr">b = (1, 2)          the line is span{b}
+x = (4, 3)          the point we project
+
+the scalar
+
+  lambda = &lt;b, x&gt; / ||b||^2
+         = (1*4 + 2*3) / (1 + 4)
+         = 10 / 5
+         = 2
+
+the projected point
+
+  p = lambda * b = 2 * (1, 2) = (2, 4)
+
+the residual  --  the part that did not fit on the line
+
+  r = x - p = (4 - 2,  3 - 4) = (2, -1)
+
+  &lt;r, b&gt; = 2*1 + (-1)*2 = 2 - 2 = 0      perpendicular   OK
+  (this is exactly why p is the CLOSEST point on the line)
+
+  distance from x to the line = ||r|| = sqrt(4 + 1) = 2.2361
+
+the same thing as a matrix
+
+  P = b b^T / ||b||^2 = (1/5) [ 1  2 ]
+                              [ 2  4 ]
+
+  P x = (1/5) * ( 1*4 + 2*3 ,  2*4 + 4*3 )
+      = (1/5) * ( 10 , 20 )
+      = (2, 4)                    same p    OK
+
+  P * P = (1/25) [ 1  2 ] [ 1  2 ] = (1/25) [  5  10 ] = (1/5) [ 1  2 ]
+                 [ 2  4 ] [ 2  4 ]          [ 10  20 ]         [ 2  4 ]
+        = P                       idempotent   OK</pre>
+      <p class="worked-note">المتبقّي العمودي هو البرهان: لو لم يكن <span class="coord">⟨r, b⟩ = 0</span> لوُجدت نقطة أقرب على الخط. وهذا بعينه ما تفعله المربعات الصغرى في بُعد أعلى.</p></div>
   </section>
 
   <section id="s2">
@@ -142,6 +189,11 @@
       <h3>آلة الدوران</h3>
       <p class="hint">أدخل متجهاً وزاوية بالدرجات — اللوحة تدوّره وتتحقق من حفظ الطول</p>
       <div class="controls"><label>x <input type="number" id="r1" value="1"><input type="number" id="r2" value="0"></label><label>θ° <input type="number" id="rt" value="45" step="15"></label><button class="btn" id="rGo">أدِر</button></div>
+      <div class="controls"><label>أو اسحب الزاوية
+        <input type="range" id="rtRange" min="-180" max="180" step="5" value="45"></label><span class="coord" id="rtRv">45°</span></div>
+      <canvas id="rtCv" width="640" height="340" role="img"
+              aria-label="المتجه قبل الدوران وبعده على دائرة نصف قطرها طوله، والقوس يبيّن الزاوية"></canvas>
+      <p class="figcap">الطرفان على الدائرة نفسها: الدوران يغيّر الاتجاه ولا يمسّ الطول</p>
       <div class="kmath" id="rStage" style="min-height:56px"></div>
       <div class="readout" id="rRO" style="direction:rtl;text-align:right">بعد الدوران…</div>
     </div>
@@ -179,6 +231,17 @@
     <tr><td>مصفوفة الدوران</td><td><span class="en" lang="en" dir="ltr">rotation matrix</span></td><td>متعامدة محددها <span class="coord">+1</span> تحفظ الهندسة</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0019-projections-rotations.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>dot</code> — الضرب الداخلي</li>
+      <li><code>projection_scalar</code> — المعامل ‎λ‎</li>
+      <li><code>project_on_line</code> — الإسقاط على خط</li>
+      <li><code>projection_matrix_line</code> — مصفوفة الإسقاط ‎bbᵀ/‖b‖²‎</li>
+      <li><code>residual</code> — المتبقّي العمودي</li>
+      <li><code>project_on_plane</code> — الإسقاط على مستوٍ</li>
+      <li><code>rotate</code> — الدوران بزاوية</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -201,17 +264,42 @@
   <footer class="footer"><span>الدرس 0019 · الإسقاطات المتعامدة والدورانات</span><span>التمرين: <code lang="en">python3 practice/0019-projections-rotations.py</code> · <a href="../playground.html?ex=0019-projections-rotations">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
   tex(document.getElementById('k1'),"\\lambda=\\frac{b^\\top x}{\\|b\\|^2},\\quad \\pi_U(x)=\\lambda b=\\frac{bb^\\top}{\\|b\\|^2}x,\\qquad P_\\pi=B(B^\\top B)^{-1}B^\\top");
   function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
   function vec(v){return "("+mn(v[0])+", "+mn(v[1])+", "+mn(v[2])+")";}
   function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+  var figP=FIG('pjCv');
+  function drawProj(){
+    if(!figP)return;
+    var x=[+document.getElementById('x1').value,+document.getElementById('x2').value,+document.getElementById('x3').value];
+    var b=[+document.getElementById('b1').value,+document.getElementById('b2').value,+document.getElementById('b3').value];
+    var col=figP.col(), pl=plane(b,x);
+    figP.clear();
+    if(!pl){figP.grid();figP.note(14,14,'b is zero — no line to project onto',col.soft);return;}
+    var B=[pl.na,0], X=[pl.proj,pl.perp], PI=[pl.proj,0];
+    figP.fit([B,X,PI],48,170);
+    figP.grid();
+    figP.ray(B,col.line,[6,5]);
+    figP.arrow([0,0],B,col.soft,2.4).tag(B,'b',col.soft,20,18);
+    figP.arrow([0,0],X,col.ink,3).tag(X,'x',col.ink,18,-12);
+    figP.line(PI,X,col.terra,1.8,[5,4]);
+    figP.arrow([0,0],PI,col.accent,3.4).tag([PI[0]/2,0],'pi(x)',col.accent,0,-14);
+    if(pl.perp>1e-9) figP.right(PI,[1,0],[0,pl.perp>0?1:-1],col.terra,.24);
+    figP.note(14,14,'distance to the line = '+(Math.round(Math.abs(pl.perp)*1000)/1000),col.soft);
+  }
+  onTheme(drawProj);
+  ['x1','x2','x3','b1','b2','b3'].forEach(function(id){document.getElementById(id).oninput=drawProj;});
+  drawProj();
   document.getElementById('pGo').onclick=function(){
     var x=[+document.getElementById('x1').value,+document.getElementById('x2').value,+document.getElementById('x3').value];
     var b=[+document.getElementById('b1').value,+document.getElementById('b2').value,+document.getElementById('b3').value];
+    drawProj();
     var bb=dot(b,b),el=document.getElementById('pRO');
     if(bb<1e-12){el.innerHTML="المتجه <span class='coord'>b</span> صفري — لا يولّد خطاً، فلا إسقاط";return;}
     var lam=dot(b,x)/bb;
@@ -233,9 +321,33 @@
       "الإسقاط <span class='coord'>π_U(x) = "+vec(pr)+"</span> · البقية <span class='coord'>"+vec(rest)+"</span><br>"+
       "تحقق: <span class='coord'>⟨بقية, b₁⟩ = "+mn(dot(rest,b1))+"</span> و <span class='coord'>⟨بقية, b₂⟩ = "+mn(dot(rest,b2))+"</span> ✓ — البقية تتعامد مع المستوى كله";
   };
+  var figR=FIG('rtCv');
+  function drawRot(){
+    if(!figR)return;
+    var x=[+document.getElementById('r1').value,+document.getElementById('r2').value];
+    var deg=+document.getElementById('rt').value,th=deg*Math.PI/180;
+    var col=figR.col(),c=Math.cos(th),s=Math.sin(th);
+    var y=[c*x[0]-s*x[1],s*x[0]+c*x[1]],n=Math.hypot(x[0],x[1]);
+    figR.fit([[n,n],[-n,-n]],36,150);
+    figR.clear();figR.grid();
+    if(n>1e-9){
+      figR.circle(n,col.line,2,[6,5]);
+      var a0=Math.atan2(x[1],x[0]),a1=Math.atan2(y[1],y[0]);
+      figR.arc(Math.min(a0,a1),Math.max(a0,a1),n*0.32,col.vio);
+      figR.arrow([0,0],x,col.soft,2.6).tag(x,'x',col.soft,18,-12);
+      figR.arrow([0,0],y,col.accent,3.2).tag(y,'R(t)x',col.accent,20,-12);
+      figR.note(14,14,'|x| = '+(Math.round(n*1000)/1000)+'   |R(t)x| = '+(Math.round(Math.hypot(y[0],y[1])*1000)/1000)+'   -> length preserved',col.soft);
+    } else {
+      figR.note(14,14,'the zero vector has no direction to rotate',col.soft);
+    }
+  }
+  onTheme(drawRot);
+  ['r1','r2','rt'].forEach(function(id){document.getElementById(id).oninput=drawRot;});
+  drawRot();
   document.getElementById('rGo').onclick=function(){
     var x=[+document.getElementById('r1').value,+document.getElementById('r2').value];
     var deg=+document.getElementById('rt').value,th=deg*Math.PI/180;
+    drawRot();
     var c=Math.cos(th),s=Math.sin(th);
     var y=[c*x[0]-s*x[1],s*x[0]+c*x[1]];
     tex(document.getElementById('rStage'),"R(\\theta)=\\begin{bmatrix}\\cos\\theta & -\\sin\\theta\\\\ \\sin\\theta & \\cos\\theta\\end{bmatrix}=\\begin{bmatrix}"+mn(c).replace(/\u2212/g,'-')+" & "+mn(-s).replace(/\u2212/g,'-')+"\\\\ "+mn(s).replace(/\u2212/g,'-')+" & "+mn(c).replace(/\u2212/g,'-')+"\\end{bmatrix}");
@@ -256,6 +368,14 @@
       opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
+  });
+
+  /* سحب الزاوية: النقطة تركب الدائرة والطول لا يتغير */
+  var rtRange=document.getElementById('rtRange'), rtRv=document.getElementById('rtRv');
+  rtRange.addEventListener('input',function(){
+    rtRv.textContent=rtRange.value+'°';
+    document.getElementById('rt').value=rtRange.value;
+    document.getElementById('rGo').click();
   });
 })();
 </script>

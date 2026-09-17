@@ -131,11 +131,32 @@
     <div class="analogy"><b>تشبيه: وصفة المطبخ</b><p>الوصفة الخطية مثل «كوبا طحين + بيضتان»: كل مكوّن يظهر مرة واحدة بقوة واحدة. أما «طحين × سكر» و«بيض مربّع» فوصفتان مختلفتان تماماً — الفرن نفسه لا يصلح لهما. <span class="en" lang="en" dir="ltr">Linear means each unknown appears once, to power one, never multiplied by another unknown.</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> المعادلة خطية إذا تحققت الشروط الثلاثة معاً: أس كل متغير <span class="coord">1</span>، ولا توجد دوال ملتصقة بالمتغير (مثل <span class="coord">sin x</span>)، ولا يوجد حاصل ضرب متغيرين. <span class="en" lang="en" dir="ltr">(Power 1, no functions of x, no x·y terms.)</span></p></div>
     <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Lines · THREE CASES">
+      <h3>هندسة المنظومة: أين الحل؟</h3>
+      <p class="hint">كل معادلة خط في المستوى، وحلّ المنظومة نقطة تقاطعهما — اختر الحالة أو أدخل معاملات الخط الثاني</p>
+      <div class="controls"><label>الحالة
+        <select id="lcCase">
+          <option value="one">حل وحيد — الخطان يتقاطعان</option>
+          <option value="none">لا حل — متوازيان</option>
+          <option value="many">لا نهائي — منطبقان</option>
+        </select></label></div>
+      <div class="controls"><label>الخط الثاني <span class="coord">a·x + b·y = c</span>
+        <input type="number" id="lcA" value="1" step="1">
+        <input type="number" id="lcB" value="-1" step="1">
+        <input type="number" id="lcC" value="1" step="1"></label></div>
+      <canvas id="lcCv" width="640" height="360" role="img"
+              aria-label="خطان في المستوى ونقطة تقاطعهما، وتتغير الصورة بتغير معاملات الخط الثاني"></canvas>
+      <p class="figcap">الخط الأول ثابت <span class="coord">2x + y = 5</span> بالأخضر، والثاني بالطيني يتبع ما تدخله</p>
+      <div class="readout" id="lcRO" style="direction:rtl;text-align:right">التقاطع…</div>
+    </div>
   </section>
 
   <section id="s2">
     <h2><span class="num">٢</span> جرّب بنفسك: خطية أم لا؟<span class="en-sub" lang="en">You predict, then the panel judges</span></h2>
     <p>من ملف <span class="coord">CamScanner 02-17-2023</span> في مقررك: إحدى عشرة معادلة مرشحة. تنقّل بينها بزرّي «التالي» و«السابق»، واحكم بنفسك قبل أن تضغط «اكشف الحكم».</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>قبل أن تفتح اللوحة: المعادلة <span class="coord">x·y = 6</span> فيها مجهولان ودرجة كل منهما واحد. هل هي خطية؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. الخطية لا تمنع الدرجة الأولى فحسب، بل تمنع أن يضرب مجهول في مجهول. المسموح: ضرب المجهول في <b>عدد ثابت</b> ثم الجمع. <span class="en" lang="en" dir="ltr">(x·y is a product of unknowns — not linear.)</span></p></details></div>
     <div class="demo" data-label="Try · PLAY">
       <h3>مختبر الإحدى عشرة</h3>
       <p class="hint">اختر حكمك أولاً، ثم اضغط «اكشف» لتتحقق</p>
@@ -159,6 +180,33 @@
       <div class="readout" id="gNote" style="direction:rtl;text-align:right">نقسم الصف الأول على 2 — لنجعل القائد 1</div>
       <p class="hint" style="margin-top:10px">تفضل المشاهدة؟ <a href="0003-gaussian-elimination.html">فيديو موشن جرافيك بتعليق عربي لنفس الحل (دقيقة و45 ثانية)</a></p>
     </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>منظومة من معادلتين، محلولة بالحذف حتى آخر سطر:</p>
+      <pre dir="ltr">2x +  y = 5
+ x -  y = 1
+
+[ 2   1 | 5 ]
+[ 1  -1 | 1 ]
+
+R1 &lt;-&gt; R2                 swap: we want a pivot of 1
+[ 1  -1 | 1 ]
+[ 2   1 | 5 ]
+
+R2 &lt;- R2 - 2*R1           kill the 2 under the pivot
+[ 1  -1 | 1 ]
+[ 0   3 | 3 ]
+
+R2 &lt;- R2 / 3              normalise the second pivot
+[ 1  -1 | 1 ]
+[ 0   1 | 1 ]
+
+back-substitution
+  row 2:  y = 1
+  row 1:  x - y = 1  -&gt;  x = 1 + 1 = 2
+
+check   2*2 + 1 = 5   OK
+        2   - 1 = 1   OK</pre>
+      <p class="worked-note">الخطوتان الوحيدتان هنا: تبديل صفين، وطرح مضاعف صف من صف. لا شيء غيرهما في الحذف الغاوسي كله.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
@@ -202,6 +250,14 @@
     <tr><td>العنصر القائد</td><td><span class="en" lang="en" dir="ltr">pivot</span></td><td>أول رقم غير صفري نرتّب عليه الصف</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0001-linear-systems.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>is_linear_flags</code> — تحكم على كل معادلة: خطية أم لا</li>
+      <li><code>det_2x2</code> — محدد المصفوفة ‎2×2‎ — يكشف وجود حل وحيد</li>
+      <li><code>gauss_pivot_first_row</code> — خطوة حذف واحدة تحت المحور</li>
+      <li><code>back_substitute_triangular</code> — تعويض خلفي على منظومة مثلثية</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -224,9 +280,11 @@
   <footer class="footer"><span>الدرس 0001 · منظومات المعادلات الخطية</span><span>التمرين: <code lang="en">python3 practice/0001-linear-systems.py</code> · <a href="../playground.html?ex=0001-linear-systems">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme;
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}
   }
   function mxHTML(rows,piv,chg){
@@ -323,6 +381,48 @@
       if(!info[1])b.classList.add('no');fb.textContent=info[0];
     });});
   });
+
+  /* هندسة المنظومة: خطان وتقاطعهما — الحالات الثلاث مرسومة */
+  var lcF = FIG('lcCv'), lcCase = document.getElementById('lcCase'),
+      lcIn = ['lcA','lcB','lcC'].map(function(i){return document.getElementById(i);}),
+      lcRO = document.getElementById('lcRO'),
+      LC_PRESET = { one:[1,-1,1], none:[4,2,3], many:[4,2,10] };
+  function lcEq(a,b,c){                /* صيغة مقروءة: x - y = 1 لا 1x + (-1)y = 1 */
+    function co(v,sym){ return (v===1?'':v===-1?'-':v)+sym; }
+    var t = Math.abs(a)<1e-9 ? '' : co(a,'x');
+    if(Math.abs(b)>1e-9) t += (t?(b<0?' - ':' + '):(b<0?'-':'')) + co(t?Math.abs(b):b,'y');
+    return (t||'0') + ' = ' + c;
+  }
+  function lcSeg(a,b,c,k){            /* طرفا الخط a·x + b·y = c داخل نافذة ±k */
+    if(Math.abs(b)>=Math.abs(a)){ if(Math.abs(b)<1e-9) return null;
+      return [[-k,(c+a*k)/b],[k,(c-a*k)/b]]; }
+    return [[(c-b*(-k))/a,-k],[(c-b*k)/a,k]];
+  }
+  function lcDraw(){
+    if(!lcF) return;
+    var a=+lcIn[0].value, b=+lcIn[1].value, c=+lcIn[2].value, C=lcF.col();
+    var det = 2*b - 1*a, pt=null, verdict, vcol;
+    if(Math.abs(det)>1e-9){ pt=[(5*b-1*c)/det,(2*c-5*a)/det];
+      verdict='حل وحيد — الخطان يتقاطعان في نقطة واحدة'; vcol=C.accent; }
+    else if(Math.abs(a*5 - 2*c)<1e-9 && Math.abs(b*5 - 1*c)<1e-9){
+      verdict='عدد لا نهائي من الحلول — الخطان منطبقان'; vcol=C.vio; }
+    else { verdict='لا حل — الخطان متوازيان ولا يلتقيان'; vcol=C.terra; }
+    lcF.fit(pt?[pt,[0,0],[3,3],[-1,-1]]:[[0,0],[4,4],[-2,-2]], 34, 60).clear().grid();
+    var k=(lcF.W+lcF.H)/lcF.sc;
+    var s1=lcSeg(2,1,5,k); if(s1) lcF.line(s1[0],s1[1],C.accent,2.4);
+    var s2=lcSeg(a,b,c,k); if(s2) lcF.line(s2[0],s2[1],C.terra,2.4,Math.abs(det)<1e-9?[8,6]:null);
+    if(pt){ lcF.dot(pt,C.ink,6).tag(pt,'('+(Math.round(pt[0]*100)/100)+', '+(Math.round(pt[1]*100)/100)+')',C.ink,34,-20); }
+    lcF.note(12,12,lcEq(2,1,5),C.accent);
+    lcF.note(12,30,lcEq(a,b,c),C.terra);
+    var par=function(v){return v<0?'('+String(v).replace('-','\u2212')+')':String(v);};
+    lcRO.innerHTML = '<span class="coord">det = 2·'+par(b)+' − 1·'+par(a)+' = '+String(det).replace('-','\u2212')+'</span> — '+verdict;
+    lcRO.style.color = vcol;
+  }
+  lcCase.addEventListener('change',function(){
+    var v=LC_PRESET[lcCase.value]; lcIn.forEach(function(el,i){el.value=v[i];}); lcDraw();
+  });
+  lcIn.forEach(function(el){el.addEventListener('input',lcDraw);});
+  onTheme(lcDraw); lcDraw();
 })();
 </script>
 <script src="../assets/site.js"></script>

@@ -26,9 +26,11 @@ section{scroll-margin-top:24px}
 .pager .next{margin-inline-start:auto;text-align:left}
 .pager .home{flex:0 0 auto;display:inline-flex;align-items:center;padding-inline:22px}
 
-/* Canvas demos must keep their intrinsic aspect ratio (the parallelogram
-   area demo is geometrically distorted by a forced CSS height). */
-canvas{height:auto}
+/* One canvas contract for every lesson. A forced CSS height distorts the
+   figure, and a canvas with no max-width feeds its own hi-DPI resize: the
+   backing store grows the CSS box, which grows the backing store again. */
+canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;
+  background:var(--paper);border:1px solid var(--line);border-radius:12px;direction:ltr}
 
 /* --- small screens ----------------------------------------------------- */
 @media(max-width:700px){
@@ -55,6 +57,38 @@ canvas{height:auto}
 .refs a{color:var(--accent)}
 .refs li span{color:var(--soft);margin-inline-start:6px;font-size:12.5px}
 
+/* --- prediction card: predict, then reveal ---------------------------- */
+.card.predict{border-inline-start:6px solid var(--vio)}
+.predict-tag{background:var(--vio)}
+.card.predict details{margin-top:12px}
+.card.predict summary{cursor:pointer;font-family:var(--th-sans);font-size:13px;color:var(--accent);
+  list-style:none;display:inline-flex;align-items:center;gap:7px;
+  border:1.5px solid var(--accent);border-radius:999px;padding:6px 16px;
+  transition:background .2s ease,color .2s ease}
+.card.predict summary::-webkit-details-marker{display:none}
+.card.predict summary::before{content:"\25B8";font-size:11px}
+.card.predict details[open] summary::before{content:"\25BE"}
+.card.predict details[open] summary{background:var(--accent);color:var(--paper)}
+.card.predict details>p{margin:14px 0 0}
+
+/* --- worked example: the computation, line by line --------------------- */
+.worked{border:1px solid var(--line);border-inline-start:6px solid var(--vio);border-radius:14px;
+  padding:16px 18px;margin:22px 0;background:#fff}
+.worked-tag{background:var(--vio)}
+.worked>p{margin:0}
+.worked pre{direction:ltr;text-align:left;unicode-bidi:isolate;overflow-x:auto;margin:12px 0 0;
+  font-family:ui-monospace,Menlo,Consolas,monospace;font-size:13px;line-height:1.85;
+  background:#00000008;border:1px solid var(--line);border-radius:12px;padding:14px 16px;
+  color:var(--ink);white-space:pre;tab-size:2}
+.worked .worked-note{font-family:var(--th-sans);font-size:13px;color:var(--soft);margin:12px 0 0}
+
+/* --- what the practice file asks for ----------------------------------- */
+.card.tools{border-inline-start:6px solid var(--terra)}
+.tools-tag{background:var(--terra)}
+.card.tools ul{margin:10px 0 0;padding-inline-start:18px;font-family:var(--th-sans);font-size:14px;line-height:2.1}
+.card.tools code{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;
+  background:#00000008;border:1px solid var(--line);border-radius:6px;padding:1px 7px;font-size:12.5px}
+
 /* --- dark mode (night review) ----------------------------------------- */
 :root[data-theme=dark]{--paper:#14130f;--ink:#f2efe6;--soft:#a7a396;--line:#33312a;--accent:#7fc9ae;--terra:#e0906a;--vio:#b39ce0}
 [data-theme=dark] .card,[data-theme=dark] .analogy,[data-theme=dark] .demo,
@@ -74,11 +108,20 @@ canvas{height:auto}
 [data-theme=dark] .done-toggle.is-done{color:#0c0c0a}
 [data-theme=dark] .score{color:#0c0c0a}
 
+[data-theme=dark] .worked{background:#1d1c17}
+[data-theme=dark] .worked pre{background:#00000055}
+[data-theme=dark] .card.predict details[open] summary{color:#14130f}
+[data-theme=dark] .card.tools code{background:#ffffff12}
+
 @media print{
   .pager,.controls,.demo video,.skip,.lesson-tools,.refs,.theme-btn{display:none}
   body{background:#fff}
   h1{font-size:34px}
-  .card,.analogy,.demo,.kmath{break-inside:avoid}
+  .card,.analogy,.demo,.kmath,.worked{break-inside:avoid}
+  .card.predict summary{display:none}
+  .card.predict details{content-visibility:visible}
+  .card.predict details::details-content{content-visibility:visible;display:block}
+  .card.predict details>p{display:block}
 }
 
 /* Universal BiDi & LTR Isolation for Math & English */

@@ -67,6 +67,9 @@
   th{background:#00000008}
   .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
   a{color:var(--accent)}
+  canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:12px;direction:ltr}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
 <link rel="stylesheet" href="../assets/ui.css">
@@ -118,14 +121,48 @@
   <section id="s2">
     <h2><span class="num">٢</span> مصفوفة التحويل: أعمدتها صور الأساس<span class="en-sub" lang="en">Columns of A are the images of the basis vectors, written in C</span></h2>
     <p>لتطبيق خطي <span class="coord">Φ : V → W</span> وأساسين <span class="coord">B</span> لـ <span class="coord">V</span> و <span class="coord">C</span> لـ <span class="coord">W</span>، توجد مصفوفة وحيدة <span class="coord">A_Φ</span> تحقق <span class="coord">[Φ(x)]_C = A_Φ · [x]_B</span>. وبناؤها وصفة من سطر واحد: <b>طبّق <span class="coord">Φ</span> على كل متجه أساس، واكتب الناتج عموداً</b>.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>قبل أي حساب: ما العمود الأول من مصفوفة تطبيق خطي؟</p>
+      <details><summary>اكشف الجواب</summary><p>صورة المتجه الأول من أساس الانطلاق، مكتوبة بإحداثيات أساس الوصول. أعمدة المصفوفة هي صور الأساس لا شيء غير ذلك — ولهذا تُبنى المصفوفة بإدخال <span class="coord">e₁</span> ثم <span class="coord">e₂</span> وقراءة الناتج. <span class="en" lang="en" dir="ltr">(The columns are the images of the basis vectors.)</span></p></details></div>
     <div class="demo" data-label="Build · MATRIX">
       <h3>بانِي مصفوفة التحويل</h3>
       <p class="hint">أدخل <span class="coord">Φ(x,y) = (p·x + q·y, r·x + s·y)</span> — اللوحة تطبّقه على <span class="coord">e₁</span> و <span class="coord">e₂</span> وتبني المصفوفة</p>
       <div class="controls"><label>p <input type="number" id="tp" value="2"></label><label>q <input type="number" id="tq" value="1"></label><label>r <input type="number" id="tr" value="1"></label><label>s <input type="number" id="ts" value="-1"></label><button class="btn" id="tGo">ابنِ المصفوفة</button></div>
+      <canvas id="tmCv" width="640" height="360" role="img"
+              aria-label="متجها الأساس المعياري وصورتاهما تحت التطبيق، مع الشبكة المحوَّلة"></canvas>
+      <p class="figcap">الرمادي <span class="coord">e₁, e₂</span>، والملوّن صورتاهما — وهما بالضبط عمودا المصفوفة</p>
       <div class="kmath" id="tStage" style="min-height:56px"></div>
       <div class="readout" id="tRO" style="direction:rtl;text-align:right">صور الأساس…</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>لا معنى لعبارة «مصفوفة التطبيق» بلا ذكر الأساسين. التطبيق واحد، ومصفوفاته بعدد أزواج الأسس — كما أن الرحلة واحدة وأوصافها بعدد الخرائط. <span class="en" lang="en" dir="ltr">(No basis, no matrix.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>بناء المصفوفة من التطبيق نفسه — عمودان، كلٌّ منهما صورة متجه أساس:</p>
+      <pre dir="ltr">Phi(x1, x2) = ( x1 + 3*x2 ,  2*x1 - x2 )
+basis B = C = { e1 = (1,0),  e2 = (0,1) }
+
+column 1 = image of e1
+  Phi(1, 0) = ( 1 + 0 ,  2 - 0 ) = (1, 2)
+
+column 2 = image of e2
+  Phi(0, 1) = ( 0 + 3 ,  0 - 1 ) = (3, -1)
+
+A = [ 1   3 ]
+    [ 2  -1 ]
+
+verify on a vector that is not a basis vector, x = (2, 1)
+
+  directly   Phi(2, 1) = ( 2 + 3 ,  4 - 1 ) = (5, 3)
+  by matrix  A * (2, 1) = ( 1*2 + 3*1 ,  2*2 + (-1)*1 )
+                        = ( 2 + 3 ,  4 - 1 ) = (5, 3)      OK
+
+two numbers that travel with the map, not with the basis
+
+  trace A = 1 + (-1) = 0
+  det   A = 1*(-1) - 3*2 = -1 - 6 = -7   !=  0   -&gt;  invertible
+
+change of basis:  A' = T^-1 A S
+  a similar matrix has the SAME trace and the SAME determinant</pre>
+      <p class="worked-note">الأثر والمحدد لا يتغيران بتغيير الأساس. فإن اختلفا بين مصفوفتين، فهما ليستا التطبيق نفسه بعينين مختلفتين.</p></div>
   </section>
 
   <section id="s3">
@@ -172,6 +209,15 @@
     <tr><td>التشابه</td><td><span class="en" lang="en" dir="ltr">similarity</span></td><td><span class="coord">A′ = S⁻¹AS</span> — المصفوفة نفسها بأساس آخر</td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0014-transformation-matrix.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>matrix_of</code> — بناء المصفوفة من صور الأساس</li>
+      <li><code>matmul2</code> — ضرب مصفوفتين ‎2×2‎</li>
+      <li><code>inverse2</code> — نظير مصفوفة ‎2×2‎</li>
+      <li><code>similar</code> — التشابه ‎A′ = T⁻¹AS‎</li>
+      <li><code>trace2</code> — الأثر — ثابت تحت تغيير الأساس</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -194,15 +240,40 @@
   <footer class="footer"><span>الدرس 0014 · مصفوفة التحويل وتغيير الأساس</span><span>التمرين: <code lang="en">python3 practice/0014-transformation-matrix.py</code> · <a href="../playground.html?ex=0014-transformation-matrix">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
   tex(document.getElementById('k1'),"x=\\alpha_1 b_1+\\cdots+\\alpha_n b_n \\quad\\Longrightarrow\\quad [x]_B=\\begin{bmatrix}\\alpha_1\\\\ \\vdots \\\\ \\alpha_n\\end{bmatrix}, \\qquad [\\Phi(x)]_C = A_\\Phi [x]_B");
   function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  var fig=FIG('tmCv');
+  function drawT(){
+    if(!fig)return;
+    var p=+document.getElementById('tp').value,q=+document.getElementById('tq').value,
+        r=+document.getElementById('tr').value,s=+document.getElementById('ts').value;
+    var col=fig.col();
+    fig.fit([[p,r],[q,s],[p+q,r+s],[1,1],[-1,-1]],40,150);
+    fig.clear();fig.grid();
+    var k=4,i;
+    for(i=-k;i<=k;i++){
+      fig.line([p*i-q*k,r*i-s*k],[p*i+q*k,r*i+s*k],col.accent+'33',1.4);
+      fig.line([p*(-k)+q*i,r*(-k)+s*i],[p*k+q*i,r*k+s*i],col.accent+'33',1.4);
+    }
+    fig.arrow([0,0],[1,0],col.soft,2.2).tag([1,0],'e1',col.soft,12,16);
+    fig.arrow([0,0],[0,1],col.soft,2.2).tag([0,1],'e2',col.soft,-16,-6);
+    fig.arrow([0,0],[p,r],col.accent,3.2).tag([p,r],'col 1',col.accent,24,-12);
+    fig.arrow([0,0],[q,s],col.terra,3.2).tag([q,s],'col 2',col.terra,24,-12);
+    fig.note(14,14,'det = '+(Math.round((p*s-q*r)*100)/100),col.soft);
+  }
+  onTheme(drawT);
+  ['tp','tq','tr','ts'].forEach(function(id){document.getElementById(id).oninput=drawT;});
+  drawT();
   document.getElementById('tGo').onclick=function(){
     var p=+document.getElementById('tp').value,q=+document.getElementById('tq').value,
         r=+document.getElementById('tr').value,s=+document.getElementById('ts').value;
+    drawT();
     tex(document.getElementById('tStage'),"\\Phi(e_1)=\\begin{bmatrix}"+p+"\\\\"+r+"\\end{bmatrix},\\quad \\Phi(e_2)=\\begin{bmatrix}"+q+"\\\\"+s+"\\end{bmatrix} \\quad\\Rightarrow\\quad A_\\Phi=\\begin{bmatrix}"+p+" & "+q+"\\\\"+r+" & "+s+"\\end{bmatrix}");
     var det=p*s-q*r;
     document.getElementById('tRO').innerHTML="العمود الأول هو <span class='coord'>Φ(1,0) = ("+mn(p)+", "+mn(r)+")</span>، والثاني <span class='coord'>Φ(0,1) = ("+mn(q)+", "+mn(s)+")</span> · <span class='coord'>det = "+mn(det)+"</span> → "+(Math.abs(det)>1e-9?"تقابل: النواة صفرية والصورة كل ℝ²":"ليس تقابلاً: الرتبة 1 أو 0 والنواة غير صفرية");

@@ -67,6 +67,9 @@
   th{background:#00000008}
   .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
   a{color:var(--accent)}
+  canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:12px;direction:ltr}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
 <link rel="stylesheet" href="../assets/ui.css">
@@ -118,11 +121,17 @@
   <section id="s2">
     <h2><span class="num">٢</span> <span class="coord">L = x₀ + U</span>: نقطة إسناد وفضاء اتجاه<span class="en-sub" lang="en">Support point plus direction space — a line or plane off the origin</span></h2>
     <p>ليكن <span class="coord">U</span> فضاءً جزئياً و <span class="coord">x₀</span> متجهاً. المجموعة <span class="coord">L = x₀ + U = {x₀ + u | u ∈ U}</span> هي <span class="term">فضاء أفيني جزئي</span>، وتسمّى <span class="coord">x₀</span> <span class="term">نقطة الإسناد</span> <span class="en" lang="en" dir="ltr">(support point)</span> و <span class="coord">U</span> <span class="term">فضاء الاتجاه</span> <span class="en" lang="en" dir="ltr">(direction space)</span>. صورتها الوسيطية: <span class="coord">x = x₀ + λ₁b₁ + … + λₖbₖ</span>.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>الدالة <span class="coord">f(x) = Ax + b</span> مع <span class="coord">b ≠ 0</span>. هل هي تطبيق خطي؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. <span class="coord">f(0) = b ≠ 0</span>، والتطبيق الخطي يرسل الصفر إلى الصفر دائماً. هي <b>أفينية</b>: تطبيق خطي تلته إزاحة. <span class="en" lang="en" dir="ltr">(Affine = linear + a shift; it loses the origin.)</span></p></details></div>
     <div class="demo" data-label="Slide · AFFINE">
       <h3>مُزيح الفضاءات</h3>
       <p class="hint">خط في <span class="coord">ℝ³</span>: نقطة إسناد <span class="coord">p</span> واتجاه <span class="coord">d</span> — حرّك الوسيط <span class="coord">t</span></p>
       <div class="controls"><label>p <input type="number" id="p1" value="1"><input type="number" id="p2" value="2"><input type="number" id="p3" value="3"></label></div>
       <div class="controls"><label>d <input type="number" id="d1" value="2"><input type="number" id="d2" value="-1"><input type="number" id="d3" value="1"></label><label>t <input type="number" id="tt" value="1" step="0.5"></label><button class="btn" id="aGo">احسب النقطة</button></div>
+      <canvas id="afCv" width="640" height="340" role="img"
+              aria-label="فضاء الاتجاه مرسوماً عبر الأصل، والخط الأفيني مزاحاً عنه بمقدار نقطة الإسناد"></canvas>
+      <p class="figcap">مرسوم داخل المستوى الذي يحدده <span class="coord">p</span> و <span class="coord">d</span> — فالإزاحة والمسافة حقيقيتان لا تقريبيتين</p>
       <div class="readout" id="aRO" style="direction:rtl;text-align:right">النقطة عند t…</div>
     </div>
     <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>نقطة الإسناد ليست وحيدة: أي نقطة على <span class="coord">L</span> تصلح إسناداً. أما فضاء الاتجاه <span class="coord">U</span> فوحيد — وهو الذي يحدد بُعد الفضاء الأفيني. <span class="en" lang="en" dir="ltr">(Support point: many choices. Direction space: one.)</span></p></div>
@@ -138,6 +147,35 @@
       <div class="readout" id="sRO" style="direction:rtl;text-align:right">الشكل…</div>
     </div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>ال<span class="term">مستوى الفائق</span> <span class="en" lang="en" dir="ltr">(hyperplane)</span> <span class="coord">aᵀx = c</span> فضاء أفيني بعده <span class="coord">n − 1</span> — وهو الشكل الذي تفصل به خوارزميات التصنيف مثل <span class="coord">SVM</span> بين فئتين.</p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>مجموعة حلول <span class="coord">Ax = b</span> مكتوبة على صورتها الحقيقية: نقطة إسناد زائد نواة.</p>
+      <pre dir="ltr">A = [ 1  2  1 ]     b = [ 4 ]      one equation, three unknowns
+
+  x1 + 2*x2 + x3 = 4
+
+a particular solution   (set the free variables to zero)
+  x2 = 0, x3 = 0   -&gt;   x1 = 4
+  x0 = (4, 0, 0)
+
+the kernel   (the same equation with a zero right-hand side)
+  x1 + 2*x2 + x3 = 0
+  x2 = 1, x3 = 0   -&gt;   x1 = -2    -&gt;  u1 = (-2, 1, 0)
+  x2 = 0, x3 = 1   -&gt;   x1 = -1    -&gt;  u2 = (-1, 0, 1)
+
+the full solution set
+  L = x0 + span{ u1, u2 }
+    = (4, 0, 0) + span{ (-2, 1, 0), (-1, 0, 1) }
+
+what shape is it?
+  direction space has dimension 2   -&gt;  a plane in R^3
+  does it pass through the origin?
+    (0,0,0):  0 + 0 + 0 = 0  !=  4    NO
+  -&gt; an affine plane, not a subspace
+
+check one point of it
+  x0 + 3*u1 = (4 - 6,  0 + 3,  0) = (-2, 3, 0)
+  -2 + 2*3 + 0 = -2 + 6 = 4    OK</pre>
+      <p class="worked-note">كل مجموعة حلول لمنظومة قابلة للحل لها هذا الشكل: حل خاص واحد، زائد النواة كلها. والفرق بين خطي وأفيني هو هذا الحل الخاص وحده.</p></div>
   </section>
 
   <section id="gain">
@@ -171,6 +209,15 @@
     <tr><td>المستوى الفائق</td><td><span class="en" lang="en" dir="ltr">hyperplane</span></td><td>فضاء أفيني بعده <span class="coord">n − 1</span></td></tr></table>
   </section>
 
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0015-affine-spaces.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>is_linear_map</code> — هل الدالة خطية أم أفينية؟</li>
+      <li><code>point_on_line</code> — هل النقطة على ‎x₀ + U‎؟</li>
+      <li><code>affine_dim</code> — بُعد الفضاء الأفيني = بُعد فضاء الاتجاه</li>
+      <li><code>shape_name</code> — نقطة · خط · مستوٍ</li>
+      <li><code>passes_through_origin</code> — هل يمر بالأصل؟</li>
+    </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
     <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
     <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
@@ -193,16 +240,47 @@
   <footer class="footer"><span>الدرس 0015 · الفضاءات الأفينية</span><span>التمرين: <code lang="en">python3 practice/0015-affine-spaces.py</code> · <a href="../playground.html?ex=0015-affine-spaces">في المتصفح</a></span></footer>
 </div>
 <script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
 <script>
 (function(){
   "use strict";
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
   tex(document.getElementById('k1'),"\\text{linear: } f(x)=Ax \\qquad \\text{affine: } f(x)=Ax+b \\qquad L=x_0+U");
   function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  var fig=FIG('afCv');
+  function drawAff(){
+    if(!fig)return;
+    var p=[+document.getElementById('p1').value,+document.getElementById('p2').value,+document.getElementById('p3').value];
+    var d=[+document.getElementById('d1').value,+document.getElementById('d2').value,+document.getElementById('d3').value];
+    var t=+document.getElementById('tt').value;
+    var col=fig.col(), pl=plane(d,p);
+    fig.clear();
+    if(!pl){fig.grid();fig.note(14,14,'direction vector is zero',col.soft);return;}
+    var P=[pl.proj,pl.perp], D=[pl.na,0];
+    var X=[P[0]+t*D[0],P[1]];
+    fig.fit([P,X,[P[0]+D[0],P[1]],[-Math.abs(D[0])*0.4,0],[Math.abs(D[0])*0.4,0]],44,150);
+    fig.grid();
+    fig.ray(D,col.soft,[7,6]);
+    fig.rayAt(P,D,col.accent,null);
+    if(Math.abs(P[1])>1e-9){
+      fig.line([P[0],0],P,col.terra,1.8,[5,4]);
+      fig.right([P[0],0],[1,0],[0,P[1]>0?1:-1],col.terra,.22);
+    }
+    fig.arrow([0,0],P,col.terra,2.6).tag(P,'x0',col.terra,-18,-12);
+    fig.arrow(P,[P[0]+D[0],P[1]],col.ink,2.2).tag([P[0]+D[0]/2,P[1]],'d',col.ink,0,-15);
+    fig.dot(X,col.accent,6).tag(X,'x(t)',col.accent,0,19);
+    fig.note(14,14,'U through the origin (dashed)   L = x0 + U (solid)',col.soft);
+    fig.note(14,32,'distance from origin to L = '+(Math.round(Math.abs(P[1])*1000)/1000),col.soft);
+  }
+  onTheme(drawAff);
+  ['p1','p2','p3','d1','d2','d3','tt'].forEach(function(id){document.getElementById(id).oninput=drawAff;});
+  drawAff();
   document.getElementById('aGo').onclick=function(){
     var p=[+document.getElementById('p1').value,+document.getElementById('p2').value,+document.getElementById('p3').value];
     var d=[+document.getElementById('d1').value,+document.getElementById('d2').value,+document.getElementById('d3').value];
     var t=+document.getElementById('tt').value;
+    drawAff();
     var x=[p[0]+t*d[0],p[1]+t*d[1],p[2]+t*d[2]];
     var zero=(d[0]===0&&d[1]===0&&d[2]===0);
     document.getElementById('aRO').innerHTML="<span class='coord'>x(t) = p + t·d = ("+mn(x[0])+", "+mn(x[1])+", "+mn(x[2])+")</span><br>عند <span class='coord'>t = 0</span> نعود لنقطة الإسناد <span class='coord'>("+mn(p[0])+", "+mn(p[1])+", "+mn(p[2])+")</span> · "+(zero?"الاتجاه صفري: الفضاء تقلّص إلى نقطة واحدة (بعده 0)":"فضاء الاتجاه <span class='coord'>span{d}</span> بعده <span class='coord'>1</span> — خط مزاح عن الأصل")+" · يمر بالأصل؟ "+((p[0]===0&&p[1]===0&&p[2]===0)?"نعم — إذاً هو فضاء جزئي أيضاً":"لا — فضاء أفيني خالص");

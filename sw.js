@@ -1,5 +1,5 @@
 /* Offline cache for مختبر الجبر الخطي. Bump CACHE to force refresh. */
-const CACHE = "linalg-v4";
+const CACHE = "linalg-v7";
 
 /* Precached on install: the shell every page needs. */
 const CORE = [
@@ -18,6 +18,7 @@ const CORE = [
   "./assets/site.js",
   "./assets/ui.js",
   "./assets/srs.js",
+  "./assets/figure.js",
   "./assets/graph-data.js",
   "./assets/search-data.js",
   "./assets/exercises.js",
