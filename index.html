@@ -134,6 +134,47 @@
   .crow a{color:#fff}
   .crow a.st{text-decoration:none}
   .crow a.st:hover{background:#2c2c28}
+
+  /* ---- شجرة المقرر: محاضرة تُفتح لتكشف دروسها ---- */
+  .lectree{margin-top:30px;display:flex;flex-direction:column;gap:12px}
+  .lec{border:1px solid #2c2c28;border-radius:18px;background:#0b0b0a;overflow:hidden}
+  .lec[open]{border-color:#3f3f38}
+  .lec > summary{list-style:none;cursor:pointer;display:grid;grid-template-columns:auto 1fr auto;
+    gap:16px;align-items:center;padding:20px 22px;font-family:var(--mono);font-size:13px}
+  .lec > summary::-webkit-details-marker{display:none}
+  .lec > summary:hover{background:#151513}
+  .lec > summary:focus-visible{outline:2px solid #f4f1e8;outline-offset:-4px}
+  .lec-caret{width:26px;height:26px;display:grid;place-items:center;border:1px solid #3a3a35;
+    border-radius:50%;color:#cfccc0;font-size:12px;transition:transform .2s ease;flex:0 0 auto}
+  .lec[open] .lec-caret{transform:rotate(90deg);border-color:#6f6c62;color:#fff}
+  html[dir=rtl] .lec-caret{transform:rotate(180deg)}
+  html[dir=rtl] .lec[open] .lec-caret{transform:rotate(90deg)}
+  .lec-id{color:#8d8a80;font-size:11px;letter-spacing:.12em;text-transform:uppercase}
+  .lec-name{font-size:17px;color:#f4f1e8;display:block;margin-top:3px}
+  html[lang=ar] .lec-name{font-family:"ThmanyahSans",var(--sans)}
+  .lec-en{display:block;direction:ltr;text-align:left;color:#8d8a80;font-size:11.5px;margin-top:2px}
+  html[dir=rtl] .lec-en{text-align:right}
+  .lec-meta{display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:flex-end}
+  .lec-count{font-size:11px;border:1px solid #3a3a35;border-radius:999px;padding:6px 12px;color:#cfccc0;white-space:nowrap}
+  .lec-count.soon{border-style:dashed;color:#9a978c}
+  .lec-prog{font-size:11px;border-radius:999px;padding:6px 12px;white-space:nowrap;
+    background:#1c3a30;color:#8fd9bd;border:1px solid #27523f}
+  .lec-prog[data-done="0"]{background:#1a1a17;color:#8d8a80;border-color:#2c2c28}
+  .lec-body{padding:0 22px 8px}
+  .lec-body .crow{grid-template-columns:118px 1fr auto}
+  .lec-body .crow:first-of-type{border-top:1px solid #2c2c28}
+  .lec-note{font-family:var(--mono);font-size:12.5px;color:#9a978c;line-height:1.9;
+    border-top:1px solid #2c2c28;padding:16px 4px 20px}
+  .lec-note b{color:#cfccc0}
+  .lec-road{margin:10px 0 0;padding:0;list-style:none;display:grid;gap:6px}
+  .lec-road li{font-size:12.5px;color:#b9b6aa;padding-inline-start:18px;position:relative}
+  .lec-road li::before{content:"↳";position:absolute;inset-inline-start:0;color:#6f6c62}
+  @media(max-width:700px){
+    .lec > summary{grid-template-columns:auto 1fr;row-gap:10px;padding:16px}
+    .lec-meta{grid-column:2;justify-content:flex-start}
+    .lec-body{padding:0 16px 8px}
+    .lec-body .crow{grid-template-columns:1fr;gap:6px}
+  }
   .toolgrid{display:grid;grid-template-columns:repeat(2,1fr);gap:var(--gutter);margin-top:34px}
   @media(max-width:860px){.toolgrid{grid-template-columns:1fr}.crow{grid-template-columns:1fr;gap:6px}}
   .tool{background:#1b1b18;border:1px solid #2e2e2a;border-radius:18px;padding:24px}
@@ -428,29 +469,84 @@
 
   <section class="block" id="course" style="padding-top:0">
     <div class="course">
-      <p class="sec-label" data-i18n="courseLabel">المقرر · ملفات بخط اليد وشرائح المحاضرات</p>
-      <h2 class="sec" data-i18n="courseH">ملفات بخط اليد وشرائح المحاضرات، أُعيد بناؤها كتسعة عشر درساً تفاعلياً.</h2>
-      <p class="body" data-i18n="courseP">المنهجية نفسها في كل درس: البدء من الصفر، تشبيه من الحياة لكل فكرة، بطاقات القاعدة الذهبية، لوحة عملية لكل مفهوم، اختبار ختامي، قاموس، وتمرين بايثون مع حل منفصل. الخط Thmanyah والرياضيات بـ KaTeX.</p>
-      <div style="margin-top:34px" id="lessonRows">
-        <div class="crow"><span data-i18n="pdf01">الملف 01 · 10 صفحات</span><b><a href="lessons/0001-linear-systems.html">منظومات المعادلات الخطية — أي معادلة خطية؟</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0001-linear-systems-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf02">الملف 02 · 17 صفحة</span><b><a href="lessons/0002-matrices-inverse.html">المصفوفات والعمليات والنظير الضربي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0002-matrices-inverse-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf03">الملف 03 · 11 صفحة</span><b><a href="lessons/0003-gaussian-elimination.html">الحذف الغاوسي خطوة بخطوة</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0003-gaussian-elimination-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf04">الملف 04 · بخط اليد</span><b><a href="lessons/0004-matrix-properties.html">خصائص المصفوفات والمصفوفة الصفرية</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0004-matrix-properties-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf05">الملف 05 · 11 صفحة</span><b><a href="lessons/0005-euclidean-spaces.html">فضاء المتجهات الإقليدي: الضرب الداخلي والطول</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0005-euclidean-spaces-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf06">الملف 06 · 9 صفحات</span><b><a href="lessons/0006-subspaces.html">الفضاء الجزئي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0006-subspaces-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf07">الملف 07 · 5 صفحات</span><b><a href="lessons/0007-linear-combinations.html">التركيب الخطي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0007-linear-combinations-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf08">الملف 08 · 13 صفحة</span><b><a href="lessons/0008-span-independence.html">المولد والاستقلال الخطي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0008-span-independence-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf09">الملف 09 · 9 صفحات</span><b><a href="lessons/0009-basis-dimension.html">الأساس والأبعاد</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0009-basis-dimension-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf10">الملف 10 · 11 صفحة</span><b><a href="lessons/0010-determinants.html">المحددات من 2×2 إلى 3×3</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0010-determinants-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="pdf11">الملف 11 · 11 صفحة</span><b><a href="lessons/0011-drills.html">بنك التدريبات مع الحلول</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0011-drills-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
-        <div class="crow"><span data-i18n="lec12">المحاضرة 02 · شرائح</span><b><a href="lessons/0012-rank.html">الرتبة وحلّية المنظومة</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0012_rank.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
-        <div class="crow"><span data-i18n="lec13">المحاضرة 02 · شرائح</span><b><a href="lessons/0013-linear-mappings.html">التطبيقات الخطية: النواة والصورة</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0013_linear_mappings.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
-        <div class="crow"><span data-i18n="lec14">المحاضرة 02 · شرائح</span><b><a href="lessons/0014-transformation-matrix.html">مصفوفة التحويل وتغيير الأساس</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0014_transformation_matrix.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
-        <div class="crow"><span data-i18n="lec15">المحاضرة 02 · شرائح</span><b><a href="lessons/0015-affine-spaces.html">الفضاءات الأفينية</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0015_affine_spaces.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
-        <div class="crow"><span data-i18n="lec16">المحاضرة 03 · شرائح</span><b><a href="lessons/0016-norms-inner-products.html">المعايير والضرب الداخلي المجرد</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0016_norms.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
-        <div class="crow"><span data-i18n="lec17">المحاضرة 03 · شرائح</span><b><a href="lessons/0017-orthogonality.html">الزوايا والتعامد والمصفوفات المتعامدة</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0017_orthogonality.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
-        <div class="crow"><span data-i18n="lec18">المحاضرة 03 · شرائح</span><b><a href="lessons/0018-gram-schmidt.html">الأساس المتعامد وغرام–شميت</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0018_gram_schmidt.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
-        <div class="crow"><span data-i18n="lec19">المحاضرة 03 · شرائح</span><b><a href="lessons/0019-projections-rotations.html">الإسقاطات المتعامدة والدورانات</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0019_projections.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
+      <p class="sec-label" data-i18n="courseLabel">المقرر · ست محاضرات · 19 درساً مبنيّاً</p>
+      <h2 class="sec" data-i18n="courseH">ست محاضرات، تُفتح كلٌّ منها على دروسها.</h2>
+      <p class="body" data-i18n="courseP">افتح أي محاضرة لترى دروسها. المنهجية نفسها في كل درس: البدء من الصفر، تشبيه من الحياة لكل فكرة، بطاقات القاعدة الذهبية، لوحة عملية لكل مفهوم، اختبار ختامي، قاموس، وتمرين بايثون مع حل منفصل. الخط Thmanyah والرياضيات بـ KaTeX.</p>
+      <div class="lectree" id="lectree">
+      <details class="lec" open id="lec02">
+        <summary>
+          <span class="lec-caret" aria-hidden="true">›</span>
+          <span><span class="lec-id">المحاضرة 02 · 90 شريحة</span>
+            <span class="lec-name">الجبر الخطي</span>
+            <span class="lec-en" lang="en">Lecture 2 · Linear Algebra</span></span>
+          <span class="lec-meta"><span class="lec-count">12 دروس</span><span class="lec-prog" data-lec-prog="02" data-lec-ids="0001,0002,0003,0004,0006,0007,0008,0009,0012,0013,0014,0015" aria-live="polite"></span></span>
+        </summary>
+<div class="lec-body">
+        <div class="crow"><span>الدرس 0001</span><b><a href="lessons/0001-linear-systems.html">منظومات المعادلات الخطية</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0001-linear-systems-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0002</span><b><a href="lessons/0002-matrices-inverse.html">المصفوفات والعمليات والنظير الضربي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0002-matrices-inverse-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0003</span><b><a href="lessons/0003-gaussian-elimination.html">الحذف الغاوسي خطوة بخطوة</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0003-gaussian-elimination-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0004</span><b><a href="lessons/0004-matrix-properties.html">خصائص المصفوفات والمصفوفة الصفرية</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0004-matrix-properties-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0006</span><b><a href="lessons/0006-subspaces.html">الفضاء الجزئي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0006-subspaces-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0007</span><b><a href="lessons/0007-linear-combinations.html">التركيب الخطي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0007-linear-combinations-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0008</span><b><a href="lessons/0008-span-independence.html">المولد والاستقلال الخطي</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0008-span-independence-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0009</span><b><a href="lessons/0009-basis-dimension.html">الأساس والأبعاد</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0009-basis-dimension-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0012</span><b><a href="lessons/0012-rank.html">الرتبة وحلّية المنظومة</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0012_rank.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
+        <div class="crow"><span>الدرس 0013</span><b><a href="lessons/0013-linear-mappings.html">التطبيقات الخطية: النواة والصورة</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0013_linear_mappings.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
+        <div class="crow"><span>الدرس 0014</span><b><a href="lessons/0014-transformation-matrix.html">مصفوفة التحويل وتغيير الأساس</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0014_transformation_matrix.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
+        <div class="crow"><span>الدرس 0015</span><b><a href="lessons/0015-affine-spaces.html">الفضاءات الأفينية</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0015_affine_spaces.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
+        <p class="lec-note">تغطية كاملة لبنود المحاضرة الثمانية: المنظومات، المصفوفات، الحذف الغاوسي، فضاءات المتجهات، الاستقلال الخطي، الأساس والرتبة، التطبيقات الخطية، والفضاءات الأفينية. <b>الأرقام هي ترتيب الدراسة لا ترتيب الشرائح.</b></p></div>
+      </details>
+      <details class="lec" id="lec03">
+        <summary>
+          <span class="lec-caret" aria-hidden="true">›</span>
+          <span><span class="lec-id">المحاضرة 03 · 69 شريحة</span>
+            <span class="lec-name">الهندسة التحليلية</span>
+            <span class="lec-en" lang="en">Lecture 3 · Analytic Geometry</span></span>
+          <span class="lec-meta"><span class="lec-count">5 دروس</span><span class="lec-prog" data-lec-prog="03" data-lec-ids="0005,0016,0017,0018,0019" aria-live="polite"></span></span>
+        </summary>
+<div class="lec-body">
+        <div class="crow"><span>الدرس 0005</span><b><a href="lessons/0005-euclidean-spaces.html">فضاء المتجهات الإقليدي: الضرب الداخلي والطول</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0005-euclidean-spaces-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0016</span><b><a href="lessons/0016-norms-inner-products.html">المعايير والضرب الداخلي المجرد</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0016_norms.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
+        <div class="crow"><span>الدرس 0017</span><b><a href="lessons/0017-orthogonality.html">الزوايا والتعامد والمصفوفات المتعامدة</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0017_orthogonality.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
+        <div class="crow"><span>الدرس 0018</span><b><a href="lessons/0018-gram-schmidt.html">الأساس المتعامد وغرام–شميت</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0018_gram_schmidt.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
+        <div class="crow"><span>الدرس 0019</span><b><a href="lessons/0019-projections-rotations.html">الإسقاطات المتعامدة والدورانات</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/lessons/l0019_projections.py" data-i18n="stScript">سكربت الفيديو</a></span></div>
+        <p class="lec-note">سلسلة واحدة متصلة: ضرب داخلي ← معيار ← مسافة ← زاوية ← تعامد ← إسقاط. الدرس <b>0005</b> يبدأها بالضرب النقطي في ℝⁿ، والدروس <bdi dir="ltr">0016–0019</bdi> تعمّمها وتُكمل غرام–شميت والمربعات الصغرى والدورانات.</p></div>
+      </details>
+      <details class="lec" id="lec04">
+        <summary>
+          <span class="lec-caret" aria-hidden="true">›</span>
+          <span><span class="lec-id">المحاضرة 04 · 77 شريحة</span>
+            <span class="lec-name">تحليل المصفوفات</span>
+            <span class="lec-en" lang="en">Lecture 4 · Matrix Decompositions</span></span>
+          <span class="lec-meta"><span class="lec-count">2 دروس</span><span class="lec-prog" data-lec-prog="04" data-lec-ids="0010,0011" aria-live="polite"></span></span>
+        </summary>
+<div class="lec-body">
+        <div class="crow"><span>الدرس 0010</span><b><a href="lessons/0010-determinants.html">المحددات من 2×2 إلى 3×3</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0010-determinants-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <div class="crow"><span>الدرس 0011</span><b><a href="lessons/0011-drills.html">بنك التدريبات مع الحلول</a></b><span style="display:flex;gap:8px"><span class="st" data-i18n="stBuilt">مكتمل</span><a class="st" href="video/outputs/0011-drills-ar.mp4" data-i18n="stVideo">فيديو</a></span></div>
+        <p class="lec-note">المحاضرة تبدأ بالمحدد والأثر، والدرس <b>0010</b> يغطّي المحدد وقاعدة ساروس، و<b>0011</b> بنك تدريبات يخلط المحاور. <b>المتبقي:</b> الأثر وكثيرة الحدود المميزة، القيم والمتجهات الذاتية، تشوليسكي، القطرنة، تحليل القيم المفردة، والتقريب منخفض الرتبة.</p></div>
+      </details>
+      <details class="lec" id="lec05">
+        <summary>
+          <span class="lec-caret" aria-hidden="true">›</span>
+          <span><span class="lec-id">المحاضرة 05 · 65 شريحة</span>
+            <span class="lec-name">حساب المتجهات</span>
+            <span class="lec-en" lang="en">Lecture 5 · Vector Calculus</span></span>
+          <span class="lec-meta"><span class="lec-count soon">قيد الإعداد</span></span>
+        </summary>
+<div class="lec-body"><div class="lec-note"><b>ما ستضمّه هذه المحاضرة:</b>
+          <ul class="lec-road"><li>اشتقاق الدوال أحادية المتغير ومتسلسلة تايلور</li><li>الاشتقاق الجزئي والتدرّج (gradient)</li><li>تدرّجات الدوال المتجهة ومصفوفة جاكوبي</li><li>تدرّجات المصفوفات والمتطابقات المفيدة</li><li>الانتشار الخلفي والاشتقاق التلقائي</li><li>المشتقات العليا ومصفوفة هسي</li><li>التخطيط ومتسلسلة تايلور متعددة المتغيرات</li></ul></div></div>
+      </details>
+      <details class="lec" id="lec06">
+        <summary>
+          <span class="lec-caret" aria-hidden="true">›</span>
+          <span><span class="lec-id">المحاضرة 06 · 110 شريحة</span>
+            <span class="lec-name">الاحتمالات والتوزيعات</span>
+            <span class="lec-en" lang="en">Lecture 6 · Probability and Distributions</span></span>
+          <span class="lec-meta"><span class="lec-count soon">قيد الإعداد</span></span>
+        </summary>
+<div class="lec-body"><div class="lec-note"><b>ما ستضمّه هذه المحاضرة:</b>
+          <ul class="lec-road"><li>بناء فضاء الاحتمال</li><li>الاحتمالات المنفصلة والمتصلة</li><li>قاعدتا الجمع والضرب ومبرهنة بايز</li><li>الإحصاءات الموجزة والاستقلال</li><li>التوزيع الطبيعي (الغاوسي)</li><li>الاقتران والعائلة الأسية</li><li>تغيير المتغيرات والتحويل العكسي</li></ul></div></div>
+      </details>
       </div>
 
       <div class="toolgrid">
@@ -551,7 +647,7 @@
     maniLabel:"Manifesto",maniH:"We build the way we wish maths were taught.",maniP:"One lesson, one idea, no blind memorising. We start from your handwritten pages and rebuild them as something you can touch — from telling linear equations apart in ten seconds to computing determinants and areas.",
     modLabel:"Lesson catalogue · 19",modH:"Nineteen lessons, each building on the last.",modP:"Five progressive groups: foundations, vectors and spaces, basis and determinants, linear mappings, then analytic geometry. Every card states its skill and ends with an exercise.",
     m01:"Tell linear equations apart in ten seconds, then solve a full 3×3 system.",m02:"The shape (m×n) decides what is allowed; the determinant decides the inverse.",m03:"Three row operations to the triangular form, then back-substitution.",m04:"The six laws, the one trap AB ≠ BA, and the cA = O rule.",m05:"Inner product, length and distance — the right-angle detector.",m06:"The three-line test: zero in, addition closed, scaling closed.",m07:"The weights are the recipe; every combination question is a hidden system.",m08:"Where does the mix reach? Is any vector wasted?",m09:"The smallest team that spans, and its size is the dimension.",m10:"One number reveals three secrets, with Sarrus for 3×3.",m11:"Ten drills plus a final check, with a random drill generator.",m12:"One number counts the truly independent columns and decides solvability.",m13:"A map that respects addition and scaling, and the two subspaces it creates.",m14:"Its columns are the images of the basis; A′ = T⁻¹AS when the basis changes.",m15:"A subspace slid off the origin — the shape of every Ax = b solution set.",m16:"Three rulers for length, and a few axioms that build a whole geometry.",m17:"Cosine similarity, and the matrix that preserves length and angle.",m18:"Subtract the projection to get the perpendicular; the complement completes it.",m19:"The closest point in a subspace — and from it, least squares.",beta:"Soon",b1:"Hundreds of extra generated questions per lesson, with error tracking.",b2:"Curated references per idea, in Arabic and English.",b3:"A timed final exam across the path, ending with a certificate.",
-    courseLabel:"Course · handwritten files plus the lecture slides",courseH:"Handwritten files and lecture slides, rebuilt as nineteen interactive lessons.",courseP:"The same pedagogy in every lesson: start from zero, one everyday analogy per idea, golden-rule cards, a hands-on panel per concept, a closing quiz, a glossary, and a Python exercise with its solution kept separate. Set in Thmanyah type, rendered with KaTeX.",
+    courseLabel:"Course · six lectures · 19 lessons built",courseH:"Six lectures, each opening onto its lessons.",courseP:"Open any lecture to see its lessons. The same pedagogy in every lesson: start from zero, one everyday analogy per idea, golden-rule cards, a hands-on panel per concept, a closing quiz, a glossary, and a Python exercise with its solution kept separate. Set in Thmanyah type, rendered with KaTeX.",
     pdf01:"File 01 · 10 pp",pdf02:"File 02 · 17 pp",pdf03:"File 03 · 11 pp",pdf04:"File 04 · handwritten",pdf05:"File 05 · 11 pp",pdf06:"File 06 · 9 pp",pdf07:"File 07 · 5 pp",pdf08:"File 08 · 13 pp",pdf09:"File 09 · 9 pp",pdf10:"File 10 · 11 pp",pdf11:"File 11 · 11 pp",lec12:"Lecture 02 · slides",lec13:"Lecture 02 · slides",lec14:"Lecture 02 · slides",lec15:"Lecture 02 · slides",lec16:"Lecture 03 · slides",lec17:"Lecture 03 · slides",lec18:"Lecture 03 · slides",lec19:"Lecture 03 · slides",stBuilt:"Built",stVideo:"Video",stScript:"Video script",
     t1H:"1 · Reading handwriting",t1P:"Scanned pages hold no text layer, so each page is processed on its own:",t1L1:"Render every page at <code>300</code> dpi, deskew and fix contrast",t1L2:"Read Arabic and English, then <b>human-verify every formula</b>",t1L3:"Numbers and examples come from the pages themselves — never invented",t1L4:"When in doubt: reopen the original page and compare",
     t2H:"2 · Writing matrices correctly",t2P:"Math is set with <b>KaTeX</b>; lesson matrices use a light direction-safe component:",t2L3:"RTL rule: wrap every coordinate in <code>&lt;span class=\"coord\"&gt;</code> to isolate it",
@@ -573,7 +669,7 @@
     maniLabel:"البيان",maniH:"نبني الطريقة التي نتمنى أن نتعلم بها الرياضيات.",maniP:"درس واحد، فكرة واحدة، بلا حفظ أعمى. نبدأ من ملفاتكم المكتوبة بخط اليد، ونعيد بناءها كتجربة تفاعلية يمكنك لمسها — من تمييز الخطي في عشر ثوانٍ إلى حساب المحددات والمساحات.",
     modLabel:"كتالوج الدروس · 19",modH:"تسعة عشر درساً، كلٌّ يبني على ما قبله.",modP:"خمس مجموعات متدرجة: الأساسيات، ثم المتجهات والفضاءات، ثم الأساس والمحددات، ثم التطبيقات الخطية، ثم الهندسة التحليلية. كل بطاقة تحدد مهارتها، وتنتهي بتمرين.",
     m01:"تميّز الخطي من غيره في عشر ثوانٍ، وتحل منظومة 3×3 كاملة.",m02:"الشكل (m×n) يقرر المسموح، والمحدد يقرر وجود النظير.",m03:"ثلاث عمليات صفوف حتى الشكل المثلث، ثم التعويض الخلفي.",m04:"القوانين الستة، والفخ الوحيد: AB ≠ BA، وقاعدة cA = O.",m05:"الضرب الداخلي والطول والمسافة، وكاشف الزاوية القائمة.",m06:"الاختبار الثلاثي: الصفر موجود، والجمع مغلق، والضرب مغلق.",m07:"الأوزان هي الوصفة، وكل سؤال تركيب منظومة متنكرة.",m08:"إلى أين تصل الخلطة؟ وهل يوجد متجه زائد؟",m09:"أصغر فريق يغطي الفضاء، والبعد عدد أعضائه.",m10:"رقم واحد يكشف ثلاثة أسرار، مع قاعدة ساروس.",m11:"أحد عشر تدريباً، ومولد عشوائي، واختبار ختامي.",m12:"رقم واحد يعدّ الأعمدة المستقلة، ويحسم وجود الحل.",m13:"دالة تحترم الجمع والقياس، وفضاءان يحكيان قصتها.",m14:"أعمدتها صور الأساس، و A′ = T⁻¹AS عند تبديله.",m15:"فضاء جزئي أُزيح عن الأصل — وهو شكل حلول Ax = b.",m16:"ثلاث مساطر للطول، وبديهيات قليلة تصنع هندسة كاملة.",m17:"تشابه الجيب تمام، والمصفوفة التي تحفظ الطول والزاوية.",m18:"اطرح الإسقاط يبقَ العمودي، ومتمم التعامد يكمل الصورة.",m19:"أقرب نقطة في الفضاء الجزئي، ومنها المربعات الصغرى.",beta:"قريباً",b1:"مئات الأسئلة الإضافية المولّدة لكل درس، مع تتبع للأخطاء.",b2:"روابط مختارة لكل فكرة من مصادر موثوقة، بالعربية والإنجليزية.",b3:"اختبار شامل بوقت محدد يجمع المسار، وينتهي بشهادة إتمام.",
-    courseLabel:"المقرر · ملفات بخط اليد وشرائح المحاضرات",courseH:"ملفات بخط اليد وشرائح المحاضرات، أُعيد بناؤها كتسعة عشر درساً تفاعلياً.",courseP:"المنهجية نفسها في كل درس: البدء من الصفر، تشبيه من الحياة لكل فكرة، بطاقات القاعدة الذهبية، لوحة عملية لكل مفهوم، اختبار ختامي، قاموس، وتمرين بايثون مع حل منفصل. الخط Thmanyah والرياضيات بـ KaTeX.",
+    courseLabel:"المقرر · ست محاضرات · 19 درساً مبنيّاً",courseH:"ست محاضرات، تُفتح كلٌّ منها على دروسها.",courseP:"افتح أي محاضرة لترى دروسها. المنهجية نفسها في كل درس: البدء من الصفر، تشبيه من الحياة لكل فكرة، بطاقات القاعدة الذهبية، لوحة عملية لكل مفهوم، اختبار ختامي، قاموس، وتمرين بايثون مع حل منفصل. الخط Thmanyah والرياضيات بـ KaTeX.",
     pdf01:"الملف 01 · 10 صفحات",pdf02:"الملف 02 · 17 صفحة",pdf03:"الملف 03 · 11 صفحة",pdf04:"الملف 04 · بخط اليد",pdf05:"الملف 05 · 11 صفحة",pdf06:"الملف 06 · 9 صفحات",pdf07:"الملف 07 · 5 صفحات",pdf08:"الملف 08 · 13 صفحة",pdf09:"الملف 09 · 9 صفحات",pdf10:"الملف 10 · 11 صفحة",pdf11:"الملف 11 · 11 صفحة",lec12:"المحاضرة 02 · شرائح",lec13:"المحاضرة 02 · شرائح",lec14:"المحاضرة 02 · شرائح",lec15:"المحاضرة 02 · شرائح",lec16:"المحاضرة 03 · شرائح",lec17:"المحاضرة 03 · شرائح",lec18:"المحاضرة 03 · شرائح",lec19:"المحاضرة 03 · شرائح",stBuilt:"مكتمل",stVideo:"فيديو",stScript:"سكربت الفيديو",
     t1H:"1 · قراءة الخط اليدوي",t1P:"الصفحات الممسوحة بلا طبقة نص، فنعالجها صفحة صفحة:",t1L1:"تحويل كل صفحة إلى صورة بدقة <code>300</code> مع تصحيح الميل والتباين",t1L2:"قراءة العربية والإنجليزية، ثم <b>مراجعة بشرية لكل صيغة</b>",t1L3:"الأرقام والأمثلة تؤخذ من الصفحات كما هي — بلا اختراع",t1L4:"عند الشك: نعود إلى الصفحة الأصلية ونقارن",
     t2H:"2 · كتابة المصفوفات",t2P:"الرياضيات بـ <b>KaTeX</b>، ومصفوفات الدروس بمكوّن خفيف مضبوط الاتجاه:",t2L3:"قاعدة RTL: كل إحداثي داخل <code>&lt;span class=\"coord\"&gt;</code> ليعزل الاتجاه",
@@ -686,6 +782,39 @@
   var langBtn = document.getElementById('langToggle'), langSel = document.getElementById('langSelect');
   if (langBtn) langBtn.addEventListener('click', function(){ setTimeout(render, 0); });
   if (langSel) langSel.addEventListener('change', function(){ setTimeout(render, 0); });
+})();
+</script>
+<script>
+/* ---- شجرة المقرر: شارة التقدّم لكل محاضرة + تذكّر المفتوح ---- */
+(function(){
+  "use strict";
+  var tree = document.getElementById("lectree");
+  if (!tree) return;
+  function read(k, fb){ try{ var v = JSON.parse(localStorage.getItem(k)); return v === null ? fb : v; }catch(e){ return fb; } }
+
+  function paint(){
+    var done = read("linalg:done", {});
+    tree.querySelectorAll("[data-lec-ids]").forEach(function(el){
+      var ids = el.getAttribute("data-lec-ids").split(",");
+      var n = ids.filter(function(id){ return done[id]; }).length;
+      el.setAttribute("data-done", n);
+      el.textContent = n + " من " + ids.length + " مكتمل";
+    });
+  }
+  paint();
+  window.addEventListener("storage", paint);
+  document.addEventListener("linalg:progress", paint);
+
+  /* تذكّر أي محاضرة كانت مفتوحة */
+  var KEY = "linalg:lec-open";
+  var open = read(KEY, null);
+  if (open && Array.isArray(open)) {
+    tree.querySelectorAll("details.lec").forEach(function(d){ d.open = open.indexOf(d.id) >= 0; });
+  }
+  tree.addEventListener("toggle", function(){
+    var ids = [].slice.call(tree.querySelectorAll("details.lec[open]")).map(function(d){ return d.id; });
+    try { localStorage.setItem(KEY, JSON.stringify(ids)); } catch(e) {}
+  }, true);
 })();
 </script>
 </body>
