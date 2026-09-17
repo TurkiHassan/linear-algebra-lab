@@ -8,7 +8,7 @@
 <link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/map.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="الخارطة الذهنية الشاملة — مختبر الجبر الخطي">
-<meta property="og:description" content="لوحة واحدة تربط 28 مفهوماً في الجبر الخطي بدروسها وفيديوهاتها وتمارينها وبطاقات مراجعتها.">
+<meta property="og:description" content="لوحة واحدة تربط 47 مفهوماً في الجبر الخطي بدروسها وفيديوهاتها وتمارينها وبطاقات مراجعتها.">
 <meta property="og:locale" content="ar_SA">
 <meta name="twitter:card" content="summary_large_image">
 <link rel="manifest" href="manifest.webmanifest">
@@ -19,14 +19,14 @@
   :root{
     --paper:#faf7f2;--card:#ffffff;--ink:#141310;--soft:#6f6a5e;--line:#d8d4cc;
     --accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f;--gold:#9a7320;
-    --m1:#1e4a4a;--m2:#6d4180;--m3:#a9531f;
+    --m1:#1e4a4a;--m2:#6d4180;--m3:#a9531f;--m4:#1f5d86;--m5:#7a2f52;
     --serif:"ThmanyahSerifDisplay",serif;--text:"ThmanyahSerifText",serif;
     --sans:"ThmanyahSans",system-ui,sans-serif;--mono:ui-monospace,Menlo,Consolas,monospace;
     --th-sans:var(--sans);
   }
   [data-theme=dark]{--paper:#14130f;--card:#1d1c17;--ink:#f2efe6;--soft:#a7a396;--line:#3a382f;
     --accent:#7fc9ae;--terra:#e0906a;--vio:#b39ce0;--gold:#e0c070;
-    --m1:#4e9d8c;--m2:#a98bc2;--m3:#d4884f}
+    --m1:#4e9d8c;--m2:#a98bc2;--m3:#d4884f;--m4:#69aede;--m5:#d98aa8}
   *{box-sizing:border-box}
   html{scroll-behavior:smooth}
   @media(prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
@@ -182,7 +182,7 @@
   </div>
 
   <header class="hero">
-    <p class="kicker">الخارطة المعرفية · 28 مفهوماً · 37 علاقة · 11 مستوى بناء</p>
+    <p class="kicker">الخارطة المعرفية · 47 مفهوماً · 71 علاقة · 12 مستوى بناء</p>
     <h1>كيف يترابط المقرر كله في لوحة واحدة</h1>
     <p class="lead">كل صندوق مفهوم واحد، وكل سهم علاقة اعتماد حقيقية: ما الذي يجب أن تفهمه <b>قبل</b> هذا، وما الذي يُبنى <b>فوقه</b>. المستويات محسوبة من العلاقات نفسها لا من ترتيب الفصول — لذلك يظهر «المتجه» في المستوى الأول مع «المعادلة الخطية»: لا يحتاج أحدهما الآخر. اضغط أي مفهوم لتفتح كل موارده دفعة واحدة: القسم الدقيق في الدرس، والفيديو، والملخص، والتمرين البرمجي، وبطاقات مراجعته.</p>
     <div id="resumeSlot"></div>
@@ -195,6 +195,8 @@
     <button class="tchip" data-mod="1" aria-pressed="true"><span class="sw" style="background:var(--m1)"></span> المحور 1 · المنظومات</button>
     <button class="tchip" data-mod="2" aria-pressed="true"><span class="sw" style="background:var(--m2)"></span> المحور 2 · الفضاءات</button>
     <button class="tchip" data-mod="3" aria-pressed="true"><span class="sw" style="background:var(--m3)"></span> المحور 3 · الأساس والمحددات</button>
+    <button class="tchip" data-mod="4" aria-pressed="true"><span class="sw" style="background:var(--m4)"></span> المحور 4 · التطبيقات الخطية</button>
+    <button class="tchip" data-mod="5" aria-pressed="true"><span class="sw" style="background:var(--m5)"></span> المحور 5 · الهندسة التحليلية</button>
     <span class="tsep" aria-hidden="true"></span>
     <button class="tchip" id="btnNeeds" aria-pressed="false">أبرِز ما يحتاجه قبله</button>
     <button class="tchip" id="btnBuilds" aria-pressed="false">أبرِز ما يُبنى فوقه</button>
@@ -305,7 +307,10 @@
     });
   });
 
-  var VIEW = { x: CX - 2.5 * COL - 30, y: 10, w: 5 * COL + 60, h: TOP + maxRank * ROW + NH };
+  var widest = 0;
+  Object.keys(byRank).forEach(function(k){ if (byRank[k].length > widest) widest = byRank[k].length; });
+  var span = Math.max(widest, 5);
+  var VIEW = { x: CX - (span / 2) * COL - 30, y: 10, w: span * COL + 60, h: TOP + maxRank * ROW + NH };
   svg.setAttribute("viewBox", VIEW.x + " " + VIEW.y + " " + VIEW.w + " " + VIEW.h);
   svg.setAttribute("preserveAspectRatio", "xMidYMin meet");
 
@@ -483,7 +488,7 @@
       (n.keys.length ? '<h3>النقاط المفتاحية</h3><ul class="keys">' +
         n.keys.map(function(k){ return '<li>' + esc(k) + '</li>'; }).join("") + '</ul>' : "") +
       '<h3>كل موارد هذا المفهوم</h3><ul class="plinks">' +
-        ORDER.map(function(k){
+        ORDER.filter(function(k){ return res[k]; }).map(function(k){
           return '<li><a href="' + res[k].href + '"><span class="ic" aria-hidden="true">' + ICONS[k] + '</span>' +
                  '<span>' + esc(res[k].label) + '</span></a></li>';
         }).join("") + '</ul>' +
@@ -588,7 +593,7 @@
                esc(G.lessonTitles[next]) + (first ? ' — يبدأ من مفهوم «' + esc(first.label) + '».' : '') + '</div>' +
                '<a href="lessons/' + G.slugs[next] + '.html">افتح الدرس ←</a>';
       } else {
-        html = '<div class="grow"><b>أتممت الأحد عشر درساً</b><br>ثبّت ما تعلّمته: ' +
+        html = '<div class="grow"><b>أتممت الدروس التسعة عشر</b><br>ثبّت ما تعلّمته: ' +
                (st.due || 0) + ' بطاقة مستحقّة، وبنك التدريبات يخلط المحاور كلها.</div>' +
                '<a href="lessons/0011-drills.html">بنك التدريبات ←</a>';
       }

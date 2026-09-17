@@ -1,5 +1,5 @@
 /* Offline cache for مختبر الجبر الخطي. Bump CACHE to force refresh. */
-const CACHE = "linalg-v3";
+const CACHE = "linalg-v4";
 
 /* Precached on install: the shell every page needs. */
 const CORE = [
@@ -34,6 +34,14 @@ const CORE = [
   "./lessons/0009-basis-dimension.html",
   "./lessons/0010-determinants.html",
   "./lessons/0011-drills.html",
+  "./lessons/0012-rank.html",
+  "./lessons/0013-linear-mappings.html",
+  "./lessons/0014-transformation-matrix.html",
+  "./lessons/0015-affine-spaces.html",
+  "./lessons/0016-norms-inner-products.html",
+  "./lessons/0017-orthogonality.html",
+  "./lessons/0018-gram-schmidt.html",
+  "./lessons/0019-projections-rotations.html",
   "./assets/fonts/thmanyahsans-Black.woff2",
   "./assets/fonts/thmanyahsans-Bold.woff2",
   "./assets/fonts/thmanyahsans-Medium.woff2",

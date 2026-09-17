@@ -4,7 +4,7 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width, initial-scale=1">
 <title>الملخص الشامل والمبسط مع الخرائط الذهنية والأمثلة — مختبر الجبر الخطي</title>
-<meta name="description" content="الملخص الذهبي الشامل لدروس الجبر الخطي الأحد عشر: خرائط ذهنية لكل درس، أمثلة محلولة خطوة بخطوة، أسهم ودوائر توضيحية، وسد الفجوات المفاهيمية.">
+<meta name="description" content="الملخص الذهبي الشامل لدروس الجبر الخطي التسعة عشر: خرائط ذهنية لكل درس، أمثلة محلولة خطوة بخطوة، أسهم ودوائر توضيحية، وسد الفجوات المفاهيمية.">
 <link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/summary.html">
 <meta property="og:type" content="website">
 <meta property="og:title" content="الملخص الشامل والمبسط للجبر الخطي — مختبر الجبر الخطي">
@@ -1286,7 +1286,7 @@
     
     <!-- Course Pedagogical Stats HUD -->
     <div class="course-hud">
-      <div class="hud-chip"><span class="chip-dot"></span> 11 درساً شاملاً</div>
+      <div class="hud-chip"><span class="chip-dot"></span> 19 درساً شاملاً</div>
       <div class="hud-chip purple"><span class="chip-dot"></span> 11 خارطة ذهنية هرمية</div>
       <div class="hud-chip terra"><span class="chip-dot"></span> 11 مثالاً خطوة بخطوة</div>
       <div class="hud-chip gold"><span class="chip-dot"></span> 11 بطاقة استرجاع نشط</div>
@@ -1351,6 +1351,29 @@
             <a href="#c0009" data-target="c0009">09 · الأساس والإحداثيات</a>
             <a href="#c0010" data-target="c0010">10 · المحددات وساروس</a>
             <a href="#c0011" data-target="c0011">11 · استراتيجية الامتحانات</a>
+          </div>
+        </div>
+        <div class="toc-group">
+          <span class="toc-group-label">المحور 4: التطبيقات الخطية</span>
+          <div class="toc-links">
+            <a href="#c0012" data-target="c0012">12 · الرتبة والحلّية</a>
+            <a href="#c0013" data-target="c0013">13 · النواة والصورة</a>
+            <a href="#c0014" data-target="c0014">14 · مصفوفة التحويل</a>
+            <a href="#c0015" data-target="c0015">15 · الفضاءات الأفينية</a>
+          </div>
+        </div>
+        <div class="toc-group">
+          <span class="toc-group-label">المحور 5: الهندسة التحليلية</span>
+          <div class="toc-links">
+            <a href="#c0016" data-target="c0016">16 · المعايير والضرب الداخلي</a>
+            <a href="#c0017" data-target="c0017">17 · التعامد والمصفوفات المتعامدة</a>
+            <a href="#c0018" data-target="c0018">18 · غرام–شميت والمتمم</a>
+            <a href="#c0019" data-target="c0019">19 · الإسقاطات والدورانات</a>
+          </div>
+        </div>
+        <div class="toc-group">
+          <span class="toc-group-label">الخاتمة</span>
+          <div class="toc-links">
             <a href="#grand-unification" data-target="grand-unification">🌟 لوحة التكافؤ الشامل</a>
           </div>
         </div>
@@ -3032,6 +3055,669 @@
   </section>
 
   <!-- ================================================================= -->
+  <!-- MODULE 4 -->
+  <!-- ================================================================= -->
+  <section class="section-block" id="mod4">
+    <div class="sec-header">
+      <span class="sec-num">المحور الرابع · الدروس 12 إلى 15</span>
+      <h2 class="sec-title">الرتبة والتطبيقات الخطية والفضاءات الأفينية</h2>
+      <p class="sec-desc">من عدّ الأعمدة المستقلة إلى قراءة المصفوفة بوصفها تحويلاً، ثم تسمية شكل مجموعة الحلول هندسياً.</p>
+    </div>
+
+    <!-- Lesson 0012 -->
+    <article class="lcard" id="c0012">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0012</span>
+          <h3 class="ltitle">الرتبة وحلّية المنظومة (Rank &amp; Solvability)</h3>
+          <span class="len">Rank — counting the truly independent columns</span>
+        </div>
+        <a class="lopen" href="lessons/0012-rank.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0012 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0012 · الرتبة وحلّية المنظومة (Rank &amp; Solvability)</div>
+          <div class="mindmap-root-badge">🌱 المحور: عدّاد الاستقلال الحقيقي وحَكَم وجود الحل</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">فريق العمل: خمسة موظفين قد يؤدون ثلاث مهام مختلفة فقط، والباقي تكرار. الرتبة تعدّ المهام لا الموظفين.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: عدد الاتجاهات المختلفة حقاً في المصفوفة، لا عدد الأعمدة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: معرفة مصير المنظومة قبل حسابها بحساب رقمين فقط</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">ثلاث حقائق لا تتخلف عن الرتبة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\mathrm{rk}(A) = $ عدد القادة (Pivots) في الصورة الدرجية — وهو نفسه عدد الصفوف المستقلة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\mathrm{rk}(A) \le \min(m, n)$، وعند المساواة تكون المصفوفة <b>تامة الرتبة</b></span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>لمصفوفة مربعة: $\mathrm{rk}(A) = n \iff \det(A) \neq 0 \iff$ يوجد نظير</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">بروتوكول الحكم على $Ax = b$ في ثلاث خطوات:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: احذف غاوسياً وعُدّ القادة في $A$ وحدها — هذه $\mathrm{rk}(A)$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: كرّر العدّ في المصفوفة الموسعة $[A|b]$ — هذه $\mathrm{rk}(A|b)$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: قارن — اختلاف الرتبتين يعني <b>لا حل</b>، وتساويهما مع $n$ يعني <b>حلاً وحيداً</b>، ودونه <b>لانهائي</b></span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الرتبة هي الجسر بين الحساب والهندسة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>بعد فضاء حلول $Ax = 0$ يساوي $n - \mathrm{rk}(A)$ — وهو عدد المتغيرات الحرة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>هذه المعادلة نفسها تصير في الدرس التالي <b>نظرية الرتبة والنواة</b></span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0012 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: حساب رتبة مصفوفة $3 \times 3$ وقراءة مصير منظومتها</h4>
+          <span class="ex-badge">عدّ القادة</span>
+        </div>
+        <p>لتكن $A = \begin{bmatrix} 1 &amp; 2 &amp; 1 \\ -2 &amp; -3 &amp; 1 \\ 3 &amp; 5 &amp; 0 \end{bmatrix}$ — وهي مصفوفة المحاضرة نفسها.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>الحذف الغاوسي:</b><br>بإضافة ضعف الصف الأول للثاني، وطرح ثلاثة أمثاله من الثالث، ثم تبسيط:<br>$$\begin{bmatrix} 1 &amp; 2 &amp; 1 \\ -2 &amp; -3 &amp; 1 \\ 3 &amp; 5 &amp; 0 \end{bmatrix} \longrightarrow \begin{bmatrix} 1 &amp; 2 &amp; 1 \\ 0 &amp; 1 &amp; 3 \\ 0 &amp; 0 &amp; 0 \end{bmatrix}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>عدّ القادة:</b> ظهر قائدان فقط (في العمودين الأول والثاني)، والصف الثالث تلاشى بالكامل، إذاً $\mathbf{\mathrm{rk}(A) = 2}$.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>القراءة:</b> الرتبة $2 &lt; n = 3$، إذاً $\det(A) = 0$ ولا نظير للمصفوفة، وبعد فضاء حلول $Ax = 0$ هو $3 - 2 = 1$: خط كامل من الحلول غير الصفرية، لا نقطة واحدة.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0013 -->
+    <article class="lcard" id="c0013">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0013</span>
+          <h3 class="ltitle">التطبيقات الخطية: النواة والصورة (Linear Mappings)</h3>
+          <span class="len">Linear Mappings — kernel, image and the rank-nullity theorem</span>
+        </div>
+        <a class="lopen" href="lessons/0013-linear-mappings.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0013 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0013 · التطبيقات الخطية: النواة والصورة (Linear Mappings)</div>
+          <div class="mindmap-root-badge">🌱 المحور: الدالة التي تحترم بنية الفضاء، وفضاءاها التوأمان</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">سعر الصرف: صرف ألفين مرة كصرف ألف مرتين، ومضاعفة المبلغ تضاعف الناتج — أما رسم ثابت يُضاف فيكسر الخطية فوراً.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: أي رسم ثابت يجعل الصفر لا يذهب إلى الصفر، فتنهار الخطية</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: قراءة المصفوفة بوصفها تحويلاً لا جدول أرقام</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">شرطان يصنعان التطبيق الخطي، ونتيجة تلزم عنهما:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\Phi(x + y) = \Phi(x) + \Phi(y)$ — الجمع قبل التطبيق كالجمع بعده</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\Phi(\lambda x) = \lambda\,\Phi(x)$ — التكبير قبل التطبيق كالتكبير بعده</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>يلزم عنهما حتماً $\Phi(0) = 0$، وهذا أسرع اختبار للنفي</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">استخراج الفضاءين من مصفوفة التطبيق:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>النواة $\ker(\Phi)$: حل $Ax = 0$ بالحذف الغاوسي — الحل العام هو النواة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الصورة $\mathrm{Im}(\Phi)$: خذ أعمدة القادة من $A$ الأصلية — هي أساس الصورة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التباين $\iff \ker(\Phi) = \{0\}$، والشمول $\iff \mathrm{Im}(\Phi) = W$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">نظرية الرتبة والنواة: لا شيء يضيع في الحساب</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\dim\ker(\Phi) + \dim\mathrm{Im}(\Phi) = \dim V$ — ما يُهدَم وما يُبنى مجموعهما ثابت</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فضاءان منتهيا البعد متشاكلان $\iff$ تساوى بعداهما، فكل فضاء بعده $n$ نسخة من $\mathbb{R}^n$</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0013 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: استخراج النواة والصورة للمصفوفة $A = \begin{bmatrix} 1 &amp; 2 &amp; 3 \\ 2 &amp; 4 &amp; 6 \end{bmatrix}$</h4>
+          <span class="ex-badge">ما يُهدَم وما يُبنى</span>
+        </div>
+        <p>لاحظ أولاً أن الصف الثاني ضعف الأول تماماً، فتوقّع رتبة ناقصة قبل أي حساب.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>النواة:</b> نحل $Ax = 0$. الحذف يعطي الصف الوحيد $x_1 + 2x_2 + 3x_3 = 0$، أي $x_1 = -2x_2 - 3x_3$، فيكون:<br>$$\ker(A) = \mathrm{span}\left\{ \begin{bmatrix} -2 \\ 1 \\ 0 \end{bmatrix}, \begin{bmatrix} -3 \\ 0 \\ 1 \end{bmatrix} \right\}, \qquad \dim\ker(A) = 2$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>الصورة:</b> القائد الوحيد في العمود الأول، فأساس الصورة هو عمود $A$ الأول:<br>$$\mathrm{Im}(A) = \mathrm{span}\left\{ \begin{bmatrix} 1 \\ 2 \end{bmatrix} \right\}, \qquad \dim\mathrm{Im}(A) = 1$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>التحقق بنظرية الرتبة والنواة:</b> $2 + 1 = 3 = n$ ✓ — والتطبيق ليس متبايناً (النواة غير صفرية) ولا شاملاً (الصورة خط لا مستوٍ).</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0014 -->
+    <article class="lcard" id="c0014">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0014</span>
+          <h3 class="ltitle">مصفوفة التحويل وتغيير الأساس (Transformation Matrix)</h3>
+          <span class="len">Transformation Matrix &amp; Basis Change — same map, new description</span>
+        </div>
+        <a class="lopen" href="lessons/0014-transformation-matrix.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0014 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0014 · مصفوفة التحويل وتغيير الأساس (Transformation Matrix)</div>
+          <div class="mindmap-root-badge">🌱 المحور: التطبيق أصل ثابت، والمصفوفة وصف نسبي</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">العنوان والمدينة: البيت نفسه له عنوان بنظام الشوارع وآخر بإحداثيات GPS. البيت لم يتحرك، وإنما تغيّر دفتر العناوين.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: مصفوفة تغيير الأساس هي جدول الترجمة بين الدفترين</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: اختيار الأساس الذي يجعل المصفوفة أبسط ما يمكن</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">قواعد لا تُخترق في هذا الباب:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>لا معنى لعبارة «مصفوفة التطبيق» بلا ذكر الأساسين $B$ و $C$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$[\Phi(x)]_C = A_\Phi\,[x]_B$ — والمصفوفة $A_\Phi$ وحيدة لهذين الأساسين</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>مصفوفة تغيير الأساس قابلة للعكس دائماً، لأن أعمدتها أساس فهي تامة الرتبة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">بناء المصفوفة ثم تبديل الأساس:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: طبّق $\Phi$ على كل متجه من $B$، واكتب الناتج بإحداثيات $C$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: رصّ النواتج <b>أعمدة</b> بالترتيب — هذه هي $A_\Phi$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: عند تبديل الأساسين احسب $A' = T^{-1} A_\Phi S$، وفي حالة الأساس الواحد $A' = S^{-1} A S$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الثوابت: ما لا يتغير بتغيّر الوصف</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الرتبة والمحدد والأثر وبعد النواة لا تتأثر بتغيير الأساس — لأنها صفات التطبيق</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>هذه هي بذرة القطرنة (Diagonalization) وتحليل القيم الذاتية لاحقاً</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0014 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: بناء $A_\Phi$ للتطبيق $\Phi(x, y) = (2x + y,\; x - y)$ ثم تبديل أساسه</h4>
+          <span class="ex-badge">أعمدتها صور الأساس</span>
+        </div>
+        <p>الأساس المعياري $B = \{e_1, e_2\}$، والأساس الجديد $\tilde{B} = \{(1,1),\,(0,1)\}$.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>صور متجهات الأساس:</b><br>$\Phi(e_1) = \Phi(1,0) = (2, 1)$ و $\Phi(e_2) = \Phi(0,1) = (1, -1)$، فنرصّهما عمودين:<br>$$A_\Phi = \begin{bmatrix} 2 &amp; 1 \\ 1 &amp; -1 \end{bmatrix}, \qquad \det = -3 \neq 0$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>مصفوفة تغيير الأساس:</b> أعمدة $S$ هي متجهات الأساس الجديد بالإحداثيات القديمة:<br>$$S = \begin{bmatrix} 1 &amp; 0 \\ 1 &amp; 1 \end{bmatrix}, \qquad S^{-1} = \begin{bmatrix} 1 &amp; 0 \\ -1 &amp; 1 \end{bmatrix}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>المصفوفة في الأساس الجديد:</b><br>$$A' = S^{-1} A_\Phi S = \begin{bmatrix} 3 &amp; 1 \\ -3 &amp; -2 \end{bmatrix}$$الأرقام تغيّرت، والثوابت لم تتغيّر: $\det(A') = -3 = \det(A_\Phi)$، والأثر $1$ في الحالتين. التطبيق واحد والوصف اثنان.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0015 -->
+    <article class="lcard" id="c0015">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0015</span>
+          <h3 class="ltitle">الفضاءات الأفينية (Affine Spaces)</h3>
+          <span class="len">Affine Spaces — a subspace that slid off the origin</span>
+        </div>
+        <a class="lopen" href="lessons/0015-affine-spaces.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0015 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0015 · الفضاءات الأفينية (Affine Spaces)</div>
+          <div class="mindmap-root-badge">🌱 المحور: شكل مجموعة الحلول حين لا يكون الصفر حلاً</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">المصعد والطابق: التطبيق الخطي مصعد يبدأ من الطابق الأرضي دائماً، والأفيني مصعد بدأ من الطابق الثالث — الحركة نفسها ونقطة الانطلاق مزاحة.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: الإزاحة وحدها هي الفرق بين $Ax$ و $Ax + b$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تسمية شكل «الحلول اللانهائية» هندسياً بدقة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">الفروق التي يخلط فيها الجميع:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الفضاء الأفيني <b>ليس</b> فضاءً جزئياً لأنه لا يحوي الصفر (عند $x_0 \notin U$)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>نقطة الإسناد $x_0$ ليست وحيدة — أي نقطة على $L$ تصلح؛ أما فضاء الاتجاه $U$ فوحيد</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>«الانحدار الخطي» في تعلّم الآلة أفيني في حقيقته، لأن فيه حدّاً ثابتاً</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">كتابة مجموعة الحلول في صورتها الوسيطية:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: جد <b>حلاً خاصاً</b> واحداً $x_p$ يحقق $Ax = b$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: جد النواة $\ker(A)$ بحل $Ax = 0$ — وهي فضاء الاتجاه</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: اكتب $x = x_p + \lambda_1 b_1 + \cdots + \lambda_k b_k$، وبعد المجموعة $n - \mathrm{rk}(A)$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">المستوى الفائق: حيث تلتقي الهندسة بتعلّم الآلة</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$a^\top x = c$ فضاء أفيني بعده $n - 1$، وهو الحدّ الفاصل في خوارزميات التصنيف مثل SVM</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الإسقاط على فضاء أفيني (الدرس 0019): انقل إلى الأصل، أسقِط، ثم أعد النقل</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0015 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: كتابة مجموعة حلول منظومة المحاضرة في صورتها الوسيطية</h4>
+          <span class="ex-badge">حل خاص + نواة</span>
+        </div>
+        <p>من الحذف الغاوسي في المحاضرة بقي صفّان: $-3x + 2z = -1$ و $-2y + \tfrac{8}{3}z = -2$.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>حلّ بدلالة الوسيط:</b> نجعل $z$ متغيراً حراً، فنحصل على $x = \tfrac{1}{3} + \tfrac{2}{3}z$ و $y = 1 + \tfrac{4}{3}z$.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>الصورة الوسيطية:</b><br>$$\begin{bmatrix} x \\ y \\ z \end{bmatrix} = \begin{bmatrix} 1/3 \\ 1 \\ 0 \end{bmatrix} + z\begin{bmatrix} 2/3 \\ 4/3 \\ 1 \end{bmatrix}, \quad z \in \mathbb{R}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>القراءة الهندسية:</b> نقطة الإسناد $x_p = (1/3,\,1,\,0)$ وفضاء الاتجاه خط بعده $1$. إذاً مجموعة الحلول <b>خط مزاح عن الأصل</b> — وليست فضاءً جزئياً، لأن $(0,0,0)$ لا يحققها.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================================================================= -->
+  <!-- MODULE 5 -->
+  <!-- ================================================================= -->
+  <section class="section-block" id="mod5">
+    <div class="sec-header">
+      <span class="sec-num">المحور الخامس · الدروس 16 إلى 19</span>
+      <h2 class="sec-title">الهندسة التحليلية: المعايير والتعامد والإسقاطات</h2>
+      <p class="sec-desc">بديهيات قليلة تصنع الطول والزاوية والمسافة، ثم غرام–شميت والإسقاط المتعامد والدوران.</p>
+    </div>
+
+    <!-- Lesson 0016 -->
+    <article class="lcard" id="c0016">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0016</span>
+          <h3 class="ltitle">المعايير والضرب الداخلي المجرد (Norms &amp; Inner Products)</h3>
+          <span class="len">Norms &amp; Inner Products — the axioms that build a geometry</span>
+        </div>
+        <a class="lopen" href="lessons/0016-norms-inner-products.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0016 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0016 · المعايير والضرب الداخلي المجرد (Norms &amp; Inner Products)</div>
+          <div class="mindmap-root-badge">🌱 المحور: من بديهيات قليلة إلى هندسة كاملة</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">ثلاث طرق لقياس المسافة في المدينة: مسافة الطائر ($\ell_2$)، ومسافة سيارة الأجرة عبر الشوارع المتعامدة ($\ell_1$)، وأطول ضلع في الرحلة ($\ell_\infty$).</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: ثلاث مساطر صادقة لمسافة واحدة — ولكل مسطرة كرة وحدة بشكل مختلف</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تحرير الطول والزاوية من حصار المستوى الإقليدي</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">بديهيات المعيار الثلاث، وبديهيات الضرب الداخلي:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المعيار: $\|\lambda x\| = |\lambda|\|x\|$، ومتباينة المثلث، و$\|x\| = 0 \iff x = 0$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الضرب الداخلي: خطي في الوسيط الأول، ومتماثل، و$\langle x,x\rangle &gt; 0$ لكل $x \neq 0$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>في $\mathbb{R}^n$: $\langle x,y\rangle = x^\top A y$ ضرب داخلي $\iff$ $A$ متماثلة معرّفة موجبة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">فحص مصفوفة $2 \times 2$ متماثلة، وحساب ما يترتب عليها:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: تأكد من التماثل $a_{12} = a_{21}$ — وإلا فالفحص ينتهي هنا</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: افحص $a_{11} &gt; 0$ و $\det(A) &gt; 0$ — تحققهما معاً يعني التعريف الموجب</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: المعيار المستحث $\|x\| = \sqrt{\langle x,x\rangle}$، والمسافة $d(x,y) = \|x - y\|$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">كوشي–شفارتز: المتباينة التي تصنع الزاوية</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$|\langle x,y\rangle| \le \|x\|\,\|y\|$ تحصر النسبة في $[-1, 1]$ فيصير للزاوية معنى</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\ell_1$ و $\ell_\infty$ معياران لا يستحثهما ضرب داخلي — وزوايا معيّن $\ell_1$ هي سرّ التخلخل في Lasso</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0016 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: فحص $A_1 = \begin{bmatrix} 9 &amp; 6 \\ 6 &amp; 5 \end{bmatrix}$ و $A_2 = \begin{bmatrix} 9 &amp; 6 \\ 6 &amp; 3 \end{bmatrix}$</h4>
+          <span class="ex-badge">أي مصفوفة تصلح؟</span>
+        </div>
+        <p>المطلوب: أيّ المصفوفتين تصلح لتعريف ضرب داخلي على $\mathbb{R}^2$؟</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>التماثل:</b> كلتاهما متماثلة ($a_{12} = a_{21} = 6$)، فيستمر الفحص.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>المحدد:</b><br>$\det(A_1) = 9 \cdot 5 - 6^2 = 45 - 36 = 9 &gt; 0$ ✓<br>$\det(A_2) = 9 \cdot 3 - 6^2 = 27 - 36 = -9 &lt; 0$ ✗</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>الحكم:</b> $A_1$ معرّفة موجبة (لأن $a_{11} = 9 &gt; 0$ والمحدد موجب) فتصلح لتعريف ضرب داخلي. أما $A_2$ فلا تصلح، ويوجد متجه غير صفري يعطي $x^\top A_2 x \le 0$ — ولو قبلناها لصار لمتجه غير صفري طول صفر أو تخيّلي.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0017 -->
+    <article class="lcard" id="c0017">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0017</span>
+          <h3 class="ltitle">الزوايا والتعامد والمصفوفات المتعامدة (Orthogonality)</h3>
+          <span class="len">Angles &amp; Orthogonal Matrices — transformations that distort nothing</span>
+        </div>
+        <a class="lopen" href="lessons/0017-orthogonality.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0017 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0017 · الزوايا والتعامد والمصفوفات المتعامدة (Orthogonality)</div>
+          <div class="mindmap-root-badge">🌱 المحور: قياس الاتجاه، والتحويل الذي يحفظه</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">بوصلتان: لا يهم طول الإبرة، بل الاتجاه. قسمة الضرب الداخلي على الطولين هي تحييد الطول لمقارنة الاتجاه وحده.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: هذا بالضبط تشابه الجيب تمام الذي تقارن به نماذج اللغة تضمينات الكلمات</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تحويل «الزاوية القائمة» من صفة بصرية إلى أداة حساب</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">تعريفات دقيقة يخلط بينها كثيرون:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\cos\omega = \dfrac{\langle x,y\rangle}{\|x\|\,\|y\|}$، و$x \perp y \iff \langle x,y\rangle = 0$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span><b>متعامد متجانس</b> يعني متعامداً <b>وطول كلٍّ منهما 1</b> — التعامد وحده لا يكفي</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التعامد صفة نسبية: متجهان متعامدان بضرب داخلي قد لا يكونان متعامدين بآخر</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">فحص المصفوفة المتعامدة والحكم عليها:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: احسب طول كل عمود — يجب أن يساوي $1$ تماماً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: احسب الضرب الداخلي بين كل عمودين — يجب أن يساوي صفراً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: إن تحقق الشرطان فـ $A^\top A = I$ و $A^{-1} = A^\top$؛ ثم $\det = +1$ دوران و $\det = -1$ انعكاس</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">لماذا التعامد ترف حسابي ثمين؟</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فيثاغورس $\|x + y\|^2 = \|x\|^2 + \|y\|^2$ يتحقق <b>فقط</b> عند التعامد، لأن الحدّ الأوسط $2\langle x,y\rangle$ يختفي</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المصفوفة المتعامدة تحفظ معيار التدرّج أثناء الانتشار الخلفي — ومن هنا التهيئة المتعامدة في الشبكات العميقة</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0017 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: فحص $A = \tfrac{1}{\sqrt{2}}\begin{bmatrix} 1 &amp; -1 \\ 1 &amp; 1 \end{bmatrix}$</h4>
+          <span class="ex-badge">دوران أم انعكاس؟</span>
+        </div>
+        <p>المطلوب: هل $A$ متعامدة؟ وما نظيرها؟ وماذا تمثّل هندسياً؟</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>أطوال الأعمدة:</b> العمود الأول $\tfrac{1}{\sqrt{2}}(1, 1)$ وطوله $\sqrt{\tfrac{1}{2} + \tfrac{1}{2}} = 1$ ✓، وكذلك العمود الثاني.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>تعامد العمودين:</b> $\tfrac{1}{2}\big[(1)(-1) + (1)(1)\big] = 0$ ✓ — إذاً الأعمدة متعامدة متجانسة، و $A^\top A = I$، ونظيرها هو منقولها:<br>$$A^{-1} = A^\top = \tfrac{1}{\sqrt{2}}\begin{bmatrix} 1 &amp; 1 \\ -1 &amp; 1 \end{bmatrix}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>المحدد والتفسير:</b> $\det(A) = \tfrac{1}{2}\big[(1)(1) - (-1)(1)\big] = 1$، وهو موجب، إذاً $A$ <b>دوران</b> بزاوية $45°$ لا انعكاس — وهي تحفظ كل الأطوال والزوايا.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0018 -->
+    <article class="lcard" id="c0018">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0018</span>
+          <h3 class="ltitle">الأساس المتعامد وغرام–شميت (Gram–Schmidt)</h3>
+          <span class="len">Orthonormal Basis, Gram–Schmidt &amp; the Orthogonal Complement</span>
+        </div>
+        <a class="lopen" href="lessons/0018-gram-schmidt.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0018 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0018 · الأساس المتعامد وغرام–شميت (Gram–Schmidt)</div>
+          <div class="mindmap-root-badge">🌱 المحور: صناعة الأساس المثالي بدل انتظاره</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">المسطرة المتعامدة: حين تكون محاور الخريطة متعامدة ومتساوية التدريج تقرأ الموقع مباشرة؛ أما الخريطة المائلة فتحتاج حساباً في كل مرة.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: غرام–شميت هو تعديل الخريطة المائلة لتصير قائمة، مرة واحدة وإلى الأبد</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: الحصول على أساس تُقرأ إحداثياته بضرب داخلي واحد</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">شروط الخوارزمية ونتائجها:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الدخل يجب أن يكون <b>مستقلاً خطياً</b>؛ وظهور $u_k = 0$ كاشفٌ للارتباط لا عطل في الخوارزمية</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>في الأساس المتعامد المتجانس: $\alpha_i = \langle x, b_i\rangle$ — بلا حل منظومة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\dim U^\perp = D - M$، و $U \cap U^\perp = \{0\}$، وكل متجه ينحلّ انحلالاً وحيداً بينهما</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">غرام–شميت في سطرين متكررين:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 1: $u_1 = b_1$ كما هو، بلا تعديل</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 2: لكل متجه تالٍ اطرح إسقاطه على كل ما سبق: $u_k = b_k - \sum_{i&lt;k} \dfrac{\langle b_k, u_i\rangle}{\langle u_i, u_i\rangle} u_i$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>خطوة 3: للتجانس اقسم كلاً على طوله: $e_i = u_i / \|u_i\|$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">متمم التعامد والفضاءات الأربعة الأساسية</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\ker(A) = \mathrm{row}(A)^\perp$ — النواة هي بالضبط ما يتعامد مع كل صفوف المصفوفة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الضرب الداخلي للدوال $\langle u,v\rangle = \int_a^b u(x)v(x)\,dx$ يجعل $\sin x$ و $\cos x$ متعامدتين — بذرة متسلسلة فورييه</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0018 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: تعامد $b_1 = (1,1,0)$ و $b_2 = (1,0,1)$ بغرام–شميت</h4>
+          <span class="ex-badge">اطرح الإسقاط</span>
+        </div>
+        <p>المطلوب: أساس متعامد متجانس للمستوى الذي يولّده المتجهان في $\mathbb{R}^3$.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>المتجه الأول كما هو:</b> $u_1 = b_1 = (1, 1, 0)$، و $\langle u_1, u_1 \rangle = 2$.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>طرح الإسقاط:</b> $\langle b_2, u_1 \rangle = 1\cdot1 + 0\cdot1 + 1\cdot0 = 1$، فيكون المعامل $\tfrac{1}{2}$:<br>$$u_2 = (1, 0, 1) - \tfrac{1}{2}(1, 1, 0) = \left(\tfrac{1}{2},\, -\tfrac{1}{2},\, 1\right)$$تحقق التعامد: $\langle u_1, u_2 \rangle = \tfrac{1}{2} - \tfrac{1}{2} + 0 = 0$ ✓</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>التجانس:</b> $\|u_1\| = \sqrt{2}$ و $\|u_2\| = \sqrt{3/2}$، فالأساس المتعامد المتجانس:<br>$$e_1 = \tfrac{1}{\sqrt{2}}(1, 1, 0), \qquad e_2 = \sqrt{\tfrac{2}{3}}\left(\tfrac{1}{2}, -\tfrac{1}{2}, 1\right)$$</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0019 -->
+    <article class="lcard" id="c0019">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0019</span>
+          <h3 class="ltitle">الإسقاطات المتعامدة والدورانات (Projections &amp; Rotations)</h3>
+          <span class="len">Orthogonal Projections &amp; Rotations — the closest point, and turning without distortion</span>
+        </div>
+        <a class="lopen" href="lessons/0019-projections-rotations.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0019 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0019 · الإسقاطات المتعامدة والدورانات (Projections &amp; Rotations)</div>
+          <div class="mindmap-root-badge">🌱 المحور: أقرب نقطة ممكنة، ومنها المربعات الصغرى</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">ظلّ الشمس عند الظهيرة: الشمس فوق رأسك مباشرة فيسقط ظلّك عمودياً، وهذا الظل أقرب نقطة على الأرض إليك.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: الإسقاط المتعامد هو ظلّ المتجه على الفضاء الجزئي</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تحويل «تقليل الأبعاد» من شعار إلى آلة محسوبة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">شرط الإسقاط وخصائص مصفوفته:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الشرط الوحيد: أن يكون الفرق عمودياً $\langle x - \pi_U(x),\, b\rangle = 0$ — ومنه تُشتق كل الصيغ</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>مصفوفة الإسقاط متحايدة ومتماثلة: $P^2 = P$ و $P^\top = P$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$P$ <b>ليست</b> قابلة للعكس (إلا $I$): هي تهدم البُعد المتعامد ولا يمكن استرجاعه</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">من الخط إلى الفضاء الجزئي إلى الفضاء الأفيني:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>على خط: $\lambda = \dfrac{b^\top x}{\|b\|^2}$، و $\pi_U(x) = \lambda b$، و $P_\pi = \dfrac{bb^\top}{\|b\|^2}$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>على فضاء جزئي: $\lambda = (B^\top B)^{-1}B^\top x$، و $P_\pi = B(B^\top B)^{-1}B^\top$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>على فضاء أفيني: انقل، أسقِط، أعد النقل — $\pi_L(x) = x_0 + \pi_U(x - x_0)$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">المربعات الصغرى والدوران: نهاية السلسلة</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>حين لا يوجد حل لـ $Ax = b$ نطلب الأقرب: $\min\|Ax - b\|^2$، وحلّه إسقاط $b$ على فضاء الأعمدة بالمعادلة السوية $A^\top A x = A^\top b$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الدوران $R(\theta) = \begin{bmatrix} \cos\theta &amp; -\sin\theta \\ \sin\theta &amp; \cos\theta \end{bmatrix}$ متعامد ومحدده $+1$، فيحفظ الهندسة كاملة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>السلسلة كلها: ضرب داخلي ← معيار ← مسافة ← زاوية ← تعامد ← إسقاط</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0019 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: إسقاط $x = (6, 0, 0)$ على المستوى $U = \mathrm{span}\{(1,1,1),\,(0,1,2)\}$</h4>
+          <span class="ex-badge">مثال المحاضرة</span>
+        </div>
+        <p>نبني مصفوفة الأساس $B = \begin{bmatrix} 1 &amp; 0 \\ 1 &amp; 1 \\ 1 &amp; 2 \end{bmatrix}$ ثم نطبّق الصيغة العامة.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>حساب $B^\top B$ ونظيرها:</b><br>$$B^\top B = \begin{bmatrix} 3 &amp; 3 \\ 3 &amp; 5 \end{bmatrix}, \qquad \det = 6, \qquad (B^\top B)^{-1} = \tfrac{1}{6}\begin{bmatrix} 5 &amp; -3 \\ -3 &amp; 3 \end{bmatrix}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>مصفوفة الإسقاط:</b><br>$$P_\pi = B(B^\top B)^{-1}B^\top = \tfrac{1}{6}\begin{bmatrix} 5 &amp; 2 &amp; -1 \\ 2 &amp; 2 &amp; 2 \\ -1 &amp; 2 &amp; 5 \end{bmatrix}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>الإسقاط والتحقق:</b><br>$$\pi_U(x) = P_\pi \begin{bmatrix} 6 \\ 0 \\ 0 \end{bmatrix} = \begin{bmatrix} 5 \\ 2 \\ -1 \end{bmatrix}$$البقية $x - \pi_U(x) = (1, -2, 1)$، وضربها الداخلي مع $(1,1,1)$ يساوي صفراً ومع $(0,1,2)$ يساوي صفراً ✓ — إذاً البقية تتعامد مع المستوى كله، وهذا برهان أن الإسقاط صحيح.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
+  <!-- ================================================================= -->
   <!-- GRAND UNIFICATION MATRIX -->
   <!-- ================================================================= -->
   <section class="section-block" id="grand-unification">
@@ -3222,6 +3908,14 @@ document.addEventListener("DOMContentLoaded", function() {
     "c0009": "09 · الأساس والإحداثيات",
     "c0010": "10 · المحددات وساروس",
     "c0011": "11 · بنك التدريبات والاستراتيجية",
+    "c0012": "12 · الرتبة والحلّية",
+    "c0013": "13 · النواة والصورة",
+    "c0014": "14 · مصفوفة التحويل",
+    "c0015": "15 · الفضاءات الأفينية",
+    "c0016": "16 · المعايير والضرب الداخلي",
+    "c0017": "17 · التعامد والمصفوفات المتعامدة",
+    "c0018": "18 · غرام–شميت والمتمم",
+    "c0019": "19 · الإسقاطات والدورانات",
     "grand-unification": "لوحة التكافؤ الذهبي الكبرى"
   };
 

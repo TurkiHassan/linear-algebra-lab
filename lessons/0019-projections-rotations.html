@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0019 · الإسقاطات المتعامدة والدورانات — Orthogonal Projections & Rotations</title>
+<meta name="description" content="الإسقاط أقرب نقطة في الفضاء الجزئي، ومنه تأتي المربعات الصغرى؛ والدوران يحفظ كل شيء.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0019-projections-rotations.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0019 · الإسقاطات المتعامدة والدورانات — مختبر الجبر الخطي">
+<meta property="og:description" content="الإسقاط أقرب نقطة في الفضاء الجزئي، ومنه تأتي المربعات الصغرى؛ والدوران يحفظ كل شيء.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0019 · الإسقاطات المتعامدة والدورانات",
+ "alternateName": "Orthogonal Projections & Rotations",
+ "description": "الإسقاط أقرب نقطة في الفضاء الجزئي، ومنه تأتي المربعات الصغرى؛ والدوران يحفظ كل شيء.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0019-projections-rotations.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 19
+}
+</script>
+</head>
+<body data-lesson-id="0019">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0018-gram-schmidt.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0019">الخارطة</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0019 · الهندسة التحليلية</div>
+    <h1>الإسقاطات المتعامدة والدورانات</h1>
+    <span class="en-line" lang="en">Orthogonal Projections & Rotations — the closest point in a subspace, least squares, and turning without distortion</span>
+    <div class="rule"></div>
+    <p class="meta">~45 دقيقة · المتطلب: الدرس 0018 (غرام–شميت)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> الإسقاط على خط: أقرب نقطة ممكنة<span class="en-sub" lang="en">λ = bᵀx / ‖b‖² and Pπ = bbᵀ / ‖b‖²</span></h2>
+    <p>ال<span class="term">إسقاط المتعامد</span> <span class="en" lang="en" dir="ltr">(orthogonal projection)</span> لمتجه <span class="coord">x</span> على خط يولّده <span class="coord">b</span> هو أقرب نقطة على الخط إلى <span class="coord">x</span>. وشرطه الوحيد: أن يكون الفرق عمودياً <span class="coord">⟨x − π(x), b⟩ = 0</span>، ومنه يخرج المعامل <span class="coord">λ = bᵀx / ‖b‖²</span> و <span class="coord">π(x) = λb</span>. وبمصفوفة الإسقاط: <span class="coord">Pπ = bbᵀ / ‖b‖²</span>.</p>
+    <div class="analogy"><b>تشبيه: ظلّ الشمس عند الظهيرة</b><p>الشمس فوق رأسك مباشرة، فيسقط ظلّك على الأرض عمودياً — وهذا الظل أقرب نقطة على الأرض إليك. الإسقاط المتعامد هو ظلّ المتجه على الفضاء الجزئي. <span class="en" lang="en" dir="ltr">(The shadow is the nearest point.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> الضرب الداخلي نفسه إسقاط: <span class="coord">⟨x,b⟩ = ‖π_b(x)‖ · ‖b‖</span>. أي أن الضرب الداخلي هو طول الظلّ مضروباً في طول ما سقط عليه.</p></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Cast · PROJECT">
+      <h3>آلة الإسقاط على خط</h3>
+      <p class="hint">أدخل <span class="coord">x</span> و <span class="coord">b</span> في <span class="coord">ℝ³</span> — اللوحة تحسب المعامل والظل والبقية</p>
+      <div class="controls"><label>x <input type="number" id="x1" value="1"><input type="number" id="x2" value="1"><input type="number" id="x3" value="1"></label></div>
+      <div class="controls"><label>b <input type="number" id="b1" value="1"><input type="number" id="b2" value="2"><input type="number" id="b3" value="2"></label><button class="btn" id="pGo">أسقِط</button></div>
+      <div class="readout" id="pRO" style="direction:rtl;text-align:right">الظل…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> الإسقاط على فضاء جزئي والمربعات الصغرى<span class="en-sub" lang="en">Pπ = B(BᵀB)⁻¹Bᵀ — and the normal equation AᵀAx = Aᵀb</span></h2>
+    <p>للإسقاط على فضاء جزئي بعده <span class="coord">m</span> تولّده أعمدة <span class="coord">B</span>، تعمّم الصيغة إلى <span class="coord">Pπ = B(BᵀB)⁻¹Bᵀ</span>، والمعاملات <span class="coord">λ = (BᵀB)⁻¹Bᵀx</span>. والجزء <span class="coord">(BᵀB)⁻¹Bᵀ</span> يسمى <span class="term">النظير الزائف</span> <span class="en" lang="en" dir="ltr">(pseudo-inverse)</span>. وكل مصفوفة إسقاط متعامد تحقق خاصيتين: <span class="coord">P² = P</span> (تكرار الإسقاط لا يغيّر شيئاً) و <span class="coord">Pᵀ = P</span>.</p>
+    <div class="demo" data-label="Fit · LEAST SQUARES">
+      <h3>الإسقاط على مستوٍ ومسألة المربعات الصغرى</h3>
+      <p class="hint">المستوى <span class="coord">U = span{(1,1,1), (0,1,2)}</span> — أدخل <span class="coord">x</span> واللوحة تحسب <span class="coord">B(BᵀB)⁻¹Bᵀx</span></p>
+      <div class="controls"><label>x <input type="number" id="q1v" value="6"><input type="number" id="q2v" value="0"><input type="number" id="q3v" value="0"></label><button class="btn" id="qGo">أسقِط على المستوى</button></div>
+      <div class="readout" id="qRO" style="direction:rtl;text-align:right">الإسقاط…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>مصفوفة الإسقاط ليست قابلة للعكس (إلا إذا كانت <span class="coord">I</span>): هي تهدم البُعد المتعامد ولا يمكن استرجاعه. فلا تكتب <span class="coord">P⁻¹</span> أبداً — اكتب <span class="coord">P² = P</span>. <span class="en" lang="en" dir="ltr">(Projections are idempotent, not invertible.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>حين تكون <span class="coord">Ax = b</span> بلا حل (معادلات أكثر من مجاهيل)، نطلب أقرب شيء ممكن: <span class="coord">min ‖Ax − b‖²</span>. والحل هو إسقاط <span class="coord">b</span> على فضاء أعمدة <span class="coord">A</span>، ومعادلته <span class="term">المعادلة السوية</span> <span class="coord">AᵀAx = Aᵀb</span> — وهي قلب الانحدار الخطي كله.</p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> الدوران: تحويل يحفظ كل شيء<span class="en-sub" lang="en">R(θ) = [[cos θ, −sin θ], [sin θ, cos θ]] — orthogonal with det = +1</span></h2>
+    <p>ال<span class="term">دوران</span> <span class="en" lang="en" dir="ltr">(rotation)</span> بزاوية <span class="coord">θ</span> يرسل <span class="coord">e₁ → (cos θ, sin θ)</span> و <span class="coord">e₂ → (−sin θ, cos θ)</span>، فتكون مصفوفته <span class="coord">R(θ) = [[cos θ, −sin θ], [sin θ, cos θ]]</span>. وهي مصفوفة متعامدة محددها <span class="coord">+1</span>، ولذلك تحفظ الأطوال والزوايا والمسافات جميعاً — عكس الإسقاط الذي يهدم بعداً كاملاً.</p>
+    <div class="demo" data-label="Turn · ROTATE">
+      <h3>آلة الدوران</h3>
+      <p class="hint">أدخل متجهاً وزاوية بالدرجات — اللوحة تدوّره وتتحقق من حفظ الطول</p>
+      <div class="controls"><label>x <input type="number" id="r1" value="1"><input type="number" id="r2" value="0"></label><label>θ° <input type="number" id="rt" value="45" step="15"></label><button class="btn" id="rGo">أدِر</button></div>
+      <div class="kmath" id="rStage" style="min-height:56px"></div>
+      <div class="readout" id="rRO" style="direction:rtl;text-align:right">بعد الدوران…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>سلسلة المقرر كلها تُقرأ في سطر: <b>ضرب داخلي ← معيار ← مسافة ← زاوية ← تعامد ← إسقاط</b>. وما إن تملك الضرب الداخلي حتى يأتيك الباقي مجاناً.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>الإسقاط</td><td>تصغير المتجه</td><td>أقرب نقطة في الفضاء الجزئي — والفرق عمودي دائماً</td></tr>
+    <tr><td>المربعات الصغرى</td><td>حل تقريبي</td><td>إسقاط <span class="coord">b</span> على فضاء أعمدة <span class="coord">A</span> — حل مضبوط لمسألة أقرب</td></tr>
+    <tr><td>الدوران</td><td>تحريك الصورة</td><td>مصفوفة متعامدة محددها <span class="coord">+1</span> تحفظ الهندسة كاملة</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> «تقليل الأبعاد» شعار. <b>بعد هذا الدرس:</b> تعرف آلته: إسقاط متعامد على فضاء جزئي مختار — وهذا بالضبط ما يفعله تحليل المكوّنات الرئيسة <span class="coord">PCA</span>.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما معامل إسقاط <span class="coord">x = (3,1)</span> على <span class="coord">b = (1,2)</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">λ = 5/5 = 1</span></button><button class="opt" data-q="q1" data-a="1"><span class="coord">λ = 3</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">λ = 5/2</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">λ = 0</span></button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">أي خاصية تميّز مصفوفة الإسقاط المتعامد؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">P² = P</span> و <span class="coord">Pᵀ = P</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">P⁻¹ = Pᵀ</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">det(P) = 1</span></button><button class="opt" data-q="q2" data-a="3"><span class="coord">P = I</span> دائماً</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">لماذا يتعامد البُعد <span class="coord">b − Ax⋆</span> مع فضاء أعمدة <span class="coord">A</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0">لأن <span class="coord">Ax⋆</span> هو إسقاط <span class="coord">b</span>، وشرط الإسقاط تعامد الفرق</button><button class="opt" data-q="q3" data-a="1">لأن <span class="coord">A</span> متعامدة</button><button class="opt" data-q="q3" data-a="2">مصادفة حسابية</button><button class="opt" data-q="q3" data-a="3">لأن <span class="coord">b = 0</span></button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">ما مصفوفة الدوران <span class="coord">R(π/4)</span> مطبّقة على <span class="coord">(1,0)</span>؟</div>
+      <button class="opt" data-q="q4" data-a="0"><span class="coord">(√2/2, √2/2)</span></button><button class="opt" data-q="q4" data-a="1"><span class="coord">(0, 1)</span></button><button class="opt" data-q="q4" data-a="2"><span class="coord">(1, 1)</span></button><button class="opt" data-q="q4" data-a="3"><span class="coord">(−1, 0)</span></button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">كيف تسقط على فضاء أفيني <span class="coord">L = x₀ + U</span>؟</div>
+      <button class="opt" data-q="q5" data-a="0">انقل إلى الأصل، أسقِط، ثم أعد النقل: <span class="coord">x₀ + π_U(x − x₀)</span></button><button class="opt" data-q="q5" data-a="1">أسقِط مباشرة كما لو كان فضاءً جزئياً</button><button class="opt" data-q="q5" data-a="2">لا يمكن الإسقاط على فضاء أفيني</button><button class="opt" data-q="q5" data-a="3">اضرب في المحدد</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>الإسقاط المتعامد</td><td><span class="en" lang="en" dir="ltr">orthogonal projection</span></td><td>أقرب نقطة في الفضاء الجزئي</td></tr>
+    <tr><td>النظير الزائف</td><td><span class="en" lang="en" dir="ltr">pseudo-inverse</span></td><td><span class="coord">(BᵀB)⁻¹Bᵀ</span> — نظير حين لا يوجد نظير</td></tr>
+    <tr><td>مصفوفة الدوران</td><td><span class="en" lang="en" dir="ltr">rotation matrix</span></td><td>متعامدة محددها <span class="coord">+1</span> تحفظ الهندسة</td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0019-projections-rotations">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0019">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0019">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0019" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 3 · الأقسام 3.8–3.9</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0018-gram-schmidt.html" rel="prev"><small>الدرس السابق</small>الأساس المتعامد وغرام–شميت</a>
+    <a class="next home" href="../index.html"><small>اكتمل المسار</small>إلى الفهرس</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0019 · الإسقاطات المتعامدة والدورانات</span><span>التمرين: <code lang="en">python3 practice/0019-projections-rotations.py</code> · <a href="../playground.html?ex=0019-projections-rotations">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  tex(document.getElementById('k1'),"\\lambda=\\frac{b^\\top x}{\\|b\\|^2},\\quad \\pi_U(x)=\\lambda b=\\frac{bb^\\top}{\\|b\\|^2}x,\\qquad P_\\pi=B(B^\\top B)^{-1}B^\\top");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  function vec(v){return "("+mn(v[0])+", "+mn(v[1])+", "+mn(v[2])+")";}
+  function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+  document.getElementById('pGo').onclick=function(){
+    var x=[+document.getElementById('x1').value,+document.getElementById('x2').value,+document.getElementById('x3').value];
+    var b=[+document.getElementById('b1').value,+document.getElementById('b2').value,+document.getElementById('b3').value];
+    var bb=dot(b,b),el=document.getElementById('pRO');
+    if(bb<1e-12){el.innerHTML="المتجه <span class='coord'>b</span> صفري — لا يولّد خطاً، فلا إسقاط";return;}
+    var lam=dot(b,x)/bb;
+    var pr=[lam*b[0],lam*b[1],lam*b[2]];
+    var rest=[x[0]-pr[0],x[1]-pr[1],x[2]-pr[2]];
+    el.innerHTML="<span class='coord'>λ = bᵀx / ‖b‖² = "+mn(dot(b,x))+" / "+mn(bb)+" = "+mn(lam)+"</span><br>"+
+      "الظل <span class='coord'>π(x) = λb = "+vec(pr)+"</span> · البقية <span class='coord'>x − π(x) = "+vec(rest)+"</span><br>"+
+      "تحقق التعامد: <span class='coord'>⟨x − π(x), b⟩ = "+mn(dot(rest,b))+"</span> ✓ · المسافة إلى الخط <span class='coord'>"+mn(Math.sqrt(dot(rest,rest)))+"</span>";
+  };
+  document.getElementById('qGo').onclick=function(){
+    var x=[+document.getElementById('q1v').value,+document.getElementById('q2v').value,+document.getElementById('q3v').value];
+    var b1=[1,1,1],b2=[0,1,2];
+    /* BᵀB = [[3,3],[3,5]]، محدده 6، ونظيره (1/6)[[5,−3],[−3,3]] */
+    var r1=dot(b1,x),r2=dot(b2,x);
+    var l1=(5*r1-3*r2)/6,l2=(-3*r1+3*r2)/6;
+    var pr=[l1*b1[0]+l2*b2[0],l1*b1[1]+l2*b2[1],l1*b1[2]+l2*b2[2]];
+    var rest=[x[0]-pr[0],x[1]-pr[1],x[2]-pr[2]];
+    document.getElementById('qRO').innerHTML="<span class='coord'>Bᵀx = ("+mn(r1)+", "+mn(r2)+")</span> · <span class='coord'>λ = (BᵀB)⁻¹Bᵀx = ("+mn(l1)+", "+mn(l2)+")</span><br>"+
+      "الإسقاط <span class='coord'>π_U(x) = "+vec(pr)+"</span> · البقية <span class='coord'>"+vec(rest)+"</span><br>"+
+      "تحقق: <span class='coord'>⟨بقية, b₁⟩ = "+mn(dot(rest,b1))+"</span> و <span class='coord'>⟨بقية, b₂⟩ = "+mn(dot(rest,b2))+"</span> ✓ — البقية تتعامد مع المستوى كله";
+  };
+  document.getElementById('rGo').onclick=function(){
+    var x=[+document.getElementById('r1').value,+document.getElementById('r2').value];
+    var deg=+document.getElementById('rt').value,th=deg*Math.PI/180;
+    var c=Math.cos(th),s=Math.sin(th);
+    var y=[c*x[0]-s*x[1],s*x[0]+c*x[1]];
+    tex(document.getElementById('rStage'),"R(\\theta)=\\begin{bmatrix}\\cos\\theta & -\\sin\\theta\\\\ \\sin\\theta & \\cos\\theta\\end{bmatrix}=\\begin{bmatrix}"+mn(c).replace(/\u2212/g,'-')+" & "+mn(-s).replace(/\u2212/g,'-')+"\\\\ "+mn(s).replace(/\u2212/g,'-')+" & "+mn(c).replace(/\u2212/g,'-')+"\\end{bmatrix}");
+    var n1=Math.sqrt(x[0]*x[0]+x[1]*x[1]),n2=Math.sqrt(y[0]*y[0]+y[1]*y[1]);
+    document.getElementById('rRO').innerHTML="<span class='coord'>R("+mn(deg)+"°)·x = ("+mn(y[0])+", "+mn(y[1])+")</span><br>"+
+      "الطول قبل <span class='coord'>"+mn(n1)+"</span> وبعد <span class='coord'>"+mn(n2)+"</span> → "+(Math.abs(n1-n2)<1e-9?"محفوظ ✓ كما تقتضي المصفوفة المتعامدة":"تغيّر (خطأ عددي)")+
+      " · <span class='coord'>det R = "+mn(c*c+s*s)+"</span> — موجب، فهو دوران لا انعكاس";
+  };
+  var ANS={q1:{"0":["صحيح — (3·1 + 1·2)/(1+4) = 1.",true],"1":["هذه المركبة الأولى لا المعامل.",false],"2":["راجع المقام ‖b‖² = 5.",false],"3":["الضرب الداخلي ليس صفراً.",false]},
+    q2:{"0":["صحيح — متحايدة ومتماثلة.",true],"1":["هذه صفة المصفوفة المتعامدة.",false],"2":["محدد الإسقاط صفر عادةً.",false],"3":["I حالة خاصة تافهة.",false]},
+    q3:{"0":["صحيح — أقرب نقطة تعني فرقاً عمودياً.",true],"1":["A ليست متعامدة عموماً.",false],"2":["بل نتيجة شرط الأمثلية.",false],"3":["b ليس صفراً.",false]},
+    q4:{"0":["صحيح — دوران 45° للمتجه الأفقي.",true],"1":["هذا دوران 90°.",false],"2":["الطول يجب أن يبقى 1.",false],"3":["هذا دوران 180°.",false]},
+    q5:{"0":["صحيح — انقل، أسقِط، أعد.",true],"1":["الفضاء الأفيني لا يمر بالأصل.",false],"2":["بل يمكن بعد النقل.",false],"3":["المحدد لا علاقة له.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

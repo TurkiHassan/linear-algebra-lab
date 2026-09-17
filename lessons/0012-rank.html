@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0012 · الرتبة وحلّية المنظومة — Rank & Solvability</title>
+<meta name="description" content="الرتبة عدد الأعمدة المستقلة حقاً، وهي التي تحسم: حل وحيد، أو لا حل، أو لانهائي.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0012-rank.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0012 · الرتبة وحلّية المنظومة — مختبر الجبر الخطي">
+<meta property="og:description" content="الرتبة عدد الأعمدة المستقلة حقاً، وهي التي تحسم: حل وحيد، أو لا حل، أو لانهائي.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  #rSteps{white-space:pre-wrap;line-height:1.7}
+  #rGrid{display:grid;grid-template-columns:repeat(3,auto);justify-content:center;gap:8px;direction:ltr}
+  #rGrid input[type=number]{width:72px;text-align:center}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0012 · الرتبة وحلّية المنظومة",
+ "alternateName": "Rank & Solvability",
+ "description": "الرتبة عدد الأعمدة المستقلة حقاً، وهي التي تحسم: حل وحيد، أو لا حل، أو لانهائي.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0012-rank.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 12
+}
+</script>
+</head>
+<body data-lesson-id="0012">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0011-drills.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0012">الخارطة</a> · <a href="0013-linear-mappings.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0012 · التطبيقات الخطية</div>
+    <h1>الرتبة وحلّية المنظومة</h1>
+    <span class="en-line" lang="en">Rank & Solvability — one number that counts the truly independent columns, and decides whether Ax = b has a solution</span>
+    <div class="rule"></div>
+    <p class="meta">~35 دقيقة · المتطلب: الدرس 0009 (الأساس والأبعاد)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> الرتبة: كم عموداً «مختلفاً حقاً»؟<span class="en-sub" lang="en">rk(A) = number of pivots = number of independent columns = number of independent rows</span></h2>
+    <p>ال<span class="term">رتبة</span> <span class="en" lang="en" dir="ltr">(rank)</span> ورمزها <span class="coord">rk(A)</span> هي عدد أعمدة المصفوفة المستقلة خطياً. والمفاجأة الجميلة: هذا العدد نفسه هو عدد الصفوف المستقلة، وهو نفسه عدد <span class="term">القادة</span> <span class="en" lang="en" dir="ltr">(pivots)</span> في الصورة الدرجية. ثلاث طرق للعدّ، ورقم واحد يخرج منها جميعاً.</p>
+    <div class="analogy"><b>تشبيه: فريق العمل</b><p>في فريق من خمسة موظفين، قد يكون ثلاثة منهم فقط يؤدون مهامّ مختلفة حقاً، والباقيان يكرّران عمل غيرهما. الرتبة هي عدد «المهام المختلفة» لا عدد الموظفين. <span class="en" lang="en" dir="ltr">(Five columns, but maybe only three distinct directions.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> احذف غاوسياً، ثم عُدّ القادة — هذا هو <span class="coord">rk(A)</span>. ودائماً <span class="coord">rk(A) ≤ min(m, n)</span>، وعند المساواة نقول إن المصفوفة <span class="term">تامة الرتبة</span> <span class="en" lang="en" dir="ltr">(full rank)</span>.</p></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Count · RANK">
+      <h3>عدّاد الرتبة</h3>
+      <p class="hint">أدخل مصفوفة <span class="coord">3×3</span> — اللوحة تحذف غاوسياً وتعدّ القادة</p>
+      <div class="controls" id="rGrid"></div>
+      <div class="controls"><button class="btn" id="rGo">احسب الرتبة</button><button class="btn ghost" id="rEx">مثال المحاضرة</button></div>
+      <div class="readout" id="rSteps">…</div>
+      <div class="readout" id="rRO" style="direction:rtl;text-align:right">الرتبة = ؟</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> محكمة الحلول: <span class="coord">rk(A)</span> ضد <span class="coord">rk(A|b)</span><span class="en-sub" lang="en">Solvable iff rk(A) = rk(A|b); unique iff that rank also equals n</span></h2>
+    <p>هنا تُحسم حالات الحل الثلاث التي عرفتها في الدرس <span class="coord">0003</span> بقاعدة واحدة دقيقة: المنظومة <span class="coord">Ax = b</span> لها حل <b>إذا وفقط إذا</b> كانت <span class="coord">rk(A) = rk(A|b)</span>. فإن تساوتا وكانت الرتبة تساوي عدد المجاهيل <span class="coord">n</span> فالحل وحيد، وإن نقصت عنه فالحلول لانهائية.</p>
+    <div class="demo" data-label="Court · CASES">
+      <h3>محكمة الحلول الثلاث</h3>
+      <p class="hint">اختر حالة — اللوحة تقارن الرتبتين وتصدر الحكم</p>
+      <div class="controls"><select id="cSel"><option value="uni">حل وحيد</option><option value="non">لا حل</option><option value="inf">لانهائي</option></select><button class="btn" id="cGo">احكم</button></div>
+      <div class="kmath" id="cStage" style="min-height:56px"></div>
+      <div class="readout" id="cRO" style="direction:rtl;text-align:right">قارن الرتبتين…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الرتبة تقول <b>هل يوجد حل</b>، ولا تقول <b>ما هو الحل</b>. هي كاشف وجود لا آلة حساب — بعدها تعود إلى الحذف الغاوسي لتستخرج القيم. <span class="en" lang="en" dir="ltr">(Rank answers «does a solution exist», not «what is it».)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> بعد فضاء الحل: <span class="coord">n − rk(A)</span><span class="en-sub" lang="en">The solution space of Ax = 0 has dimension n − rk(A)</span></h2>
+    <p>لكل مصفوفة <span class="coord">A ∈ ℝ^(m×n)</span>، فضاء حلول <span class="coord">Ax = 0</span> بعده <span class="coord">n − rk(A)</span> بالضبط — وهذا هو عدد <span class="term">المتغيرات الحرة</span> <span class="en" lang="en" dir="ltr">(free variables)</span>. كل قائد يقيّد متغيراً، وما بقي بلا قائد يبقى حراً. وللمصفوفة المربعة: <span class="coord">rk(A) = n</span> ⟺ لها نظير ⟺ محددها ≠ 0.</p>
+    <div class="demo" data-label="Free · NULLITY">
+      <h3>عدّاد المتغيرات الحرة</h3>
+      <p class="hint">حرّك عدد الأعمدة والرتبة — اللوحة تحسب بعد فضاء الحل</p>
+      <div class="controls"><label>n (أعمدة) <input type="number" id="nN" value="4" min="1" max="8"></label><label>rk(A) <input type="number" id="nR" value="2" min="0" max="8"></label><button class="btn" id="nGo">احسب</button></div>
+      <div class="readout" id="nRO" style="direction:rtl;text-align:right">بعد فضاء الحل = ؟</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>هذه المعادلة هي البذرة التي تنبت منها <b>نظرية الرتبة والنواة</b> في الدرس القادم: ما تقيّده الرتبة، وما تطلقه النواة، مجموعهما هو <span class="coord">n</span> دائماً.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>الرتبة</td><td>حجم المصفوفة</td><td>عدد الأعمدة (أو الصفوف) المستقلة — لا علاقة لها بالشكل</td></tr>
+    <tr><td>تامة الرتبة</td><td>مصفوفة كبيرة</td><td><span class="coord">rk(A) = min(m,n)</span> — أقصى استقلال ممكن لهذا الشكل</td></tr>
+    <tr><td>المتغير الحر</td><td>متغير مهمل</td><td>عمود بلا قائد — وهو الذي يولّد اللانهاية في الحلول</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> «حل وحيد أو لا حل أو لانهائي» قاعدة تُحفظ من شكل الصورة الدرجية. <b>بعد هذا الدرس:</b> تقرأ المصير برقمين فقط: <span class="coord">rk(A)</span> و <span class="coord">rk(A|b)</span>.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما أقصى رتبة ممكنة لمصفوفة <span class="coord">3×4</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0">3 — لأن <span class="coord">rk ≤ min(3,4)</span></button><button class="opt" data-q="q1" data-a="1">4</button><button class="opt" data-q="q1" data-a="2">12</button><button class="opt" data-q="q1" data-a="3">7</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">متى تكون <span class="coord">Ax = b</span> قابلة للحل؟</div>
+      <button class="opt" data-q="q2" data-a="0">عندما <span class="coord">rk(A) = rk(A|b)</span></button><button class="opt" data-q="q2" data-a="1">عندما <span class="coord">rk(A) = m</span> دائماً</button><button class="opt" data-q="q2" data-a="2">عندما تكون <span class="coord">A</span> مربعة</button><button class="opt" data-q="q2" data-a="3">عندما <span class="coord">b ≠ 0</span></button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">لمصفوفة <span class="coord">3×4</span> رتبتها 2 — ما بعد فضاء حل <span class="coord">Ax = 0</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0">2 — لأن <span class="coord">n − rk = 4 − 2</span></button><button class="opt" data-q="q3" data-a="1">1</button><button class="opt" data-q="q3" data-a="2">3</button><button class="opt" data-q="q3" data-a="3">0</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">مصفوفة مربعة <span class="coord">n×n</span> رتبتها <span class="coord">n</span> — ماذا يلزم؟</div>
+      <button class="opt" data-q="q4" data-a="0">لها نظير ومحددها ≠ 0</button><button class="opt" data-q="q4" data-a="1">محددها صفر</button><button class="opt" data-q="q4" data-a="2">أعمدتها مرتبطة</button><button class="opt" data-q="q4" data-a="3">لا يمكن الحكم</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">الصورة الدرجية فيها صف <span class="coord">[0 0 0 | 5]</span> — ماذا يعني؟</div>
+      <button class="opt" data-q="q5" data-a="0">لا حل — <span class="coord">rk(A) &lt; rk(A|b)</span></button><button class="opt" data-q="q5" data-a="1">حل وحيد</button><button class="opt" data-q="q5" data-a="2">حلول لانهائية</button><button class="opt" data-q="q5" data-a="3">خطأ حسابي حتماً</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>الرتبة</td><td><span class="en" lang="en" dir="ltr">rank</span></td><td>عدد الأعمدة المستقلة = عدد القادة</td></tr>
+    <tr><td>تامة الرتبة</td><td><span class="en" lang="en" dir="ltr">full rank</span></td><td>الرتبة بلغت أقصاها <span class="coord">min(m,n)</span></td></tr>
+    <tr><td>المتغير الحر</td><td><span class="en" lang="en" dir="ltr">free variable</span></td><td>عمود بلا قائد — يولّد اللانهاية في الحلول</td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0012-rank">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0012">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0012">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0012" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 2 · القسم 2.6 — Rank</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0011-drills.html" rel="prev"><small>الدرس السابق</small>بنك التدريبات مع الحلول</a>
+    <a class="next" href="0013-linear-mappings.html" rel="next"><small>الدرس التالي</small>التطبيقات الخطية: النواة والصورة</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0012 · الرتبة وحلّية المنظومة</span><span>التمرين: <code lang="en">python3 practice/0012-rank.py</code> · <a href="../playground.html?ex=0012-rank">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  tex(document.getElementById('k1'),"\\mathrm{rk}(A) = \\#\\text{pivots} \\le \\min(m,n) \\qquad \\dim\\ker(A) = n - \\mathrm{rk}(A)");
+  var g=document.getElementById('rGrid'),cells=[];
+  var DEF=[[1,2,1],[-2,-3,1],[3,5,0]];
+  for(var i=0;i<3;i++){for(var j=0;j<3;j++){var inp=document.createElement('input');inp.type='number';inp.value=DEF[i][j];inp.style.width='58px';g.appendChild(inp);cells.push(inp);}}
+  function rref(M){
+    var m=M.length,n=M[0].length,r=0,steps=[],piv=[];
+    function show(tag){steps.push(tag+': '+M.map(function(row){return '['+row.map(function(v){return (Math.round(v*100)/100);}).join(' ')+']';}).join(' '));}
+    show('start');
+    for(var c=0;c<n&&r<m;c++){
+      var best=r;for(var i=r;i<m;i++)if(Math.abs(M[i][c])>Math.abs(M[best][c]))best=i;
+      if(Math.abs(M[best][c])<1e-9)continue;
+      if(best!==r){var t=M[best];M[best]=M[r];M[r]=t;show('swap R'+(r+1)+'↔R'+(best+1));}
+      var p=M[r][c];for(var j=0;j<n;j++)M[r][j]/=p;
+      for(var k=0;k<m;k++){if(k===r)continue;var f=M[k][c];if(Math.abs(f)>1e-12)for(var j2=0;j2<n;j2++)M[k][j2]-=f*M[r][j2];}
+      show('pivot col'+(c+1));piv.push(c+1);r++;
+    }
+    return {rank:r,steps:steps,piv:piv};
+  }
+  function runRank(){
+    var M=[];for(var i=0;i<3;i++){M.push([+cells[i*3].value,+cells[i*3+1].value,+cells[i*3+2].value]);}
+    var res=rref(M.map(function(r){return r.slice();}));
+    document.getElementById('rSteps').textContent=res.steps.join('\n');
+    document.getElementById('rRO').innerHTML="عدد القادة <span class='coord'>"+res.rank+"</span> في الأعمدة <span class='coord'>"+(res.piv.join(', ')||'—')+"</span> → <b>الرتبة <span class='coord'>rk(A) = "+res.rank+"</span></b> · بعد فضاء الحل <span class='coord'>"+(3-res.rank)+"</span> · "+(res.rank===3?"تامة الرتبة، ولها نظير":"ناقصة الرتبة، ومحددها صفر");
+  }
+  document.getElementById('rGo').onclick=runRank;
+  document.getElementById('rEx').onclick=function(){for(var i=0;i<3;i++)for(var j=0;j<3;j++)cells[i*3+j].value=DEF[i][j];runRank();};
+  var CASES={
+    uni:{tex:"\\left[\\begin{array}{ccc|c}1&0&0&2\\\\0&1&0&1\\\\0&0&1&-1\\end{array}\\right]",a:3,ab:3,n:3},
+    non:{tex:"\\left[\\begin{array}{ccc|c}1&1&1&3\\\\0&-2&1&-1\\\\0&0&0&5\\end{array}\\right]",a:2,ab:3,n:3},
+    inf:{tex:"\\left[\\begin{array}{ccc|c}1&2&-1&3\\\\0&0&0&0\\\\0&0&0&0\\end{array}\\right]",a:1,ab:1,n:3}};
+  document.getElementById('cGo').onclick=function(){
+    var c=CASES[document.getElementById('cSel').value];
+    tex(document.getElementById('cStage'),c.tex);
+    var v;
+    if(c.a!==c.ab)v="<b>لا حل</b> — الرتبتان مختلفتان، وظهر صف <span class='coord'>0 = b ≠ 0</span>";
+    else if(c.a===c.n)v="<b>حل وحيد</b> — الرتبة بلغت عدد المجاهيل، فلا متغير حر";
+    else v="<b>حلول لانهائية</b> — عدد المتغيرات الحرة <span class='coord'>"+(c.n-c.a)+"</span>";
+    document.getElementById('cRO').innerHTML="<span class='coord'>rk(A) = "+c.a+"</span> · <span class='coord'>rk(A|b) = "+c.ab+"</span> · <span class='coord'>n = "+c.n+"</span> → "+v;
+  };
+  document.getElementById('nGo').onclick=function(){
+    var n=+document.getElementById('nN').value,r=+document.getElementById('nR').value;
+    var el=document.getElementById('nRO');
+    if(r>n){el.innerHTML="مستحيل: الرتبة لا تتجاوز عدد الأعمدة <span class='coord'>rk ≤ n</span>";return;}
+    el.innerHTML="<span class='coord'>dim ker(A) = n − rk(A) = "+n+" − "+r+" = "+(n-r)+"</span> → "+((n-r)===0?"لا متغير حر: الحل الوحيد للمنظومة المتجانسة هو الصفر":"عدد المتغيرات الحرة <span class='coord'>"+(n-r)+"</span>، فالحلول المتجانسة لانهائية");
+  };
+  var ANS={q1:{"0":["صحيح — السقف هو الأصغر بين الصفوف والأعمدة.",true],"1":["الصفوف ثلاثة فقط، فلا تبلغ 4.",false],"2":["هذا عدد العناصر لا الرتبة.",false],"3":["لا معنى لهذا الرقم هنا.",false]},
+    q2:{"0":["صحيح — إضافة العمود b لا ترفع الرتبة.",true],"1":["ليس شرطاً — قد تكون m أكبر.",false],"2":["التربيع لا علاقة له بوجود الحل.",false],"3":["قيمة b لا تحسم وحدها.",false]},
+    q3:{"0":["صحيح — n − rk = 2 متغيرين حرين.",true],"1":["راجع: n = 4 لا 3.",false],"2":["هذا عدد الصفوف.",false],"3":["الصفر يعني رتبة تامة بالأعمدة.",false]},
+    q4:{"0":["صحيح — الرتبة التامة والنظير والمحدد ثلاثة أوجه لحقيقة واحدة.",true],"1":["المحدد الصفري يعني رتبة ناقصة.",false],"2":["الرتبة n تعني الاستقلال التام.",false],"3":["الحكم قاطع هنا.",false]},
+    q5:{"0":["صحيح — 0 = 5 تناقض، فالرتبتان مختلفتان.",true],"1":["الصف المتناقض ينفي الحل أصلاً.",false],"2":["اللانهاية تحتاج صف أصفار كاملاً بما فيه الطرف الأيمن.",false],"3":["ليس خطأ — هذه حالة «لا حل» الطبيعية.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>
