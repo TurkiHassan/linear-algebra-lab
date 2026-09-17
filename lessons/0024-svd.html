@@ -1,0 +1,395 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0024 · تحليل القيم المفردة — Singular Value Decomposition</title>
+<meta name="description" content="كل مصفوفة مهما كان شكلها تُكتب دوراناً ثم تمديداً ثم دوراناً: A = UΣVᵀ.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0024-svd.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0024 · تحليل القيم المفردة — مختبر الجبر الخطي">
+<meta property="og:description" content="كل مصفوفة مهما كان شكلها تُكتب دوراناً ثم تمديداً ثم دوراناً: A = UΣVᵀ.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
+  .m2{display:grid;grid-template-columns:repeat(2,auto);justify-content:center;gap:6px;direction:ltr}
+  .m2 input[type=number]{width:68px;text-align:center}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0024 · تحليل القيم المفردة",
+ "alternateName": "Singular Value Decomposition",
+ "description": "كل مصفوفة مهما كان شكلها تُكتب دوراناً ثم تمديداً ثم دوراناً: A = UΣVᵀ.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0024-svd.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 24
+}
+</script>
+</head>
+<body data-lesson-id="0024">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0023-diagonalization.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0024">الخارطة</a> · <a href="0025-low-rank.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0024 · تحليل المصفوفات</div>
+    <h1>تحليل القيم المفردة</h1>
+    <span class="en-line" lang="en">Singular Value Decomposition — rotate, stretch, rotate: the one factorisation that works for every matrix</span>
+    <div class="rule"></div>
+    <p class="meta">~40 دقيقة · المتطلب: الدرس 0023 (القطرنة) و0017 (المصفوفات المتعامدة)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> لماذا لا تكفي القطرنة؟<span class="en-sub" lang="en">Eigendecomposition needs a square matrix with enough eigenvectors — most matrices have neither</span></h2>
+    <p>القطرنة في الدرس السابق اشترطت شرطين: أن تكون المصفوفة <b>مربعة</b>، وأن تملك متجهات ذاتية <b>تكفي أساساً</b>. ومصفوفة البيانات الحقيقية لا تحقق الأول أصلاً: <span class="coord">1000</span> صورة في <span class="coord">784</span> بكسل مصفوفة مستطيلة، ولا معنى فيها لـ <span class="coord">Ax = λx</span> لأن الطرفين في فضاءين مختلفين. نحتاج تعميماً يعمل دائماً — وهو <span class="term">تحليل القيم المفردة</span> <span class="en" lang="en" dir="ltr">(SVD)</span>.</p>
+    <div class="analogy"><b>تشبيه: تشكيل الطين</b><p>لتشكّل قطعة طين تفعل ثلاثة أشياء بالترتيب: تُديرها لتضبط محاورها، ثم تضغط أو تمدّ على كل محور، ثم تُديرها إلى الوضع النهائي. وهذا حرفياً ما تقوله <span class="coord">A = UΣVᵀ</span>: دوران، فتمديد، فدوران. <span class="en" lang="en" dir="ltr">(Orient, squeeze, orient again.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> <span class="coord">A = UΣVᵀ</span> موجود <b>لكل</b> مصفوفة <span class="coord">A ∈ ℝ^(m×n)</span> بلا استثناء. و<span class="coord">U</span> و<span class="coord">V</span> متعامدتان — أي دورانان — و<span class="coord">Σ</span> قطرية عناصرها <span class="coord">σ₁ ≥ σ₂ ≥ … ≥ 0</span> وتُسمّى ال<span class="term">قيم المفردة</span> <span class="en" lang="en" dir="ltr">(singular values)</span>.</p></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مصفوفة <span class="coord">A</span> بحجم <span class="coord">3×2</span>. هل لها تفكيك ذاتي؟ وهل لها تحليل قيم مفردة؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا تفكيك ذاتي لها: <span class="coord">Ax</span> يقع في <span class="coord">ℝ³</span> و<span class="coord">λx</span> في <span class="coord">ℝ²</span>، فالمعادلة <span class="coord">Ax = λx</span> بلا معنى أصلاً. وأما <span class="coord">SVD</span> فموجود — ومصفوفتاه <span class="coord">U</span> بحجم <span class="coord">3×3</span> و<span class="coord">V</span> بحجم <span class="coord">2×2</span>، فلكل فضاء دورانه. وهذا هو الفرق الجوهري: التفكيك الذاتي يغيّر الأساس مرة، و<span class="coord">SVD</span> يغيّره مرتين لأن الفضاءين مختلفان. <span class="en" lang="en" dir="ltr">(SVD always exists; EVD often does not.)</span></p></details></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Compare · EVD vs SVD">
+      <h3>مقارنة التفكيكين</h3>
+      <p class="hint">اختر حالة — اللوحة تخبرك أيّ التفكيكين ينطبق ولماذا</p>
+      <div class="controls"><label>الحالة
+        <select id="vSel">
+          <option value="sym">مربعة ومتماثلة</option>
+          <option value="asym">مربعة غير متماثلة</option>
+          <option value="shear">مربعة لا تُقطرَن</option>
+          <option value="rect">مستطيلة</option>
+        </select></label><button class="btn" id="vGo">قارن</button></div>
+      <div class="readout" id="vRO" style="direction:rtl;text-align:right">المقارنة…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> الخطوات الثلاث مرسومة<span class="en-sub" lang="en">V-transpose rotates, Sigma stretches, U rotates again</span></h2>
+    <p>أوضح ما في <span class="coord">SVD</span> هو أثره على دائرة الوحدة. ادفع الدائرة في <span class="coord">Vᵀ</span> فتدور بلا تشوّه، ثم في <span class="coord">Σ</span> فتنسحق إلى قطع ناقص محاوره على المحورين، ثم في <span class="coord">U</span> فيدور القطع إلى وضعه النهائي. وطولا محوري القطع الناتج هما بالضبط <span class="coord">σ₁</span> و<span class="coord">σ₂</span>.</p>
+    <div class="demo" data-label="Morph · THREE STEPS">
+      <h3>ماكينة الخطوات الثلاث</h3>
+      <p class="hint">حرّك المؤشّر من <span class="coord">0</span> إلى <span class="coord">3</span> لتمرّ الدائرة بالمراحل الثلاث واحدة بعد أخرى</p>
+      <div class="controls"><label><span class="coord">A</span></label><span class="m2"><input type="number" id="sa" value="3"><input type="number" id="sb" value="0"><input type="number" id="sc" value="4"><input type="number" id="sd" value="5"></span></div>
+      <div class="controls"><label>المرحلة <input type="range" id="sT" min="0" max="3" step="0.02" value="3"></label><span class="coord" id="sTv">3</span><button class="btn ghost" id="sReset">من البداية</button></div>
+      <canvas id="svCv" width="640" height="360" role="img"
+              aria-label="دائرة الوحدة وهي تمر بالدوران ثم التمديد ثم الدوران، فتصير قطعاً ناقصاً محوراه هما القيمتان المفردتان"></canvas>
+      <p class="figcap">الشكل المتحرك هو صورة دائرة الوحدة عند المرحلة المختارة — وطولا محوري القطع النهائي هما <span class="coord">σ₁</span> و<span class="coord">σ₂</span></p>
+      <div class="readout" id="sRO" style="direction:rtl;text-align:right">المرحلة…</div>
+    </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>تحليل كامل بالورقة والقلم: من <span class="coord">AᵀA</span> إلى المصفوفات الثلاث.</p>
+      <pre dir="ltr">A = [ 3  0 ]
+    [ 4  5 ]
+
+step 1 -- build A^T A, which is symmetric and positive semidefinite
+
+  A^T = [ 3  4 ]
+        [ 0  5 ]
+
+  A^T A = [ 3  4 ] [ 3  0 ] = [ 9+16   0+20 ] = [ 25  20 ]
+          [ 0  5 ] [ 4  5 ]   [ 0+20   0+25 ]   [ 20  25 ]
+
+step 2 -- its eigenvalues are the SQUARES of the singular values
+
+  tr = 50 ,  det = 625 - 400 = 225
+  L^2 - 50L + 225 = 0
+  L = (50 +- sqrt(2500 - 900)) / 2 = (50 +- 40) / 2
+  L1 = 45 ,  L2 = 5
+
+  sigma1 = sqrt(45) = 6.7082        sigma2 = sqrt(5) = 2.2361
+
+step 3 -- right singular vectors: eigenvectors of A^T A
+
+  L = 45 :  A^T A - 45I = [ -20   20 ]   ->  x1 = x2
+                          [  20  -20 ]
+            v1 = (1, 1) / sqrt2
+
+  L = 5  :  A^T A - 5I  = [ 20  20 ]     ->  x1 = -x2
+                          [ 20  20 ]
+            v2 = (1, -1) / sqrt2
+
+  check   &lt;v1, v2&gt; = (1 - 1) / 2 = 0                    orthonormal   OK
+
+step 4 -- left singular vectors: u = A v / sigma
+
+  A v1 = (1/sqrt2) ( 3+0 , 4+5 ) = (1/sqrt2)(3, 9)
+  u1   = A v1 / sigma1 = (3, 9) / (sqrt2 * 3*sqrt5) = (1, 3) / sqrt10
+
+  A v2 = (1/sqrt2) ( 3-0 , 4-5 ) = (1/sqrt2)(3, -1)
+  u2   = A v2 / sigma2 = (3, -1) / (sqrt2 * sqrt5)  = (3, -1) / sqrt10
+
+  check   &lt;u1, u2&gt; = (3 - 3) / 10 = 0                   orthonormal   OK
+
+the determinant check, almost free
+
+  |det A| = |3*5 - 0*4| = 15
+  sigma1 * sigma2 = sqrt(45) * sqrt(5) = sqrt(225) = 15               OK</pre>
+      <p class="worked-note">آخر سطر قاعدة عامة: حاصل ضرب القيم المفردة هو القيمة المطلقة للمحدد. فالقيم المفردة تقيس التمدد على كل محور، وحاصل ضربها هو تغيّر المساحة.</p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>لا تخلط القيم المفردة بالقيم الذاتية. القيم الذاتية قد تكون سالبة أو مركّبة، والقيم المفردة <b>لا تكون إلا موجبة أو صفراً</b>. وهما يتطابقان في حالة واحدة: مصفوفة متماثلة معرّفة موجبة. <span class="en" lang="en" dir="ltr">(Singular values are never negative.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> من أين تأتي المصفوفات الثلاث؟<span class="en-sub" lang="en">Right vectors from A-transpose-A, left vectors from A v over sigma</span></h2>
+    <p>الحيلة كلها في ملاحظة واحدة: <span class="coord">AᵀA</span> متماثلة دائماً ونصف معرّفة موجبة دائماً، مهما كان شكل <span class="coord">A</span>. والنظرية الطيفية تنطبق عليها إذاً، فنقطرنها متعامداً: <span class="coord">AᵀA = VDVᵀ</span>. من هنا تأتي <span class="coord">V</span>، وقيمها الذاتية غير السالبة جذورها هي <span class="coord">σᵢ</span>، وأعمدة <span class="coord">U</span> تُبنى بـ <span class="coord">uᵢ = Avᵢ / σᵢ</span>.</p>
+    <div class="demo" data-label="Build · FROM GRAM">
+      <h3>مفكّك خطوة بخطوة</h3>
+      <p class="hint">أدخل المصفوفة — اللوحة تبني <span class="coord">AᵀA</span> ثم تستخرج القيم المفردة والمتجهات</p>
+      <div class="controls"><label><span class="coord">A</span></label><span class="m2"><input type="number" id="ga" value="3"><input type="number" id="gb" value="0"><input type="number" id="gc" value="4"><input type="number" id="gd" value="5"></span><button class="btn" id="gGo">فكّك</button></div>
+      <div class="kmath" id="gStage" style="min-height:56px"></div>
+      <div class="readout" id="gRO" style="direction:rtl;text-align:right">التفكيك…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>رتبة المصفوفة هي عدد القيم المفردة غير الصفرية — لا أكثر ولا أقل. وهذا أثبت عددياً من عدّ القادة بالحذف الغاوسي، ولهذا تعتمده كل المكتبات الحسابية عند حساب الرتبة فعلياً.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>القيمة المفردة</td><td>نوع من القيمة الذاتية</td><td>جذر قيمة ذاتية لـ <span class="coord">AᵀA</span> — وغير سالبة أبداً</td></tr>
+    <tr><td><span class="coord">SVD</span></td><td>تحليل متقدّم</td><td>دوران · تمديد · دوران — ويعمل لأي مصفوفة</td></tr>
+    <tr><td>الرتبة</td><td>عدد القادة</td><td>عدد القيم المفردة غير الصفرية — وهو الأثبت عددياً</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> التفكيك ترفٌ للمصفوفات المهذّبة. <b>بعد هذا الدرس:</b> لكل مصفوفة تفكيكٌ واحد على الأقل، وهو الذي يبني عليه الدرس القادم ضغط البيانات.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">لأي مصفوفة يوجد <span class="coord">SVD</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0">لكل مصفوفة مهما كان شكلها</button><button class="opt" data-q="q1" data-a="1">للمربعة فقط</button><button class="opt" data-q="q1" data-a="2">للمتماثلة فقط</button><button class="opt" data-q="q1" data-a="3">للقابلة للعكس فقط</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">ما علاقة <span class="coord">σᵢ</span> بالقيم الذاتية لـ <span class="coord">AᵀA</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">σᵢ = √λᵢ</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">σᵢ = λᵢ</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">σᵢ = λᵢ²</span></button><button class="opt" data-q="q2" data-a="3">لا علاقة بينهما</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">هل يمكن أن تكون قيمة مفردة سالبة؟</div>
+      <button class="opt" data-q="q3" data-a="0">لا — دائماً <span class="coord">σ ≥ 0</span></button><button class="opt" data-q="q3" data-a="1">نعم كالقيم الذاتية</button><button class="opt" data-q="q3" data-a="2">نعم إن كان المحدد سالباً</button><button class="opt" data-q="q3" data-a="3">نعم للمصفوفات المستطيلة</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">ماذا تمثّل <span class="coord">U</span> و<span class="coord">V</span> هندسياً؟</div>
+      <button class="opt" data-q="q4" data-a="0">دورانين — فهما متعامدتان</button><button class="opt" data-q="q4" data-a="1">تمديدين</button><button class="opt" data-q="q4" data-a="2">إسقاطين</button><button class="opt" data-q="q4" data-a="3">قصّين</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">مصفوفة <span class="coord">3×3</span> لها قيمتان مفردتان غير صفريتين — ما رتبتها؟</div>
+      <button class="opt" data-q="q5" data-a="0"><span class="coord">2</span></button><button class="opt" data-q="q5" data-a="1"><span class="coord">3</span></button><button class="opt" data-q="q5" data-a="2"><span class="coord">1</span></button><button class="opt" data-q="q5" data-a="3">لا يمكن تحديدها</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>القيمة المفردة</td><td><span class="en" lang="en" dir="ltr">singular value</span></td><td>معامل التمديد على محور، وغير سالب أبداً</td></tr>
+    <tr><td>المتجه المفرد الأيمن</td><td><span class="en" lang="en" dir="ltr">right singular vector</span></td><td>عمود من <span class="coord">V</span> — متجه ذاتي لـ <span class="coord">AᵀA</span></td></tr>
+    <tr><td>المتجه المفرد الأيسر</td><td><span class="en" lang="en" dir="ltr">left singular vector</span></td><td>عمود من <span class="coord">U</span> — ويساوي <span class="coord">Av / σ</span></td></tr></table>
+  </section>
+
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0024-svd.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>transpose</code> — منقول المصفوفة</li>
+      <li><code>matmul</code> — ضرب مصفوفتين</li>
+      <li><code>gram</code> — بناء ‎AᵀA‎</li>
+      <li><code>singular_values2</code> — الجذور غير السالبة، تنازلياً</li>
+      <li><code>right_vectors2</code> — أعمدة ‎V‎</li>
+      <li><code>left_vector</code> — ‎u = Av / σ‎</li>
+      <li><code>svd2</code> — الثلاثية ‎(U, Σ, Vᵀ)‎ وإعادة بنائها</li>
+    </ul></div>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0024-svd">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0024">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0024">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0024" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 4 · القسم 4.5 — Singular Value Decomposition</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0023-diagonalization.html" rel="prev"><small>الدرس السابق</small>القطرنة والنظرية الطيفية</a>
+    <a class="next" href="0025-low-rank.html" rel="next"><small>الدرس التالي</small>التقريب منخفض الرتبة</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0024 · تحليل القيم المفردة</span><span>التمرين: <code lang="en">python3 practice/0024-svd.py</code> · <a href="../playground.html?ex=0024-svd">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
+  tex(document.getElementById('k1'),"A=U\\Sigma V^{\\top},\\quad U^{\\top}U=I,\\ V^{\\top}V=I,\\quad \\sigma_1\\ge\\sigma_2\\ge\\cdots\\ge 0");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  function pl(v){return String(Math.round(v*1000)/1000);}
+  function get(ids){return ids.map(function(i){return +document.getElementById(i).value;});}
+
+  /* الأداة المشتركة: SVD لمصفوفة 2×2 عبر AᵀA */
+  function svd(A){
+    var a=A[0],b=A[1],c=A[2],d=A[3];
+    var g=[a*a+c*c, a*b+c*d, a*b+c*d, b*b+d*d];              /* AᵀA */
+    var t=g[0]+g[3], dd=g[0]*g[3]-g[1]*g[2], q=Math.max(0,t*t-4*dd), s=Math.sqrt(q);
+    var l1=(t+s)/2, l2=(t-s)/2;
+    var s1=Math.sqrt(Math.max(0,l1)), s2=Math.sqrt(Math.max(0,l2));
+    function ev(L){var p=g[0]-L, r=g[1];
+      if(Math.abs(p)>1e-9||Math.abs(r)>1e-9){var v=[-r,p]; if(Math.hypot(v[0],v[1])>1e-9) return v;}
+      var u=g[2], w=g[3]-L; if(Math.abs(u)>1e-9||Math.abs(w)>1e-9) return [-w,u];
+      return [1,0];}
+    function nz(v){var n=Math.hypot(v[0],v[1]); return n<1e-12?[1,0]:[v[0]/n,v[1]/n];}
+    var v1=nz(ev(l1)), v2=nz(ev(l2));
+    var av1=[a*v1[0]+b*v1[1], c*v1[0]+d*v1[1]], av2=[a*v2[0]+b*v2[1], c*v2[0]+d*v2[1]];
+    var u1=s1>1e-9?[av1[0]/s1,av1[1]/s1]:[1,0];
+    var u2=s2>1e-9?[av2[0]/s2,av2[1]/s2]:[-u1[1],u1[0]];
+    return {s1:s1,s2:s2,v1:v1,v2:v2,u1:u1,u2:u2,g:g,l1:l1,l2:l2};
+  }
+  function rotOf(u1,u2){return Math.atan2(u1[1],u1[0]);}
+
+  /* ١ · متى ينطبق كل تفكيك */
+  var VC={sym:{ar:"مربعة ومتماثلة",evd:"ينطبق، وأكثر: القطرنة متعامدة لأن النظرية الطيفية تضمن أساساً ذاتياً متعامداً",svd:"ينطبق، ويتطابق مع التفكيك الذاتي إن كانت أيضاً معرّفة موجبة"},
+          asym:{ar:"مربعة غير متماثلة",evd:"قد ينطبق، لكن <span class='coord'>P</span> لن تكون متعامدة — فتغيير الأساس يشوّه الزوايا",svd:"ينطبق دائماً، و<span class='coord'>U</span> و<span class='coord'>V</span> متعامدتان دائماً"},
+          shear:{ar:"مربعة لا تُقطرَن (قصّ)",evd:"<b>لا ينطبق</b>: المتجهات الذاتية لا تكفي أساساً",svd:"ينطبق — ولا يبالي بنقص المتجهات الذاتية أصلاً"},
+          rect:{ar:"مستطيلة",evd:"<b>بلا معنى</b>: <span class='coord'>Ax</span> و<span class='coord'>λx</span> في فضاءين مختلفين",svd:"ينطبق — ولهذا وُجد: فضاء للانطلاق ودورانه، وفضاء للوصول ودورانه"}};
+  document.getElementById('vGo').onclick=function(){
+    var c=VC[document.getElementById('vSel').value];
+    document.getElementById('vRO').innerHTML=
+      "<b>"+c.ar+"</b><br>التفكيك الذاتي: "+c.evd+"<br>تحليل القيم المفردة: "+c.svd;
+  };
+  document.getElementById('vGo').click();
+
+  /* ٢ · الخطوات الثلاث على دائرة الوحدة */
+  var svF=FIG('svCv'), sT=document.getElementById('sT'), sTv=document.getElementById('sTv');
+  function svDraw(){
+    if(!svF) return;
+    var A=get(['sa','sb','sc','sd']), C=svF.col(), S=svd(A), t=+sT.value;
+    sTv.textContent=Math.round(t*100)/100;
+    var thV=-rotOf(S.v1,S.v2), thU=rotOf(S.u1,S.u2);   /* Vᵀ يدور بعكس اتجاه v1 */
+    var p1=Math.min(t,1), p2=Math.min(Math.max(t-1,0),1), p3=Math.min(Math.max(t-2,0),1);
+    var aV=thV*p1, k1=1+(S.s1-1)*p2, k2=1+(S.s2-1)*p2, aU=thU*p3;
+    var i,N=170,pts=[],base=[];
+    for(i=0;i<=N;i++){
+      var a0=i/N*Math.PI*2, z=[Math.cos(a0),Math.sin(a0)];
+      base.push(z);
+      var r1=[z[0]*Math.cos(aV)-z[1]*Math.sin(aV), z[0]*Math.sin(aV)+z[1]*Math.cos(aV)];
+      var r2=[r1[0]*k1, r1[1]*k2];
+      pts.push([r2[0]*Math.cos(aU)-r2[1]*Math.sin(aU), r2[0]*Math.sin(aU)+r2[1]*Math.cos(aU)]);
+    }
+    svF.fit(pts.concat([[1,1],[-1,-1]]),52,66).clear().grid();
+    svF.poly(base,C.soft,null,1.4,[5,5]);
+    svF.poly(pts,C.accent,C.accent+'18',2.6);
+    if(t>=2.99){
+      svF.arrow([0,0],[S.u1[0]*S.s1,S.u1[1]*S.s1],C.terra).label([S.u1[0]*S.s1,S.u1[1]*S.s1],'s1 u1',C.terra,30);
+      svF.arrow([0,0],[S.u2[0]*S.s2,S.u2[1]*S.s2],C.vio).label([S.u2[0]*S.s2,S.u2[1]*S.s2],'s2 u2',C.vio,30);
+    }
+    var stage = t<1?'1. V^T  — rotate' : (t<2?'2. Sigma — stretch' : '3. U     — rotate');
+    svF.note(12,12,stage,C.accent);
+    svF.note(12,30,'sigma1 = '+mn(S.s1)+' , sigma2 = '+mn(S.s2),C.ink);
+    svF.note(12,48,'|det A| = '+mn(Math.abs(A[0]*A[3]-A[1]*A[2]))+'  =  sigma1 * sigma2 = '+mn(S.s1*S.s2),C.soft);
+    document.getElementById('sRO').innerHTML=
+      (t<1?"<b>المرحلة الأولى</b> <span class='coord'>Vᵀ</span>: دوران خالص — الدائرة تدور ولا تتشوّه، لأن المتعامدة تحفظ الأطوال."
+       :(t<2?"<b>المرحلة الثانية</b> <span class='coord'>Σ</span>: تمديد على المحورين بمعاملَي <span class='coord'>σ₁ = "+mn(S.s1)+"</span> و<span class='coord'>σ₂ = "+mn(S.s2)+"</span> — هنا وحده يقع التشويه."
+         :"<b>المرحلة الثالثة</b> <span class='coord'>U</span>: دوران أخير يضع القطع الناقص في موضعه. ومحوراه هما <span class='coord'>σ₁u₁</span> و<span class='coord'>σ₂u₂</span>."))+
+      "<br>وحاصل ضرب القيمتين <span class='coord'>"+mn(S.s1*S.s2)+"</span> هو <span class='coord'>|det A|</span> — أي معامل تغيّر المساحة.";
+  }
+  ['sa','sb','sc','sd'].forEach(function(id){document.getElementById(id).addEventListener('input',svDraw);});
+  sT.addEventListener('input',svDraw);
+  document.getElementById('sReset').onclick=function(){sT.value=0;svDraw();};
+  onTheme(svDraw); svDraw();
+
+  /* ٣ · التفكيك خطوة بخطوة من AᵀA */
+  document.getElementById('gGo').onclick=function(){
+    var A=get(['ga','gb','gc','gd']), S=svd(A), el=document.getElementById('gRO');
+    tex(document.getElementById('gStage'),
+      "A^{\\top}A=\\begin{bmatrix}"+pl(S.g[0])+" & "+pl(S.g[1])+"\\\\ "+pl(S.g[2])+" & "+pl(S.g[3])+
+      "\\end{bmatrix},\\quad \\lambda="+pl(S.l1)+",\\ "+pl(S.l2));
+    var rk=(S.s1>1e-9?1:0)+(S.s2>1e-9?1:0);
+    el.innerHTML=
+      "<span class='coord'>σ₁ = √"+mn(S.l1)+" = "+mn(S.s1)+"</span> · <span class='coord'>σ₂ = √"+mn(S.l2)+" = "+mn(S.s2)+"</span><br>"+
+      "<span class='coord'>v₁ = ("+mn(S.v1[0])+", "+mn(S.v1[1])+")</span> · <span class='coord'>v₂ = ("+mn(S.v2[0])+", "+mn(S.v2[1])+")</span> — "+
+      "وضربهما الداخلي <span class='coord'>"+mn(S.v1[0]*S.v2[0]+S.v1[1]*S.v2[1])+"</span> فهما متعامدان<br>"+
+      "<span class='coord'>u₁ = Av₁/σ₁ = ("+mn(S.u1[0])+", "+mn(S.u1[1])+")</span> · <span class='coord'>u₂ = ("+mn(S.u2[0])+", "+mn(S.u2[1])+")</span><br>"+
+      "الرتبة = عدد القيم المفردة غير الصفرية = <span class='coord'>"+rk+"</span>";
+  };
+  document.getElementById('gGo').click();
+
+  var ANS={q1:{"0":["صحيح — ولا استثناء.",true],"1":["بل المستطيلة أيضاً.",false],"2":["هذا شرط القطرنة المتعامدة لا SVD.",false],"3":["حتى الشاذة لها SVD.",false]},
+    q2:{"0":["صحيح — القيمة المفردة جذر القيمة الذاتية لـ AᵀA.",true],"1":["لا — الجذر لا المساواة.",false],"2":["عكست العلاقة.",false],"3":["بل هي أساس الحساب كله.",false]},
+    q3:{"0":["صحيح — جذر عدد غير سالب.",true],"1":["القيم الذاتية قد تسلب، أما المفردة فلا.",false],"2":["إشارة المحدد لا تنتقل إلى σ.",false],"3":["الشكل لا علاقة له.",false]},
+    q4:{"0":["صحيح — المتعامدة تحفظ الطول والزاوية.",true],"1":["التمديد في Σ وحدها.",false],"2":["الإسقاط يفقد معلومات، والمتعامدة لا تفقد.",false],"3":["القصّ ليس متعامداً.",false]},
+    q5:{"0":["صحيح — الرتبة عدد القيم المفردة غير الصفرية.",true],"1":["الثالثة صفر، فالرتبة ناقصة.",false],"2":["بل اثنتان لا واحدة.",false],"3":["القيم المفردة تحسمها تماماً.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

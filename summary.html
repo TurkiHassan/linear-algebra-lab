@@ -1372,6 +1372,17 @@
           </div>
         </div>
         <div class="toc-group">
+          <span class="toc-group-label">المحور 6: تحليل المصفوفات</span>
+          <div class="toc-links">
+            <a href="#c0020" data-target="c0020">20 · الأثر والكثيرة المميزة</a>
+            <a href="#c0021" data-target="c0021">21 · القيم والمتجهات الذاتية</a>
+            <a href="#c0022" data-target="c0022">22 · LU وتشوليسكي</a>
+            <a href="#c0023" data-target="c0023">23 · القطرنة والنظرية الطيفية</a>
+            <a href="#c0024" data-target="c0024">24 · تحليل القيم المفردة</a>
+            <a href="#c0025" data-target="c0025">25 · التقريب منخفض الرتبة</a>
+          </div>
+        </div>
+        <div class="toc-group">
           <span class="toc-group-label">الخاتمة</span>
           <div class="toc-links">
             <a href="#grand-unification" data-target="grand-unification">🌟 لوحة التكافؤ الشامل</a>
@@ -3717,6 +3728,501 @@
     </article>
   </section>
 
+  <section class="section-block" id="mod6">
+    <div class="sec-header">
+      <span class="sec-num">المحور السادس · الدروس 20 إلى 25</span>
+      <h2 class="sec-title">تحليل المصفوفات: من الأثر إلى ضغط البيانات</h2>
+      <p class="sec-desc">رقمان لا يتغيران بتغيير الأساس، ثم القيم الذاتية والقطرنة، ثم تحليل القيم المفردة الذي يعمل لكل مصفوفة — وينتهي بأفضل تقريب ممكن.</p>
+    </div>
+
+    <!-- Lesson 0020 -->
+    <article class="lcard" id="c0020">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0020</span>
+          <h3 class="ltitle">الأثر وكثيرة الحدود المميزة (Trace &amp; Char. Poly)</h3>
+          <span class="len">Trace &amp; Characteristic Polynomial — two numbers that survive every change of basis</span>
+        </div>
+        <a class="lopen" href="lessons/0020-trace-characteristic.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0020 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0020 · الأثر وكثيرة الحدود المميزة</div>
+          <div class="mindmap-root-badge">🌱 المحور: ثلاثة أرقام لا يمسّها تغيير الأساس</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">وزن الحقيبة: غيّر ترتيب ما فيها كما شئت — الوزن لا يتغير. الأساس ترتيبٌ للفضاء، والأثر وزنٌ لا يبالي بالترتيب.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: الأثر صفة التطبيق نفسه لا صفة المصفوفة التي تمثّله</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: بناء الجسر الذي يوصل من المصفوفة إلى قيمها الذاتية</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">ما يصح دائماً وما لا يصح:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\mathrm{tr}(AB) = \mathrm{tr}(BA)$ دائماً — حتى باختلاف الحجمين. أما $\mathrm{tr}(AB) = \mathrm{tr}(A)\mathrm{tr}(B)$ فخاطئة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>ومنها مباشرة: $\mathrm{tr}(S^{-1}AS) = \mathrm{tr}(ASS^{-1}) = \mathrm{tr}(A)$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\det(A) = \prod \lambda_i$ و $\mathrm{tr}(A) = \sum \lambda_i$ — حتى مع الجذور المكررة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">من المصفوفة إلى الجذور في ثلاث خطوات:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>احسب $\mathrm{tr}(A)$ و $\det(A)$ — رقمان من النظرة الأولى</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>اكتب $p(\lambda) = \lambda^2 - \mathrm{tr}(A)\lambda + \det(A)$ للمصفوفة $2\times 2$، أو $\det(A - \lambda I)$ عموماً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>حلّ $p(\lambda) = 0$ — والمميّز السالب يعني جذوراً مركّبة ودوراناً في الهندسة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">أين يظهر الأثر في تعلّم الآلة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\mathrm{tr}(X^\top X)$ مجموع مربعات كل عناصر البيانات — وهو الطاقة الكلية</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>وهو نفسه مجموع القيم الذاتية لمصفوفة التغاير، فحين تقول «حافظنا على التباين» فأنت تتحدث عن الأثر</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>اختلاف الأثر بين مصفوفتين برهانٌ قاطع على أنهما ليستا التطبيق نفسه</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0020 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: الكثيرة المميزة للمصفوفة $A = \begin{bmatrix} 4 &amp; 2 \\ 1 &amp; 3 \end{bmatrix}$</h4>
+          <span class="ex-badge">مثال المحاضرة</span>
+        </div>
+        <p>رقمان يبنيان الكثيرة كاملة، ثم نقرأ الرقمين مرة أخرى من جذورها.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>الأثر والمحدد:</b><br>$$\mathrm{tr}(A) = 4 + 3 = 7, \qquad \det(A) = 4\cdot 3 - 2\cdot 1 = 10$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>الكثيرة:</b><br>$$p(\lambda) = (4-\lambda)(3-\lambda) - 2 = \lambda^2 - 7\lambda + 10$$وهي نفسها $\lambda^2 - \mathrm{tr}(A)\lambda + \det(A)$.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>الجذران والتحقق:</b><br>$$(\lambda - 2)(\lambda - 5) = 0 \;\Rightarrow\; \lambda_1 = 2,\ \lambda_2 = 5$$ومجموعهما $7$ هو الأثر، وحاصل ضربهما $10$ هو المحدد ✓</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0021 -->
+    <article class="lcard" id="c0021">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0021</span>
+          <h3 class="ltitle">القيم والمتجهات الذاتية (Eigenvalues)</h3>
+          <span class="len">Eigenvalues &amp; Eigenvectors — the directions a matrix only stretches</span>
+        </div>
+        <a class="lopen" href="lessons/0021-eigenvalues.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0021 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0021 · القيم والمتجهات الذاتية</div>
+          <div class="mindmap-root-badge">🌱 المحور: اتجاه لا يدور، ومعامل يمدّده</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">تيار النهر: الورقة تنجرف وتدور، إلا على محور التيار تماماً فتمضي مستقيمة، تزيد سرعتها أو تنقص ولا تتغير وجهتها.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: محور التيار هو المتجه الذاتي، والسرعة هي القيمة الذاتية</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: إيجاد الاتجاهات التي يصير فيها التحويل مجرّد ضربٍ في عدد</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">أربع عبارات مترادفة تماماً:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\lambda$ قيمة ذاتية ⟺ $(A - \lambda I)x = 0$ لها حل غير صفري</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>⟺ $\mathrm{rk}(A - \lambda I) &lt; n$ ⟺ $\det(A - \lambda I) = 0$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المتجهات الذاتية غير وحيدة أبداً: كل مضاعف غير صفري ذاتيٌّ أيضاً</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">الاستخراج خطوة خطوة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>جد الجذور من الكثيرة المميزة (الدرس 0020)</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>لكل جذر: كوّن $A - \lambda I$ وحلّ $(A - \lambda I)x = 0$ — والصفوف ستتكرر لأن المصفوفة شاذة بالبناء</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$E_\lambda = \ker(A - \lambda I)$، وتحقّق دائماً بـ $Ax = \lambda x$</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">لماذا يهتم الجميع:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>ترتيب صفحات جوجل متجه ذاتي لمصفوفة الروابط</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>تحليل المكوّنات الرئيسة يختصر آلاف السمات إلى اتجاهات ذاتية لمصفوفة التغاير</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>المهندس يحسبها ليعرف متى يدخل الجسر في الرنين — مسألة واحدة بثلاثة وجوه</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0021 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: المتجهان الذاتيان للمصفوفة $A = \begin{bmatrix} 4 &amp; 2 \\ 1 &amp; 3 \end{bmatrix}$</h4>
+          <span class="ex-badge">مثال المحاضرة</span>
+        </div>
+        <p>نكمل مثال الدرس السابق: عرفنا الجذرين $2$ و $5$، والآن نستخرج اتجاهيهما.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>للقيمة $\lambda = 5$:</b><br>$$A - 5I = \begin{bmatrix} -1 &amp; 2 \\ 1 &amp; -2 \end{bmatrix} \;\Rightarrow\; x_1 = 2x_2 \;\Rightarrow\; E_5 = \mathrm{span}\{(2, 1)\}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>للقيمة $\lambda = 2$:</b><br>$$A - 2I = \begin{bmatrix} 2 &amp; 2 \\ 1 &amp; 1 \end{bmatrix} \;\Rightarrow\; x_1 = -x_2 \;\Rightarrow\; E_2 = \mathrm{span}\{(1, -1)\}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>التحقق والاستقلال:</b><br>$$A\begin{bmatrix} 2 \\ 1 \end{bmatrix} = \begin{bmatrix} 10 \\ 5 \end{bmatrix} = 5\begin{bmatrix} 2 \\ 1 \end{bmatrix}$$ومحدد $\begin{bmatrix} 2 &amp; 1 \\ 1 &amp; -1 \end{bmatrix}$ يساوي $-3 \neq 0$، فالمتجهان أساس لـ $\mathbb{R}^2$ ✓</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0022 -->
+    <article class="lcard" id="c0022">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0022</span>
+          <h3 class="ltitle">تحليل LU وتشوليسكي (LU &amp; Cholesky)</h3>
+          <span class="len">LU &amp; Cholesky — elimination as a product, and the square root of a positive definite matrix</span>
+        </div>
+        <a class="lopen" href="lessons/0022-cholesky.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0022 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0022 · تحليل LU وتشوليسكي</div>
+          <div class="mindmap-root-badge">🌱 المحور: الحذف محفوظاً، وجذرٌ للمصفوفة</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">دفتر الخطوات: الحذف الغاوسي يُتلف المصفوفة خطوةً خطوة، و$LU$ يحتفظ بالسِّجل — $U$ هي النتيجة و$L$ هي الطريق إليها.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: $L$ سجلّ المضاعفات، و$U$ ما بقي بعد الحذف</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: التحليل مرة واحدة، والاستعمال مرات</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">شروط كل تحليل:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$LU$: يلزم قائد غير صفري في كل خطوة، وإلا احتجنا تبديل صفوف — وهي صيغة $PA = LU$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>تشوليسكي: التماثل <b>و</b> التعريف الموجب معاً. القطر الموجب شرط لازم لا كافٍ</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\begin{bmatrix} 1 &amp; 3 \\ 3 &amp; 1 \end{bmatrix}$ قطرها موجب ومحددها $-8$ — فلا تشوليسكي لها</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">تشوليسكي في ثلاث عمليات:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\ell_{11} = \sqrt{a_{11}}$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\ell_{21} = a_{21} / \ell_{11}$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\ell_{22} = \sqrt{a_{22} - \ell_{21}^2}$ — وإن طلبت جذر عدد سالب فالمصفوفة ليست معرّفة موجبة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">أين يُستعمل:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>حلّ $Ax = b$ أسرع نحو الضعف، وأكثر استقراراً عددياً من $LU$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\det(A) = \prod \ell_{ii}^2$ — المحدد بلا عمل إضافي</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>توليد عيّنات غاوسية مرتبطة: $x = Lz$ يحوّل المستقل إلى النمط المطلوب</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0022 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: تشوليسكي للمصفوفة $A = \begin{bmatrix} 4 &amp; 2 \\ 2 &amp; 5 \end{bmatrix}$</h4>
+          <span class="ex-badge">مثال الدرس</span>
+        </div>
+        <p>نفحص التعريف الموجب أولاً، ثم نستخرج العامل، ثم نقرأ المحدد من قطره.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>الفحص:</b><br>$$4 &gt; 0, \qquad \det = 4\cdot 5 - 2\cdot 2 = 16 &gt; 0$$فالمحددان الصدريان موجبان: معرّفة موجبة.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>العامل:</b><br>$$\ell_{11} = 2, \quad \ell_{21} = 1, \quad \ell_{22} = \sqrt{5 - 1} = 2 \;\Rightarrow\; L = \begin{bmatrix} 2 &amp; 0 \\ 1 &amp; 2 \end{bmatrix}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>التحقق والمحدد:</b><br>$$LL^\top = \begin{bmatrix} 4 &amp; 2 \\ 2 &amp; 5 \end{bmatrix} = A, \qquad \det(A) = (2\cdot 2)^2 = 16 \;✓$$</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0023 -->
+    <article class="lcard" id="c0023">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0023</span>
+          <h3 class="ltitle">القطرنة والنظرية الطيفية (Diagonalization)</h3>
+          <span class="len">Diagonalization &amp; the Spectral Theorem — powers become number powers</span>
+        </div>
+        <a class="lopen" href="lessons/0023-diagonalization.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0023 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0023 · القطرنة والنظرية الطيفية</div>
+          <div class="mindmap-root-badge">🌱 المحور: أساس ذاتي يجعل التحويل تمديداً على محاور</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">الترجمة: لتضرب عددين كبيرين تحوّلهما إلى لوغاريتمات فيصير الضرب جمعاً ثم تعود. القطرنة الشيء نفسه بأساس المتجهات الذاتية.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: انتقل إلى العالم السهل، اعمل هناك، ثم عُد</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: $A^k$ في ضربتين بدل $k$ ضربة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">متى تُقطرَن ومتى تفشل:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>أعمدة $P$ متجهات ذاتية وقطر $D$ قيمها <b>بالترتيب نفسه</b></span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\zeta \leq \alpha$ دائماً، والقطرنة ممكنة ⟺ $\sum \alpha_i = \sum \zeta_i = n$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$A$ قابلة للقطرنة المتعامدة ⟺ $A$ متماثلة — وهذه هي النظرية الطيفية</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">الخطوات:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>جد القيم الذاتية ومتجهاتها</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>اجمع المتجهات أعمدةً في $P$، والقيم في قطر $D$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$A = PDP^{-1}$، وعند التماثل $P^{-1} = P^\top$ فالحساب أرخص وأثبت</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الثمرة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$A^k = PD^kP^{-1}$ — الفرق بين $50$ ضربة مصفوفية وواحدة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>مصفوفة التغاير متماثلة دائماً، فاتجاهات تحليل المكوّنات الرئيسة متعامدة دائماً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>استقرار المنظومات: كل $|\lambda| &lt; 1$ يعني انطفاءً، وأي $|\lambda| &gt; 1$ يعني انفجاراً</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0023 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: القطرنة المتعامدة للمصفوفة $A = \begin{bmatrix} 2 &amp; 1 \\ 1 &amp; 2 \end{bmatrix}$</h4>
+          <span class="ex-badge">مثال المحاضرة</span>
+        </div>
+        <p>متماثلة، فالنظرية الطيفية تَعِد بأساس ذاتي متعامد متجانس قبل أي حساب.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>الطيف:</b><br>$$p(\lambda) = \lambda^2 - 4\lambda + 3 = (\lambda-1)(\lambda-3) \;\Rightarrow\; \lambda_1 = 1,\ \lambda_2 = 3$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>المتجهان والتعامد:</b><br>$$p_1 = (1, -1), \quad p_2 = (1, 1), \qquad \langle p_1, p_2 \rangle = 0 \;✓$$وبعد التوحيد: $P = \tfrac{1}{\sqrt 2}\begin{bmatrix} 1 &amp; 1 \\ -1 &amp; 1 \end{bmatrix}$ ومنها $P^{-1} = P^\top$.</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>الثمرة:</b><br>$$A^2 = PD^2P^\top = P\begin{bmatrix} 1 &amp; 0 \\ 0 &amp; 9 \end{bmatrix}P^\top = \begin{bmatrix} 5 &amp; 4 \\ 4 &amp; 5 \end{bmatrix}$$وهو نفسه $A\cdot A$ بالضرب المباشر ✓ — والفرق يظهر عند $k = 50$ لا عند $k = 2$.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0024 -->
+    <article class="lcard" id="c0024">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0024</span>
+          <h3 class="ltitle">تحليل القيم المفردة (SVD)</h3>
+          <span class="len">Singular Value Decomposition — rotate, stretch, rotate: works for every matrix</span>
+        </div>
+        <a class="lopen" href="lessons/0024-svd.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0024 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0024 · تحليل القيم المفردة</div>
+          <div class="mindmap-root-badge">🌱 المحور: دوران · تمديد · دوران — لكل مصفوفة</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">تشكيل الطين: تُدير القطعة لتضبط محاورها، ثم تضغط أو تمدّ على كل محور، ثم تُديرها إلى الوضع النهائي.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: $V^\top$ توجيه، و$\Sigma$ ضغط، و$U$ توجيه أخير</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تفكيك يعمل حين تفشل القطرنة — أي في معظم الحالات الواقعية</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">لماذا يوجد دائماً:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$A^\top A$ متماثلة ونصف معرّفة موجبة مهما كان شكل $A$، فالنظرية الطيفية تنطبق عليها</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\sigma_i = \sqrt{\lambda_i(A^\top A)} \geq 0$ — القيم المفردة لا تسلب أبداً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$U$ و$V$ متعامدتان دائماً، بخلاف $P$ في القطرنة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">البناء في أربع خطوات:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>كوّن $A^\top A$ وقطرنها متعامداً: $A^\top A = VDV^\top$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\sigma_i = \sqrt{\lambda_i}$، مرتّبة تنازلياً</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$u_i = Av_i / \sigma_i$ للقيم غير الصفرية، ثم أكمل الأساس</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>تحقّق: $\prod \sigma_i = |\det A|$ للمصفوفة المربعة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الثمرة:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الرتبة = عدد القيم المفردة غير الصفرية — وهو أثبت عددياً من عدّ القادة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>ضغط الصور وأنظمة التوصية وتحليل المعنى الكامن كلها تبدأ من هنا</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>كل طبقة خطية في شبكة عميقة هي دوران ثم تمديد ثم دوران</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0024 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: تحليل $A = \begin{bmatrix} 3 &amp; 0 \\ 4 &amp; 5 \end{bmatrix}$</h4>
+          <span class="ex-badge">مثال الدرس</span>
+        </div>
+        <p>من مصفوفة غرام إلى المصفوفات الثلاث، بالورقة والقلم.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>مصفوفة غرام وقيمها:</b><br>$$A^\top A = \begin{bmatrix} 25 &amp; 20 \\ 20 &amp; 25 \end{bmatrix}, \quad \lambda = 45,\ 5 \;\Rightarrow\; \sigma_1 = \sqrt{45},\ \sigma_2 = \sqrt 5$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>المتجهات اليمنى ثم اليسرى:</b><br>$$v_1 = \tfrac{1}{\sqrt 2}(1, 1), \quad v_2 = \tfrac{1}{\sqrt 2}(1, -1)$$$$u_1 = \tfrac{Av_1}{\sigma_1} = \tfrac{1}{\sqrt{10}}(1, 3), \quad u_2 = \tfrac{1}{\sqrt{10}}(3, -1)$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>التحقق:</b><br>$$\langle u_1, u_2 \rangle = 0, \qquad \sigma_1 \sigma_2 = \sqrt{225} = 15 = |\det A| \;✓$$</div>
+          </div>
+        </div>
+      </div>
+    </article>
+
+    <!-- Lesson 0025 -->
+    <article class="lcard" id="c0025">
+      <div class="lhead">
+        <div>
+          <span class="ltag">الدرس 0025</span>
+          <h3 class="ltitle">التقريب منخفض الرتبة (Low-Rank)</h3>
+          <span class="len">Low-Rank Approximation — Eckart-Young proves nothing better exists</span>
+        </div>
+        <a class="lopen" href="lessons/0025-low-rank.html">افتح الدرس التفاعلي ←</a>
+      </div>
+
+      <!-- Mind Map 0025 -->
+      <div class="mindmap-tree">
+        <div class="mindmap-header">
+          <div class="title">🗺️ الخارطة الهرمية للدرس 0025 · التقريب منخفض الرتبة</div>
+          <div class="mindmap-root-badge">🌱 المحور: احتفظ بأكبر الطبقات، والخطأ محسوبٌ سلفاً</div>
+        </div>
+        <div class="tree-branches">
+          <div class="tree-branch b-gold">
+            <div class="branch-head">💡 الفكرة والتشبيه البديهي</div>
+            <div class="branch-content">طبقات الرسم: اللوحة الرقمية طبقات، أطفئ الصغيرة فتبقى مفهومة، وأطفئ الأولى فتضيع. $\sigma_i$ هو مقدار ما تحمله الطبقة.</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التشبيه: المصفوفة كومة طبقات مرتّبة بالأهمية</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>الهدف: تحويل الضغط من تقنية هندسية إلى مبرهنة</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-green">
+            <div class="branch-head">⚖️ الشروط والقواعد الصارمة</div>
+            <div class="branch-content">ما تقوله المبرهنة بالضبط:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\mathrm{rank}(uv^\top) = 1$ دائماً — كل الأعمدة مضاعفات لعمود واحد</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\|A\|_2 = \sigma_1$ — المعيار الطيفي هو أكبر تمدد ممكن</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>$\|A - \hat A(k)\|_2 = \sigma_{k+1}$ — لا «قريب من» بل يساوي، ولا أفضل منه</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-blue">
+            <div class="branch-head">⚙️ خوارزمية الحل الإجرائي</div>
+            <div class="branch-content">الإجراء:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>فكّك $A = U\Sigma V^\top$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>احتفظ بأول $k$ حدّ: $\hat A(k) = \sum_{i=1}^{k} \sigma_i u_i v_i^\top$</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>التخزين $k(m + n + 1)$ عدداً بدل $mn$ — والتوفير في حفظ العوامل لا الناتج</span></li>
+            </ul>
+          </div>
+          <div class="tree-branch b-purple">
+            <div class="branch-head">🌟 الثمرة والربط الشامل</div>
+            <div class="branch-content">الثمرة في التعلّم العميق:</div>
+            <ul class="tree-subnodes">
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>أوزان الشبكات تُظهر تجريبياً رتبة فعّالة منخفضة: طبقة $1000\times 1000$ تحمل معلومات بضع عشرات</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>ومن هنا جاءت أساليب الضغط والتشذيب والتدريب منخفض الرتبة</span></li>
+              <li class="tree-subnode"><span class="tree-connector">↳</span> <span>القيم المفردة الصغيرة كثيراً ما تكون ضجيجاً، فقطعها تنقية لا خسارة</span></li>
+            </ul>
+          </div>
+        </div>
+      </div>
+
+      <!-- Worked Example 0025 -->
+      <div class="example-box">
+        <div class="ex-header">
+          <h4 class="ex-title">📌 مثال تطبيقي محلول: أفضل تقريب من الرتبة $1$ للمصفوفة $A = \begin{bmatrix} 3 &amp; 0 \\ 4 &amp; 5 \end{bmatrix}$</h4>
+          <span class="ex-badge">مثال الدرس</span>
+        </div>
+        <p>نأخذ تحليل الدرس السابق، نقطعه عند طبقة واحدة، ثم نقيس الخطأ ونطابقه بالمبرهنة.</p>
+
+        <div class="step-flow">
+          <div class="step-item">
+            <span class="step-num">1</span>
+            <div class="step-body"><b>الطبقة الأولى وحدها:</b><br>$$\hat A(1) = \sigma_1 u_1 v_1^\top = 1.5\begin{bmatrix} 1 &amp; 1 \\ 3 &amp; 3 \end{bmatrix} = \begin{bmatrix} 1.5 &amp; 1.5 \\ 4.5 &amp; 4.5 \end{bmatrix}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">2</span>
+            <div class="step-body"><b>ما ضاع:</b><br>$$E = A - \hat A(1) = \begin{bmatrix} 1.5 &amp; -1.5 \\ -0.5 &amp; 0.5 \end{bmatrix}, \qquad E^\top E = \begin{bmatrix} 2.5 &amp; -2.5 \\ -2.5 &amp; 2.5 \end{bmatrix}$$</div>
+          </div>
+          <div class="step-item">
+            <span class="step-num">3</span>
+            <div class="step-body"><b>المطابقة:</b><br>قيما $E^\top E$ الذاتيتان $0$ و$5$، فـ $\|E\|_2 = \sqrt 5 = 2.2361$ — وهي $\sigma_2$ بالضبط ✓، ولا مصفوفة من الرتبة $1$ أقرب إلى $A$ منها.</div>
+          </div>
+        </div>
+      </div>
+    </article>
+  </section>
+
   <!-- ================================================================= -->
   <!-- GRAND UNIFICATION MATRIX -->
   <!-- ================================================================= -->
@@ -3916,6 +4422,12 @@ document.addEventListener("DOMContentLoaded", function() {
     "c0017": "17 · التعامد والمصفوفات المتعامدة",
     "c0018": "18 · غرام–شميت والمتمم",
     "c0019": "19 · الإسقاطات والدورانات",
+    "c0020": "20 · الأثر والكثيرة المميزة",
+    "c0021": "21 · القيم والمتجهات الذاتية",
+    "c0022": "22 · LU وتشوليسكي",
+    "c0023": "23 · القطرنة والنظرية الطيفية",
+    "c0024": "24 · تحليل القيم المفردة",
+    "c0025": "25 · التقريب منخفض الرتبة",
     "grand-unification": "لوحة التكافؤ الذهبي الكبرى"
   };
 

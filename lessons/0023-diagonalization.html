@@ -1,0 +1,393 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0023 · القطرنة والنظرية الطيفية — Diagonalization & the Spectral Theorem</title>
+<meta name="description" content="القطرنة تحوّل قوى المصفوفة إلى قوى أعداد، والنظرية الطيفية تجعل أساس المتماثلة متعامداً.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0023-diagonalization.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0023 · القطرنة والنظرية الطيفية — مختبر الجبر الخطي">
+<meta property="og:description" content="القطرنة تحوّل قوى المصفوفة إلى قوى أعداد، والنظرية الطيفية تجعل أساس المتماثلة متعامداً.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
+  .m2{display:grid;grid-template-columns:repeat(2,auto);justify-content:center;gap:6px;direction:ltr}
+  .m2 input[type=number]{width:68px;text-align:center}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0023 · القطرنة والنظرية الطيفية",
+ "alternateName": "Diagonalization & the Spectral Theorem",
+ "description": "القطرنة تحوّل قوى المصفوفة إلى قوى أعداد، والنظرية الطيفية تجعل أساس المتماثلة متعامداً.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0023-diagonalization.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 23
+}
+</script>
+</head>
+<body data-lesson-id="0023">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0022-cholesky.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0023">الخارطة</a> · <a href="0024-svd.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0023 · تحليل المصفوفات</div>
+    <h1>القطرنة والنظرية الطيفية</h1>
+    <span class="en-line" lang="en">Diagonalization — A = P D P-inverse turns matrix powers into number powers, and symmetry makes P orthogonal</span>
+    <div class="rule"></div>
+    <p class="meta">~40 دقيقة · المتطلب: الدرس 0021 (القيم الذاتية) و0018 (غرام–شميت)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> لماذا نريد القطر؟ لأن القوى تصير سهلة<span class="en-sub" lang="en">A = P D P-inverse, so A to the k is P D-to-the-k P-inverse</span></h2>
+    <p>المصفوفة القطرية سهلة إلى حدّ السذاجة: رفعها لقوّة هو رفع كل عنصر قطري لتلك القوّة، ومحددها حاصل ضرب القطر، ونظيرها مقلوب القطر. فلو استطعنا كتابة أي مصفوفة بصورة <span class="coord">A = PDP⁻¹</span> لورثنا هذه السهولة كلها: <span class="coord">Aᵏ = PDᵏP⁻¹</span> — ضربتان ومصفوفة قطرية بدل <span class="coord">k</span> ضربة كاملة.</p>
+    <div class="analogy"><b>تشبيه: الترجمة</b><p>لتضرب عددين كبيرين يدوياً، تحوّلهما إلى لوغاريتمات فيصير الضرب جمعاً، ثم تعود. القطرنة الشيء نفسه: انتقل إلى أساس المتجهات الذاتية حيث كل شيء ضربٌ في عدد، اعمل هناك، ثم عُد. <span class="en" lang="en" dir="ltr">(Change basis, work in the easy world, change back.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> أعمدة <span class="coord">P</span> هي المتجهات الذاتية، وقطر <span class="coord">D</span> هو القيم الذاتية <b>بالترتيب نفسه</b>. وهذا يشترط أن تكون المتجهات الذاتية أساساً لـ <span class="coord">ℝⁿ</span> — أي أن تكفي عدداً واستقلالاً.</p></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مصفوفة <span class="coord">2×2</span> لها قيمة ذاتية واحدة مكررة. هل هي حتماً قابلة للقطرنة؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا، والحالتان تُظهران أن التكرار ليس هو المشكلة. المصفوفة <span class="coord">[[2, 1], [0, 2]]</span> تعددها الجبري <span class="coord">2</span> لكن الهندسي <span class="coord">1</span> — متجه ذاتي واحد فقط، فلا تُقطرَن. أما <span class="coord">2I</span> فتعددها الهندسي <span class="coord">2</span> وهي قطرية أصلاً. المشكلة نقص المتجهات المستقلة لا تكرار الجذر. <span class="en" lang="en" dir="ltr">(Repetition is fine; a missing eigenvector is not.)</span></p></details></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Power · FAST">
+      <h3>آلة القوى</h3>
+      <p class="hint">حرّك <span class="coord">k</span> — اللوحة تحسب <span class="coord">Aᵏ</span> بالضرب المتكرر وبـ <span class="coord">PDᵏP⁻¹</span> وتقارن</p>
+      <div class="controls"><label><span class="coord">A</span></label><span class="m2"><input type="number" id="ka" value="2"><input type="number" id="kb" value="1"><input type="number" id="kc" value="1"><input type="number" id="kd" value="2"></span></div>
+      <div class="controls"><label><span class="coord">k</span> <input type="range" id="kK" min="1" max="12" step="1" value="2"></label><span class="coord" id="kKv">2</span></div>
+      <div class="readout" id="kRO" style="direction:rtl;text-align:right">القوّة…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> التعدد الجبري والهندسي: متى تفشل القطرنة؟<span class="en-sub" lang="en">A is diagonalizable exactly when the geometric multiplicities add up to n</span></h2>
+    <p>ال<span class="term">تعدد الجبري</span> <span class="en" lang="en" dir="ltr">(algebraic multiplicity)</span> ورمزه <span class="coord">α</span> هو عدد مرات ظهور الجذر في الكثيرة المميزة. وال<span class="term">تعدد الهندسي</span> <span class="en" lang="en" dir="ltr">(geometric multiplicity)</span> ورمزه <span class="coord">ζ</span> هو بُعد الفضاء الذاتي — أي عدد المتجهات الذاتية المستقلة لتلك القيمة. ودائماً <span class="coord">ζ ≤ α</span>. والقطرنة ممكنة <b>إذا وفقط إذا</b> تساوى مجموعاهما وبلغا <span class="coord">n</span>.</p>
+    <div class="demo" data-label="Multiplicity · COUNT">
+      <h3>عدّاد التعددين</h3>
+      <p class="hint">اختر حالة — اللوحة تعدّ <span class="coord">α</span> و<span class="coord">ζ</span> وتصدر الحكم</p>
+      <div class="controls"><label>الحالة
+        <select id="mSel">
+          <option value="distinct">جذران مختلفان</option>
+          <option value="repeat2">جذر مكرر ومتجهان مستقلان</option>
+          <option value="repeat1">جذر مكرر ومتجه واحد</option>
+          <option value="complex">جذران مركّبان</option>
+        </select></label><button class="btn" id="mGo">احكم</button></div>
+      <div class="kmath" id="mStage" style="min-height:52px"></div>
+      <div class="readout" id="mRO" style="direction:rtl;text-align:right">التعددان…</div>
+    </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>مصفوفة متماثلة تُقطرَن قطرنةً متعامدة — ثم نستعملها لحساب قوّتها.</p>
+      <pre dir="ltr">A = [ 2  1 ]        symmetric, so the Spectral Theorem promises an
+    [ 1  2 ]        orthonormal eigenbasis before we compute anything
+
+eigenvalues
+
+  tr(A) = 4 ,  det(A) = 3
+  p(L) = L^2 - 4L + 3 = (L - 1)(L - 3)
+  L1 = 1 ,  L2 = 3
+
+eigenvectors
+
+  L = 1 :   A - I = [ 1  1 ]     x1 + x2 = 0   ->   p1 = (1, -1)
+                    [ 1  1 ]
+
+  L = 3 :   A - 3I = [ -1   1 ]  -x1 + x2 = 0  ->   p2 = (1, 1)
+                     [  1  -1 ]
+
+  perpendicular ?   &lt;p1, p2&gt; = 1*1 + (-1)*1 = 0        yes, as promised
+
+normalise, and P becomes orthogonal
+
+  |p1| = |p2| = sqrt(2)
+  q1 = (1/sqrt2)( 1, -1)        q2 = (1/sqrt2)(1, 1)
+
+  P = (1/sqrt2) [ 1  1 ]        D = [ 1  0 ]        P^-1 = P^T
+                [ -1 1 ]            [ 0  3 ]
+
+the payoff: A squared, without squaring A
+
+  A^2 = P D^2 P^T ,   D^2 = [ 1  0 ]
+                            [ 0  9 ]
+
+  D^2 P^T = (1/sqrt2) [ 1  0 ] [ 1  -1 ] = (1/sqrt2) [ 1  -1 ]
+                      [ 0  9 ] [ 1   1 ]             [ 9   9 ]
+
+  P (that) = (1/2) [ 1  1 ] [ 1  -1 ] = (1/2) [ 10   8 ] = [ 5  4 ]
+                   [ -1 1 ] [ 9   9 ]         [  8  10 ]   [ 4  5 ]
+
+  direct check:  A*A = [ 2  1 ] [ 2  1 ] = [ 5  4 ]        OK
+                       [ 1  2 ] [ 1  2 ]   [ 4  5 ]
+
+  for k = 2 the shortcut saves nothing.
+  for k = 50 it is the difference between 50 matrix products and one.</pre>
+      <p class="worked-note">لاحظ أن <span class="coord">P⁻¹ = Pᵀ</span> هنا — وهذا ليس حظاً بل نتيجة تماثل <span class="coord">A</span>. ولهذا تُسمّى قطرنةً <b>متعامدة</b>.</p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p><span class="coord">ζ ≤ α</span> دائماً، والفجوة بينهما هي سبب فشل القطرنة الوحيد. ومصفوفة القصّ <span class="coord">[[1, 1], [0, 1]]</span> هي المثال القياسي: جذر مكرر، ومتجه ذاتي واحد، فلا قطرنة لها مهما حاولت. <span class="en" lang="en" dir="ltr">(A shear is the canonical non-diagonalizable matrix.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> النظرية الطيفية: التماثل يضمن كل شيء<span class="en-sub" lang="en">A is orthogonally diagonalizable if and only if A is symmetric</span></h2>
+    <p>ال<span class="term">نظرية الطيفية</span> <span class="en" lang="en" dir="ltr">(Spectral Theorem)</span> تقول: إن كانت <span class="coord">A</span> متماثلة حقيقية فقيمها الذاتية كلها حقيقية، ومتجهاتها الذاتية لقيم مختلفة متعامدة، ويوجد لها أساس ذاتي متعامد متجانس. وحتى عند تكرار الجذر، يمكن بناء أساس متعامد داخل الفضاء الذاتي بـ<span class="term">غرام–شميت</span> الذي تعلّمته في الدرس <span class="coord">0018</span>.</p>
+    <div class="demo" data-label="Spectral · AXES">
+      <h3>محكمة التعامد</h3>
+      <p class="hint">بدّل بين مصفوفة متماثلة وأخرى غير متماثلة — والزاوية بين المتجهين الذاتيين تحكم</p>
+      <div class="controls"><label>المصفوفة
+        <select id="spSel">
+          <option value="sym">متماثلة</option>
+          <option value="asym">غير متماثلة</option>
+          <option value="cov">مصفوفة تغاير</option>
+        </select></label></div>
+      <canvas id="spCv" width="640" height="360" role="img"
+              aria-label="دائرة الوحدة وصورتها البيضوية، والمتجهان الذاتيان مرسومان عليها ليظهر تعامدهما من عدمه"></canvas>
+      <p class="figcap">المتجهان الذاتيان هما محورا القطع الناقص — وعند التماثل وحده يكونان متعامدين</p>
+      <div class="readout" id="spRO" style="direction:rtl;text-align:right">الزاوية…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>مصفوفة التغاير في البيانات متماثلة دائماً، فالنظرية الطيفية تنطبق عليها دائماً. ولهذا يوجد لتحليل المكوّنات الرئيسة <span class="en" lang="en" dir="ltr">(PCA)</span> اتجاهات متعامدة مرتّبة — وهي بالضبط أعمدة <span class="coord">P</span> في القطرنة المتعامدة لمصفوفة التغاير.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>القطرنة</td><td>تبسيط المصفوفة</td><td>تغيير أساس إلى أساس ذاتي — ثم الرجوع</td></tr>
+    <tr><td>التعدد الهندسي</td><td>نفس الجبري</td><td><span class="coord">ζ ≤ α</span> — والفجوة بينهما تُفشل القطرنة</td></tr>
+    <tr><td>النظرية الطيفية</td><td>نتيجة تقنية</td><td>التماثل ⟺ وجود أساس ذاتي متعامد متجانس</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> القيم الذاتية أرقام نستخرجها. <b>بعد هذا الدرس:</b> هي أساسٌ جديد يصير فيه التحويل مجرّد تمديد على محاور — وهذا هو التفكيك بعينه.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">في <span class="coord">A = PDP⁻¹</span> — ماذا تحمل أعمدة <span class="coord">P</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0">المتجهات الذاتية</button><button class="opt" data-q="q1" data-a="1">القيم الذاتية</button><button class="opt" data-q="q1" data-a="2">صفوف <span class="coord">A</span></button><button class="opt" data-q="q1" data-a="3">متجهات الأساس المعياري</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">ما <span class="coord">A¹⁰</span> إذا كانت <span class="coord">A = PDP⁻¹</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">PD¹⁰P⁻¹</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">P¹⁰D¹⁰P⁻¹⁰</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">10·PDP⁻¹</span></button><button class="opt" data-q="q2" data-a="3"><span class="coord">PDP⁻¹</span></button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">مصفوفة <span class="coord">[[1, 1], [0, 1]]</span> — هل تُقطرَن؟</div>
+      <button class="opt" data-q="q3" data-a="0">لا — تعددها الهندسي <span class="coord">1</span> والجبري <span class="coord">2</span></button><button class="opt" data-q="q3" data-a="1">نعم — لأنها مثلثية</button><button class="opt" data-q="q3" data-a="2">نعم — قيمتها الذاتية حقيقية</button><button class="opt" data-q="q3" data-a="3">لا — لأن محددها صفر</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">متى تكون <span class="coord">A</span> قابلة للقطرنة المتعامدة؟</div>
+      <button class="opt" data-q="q4" data-a="0">إذا وفقط إذا كانت متماثلة</button><button class="opt" data-q="q4" data-a="1">إذا كانت قابلة للعكس</button><button class="opt" data-q="q4" data-a="2">إذا كان محددها موجباً</button><button class="opt" data-q="q4" data-a="3">دائماً</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">للمصفوفة المتماثلة — ما العلاقة بين <span class="coord">P⁻¹</span> و<span class="coord">Pᵀ</span>؟</div>
+      <button class="opt" data-q="q5" data-a="0">متساويان — لأن <span class="coord">P</span> متعامدة</button><button class="opt" data-q="q5" data-a="1">متعاكسان في الإشارة</button><button class="opt" data-q="q5" data-a="2">لا علاقة بينهما</button><button class="opt" data-q="q5" data-a="3"><span class="coord">P⁻¹ = 2Pᵀ</span></button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>القطرنة</td><td><span class="en" lang="en" dir="ltr">diagonalization</span></td><td>كتابة <span class="coord">A = PDP⁻¹</span> بأساس ذاتي</td></tr>
+    <tr><td>التعدد الهندسي</td><td><span class="en" lang="en" dir="ltr">geometric multiplicity</span></td><td>بُعد الفضاء الذاتي لقيمة واحدة</td></tr>
+    <tr><td>النظرية الطيفية</td><td><span class="en" lang="en" dir="ltr">spectral theorem</span></td><td>المتماثلة لها أساس ذاتي متعامد متجانس</td></tr></table>
+  </section>
+
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0023-diagonalization.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>eigenvalues2</code> — جذرا الكثيرة المميزة</li>
+      <li><code>algebraic_multiplicity</code> — عدد تكرار الجذر</li>
+      <li><code>geometric_multiplicity2</code> — بُعد الفضاء الذاتي</li>
+      <li><code>is_diagonalizable2</code> — الحكم بمقارنة المجموعين</li>
+      <li><code>diagonalize2</code> — بناء ‎P‎ و‎D‎</li>
+      <li><code>matrix_power2</code> — ‎Aᵏ‎ عبر ‎PDᵏP⁻¹‎</li>
+      <li><code>is_orthogonally_diagonalizable</code> — التماثل هو الشرط</li>
+    </ul></div>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0023-diagonalization">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0023">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0023">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0023" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 4 · القسم 4.4 — Eigendecomposition and Diagonalization</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0022-cholesky.html" rel="prev"><small>الدرس السابق</small>تحليل LU وتشوليسكي</a>
+    <a class="next" href="0024-svd.html" rel="next"><small>الدرس التالي</small>تحليل القيم المفردة</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0023 · القطرنة والنظرية الطيفية</span><span>التمرين: <code lang="en">python3 practice/0023-diagonalization.py</code> · <a href="../playground.html?ex=0023-diagonalization">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
+  tex(document.getElementById('k1'),"A=PDP^{-1} \\quad\\Rightarrow\\quad A^{k}=PD^{k}P^{-1} \\qquad A=A^{\\top}\\ \\Rightarrow\\ A=PDP^{\\top}");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  function mul(A,B){return [A[0]*B[0]+A[1]*B[2],A[0]*B[1]+A[1]*B[3],A[2]*B[0]+A[3]*B[2],A[2]*B[1]+A[3]*B[3]];}
+  function eig(A){var t=A[0]+A[3],d=A[0]*A[3]-A[1]*A[2],q=t*t-4*d;
+    if(q<0) return null; var s=Math.sqrt(q); return [(t-s)/2,(t+s)/2];}
+  function evec(A,L){var a=A[0]-L,b=A[1],c=A[2],d=A[3]-L;
+    if(Math.abs(a)>1e-9||Math.abs(b)>1e-9){var v=[-b,a]; if(Math.hypot(v[0],v[1])>1e-9) return v;}
+    if(Math.abs(c)>1e-9||Math.abs(d)>1e-9) return [-d,c];
+    return null;}
+
+  /* ١ · القوى بالطريقتين */
+  var kK=document.getElementById('kK'), kKv=document.getElementById('kKv');
+  function kDraw(){
+    var A=['ka','kb','kc','kd'].map(function(i){return +document.getElementById(i).value;});
+    var k=+kK.value, el=document.getElementById('kRO'); kKv.textContent=k;
+    var P=A.slice(), i; for(i=1;i<k;i++) P=mul(P,A);          /* الضرب المتكرر */
+    var R=eig(A);
+    if(!R||Math.abs(R[0]-R[1])<1e-9){
+      el.innerHTML="<span class='coord'>A^"+k+" = ["+mn(P[0])+", "+mn(P[1])+"; "+mn(P[2])+", "+mn(P[3])+"]</span> بالضرب المتكرر.<br>"+
+        (R?"الجذر مكرر: القطرنة قد تفشل، فلا طريق مختصر مضمون هنا.":"الجذران مركّبان: لا قطرنة حقيقية، والضرب المتكرر هو السبيل.");
+      return;}
+    var v1=evec(A,R[0]), v2=evec(A,R[1]);
+    var Pm=[v1[0],v2[0],v1[1],v2[1]], dt=Pm[0]*Pm[3]-Pm[1]*Pm[2];
+    var Pi=[Pm[3]/dt,-Pm[1]/dt,-Pm[2]/dt,Pm[0]/dt];
+    var Dk=[Math.pow(R[0],k),0,0,Math.pow(R[1],k)];
+    var F=mul(mul(Pm,Dk),Pi);
+    var same=Math.abs(F[0]-P[0])<1e-6&&Math.abs(F[1]-P[1])<1e-6&&Math.abs(F[2]-P[2])<1e-6&&Math.abs(F[3]-P[3])<1e-6;
+    el.innerHTML=
+      "بالضرب المتكرر (<span class='coord'>"+k+"</span> ضربة): <span class='coord'>["+mn(P[0])+", "+mn(P[1])+"; "+mn(P[2])+", "+mn(P[3])+"]</span><br>"+
+      "بـ <span class='coord'>PD^"+k+"P⁻¹</span> (ضربتان): <span class='coord'>["+mn(F[0])+", "+mn(F[1])+"; "+mn(F[2])+", "+mn(F[3])+"]</span> → "+
+      (same?"<b>متطابقتان</b>":"فرق عددي طفيف")+"<br>"+
+      "والقطر وحده هو ما رُفع للقوّة: <span class='coord'>λ = "+mn(R[0])+", "+mn(R[1])+"</span> صارت <span class='coord'>"+
+      mn(Dk[0])+", "+mn(Dk[3])+"</span>.";
+  }
+  ['ka','kb','kc','kd'].forEach(function(id){document.getElementById(id).addEventListener('input',kDraw);});
+  kK.addEventListener('input',kDraw); kDraw();
+
+  /* ٢ · التعدد الجبري والهندسي */
+  var CASES={distinct:{m:[2,1,1,2], ar:"جذران مختلفان: لكلٍّ متجه ذاتي مستقل، فالمجموع يبلغ اثنين — تُقطرَن."},
+             repeat2:{m:[3,0,0,3], ar:"جذر مكرر لكن المصفوفة مضاعف لمصفوفة الوحدة: كل اتجاه ذاتي، فالتعدد الهندسي اثنان — تُقطرَن (وهي قطرية أصلاً)."},
+             repeat1:{m:[2,1,0,2], ar:"جذر مكرر ومتجه ذاتي واحد فقط: التعدد الهندسي واحد، والمجموع لا يبلغ اثنين — لا تُقطرَن."},
+             complex:{m:[0,-1,1,0], ar:"جذران مركّبان: لا متجه ذاتي حقيقي أصلاً، فلا قطرنة في الأعداد الحقيقية."}};
+  document.getElementById('mGo').onclick=function(){
+    var c=CASES[document.getElementById('mSel').value], A=c.m, R=eig(A), el=document.getElementById('mRO');
+    tex(document.getElementById('mStage'),"A=\\begin{bmatrix}"+A[0]+" & "+A[1]+"\\\\ "+A[2]+" & "+A[3]+"\\end{bmatrix}");
+    if(!R){el.innerHTML=c.ar+" · <span class='coord'>tr² − 4·det = "+mn((A[0]+A[3])*(A[0]+A[3])-4*(A[0]*A[3]-A[1]*A[2]))+"</span> سالب."; return;}
+    var rep=Math.abs(R[0]-R[1])<1e-9;
+    var zeta;
+    if(!rep) zeta=2;
+    else zeta=(Math.abs(A[1])<1e-9&&Math.abs(A[2])<1e-9&&Math.abs(A[0]-A[3])<1e-9)?2:1;
+    var alpha=rep?2:1;
+    el.innerHTML="<span class='coord'>λ = "+mn(R[0])+(rep?"":", "+mn(R[1]))+"</span> · "+
+      "التعدد الجبري <span class='coord'>α = "+(rep?2:"1 لكلٍّ")+"</span> · التعدد الهندسي مجموعه <span class='coord'>ζ = "+zeta+"</span> · "+
+      "المطلوب <span class='coord'>n = 2</span><br>"+c.ar;
+  };
+  document.getElementById('mGo').click();
+
+  /* ٣ · التعامد عند التماثل وحده */
+  var SP={sym:{m:[2,1,1,2], ar:"متماثلة"}, asym:{m:[2,3,0,1], ar:"غير متماثلة"}, cov:{m:[2,0.8,0.8,1], ar:"مصفوفة تغاير (متماثلة بالبناء)"}};
+  var spF=FIG('spCv');
+  function spDraw(){
+    if(!spF) return;
+    var g=SP[document.getElementById('spSel').value], A=g.m, C=spF.col(), R=eig(A);
+    var i,N=150,circ=[],ell=[];
+    for(i=0;i<=N;i++){var t=i/N*Math.PI*2, z=[Math.cos(t),Math.sin(t)];
+      circ.push(z); ell.push([A[0]*z[0]+A[1]*z[1], A[2]*z[0]+A[3]*z[1]]);}
+    var pts=ell.concat([[1,1],[-1,-1]]);
+    spF.fit(pts,30,86).clear().grid();
+    spF.poly(circ,C.soft,null,1.6,[5,5]);
+    spF.poly(ell,C.accent,C.accent+'16',2.4);
+    var ang=null;
+    if(R){ var v1=evec(A,R[0]), v2=evec(A,R[1]);
+      if(v1) spF.ray(v1,C.vio,[7,6]);
+      if(v2) spF.ray(v2,C.terra,[7,6]);
+      if(v1&&v2){ var d=(v1[0]*v2[0]+v1[1]*v2[1])/(Math.hypot(v1[0],v1[1])*Math.hypot(v2[0],v2[1]));
+        ang=Math.acos(Math.max(-1,Math.min(1,d)))*180/Math.PI; if(ang>90) ang=180-ang; } }
+    spF.note(12,12,'A = [ '+mn(A[0])+'  '+mn(A[1])+' ; '+mn(A[2])+'  '+mn(A[3])+' ]',C.ink);
+    spF.note(12,30,Math.abs(A[1]-A[2])<1e-9?'symmetric':'not symmetric',Math.abs(A[1]-A[2])<1e-9?C.accent:C.terra);
+    spF.note(12,48,ang==null?'no real eigenvectors':('angle between eigenvectors = '+mn(ang)+' deg'),C.soft);
+    document.getElementById('spRO').innerHTML= g.ar+" · "+
+      (ang==null?"لا متجه ذاتي حقيقي، فلا زاوية تُقاس."
+       :("الزاوية بين المتجهين الذاتيين <span class='coord'>"+mn(ang)+"°</span> — "+
+         (Math.abs(ang-90)<0.5?"<b>قائمة</b>، كما تَعِد النظرية الطيفية، فالمحوران هما محورا القطع الناقص"
+                              :"<b>ليست قائمة</b>: فقدنا التماثل ففقدنا التعامد، والمتجهان الذاتيان لم يعودا محورَي القطع")));
+  }
+  document.getElementById('spSel').addEventListener('change',spDraw);
+  onTheme(spDraw); spDraw();
+
+  var ANS={q1:{"0":["صحيح — الأعمدة متجهات ذاتية، والقطر قيمها.",true],"1":["القيم في D لا في P.",false],"2":["الصفوف لا علاقة لها.",false],"3":["إلا إذا كانت A قطرية أصلاً.",false]},
+    q2:{"0":["صحيح — P وP⁻¹ يتقاصّان في الوسط.",true],"1":["P لا تُرفع للقوّة.",false],"2":["الرفع للقوّة ليس ضرباً في عدد.",false],"3":["هذه A لا A¹⁰.",false]},
+    q3:{"0":["صحيح — مصفوفة قصّ لها متجه ذاتي واحد.",true],"1":["المثلثية لا تضمن القطرنة.",false],"2":["حقيقية نعم، لكن المتجهات لا تكفي.",false],"3":["محددها 1 لا صفر.",false]},
+    q4:{"0":["صحيح — التماثل شرط لازم وكافٍ.",true],"1":["قابلية العكس لا تكفي.",false],"2":["إشارة المحدد لا علاقة لها.",false],"3":["ليست كل مصفوفة تُقطرَن أصلاً.",false]},
+    q5:{"0":["صحيح — أعمدة P متعامدة متجانسة.",true],"1":["الإشارة ليست هي الفرق.",false],"2":["بل العلاقة مساواة.",false],"3":["لا معامل — التوحيد يجعلها واحداً.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

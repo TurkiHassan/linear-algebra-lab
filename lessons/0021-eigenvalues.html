@@ -1,0 +1,394 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0021 · القيم والمتجهات الذاتية — Eigenvalues & Eigenvectors</title>
+<meta name="description" content="المتجه الذاتي اتجاه لا يدوّره التحويل بل يمدّده فقط، والقيمة الذاتية معامل التمديد.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0021-eigenvalues.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0021 · القيم والمتجهات الذاتية — مختبر الجبر الخطي">
+<meta property="og:description" content="المتجه الذاتي اتجاه لا يدوّره التحويل بل يمدّده فقط، والقيمة الذاتية معامل التمديد.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
+  .m2{display:grid;grid-template-columns:repeat(2,auto);justify-content:center;gap:6px;direction:ltr}
+  .m2 input[type=number]{width:68px;text-align:center}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0021 · القيم والمتجهات الذاتية",
+ "alternateName": "Eigenvalues & Eigenvectors",
+ "description": "المتجه الذاتي اتجاه لا يدوّره التحويل بل يمدّده فقط، والقيمة الذاتية معامل التمديد.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0021-eigenvalues.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 21
+}
+</script>
+</head>
+<body data-lesson-id="0021">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0020-trace-characteristic.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0021">الخارطة</a> · <a href="0022-cholesky.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0021 · تحليل المصفوفات</div>
+    <h1>القيم والمتجهات الذاتية</h1>
+    <span class="en-line" lang="en">Eigenvalues & Eigenvectors — the directions a matrix only stretches, and the factor by which it stretches them</span>
+    <div class="rule"></div>
+    <p class="meta">~40 دقيقة · المتطلب: الدرس 0020 (الأثر والكثيرة المميزة)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> اتجاه لا يدور: <span class="coord">Ax = λx</span><span class="en-sub" lang="en">An eigenvector is a direction the matrix only scales — never turns</span></h2>
+    <p>معظم المتجهات تدور عند ضربها في مصفوفة: تخرج بزاوية غير التي دخلت بها. لكنّ بعض الاتجاهات تصمد — يخرج المتجه على استقامته الأولى، أطول أو أقصر فحسب. هذا هو ال<span class="term">متجه الذاتي</span> <span class="en" lang="en" dir="ltr">(eigenvector)</span>، ومعامل الطول هو ال<span class="term">قيمة الذاتية</span> <span class="en" lang="en" dir="ltr">(eigenvalue)</span>. شرطهما سطر واحد: <span class="coord">Ax = λx</span> مع <span class="coord">x ≠ 0</span>.</p>
+    <div class="analogy"><b>تشبيه: تيار النهر</b><p>ألقِ ورقة في نهر فتنجرف وتدور. لكن على محور التيار تماماً تمضي الورقة في خط مستقيم، يزيد سرعتها أو ينقصها ولا يغيّر وجهتها. محور التيار هو المتجه الذاتي، والسرعة هي القيمة الذاتية. <span class="en" lang="en" dir="ltr">(On the axis of the current, direction survives.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> أربع عبارات مترادفة تماماً: <span class="coord">λ</span> قيمة ذاتية ⟺ <span class="coord">(A − λI)x = 0</span> لها حل غير صفري ⟺ <span class="coord">rk(A − λI) &lt; n</span> ⟺ <span class="coord">det(A − λI) = 0</span>. الأخيرة هي التي نحسبها، والأولى هي التي نريدها.</p></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مصفوفة دوران في المستوى بزاوية <span class="coord">30°</span>. كم متجهاً ذاتياً <b>حقيقياً</b> لها؟</p>
+      <details><summary>اكشف الجواب</summary><p>صفر. الدوران يحرّك كل اتجاه، فلا يبقى أحدٌ على استقامته — ولا وجود لاتجاه يقتصر التحويل عليه بالتمديد. الجذور موجودة لكنها مركّبة، والمميّز <span class="coord">tr² − 4·det</span> سالب. الاستثناءان الوحيدان هما <span class="coord">0°</span> و<span class="coord">180°</span>. <span class="en" lang="en" dir="ltr">(A real rotation has no real eigenvector.)</span></p></details></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Sweep · EIGEN">
+      <h3>ماسح الاتجاهات</h3>
+      <p class="hint">أدر المتجه <span class="coord">x</span> حول الأصل وراقب <span class="coord">Ax</span> — حين ينطبق الاتجاهان فقد وجدتَ متجهاً ذاتياً</p>
+      <div class="controls"><label><span class="coord">A</span></label><span class="m2"><input type="number" id="ea" value="4"><input type="number" id="eb" value="2"><input type="number" id="ec" value="1"><input type="number" id="ed" value="3"></span></div>
+      <div class="controls"><label>زاوية <span class="coord">x</span> <input type="range" id="eT" min="0" max="180" step="1" value="20"></label><span class="coord" id="eTv">20°</span><button class="btn ghost" id="eSnap">اقفز إلى أقرب متجه ذاتي</button></div>
+      <canvas id="egCv" width="640" height="360" role="img"
+              aria-label="المتجه المُدار وصورته تحت المصفوفة، والاتجاهان الذاتيان مرسومان كشعاعين ثابتين"></canvas>
+      <p class="figcap">الشعاعان المنقّطان هما الاتجاهان الذاتيان — عليهما وحدهما ينطبق <span class="coord">Ax</span> على <span class="coord">x</span></p>
+      <div class="readout" id="eRO" style="direction:rtl;text-align:right">الزاوية بين <span class="coord">x</span> و<span class="coord">Ax</span>…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> الفضاء الذاتي: <span class="coord">E_λ = ker(A − λI)</span><span class="en-sub" lang="en">Eigenvectors are never unique — they fill an entire subspace</span></h2>
+    <p>إن كان <span class="coord">x</span> متجهاً ذاتياً فكذلك <span class="coord">2x</span> و<span class="coord">−x</span> وكل مضاعف غير صفري له: <span class="coord">A(cx) = cAx = cλx = λ(cx)</span>. فمجموعة المتجهات الذاتية لقيمة ذاتية واحدة ليست متجهاً بل <b>فضاءً جزئياً</b> كاملاً يسمّى ال<span class="term">فضاء الذاتي</span> <span class="en" lang="en" dir="ltr">(eigenspace)</span>، وهو بالضبط نواة <span class="coord">A − λI</span> التي عرفتها في الدرس <span class="coord">0013</span>.</p>
+    <div class="demo" data-label="Kernel · EIGENSPACE">
+      <h3>مستخرج الفضاء الذاتي</h3>
+      <p class="hint">اختر قيمة ذاتية — اللوحة تبني <span class="coord">A − λI</span> وتستخرج نواتها خطوة بخطوة</p>
+      <div class="controls"><label>القيمة الذاتية
+        <select id="kSel"><option value="0">الأصغر</option><option value="1">الأكبر</option></select></label><button class="btn" id="kGo">استخرج</button></div>
+      <div class="kmath" id="kStage" style="min-height:52px"></div>
+      <div class="readout" id="kRO" style="direction:rtl;text-align:right">النواة…</div>
+    </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>نكمل مصفوفة الدرس السابق: عرفنا الجذرين، والآن نستخرج اتجاهيهما.</p>
+      <pre dir="ltr">A = [ 4  2 ]        from lesson 0020:   L1 = 2 ,  L2 = 5
+    [ 1  3 ]
+
+eigenvector for L = 5      solve (A - 5I) x = 0
+
+  A - 5I = [ 4-5    2  ] = [ -1   2 ]
+           [  1    3-5 ]   [  1  -2 ]
+
+  row 1:  -x1 + 2*x2 = 0   ->   x1 = 2*x2
+  row 2:   x1 - 2*x2 = 0        the SAME equation
+                                (it must be: the matrix is singular by construction)
+
+  take x2 = 1   ->   x = (2, 1)
+  E5 = span{ (2, 1) }
+
+  check   A*(2,1) = ( 4*2 + 2*1 , 1*2 + 3*1 ) = (10, 5) = 5*(2, 1)     OK
+
+eigenvector for L = 2      solve (A - 2I) x = 0
+
+  A - 2I = [ 2  2 ]
+           [ 1  1 ]
+
+  x1 + x2 = 0   ->   x1 = -x2
+  take x2 = -1  ->   x = (1, -1)
+  E2 = span{ (1, -1) }
+
+  check   A*(1,-1) = ( 4 - 2 , 1 - 3 ) = (2, -2) = 2*(1, -1)           OK
+
+two distinct eigenvalues  ->  the eigenvectors are independent
+
+  det [ 2   1 ] = 2*(-1) - 1*1 = -3   != 0
+      [ 1  -1 ]
+
+  so { (2,1) , (1,-1) } is a basis of R^2 made of eigenvectors
+  -- which is exactly what lesson 0023 will need.</pre>
+      <p class="worked-note">لاحظ أن صفَّي <span class="coord">A − λI</span> تكرّرا. هذا ليس مصادفة: اخترنا <span class="coord">λ</span> تحديداً ليصير المحدد صفراً، والمحدد الصفري يعني صفوفاً مرتبطة.</p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>لا تقل «المتجه الذاتي للقيمة <span class="coord">λ</span>» بل «متجه ذاتي». المتجهات الذاتية غير وحيدة أبداً: كل مضاعف غير صفري يصلح. وحين نحتاج واحداً بعينه نُوحّد طوله إلى <span class="coord">1</span>، وحتى حينها تبقى الإشارة حرة. <span class="en" lang="en" dir="ltr">(Eigenvectors are unique only up to scale.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> معرض الهندسة: خمسة تحويلات وخمسة أطياف<span class="en-sub" lang="en">Stretch, shear, rotate, collapse — each has a signature in its eigenvalues</span></h2>
+    <p>القيم الذاتية ليست أرقاماً مجرّدة: هي وصفٌ لما يفعله التحويل بالفضاء. وأمثلة المحاضرة الخمسة تغطّي الحالات كلها — من التمديد النقي إلى الانهيار الكامل. والمحدد يبقى حارساً على المساحة: <span class="coord">det(A) = Πλᵢ</span> هو معامل تغيّر المساحة.</p>
+    <div class="demo" data-label="Gallery · SPECTRUM">
+      <h3>معرض التحويلات الخمسة</h3>
+      <p class="hint">اختر تحويلاً — اللوحة ترسم مربع الوحدة وصورته ومعه الاتجاهان الذاتيان</p>
+      <div class="controls"><label>التحويل
+        <select id="gSel">
+          <option value="stretch">تمديد محوري</option>
+          <option value="shear">قصّ</option>
+          <option value="rot">دوران</option>
+          <option value="collapse">انهيار إلى خط</option>
+          <option value="mix">قصّ وتمديد معاً</option>
+        </select></label></div>
+      <canvas id="glCv" width="640" height="340" role="img"
+              aria-label="مربع الوحدة وصورته تحت التحويل المختار، مع الاتجاهين الذاتيين إن وُجدا"></canvas>
+      <p class="figcap">المساحة الملوّنة هي صورة مربع الوحدة — ونسبتها إلى الأصل هي <span class="coord">|det A|</span></p>
+      <div class="readout" id="gRO" style="direction:rtl;text-align:right">الطيف…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>لماذا يهتم الجميع بالقيم الذاتية؟ لأن <span class="term">ترتيب صفحات جوجل</span> <span class="en" lang="en" dir="ltr">(PageRank)</span> متجه ذاتي لمصفوفة الروابط، ولأن <span class="term">تحليل المكوّنات الرئيسة</span> <span class="en" lang="en" dir="ltr">(PCA)</span> يختصر آلاف السمات إلى بضعة اتجاهات ذاتية لمصفوفة التغاير، ولأن المهندس يحسبها ليعرف متى يدخل الجسر في الرنين. ثلاث مسائل، ومعادلة واحدة.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>المتجه الذاتي</td><td>متجه خاص بالمصفوفة</td><td>اتجاه لا يدوّره التحويل — وكل مضاعف له ذاتيٌّ أيضاً</td></tr>
+    <tr><td>القيمة الذاتية</td><td>رقم يخرج من معادلة</td><td>معامل التمديد على ذلك الاتجاه بالضبط</td></tr>
+    <tr><td>الفضاء الذاتي</td><td>مجموعة متجهات</td><td><span class="coord">ker(A − λI)</span> — فضاء جزئي كامل لا متجه واحد</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> المصفوفة صندوق يخلط الإحداثيات. <b>بعد هذا الدرس:</b> لكل مصفوفة اتجاهات مفضّلة تتصرّف عليها كضربٍ في عدد — وإيجادها هو تفكيك التحويل إلى أبسط ما يمكن.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما شرط أن يكون <span class="coord">λ</span> قيمة ذاتية للمصفوفة <span class="coord">A</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">det(A − λI) = 0</span></button><button class="opt" data-q="q1" data-a="1"><span class="coord">det(A) = λ</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">tr(A) = λ</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">A − λI</span> قابلة للعكس</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">إذا كان <span class="coord">x</span> متجهاً ذاتياً — فهل <span class="coord">3x</span> كذلك؟</div>
+      <button class="opt" data-q="q2" data-a="0">نعم — بالقيمة الذاتية نفسها</button><button class="opt" data-q="q2" data-a="1">نعم — لكن بقيمة ذاتية ثلاثة أضعاف</button><button class="opt" data-q="q2" data-a="2">لا</button><button class="opt" data-q="q2" data-a="3">فقط إن كان طوله واحداً</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">القيمة الذاتية <span class="coord">λ = 0</span> موجودة لمصفوفة ما — ماذا يعني ذلك؟</div>
+      <button class="opt" data-q="q3" data-a="0">المصفوفة شاذة ومحددها صفر</button><button class="opt" data-q="q3" data-a="1">المصفوفة هي مصفوفة الوحدة</button><button class="opt" data-q="q3" data-a="2">المصفوفة متعامدة</button><button class="opt" data-q="q3" data-a="3">لا يمكن أن تكون صفراً</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">ما الفضاء الذاتي <span class="coord">E_λ</span> بلغة الدرس <span class="coord">0013</span>؟</div>
+      <button class="opt" data-q="q4" data-a="0"><span class="coord">ker(A − λI)</span></button><button class="opt" data-q="q4" data-a="1"><span class="coord">Im(A)</span></button><button class="opt" data-q="q4" data-a="2"><span class="coord">ker(A)</span></button><button class="opt" data-q="q4" data-a="3">فضاء الأعمدة</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">مصفوفة <span class="coord">2×2</span> لها قيمتان ذاتيتان مختلفتان — ماذا تعرف عن متجهيها الذاتيين؟</div>
+      <button class="opt" data-q="q5" data-a="0">مستقلان، فيصلحان أساساً لـ <span class="coord">ℝ²</span></button><button class="opt" data-q="q5" data-a="1">متعامدان دائماً</button><button class="opt" data-q="q5" data-a="2">متوازيان</button><button class="opt" data-q="q5" data-a="3">طولاهما متساويان</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>المتجه الذاتي</td><td><span class="en" lang="en" dir="ltr">eigenvector</span></td><td>اتجاه يمدّده التحويل ولا يدوّره</td></tr>
+    <tr><td>القيمة الذاتية</td><td><span class="en" lang="en" dir="ltr">eigenvalue</span></td><td>معامل التمديد على ذلك الاتجاه</td></tr>
+    <tr><td>الفضاء الذاتي</td><td><span class="en" lang="en" dir="ltr">eigenspace</span></td><td>كل المتجهات الذاتية لقيمة واحدة، ومعها الصفر</td></tr></table>
+  </section>
+
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0021-eigenvalues.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>eigenvalues2</code> — جذرا الكثيرة المميزة</li>
+      <li><code>apply2</code> — تطبيق المصفوفة على متجه</li>
+      <li><code>is_eigenpair</code> — هل ‎Ax = λx‎؟</li>
+      <li><code>eigenvector_for</code> — متجه من نواة ‎A − λI‎</li>
+      <li><code>normalize</code> — توحيد الطول إلى ‎1‎</li>
+      <li><code>eigen_basis2</code> — متجهان ذاتيان مستقلان إن وُجدا</li>
+      <li><code>classify_map</code> — تمديد · قصّ · دوران · انهيار</li>
+    </ul></div>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0021-eigenvalues">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0021">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0021">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0021" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 4 · القسم 4.2 — Eigenvalues and Eigenvectors</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0020-trace-characteristic.html" rel="prev"><small>الدرس السابق</small>الأثر وكثيرة الحدود المميزة</a>
+    <a class="next" href="0022-cholesky.html" rel="next"><small>الدرس التالي</small>تحليل LU وتشوليسكي</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0021 · القيم والمتجهات الذاتية</span><span>التمرين: <code lang="en">python3 practice/0021-eigenvalues.py</code> · <a href="../playground.html?ex=0021-eigenvalues">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
+  tex(document.getElementById('k1'),"A\\mathbf{x}=\\lambda\\mathbf{x},\\ \\mathbf{x}\\neq 0 \\quad\\Longleftrightarrow\\quad \\det(A-\\lambda I)=0 \\quad\\Longleftrightarrow\\quad E_\\lambda=\\ker(A-\\lambda I)\\neq\\{0\\}");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  function M(){return [+document.getElementById('ea').value,+document.getElementById('eb').value,
+                       +document.getElementById('ec').value,+document.getElementById('ed').value];}
+  function ap(A,v){return [A[0]*v[0]+A[1]*v[1], A[2]*v[0]+A[3]*v[1]];}
+  function eig(A){var t=A[0]+A[3], d=A[0]*A[3]-A[1]*A[2], disc=t*t-4*d;
+    if(disc<0) return null; var s=Math.sqrt(disc); return [(t-s)/2,(t+s)/2];}
+  function evec(A,L){                       /* نواة A − λI لمصفوفة 2×2 */
+    var a=A[0]-L,b=A[1],c=A[2],d=A[3]-L;
+    if(Math.abs(a)>1e-9||Math.abs(b)>1e-9) return [-b,a].some(function(x){return Math.abs(x)>1e-9;})?[-b,a]:null;
+    if(Math.abs(c)>1e-9||Math.abs(d)>1e-9) return [-d,c];
+    return [1,0];                           /* A = λI: كل اتجاه ذاتي */
+  }
+
+  /* ١ · ماسح الاتجاهات: متى ينطبق Ax على x */
+  var egF=FIG('egCv'), eT=document.getElementById('eT'), eTv=document.getElementById('eTv');
+  function egDraw(){
+    if(!egF) return;
+    var A=M(), C=egF.col(), th=(+eT.value)*Math.PI/180;
+    var x=[Math.cos(th),Math.sin(th)], Ax=ap(A,x), R=eig(A);
+    eTv.textContent=eT.value+'°';
+    var nx=Math.hypot(x[0],x[1]), na=Math.hypot(Ax[0],Ax[1]);
+    var cosang=na>1e-9?(x[0]*Ax[0]+x[1]*Ax[1])/(nx*na):0;
+    var ang=Math.acos(Math.max(-1,Math.min(1,cosang)))*180/Math.PI;
+    var aligned=Math.min(ang,180-ang)<1.2;
+    egF.fit([x,Ax,[1,1],[-1,-1]],32,110).clear().grid();
+    if(R){ R.forEach(function(L){ var v=evec(A,L);
+      if(v&&Math.hypot(v[0],v[1])>1e-9) egF.ray(v,C.soft,[7,6]); }); }
+    egF.arrow([0,0],x,C.ink,2.6).label(x,'x',C.ink,22);
+    egF.arrow([0,0],Ax,aligned?C.accent:C.terra,2.8).label(Ax,'Ax',aligned?C.accent:C.terra,26);
+    egF.note(12,12,'angle(x, Ax) = '+mn(ang)+' deg',aligned?C.accent:C.soft);
+    egF.note(12,30,aligned?'ALIGNED  ->  x is an eigenvector':'turned  ->  not an eigenvector',aligned?C.accent:C.terra);
+    if(R) egF.note(12,48,'eigenvalues: '+mn(R[0])+' , '+mn(R[1]),C.soft);
+    else  egF.note(12,48,'no real eigenvalue — every direction turns',C.terra);
+    document.getElementById('eRO').innerHTML= R?
+      ("الزاوية بين <span class='coord'>x</span> و<span class='coord'>Ax</span> هي <span class='coord'>"+mn(ang)+"°</span> — "+
+       (aligned?("<b>منطبقان</b>: هذا اتجاه ذاتي، ومعامل التمديد <span class='coord'>"+mn(na/nx*(cosang<0?-1:1))+"</span>")
+               :"ما زال <span class='coord'>Ax</span> يميل عن <span class='coord'>x</span> — أدِر أكثر"))
+      : "لا اتجاه ينجو: المميّز سالب، فالقيم الذاتية مركّبة ولا متجه ذاتي حقيقياً.";
+  }
+  ['ea','eb','ec','ed'].forEach(function(id){document.getElementById(id).addEventListener('input',egDraw);});
+  eT.addEventListener('input',egDraw);
+  document.getElementById('eSnap').onclick=function(){
+    var A=M(), R=eig(A); if(!R){egDraw();return;}
+    var best=null,bd=1e9;
+    R.forEach(function(L){var v=evec(A,L); if(!v||Math.hypot(v[0],v[1])<1e-9) return;
+      var a=Math.atan2(v[1],v[0])*180/Math.PI; if(a<0)a+=180;
+      var d=Math.abs(a-(+eT.value)); if(d<bd){bd=d;best=a;}});
+    if(best!=null){eT.value=Math.round(best); egDraw();}
+  };
+  onTheme(egDraw); egDraw();
+
+  /* ٢ · الفضاء الذاتي خطوة بخطوة */
+  document.getElementById('kGo').onclick=function(){
+    var A=M(), R=eig(A), el=document.getElementById('kRO');
+    if(!R){el.innerHTML="لا قيمة ذاتية حقيقية لهذه المصفوفة — لا فضاء ذاتي في <span class='coord'>ℝ²</span>.";
+      tex(document.getElementById('kStage'),"\\text{no real eigenvalue}"); return;}
+    var L=R[+document.getElementById('kSel').value], v=evec(A,L);
+    var B=[A[0]-L,A[1],A[2],A[3]-L], chk=v?ap(A,v):null;
+    tex(document.getElementById('kStage'),
+      "A-\\lambda I=\\begin{bmatrix}"+mn(B[0]).replace(/\u2212/g,'-')+" & "+mn(B[1]).replace(/\u2212/g,'-')+
+      "\\\\ "+mn(B[2]).replace(/\u2212/g,'-')+" & "+mn(B[3]).replace(/\u2212/g,'-')+"\\end{bmatrix}");
+    el.innerHTML="<span class='coord'>λ = "+mn(L)+"</span> · محدد <span class='coord'>A − λI</span> يساوي <span class='coord'>"+
+      mn(B[0]*B[3]-B[1]*B[2])+"</span> فهي شاذة — ولهذا نواتها غير صفرية.<br>"+
+      (v?("<span class='coord'>E = span{("+mn(v[0])+", "+mn(v[1])+")}</span> · تحقق: <span class='coord'>A·v = ("+
+          mn(chk[0])+", "+mn(chk[1])+") = "+mn(L)+"·v</span>"):"النواة كل الفضاء — المصفوفة مضاعف لمصفوفة الوحدة.");
+  };
+  document.getElementById('kGo').click();
+
+  /* ٣ · معرض التحويلات الخمسة */
+  var GAL={stretch:{m:[0.5,0,0,2], ar:"تمديد محوري: كل محور يُمدَّد بمعامله، والاتجاهان الذاتيان هما المحوران نفساهما"},
+           shear:{m:[1,0.5,0,1], ar:"قصّ: قيمة ذاتية مكررة واحدة، واتجاه ذاتي واحد فقط — الأفقي"},
+           rot:{m:[0.866,-0.5,0.5,0.866], ar:"دوران: لا اتجاه يصمد، فلا قيمة ذاتية حقيقية — والمساحة محفوظة"},
+           collapse:{m:[1,-1,-1,1], ar:"انهيار: قيمة ذاتية صفرية تعني اتجاهاً يُسحق إلى الصفر، والمساحة تختفي"},
+           mix:{m:[1,0.5,0.5,1], ar:"قصّ وتمديد: قيمتان موجبتان مختلفتان، والمساحة تتغير بحاصل ضربهما"}};
+  var glF=FIG('glCv');
+  function glDraw(){
+    if(!glF) return;
+    var g=GAL[document.getElementById('gSel').value], A=g.m, C=glF.col();
+    var e1=[A[0],A[2]], e2=[A[1],A[3]], e12=[A[0]+A[1],A[2]+A[3]], R=eig(A);
+    var det=A[0]*A[3]-A[1]*A[2];
+    glF.fit([e1,e2,e12,[1,1],[-1,-1]],32,105).clear().grid();
+    glF.poly([[0,0],[1,0],[1,1],[0,1]],C.soft,null,1.6,[5,5]);
+    glF.poly([[0,0],e1,e12,e2],C.accent,C.accent+'1e',2.4);
+    if(R){ R.forEach(function(L){ var v=evec(A,L);
+      if(v&&Math.hypot(v[0],v[1])>1e-9) glF.ray(v,C.vio,[7,6]); }); }
+    glF.arrow([0,0],e1,C.accent).label(e1,'A e1',C.accent,30);
+    glF.arrow([0,0],e2,C.terra).label(e2,'A e2',C.terra,30);
+    glF.note(12,12,'det = '+mn(det)+'   (area factor)',C.ink);
+    glF.note(12,30,R?('eigenvalues: '+mn(R[0])+' , '+mn(R[1])):'eigenvalues: complex',R?C.soft:C.terra);
+    document.getElementById('gRO').innerHTML=g.ar+
+      " · <span class='coord'>det = "+mn(det)+"</span>"+
+      (R?(" · <span class='coord'>λ = "+mn(R[0])+", "+mn(R[1])+"</span> وحاصل ضربهما <span class='coord'>"+mn(R[0]*R[1])+"</span> هو المحدد نفسه"):"");
+  }
+  document.getElementById('gSel').addEventListener('change',glDraw);
+  onTheme(glDraw); glDraw();
+
+  var ANS={q1:{"0":["صحيح — انهيار A − λI هو التعريف العملي.",true],"1":["المحدد ليس القيمة الذاتية.",false],"2":["الأثر مجموع القيم لا واحدة منها.",false],"3":["بالعكس: يجب أن تكون شاذة.",false]},
+    q2:{"0":["صحيح — A(3x) = 3Ax = 3λx = λ(3x).",true],"1":["القيمة لا تتغير بتغيير طول المتجه.",false],"2":["كل مضاعف غير صفري ذاتيٌّ أيضاً.",false],"3":["التوحيد اختيار لا شرط.",false]},
+    q3:{"0":["صحيح — det(A − 0·I) = det(A) = 0.",true],"1":["مصفوفة الوحدة قيمتها الذاتية 1.",false],"2":["المتعامدة محددها ‎±1‎ فلا صفر فيها.",false],"3":["بل ممكنة، وهي علامة الشذوذ.",false]},
+    q4:{"0":["صحيح — الفضاء الذاتي نواة A − λI.",true],"1":["الصورة شيء آخر تماماً.",false],"2":["هذه نواة A نفسها، وتخص λ = 0 وحدها.",false],"3":["فضاء الأعمدة هو الصورة.",false]},
+    q5:{"0":["صحيح — قيم ذاتية مختلفة تعطي متجهات مستقلة.",true],"1":["التعامد يحتاج تماثل المصفوفة.",false],"2":["المتوازيان مرتبطان، وهذا ينفي الاستقلال.",false],"3":["الطول حر تماماً.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>
