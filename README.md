@@ -105,6 +105,30 @@ video/                  مولّد الفيديو (vidcore.py) ومخرجاته 
 
 ---
 
+## أدوات البناء
+
+```bash
+python3 scripts/gen_data.py     # يعيد توليد فهرس البحث وملفات التمارين
+```
+
+- **`scripts/build_lesson.py`** — قالب صفحة الدرس: الهيكل الذي تشترك فيه كل
+  الدروس (الوسوم، والمسار، والأدوات، والمراجع، وسكربت الاختبار). يُستورد من
+  ملف مواصفة يصف الدروس ثم يكتبها:
+
+  ```python
+  from build_lesson import write_all
+  write_all([L26, L27])
+  ```
+
+  والمواصفة قاموس فيه `id` و`slug` و`ar` و`body` و`script` وأخواتها، و`canvas=True`
+  إن كان في الدرس لوحة رسم — فيُحمَّل `assets/figure.js` قبل سكربت الدرس وتُربط أسماؤه.
+
+- **`scripts/gen_data.py`** — `assets/search-data.js` و`assets/exercises.js`
+  مولَّدان بالكامل من ملفات الدروس والتمارين، فلا يُحرَّران يدوياً. يُشغَّل بعد
+  كل إضافة أو تعديل لدرس.
+
+---
+
 ## بوابة الجودة
 
 ```bash
@@ -193,8 +217,8 @@ python3 -m http.server 8000
   `practice/solutions/`، ثم قيده في `assets/graph-data.js` (`SLUG` و`LESSON_TITLES`
   و`NODES` و`EDGES`)، وفي `index.html` (البطاقة والصف و`IDS` ومفاتيح `I18N`)،
   وفي `review.html` و`summary.html` و`playground.html` و`sitemap.xml` و`sw.js`.
-  أما `assets/search-data.js` و`assets/exercises.js` فمولّدان من ملفات الدروس
-  والتمارين نفسها.
+  أما `assets/search-data.js` و`assets/exercises.js` فيُعاد توليدهما بـ
+  `python3 scripts/gen_data.py`.
 
 ## النشر
 
