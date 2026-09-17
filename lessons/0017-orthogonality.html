@@ -67,6 +67,9 @@
   th{background:#00000008}
   .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
   a{color:var(--accent)}
+  canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:12px;direction:ltr}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
 <link rel="stylesheet" href="../assets/ui.css">
@@ -118,6 +121,9 @@
       <p class="hint">متجهان في <span class="coord">ℝ³</span> — اللوحة تحسب الزاوية بالدرجات وتحكم على التعامد</p>
       <div class="controls"><label>x <input type="number" id="ax1" value="1"><input type="number" id="ax2" value="0"><input type="number" id="ax3" value="1"></label></div>
       <div class="controls"><label>y <input type="number" id="ay1" value="0"><input type="number" id="ay2" value="1"><input type="number" id="ay3" value="0"></label><button class="btn" id="aGo">احسب الزاوية</button></div>
+      <canvas id="agCv" width="640" height="340" role="img"
+              aria-label="المتجهان مرسومان داخل المستوى المشترك بينهما، والقوس يبيّن الزاوية الحقيقية"></canvas>
+      <p class="figcap">مرسومان داخل المستوى الذي يحدّدانه — فالزاوية المعروضة هي زاويتهما الحقيقية في <span class="coord">ℝ³</span> لا إسقاطاً لها</p>
       <div class="readout" id="aRO" style="direction:rtl;text-align:right">الزاوية…</div>
     </div>
   </section>
@@ -203,11 +209,131 @@
 (function(){
   "use strict";
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  /* ---- لوحة رسم صغيرة: إحداثيات رياضية، وألوان تتبع سمة الصفحة ---- */
+  function FIG(id){
+    var cv=document.getElementById(id); if(!cv) return null;
+    var ctx=cv.getContext('2d'), f={cv:cv,ctx:ctx,W:cv.width,H:cv.height,sc:34,ox:cv.width/2,oy:cv.height/2};
+    function v(n,fb){var c=getComputedStyle(document.documentElement).getPropertyValue(n).trim();return c||fb;}
+    f.col=function(){return {paper:v('--paper','#f6f1e7'),ink:v('--ink','#1c1a15'),soft:v('--soft','#6f6757'),
+      line:v('--line','#ded4c2'),accent:v('--accent','#0d5c46'),terra:v('--terra','#c2562f'),vio:v('--vio','#5b3f8f')};};
+    f.view=function(sc,ox,oy){f.sc=sc;if(ox!=null)f.ox=ox;if(oy!=null)f.oy=oy;return f;};
+    /* يضبط المقياس والأصل ليملأ المحتوى اللوحة — والأصل يبقى مرئياً دائماً */
+    f.fit=function(pts,pad,maxSc){
+      pad=pad==null?34:pad;
+      var xs=[0],ys=[0];
+      pts.forEach(function(p){ if(p&&isFinite(p[0])&&isFinite(p[1])){xs.push(p[0]);ys.push(p[1]);} });
+      var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs),
+          y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
+      var w=Math.max(x1-x0,.8), h=Math.max(y1-y0,.8);
+      f.sc=Math.min(maxSc||260,(f.W-2*pad)/w,(f.H-2*pad)/h);
+      f.ox=f.W/2-((x0+x1)/2)*f.sc;
+      f.oy=f.H/2+((y0+y1)/2)*f.sc;
+      return f;};
+    f.X=function(x){return f.ox+x*f.sc;};
+    f.Y=function(y){return f.oy-y*f.sc;};
+    f.clear=function(){var c=f.col();ctx.clearRect(0,0,f.W,f.H);ctx.fillStyle=c.paper;ctx.fillRect(0,0,f.W,f.H);};
+    f.grid=function(){
+      var c=f.col(),i;ctx.save();ctx.strokeStyle=c.line;ctx.lineWidth=1;
+      for(i=Math.ceil(-f.ox/f.sc);f.X(i)<f.W;i++){ctx.beginPath();ctx.moveTo(f.X(i),0);ctx.lineTo(f.X(i),f.H);ctx.stroke();}
+      for(i=Math.ceil((f.oy-f.H)/f.sc);f.Y(i)>0;i++){ctx.beginPath();ctx.moveTo(0,f.Y(i));ctx.lineTo(f.W,f.Y(i));ctx.stroke();}
+      ctx.strokeStyle=c.ink;ctx.lineWidth=1.6;ctx.globalAlpha=.55;
+      ctx.beginPath();ctx.moveTo(0,f.Y(0));ctx.lineTo(f.W,f.Y(0));ctx.stroke();
+      ctx.beginPath();ctx.moveTo(f.X(0),0);ctx.lineTo(f.X(0),f.H);ctx.stroke();ctx.restore();return f;};
+    f.line=function(a,b,col,w,dash){
+      ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w||2;if(dash)ctx.setLineDash(dash);
+      ctx.beginPath();ctx.moveTo(f.X(a[0]),f.Y(a[1]));ctx.lineTo(f.X(b[0]),f.Y(b[1]));ctx.stroke();ctx.restore();return f;};
+    f.ray=function(d,col,dash){ /* خط لانهائي باتجاه d يمر بالأصل */
+      var n=Math.hypot(d[0],d[1]); if(n<1e-9) return f;
+      var k=(f.W+f.H)/f.sc;
+      return f.line([-d[0]/n*k,-d[1]/n*k],[d[0]/n*k,d[1]/n*k],col,1.8,dash||[7,6]);};
+    f.rayAt=function(p,d,col,dash){
+      var n=Math.hypot(d[0],d[1]); if(n<1e-9) return f;
+      var k=(f.W+f.H)/f.sc, u=[d[0]/n*k,d[1]/n*k];
+      return f.line([p[0]-u[0],p[1]-u[1]],[p[0]+u[0],p[1]+u[1]],col,2.2,dash||null);};
+    f.arrow=function(a,b,col,w){
+      var x1=f.X(a[0]),y1=f.Y(a[1]),x2=f.X(b[0]),y2=f.Y(b[1]),an=Math.atan2(y2-y1,x2-x1),h=9;
+      if(Math.hypot(x2-x1,y2-y1)<1.5) return f;
+      ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=w||2.6;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x2,y2);
+      ctx.lineTo(x2-h*Math.cos(an-.42),y2-h*Math.sin(an-.42));
+      ctx.lineTo(x2-h*Math.cos(an+.42),y2-h*Math.sin(an+.42));
+      ctx.closePath();ctx.fill();ctx.restore();return f;};
+    f.dot=function(p,col,r){ctx.save();ctx.fillStyle=col;ctx.beginPath();ctx.arc(f.X(p[0]),f.Y(p[1]),r||4,0,7);ctx.fill();ctx.restore();return f;};
+    f.poly=function(pts,stroke,fill,w,dash){
+      ctx.save();ctx.beginPath();pts.forEach(function(p,i){i?ctx.lineTo(f.X(p[0]),f.Y(p[1])):ctx.moveTo(f.X(p[0]),f.Y(p[1]));});
+      ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}
+      if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=w||2;if(dash)ctx.setLineDash(dash);ctx.stroke();}ctx.restore();return f;};
+    f.circle=function(r,col,w,dash){
+      ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w||2;if(dash)ctx.setLineDash(dash);
+      ctx.beginPath();ctx.arc(f.X(0),f.Y(0),r*f.sc,0,7);ctx.stroke();ctx.restore();return f;};
+    f.arc=function(a0,a1,r,col){
+      ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
+      ctx.arc(f.X(0),f.Y(0),r*f.sc,-a1,-a0);ctx.stroke();ctx.restore();return f;};
+    f.right=function(p,d1,d2,col,s){ /* علامة الزاوية القائمة عند p بين اتجاهين */
+      var n1=Math.hypot(d1[0],d1[1]),n2=Math.hypot(d2[0],d2[1]); if(n1<1e-9||n2<1e-9) return f;
+      s=s||.34;var a=[d1[0]/n1*s,d1[1]/n1*s],b=[d2[0]/n2*s,d2[1]/n2*s];
+      ctx.save();ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.beginPath();
+      ctx.moveTo(f.X(p[0]+a[0]),f.Y(p[1]+a[1]));
+      ctx.lineTo(f.X(p[0]+a[0]+b[0]),f.Y(p[1]+a[1]+b[1]));
+      ctx.lineTo(f.X(p[0]+b[0]),f.Y(p[1]+b[1]));ctx.stroke();ctx.restore();return f;};
+    f.tag=function(p,s,col,dx,dy){
+      ctx.save();ctx.fillStyle=col;ctx.font='600 13px ui-monospace,Menlo,Consolas,monospace';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(s,f.X(p[0])+(dx||0),f.Y(p[1])+(dy||0));ctx.restore();return f;};
+    f.note=function(px,py,s,col){
+      ctx.save();ctx.fillStyle=col;ctx.font='12px ui-monospace,Menlo,Consolas,monospace';
+      ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText(s,px,py);ctx.restore();return f;};
+    return f;
+  }
+  /* أعِد الرسم عند تبديل السمة */
+  function onTheme(fn){
+    new MutationObserver(fn).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  }
+  /* المستوى المشترك لمتجهين: يرسم الزاوية الحقيقية بينهما مهما كان بعدهما */
+  function plane(a,b){
+    var na=Math.hypot.apply(null,a);
+    if(na<1e-9) return null;
+    var e=a.map(function(v){return v/na;});
+    var pb=b.reduce(function(s,v,i){return s+v*e[i];},0);
+    var w=b.map(function(v,i){return v-pb*e[i];});
+    var nw=Math.hypot.apply(null,w);
+    return {A:[na,0], B:[pb,nw], na:na, proj:pb, perp:nw};
+  }
   tex(document.getElementById('k1'),"\\cos\\omega=\\frac{\\langle x,y\\rangle}{\\|x\\|\\,\\|y\\|} \\in [-1,1] \\qquad x\\perp y \\iff \\langle x,y\\rangle=0");
   function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  var fig=FIG('agCv');
+  function drawAngle(){
+    if(!fig)return;
+    var x=[+document.getElementById('ax1').value,+document.getElementById('ax2').value,+document.getElementById('ax3').value];
+    var y=[+document.getElementById('ay1').value,+document.getElementById('ay2').value,+document.getElementById('ay3').value];
+    var col=fig.col(), pl=plane(x,y);
+    fig.clear();
+    if(!pl){fig.grid();fig.note(14,14,'the first vector is zero — no direction, no angle',col.soft);return;}
+    var A=pl.A,B=pl.B;
+    fig.fit([A,B],48,170);
+    fig.grid();
+    var ip=x.reduce(function(s2,v,i){return s2+v*y[i];},0);
+    var perp=Math.abs(ip)<1e-9;
+    var ang=Math.atan2(B[1],B[0]);
+    fig.arc(Math.min(0,ang),Math.max(0,ang),Math.min(Math.hypot(A[0],A[1]),Math.hypot(B[0],B[1]))*0.34,
+            perp?col.accent:col.vio);
+    if(perp){
+      var s2=Math.min(Math.hypot(A[0],A[1]),Math.hypot(B[0],B[1]))*0.22;
+      fig.right([0,0],A,B,col.accent,s2/Math.max(1e-9,1));
+    }
+    fig.arrow([0,0],A,col.accent,3).tag(A,'x',col.accent,18,-12);
+    fig.arrow([0,0],B,col.terra,3).tag(B,'y',col.terra,18,-12);
+    var deg=Math.acos(Math.max(-1,Math.min(1,ip/(Math.hypot.apply(null,x)*Math.hypot.apply(null,y)||1))))*180/Math.PI;
+    fig.note(14,14,'angle = '+(Math.round(deg*10)/10)+' deg'+(perp?'   (orthogonal)':''),col.soft);
+  }
+  onTheme(drawAngle);
+  ['ax1','ax2','ax3','ay1','ay2','ay3'].forEach(function(id){document.getElementById(id).oninput=drawAngle;});
+  drawAngle();
   document.getElementById('aGo').onclick=function(){
     var x=[+document.getElementById('ax1').value,+document.getElementById('ax2').value,+document.getElementById('ax3').value];
     var y=[+document.getElementById('ay1').value,+document.getElementById('ay2').value,+document.getElementById('ay3').value];
+    drawAngle();
     var ip=x[0]*y[0]+x[1]*y[1]+x[2]*y[2];
     var nx=Math.sqrt(x[0]*x[0]+x[1]*x[1]+x[2]*x[2]),ny=Math.sqrt(y[0]*y[0]+y[1]*y[1]+y[2]*y[2]);
     var el=document.getElementById('aRO');

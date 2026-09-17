@@ -67,6 +67,9 @@
   th{background:#00000008}
   .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
   a{color:var(--accent)}
+  canvas{width:100%;max-width:640px;height:auto;display:block;margin:14px auto;background:var(--paper);
+    border:1px solid var(--line);border-radius:12px;direction:ltr}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
 </style>
 <link rel="stylesheet" href="../assets/lesson.css">
 <link rel="stylesheet" href="../assets/ui.css">
@@ -118,6 +121,9 @@
       <p class="hint">أدخل <span class="coord">x</span> و <span class="coord">b</span> في <span class="coord">ℝ³</span> — اللوحة تحسب المعامل والظل والبقية</p>
       <div class="controls"><label>x <input type="number" id="x1" value="1"><input type="number" id="x2" value="1"><input type="number" id="x3" value="1"></label></div>
       <div class="controls"><label>b <input type="number" id="b1" value="1"><input type="number" id="b2" value="2"><input type="number" id="b3" value="2"></label><button class="btn" id="pGo">أسقِط</button></div>
+      <canvas id="pjCv" width="640" height="340" role="img"
+              aria-label="المتجه وظلّه على الخط، والفرق بينهما عمودي على الخط"></canvas>
+      <p class="figcap">الظل هو أقرب نقطة على الخط، والفرق عمودي عليه — مرسوماً داخل المستوى الذي يحدّده <span class="coord">x</span> و <span class="coord">b</span></p>
       <div class="readout" id="pRO" style="direction:rtl;text-align:right">الظل…</div>
     </div>
   </section>
@@ -142,6 +148,9 @@
       <h3>آلة الدوران</h3>
       <p class="hint">أدخل متجهاً وزاوية بالدرجات — اللوحة تدوّره وتتحقق من حفظ الطول</p>
       <div class="controls"><label>x <input type="number" id="r1" value="1"><input type="number" id="r2" value="0"></label><label>θ° <input type="number" id="rt" value="45" step="15"></label><button class="btn" id="rGo">أدِر</button></div>
+      <canvas id="rtCv" width="640" height="340" role="img"
+              aria-label="المتجه قبل الدوران وبعده على دائرة نصف قطرها طوله، والقوس يبيّن الزاوية"></canvas>
+      <p class="figcap">الطرفان على الدائرة نفسها: الدوران يغيّر الاتجاه ولا يمسّ الطول</p>
       <div class="kmath" id="rStage" style="min-height:56px"></div>
       <div class="readout" id="rRO" style="direction:rtl;text-align:right">بعد الدوران…</div>
     </div>
@@ -205,13 +214,127 @@
 (function(){
   "use strict";
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  /* ---- لوحة رسم صغيرة: إحداثيات رياضية، وألوان تتبع سمة الصفحة ---- */
+  function FIG(id){
+    var cv=document.getElementById(id); if(!cv) return null;
+    var ctx=cv.getContext('2d'), f={cv:cv,ctx:ctx,W:cv.width,H:cv.height,sc:34,ox:cv.width/2,oy:cv.height/2};
+    function v(n,fb){var c=getComputedStyle(document.documentElement).getPropertyValue(n).trim();return c||fb;}
+    f.col=function(){return {paper:v('--paper','#f6f1e7'),ink:v('--ink','#1c1a15'),soft:v('--soft','#6f6757'),
+      line:v('--line','#ded4c2'),accent:v('--accent','#0d5c46'),terra:v('--terra','#c2562f'),vio:v('--vio','#5b3f8f')};};
+    f.view=function(sc,ox,oy){f.sc=sc;if(ox!=null)f.ox=ox;if(oy!=null)f.oy=oy;return f;};
+    /* يضبط المقياس والأصل ليملأ المحتوى اللوحة — والأصل يبقى مرئياً دائماً */
+    f.fit=function(pts,pad,maxSc){
+      pad=pad==null?34:pad;
+      var xs=[0],ys=[0];
+      pts.forEach(function(p){ if(p&&isFinite(p[0])&&isFinite(p[1])){xs.push(p[0]);ys.push(p[1]);} });
+      var x0=Math.min.apply(null,xs),x1=Math.max.apply(null,xs),
+          y0=Math.min.apply(null,ys),y1=Math.max.apply(null,ys);
+      var w=Math.max(x1-x0,.8), h=Math.max(y1-y0,.8);
+      f.sc=Math.min(maxSc||260,(f.W-2*pad)/w,(f.H-2*pad)/h);
+      f.ox=f.W/2-((x0+x1)/2)*f.sc;
+      f.oy=f.H/2+((y0+y1)/2)*f.sc;
+      return f;};
+    f.X=function(x){return f.ox+x*f.sc;};
+    f.Y=function(y){return f.oy-y*f.sc;};
+    f.clear=function(){var c=f.col();ctx.clearRect(0,0,f.W,f.H);ctx.fillStyle=c.paper;ctx.fillRect(0,0,f.W,f.H);};
+    f.grid=function(){
+      var c=f.col(),i;ctx.save();ctx.strokeStyle=c.line;ctx.lineWidth=1;
+      for(i=Math.ceil(-f.ox/f.sc);f.X(i)<f.W;i++){ctx.beginPath();ctx.moveTo(f.X(i),0);ctx.lineTo(f.X(i),f.H);ctx.stroke();}
+      for(i=Math.ceil((f.oy-f.H)/f.sc);f.Y(i)>0;i++){ctx.beginPath();ctx.moveTo(0,f.Y(i));ctx.lineTo(f.W,f.Y(i));ctx.stroke();}
+      ctx.strokeStyle=c.ink;ctx.lineWidth=1.6;ctx.globalAlpha=.55;
+      ctx.beginPath();ctx.moveTo(0,f.Y(0));ctx.lineTo(f.W,f.Y(0));ctx.stroke();
+      ctx.beginPath();ctx.moveTo(f.X(0),0);ctx.lineTo(f.X(0),f.H);ctx.stroke();ctx.restore();return f;};
+    f.line=function(a,b,col,w,dash){
+      ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w||2;if(dash)ctx.setLineDash(dash);
+      ctx.beginPath();ctx.moveTo(f.X(a[0]),f.Y(a[1]));ctx.lineTo(f.X(b[0]),f.Y(b[1]));ctx.stroke();ctx.restore();return f;};
+    f.ray=function(d,col,dash){ /* خط لانهائي باتجاه d يمر بالأصل */
+      var n=Math.hypot(d[0],d[1]); if(n<1e-9) return f;
+      var k=(f.W+f.H)/f.sc;
+      return f.line([-d[0]/n*k,-d[1]/n*k],[d[0]/n*k,d[1]/n*k],col,1.8,dash||[7,6]);};
+    f.rayAt=function(p,d,col,dash){
+      var n=Math.hypot(d[0],d[1]); if(n<1e-9) return f;
+      var k=(f.W+f.H)/f.sc, u=[d[0]/n*k,d[1]/n*k];
+      return f.line([p[0]-u[0],p[1]-u[1]],[p[0]+u[0],p[1]+u[1]],col,2.2,dash||null);};
+    f.arrow=function(a,b,col,w){
+      var x1=f.X(a[0]),y1=f.Y(a[1]),x2=f.X(b[0]),y2=f.Y(b[1]),an=Math.atan2(y2-y1,x2-x1),h=9;
+      if(Math.hypot(x2-x1,y2-y1)<1.5) return f;
+      ctx.save();ctx.strokeStyle=col;ctx.fillStyle=col;ctx.lineWidth=w||2.6;ctx.lineCap='round';
+      ctx.beginPath();ctx.moveTo(x1,y1);ctx.lineTo(x2,y2);ctx.stroke();
+      ctx.beginPath();ctx.moveTo(x2,y2);
+      ctx.lineTo(x2-h*Math.cos(an-.42),y2-h*Math.sin(an-.42));
+      ctx.lineTo(x2-h*Math.cos(an+.42),y2-h*Math.sin(an+.42));
+      ctx.closePath();ctx.fill();ctx.restore();return f;};
+    f.dot=function(p,col,r){ctx.save();ctx.fillStyle=col;ctx.beginPath();ctx.arc(f.X(p[0]),f.Y(p[1]),r||4,0,7);ctx.fill();ctx.restore();return f;};
+    f.poly=function(pts,stroke,fill,w,dash){
+      ctx.save();ctx.beginPath();pts.forEach(function(p,i){i?ctx.lineTo(f.X(p[0]),f.Y(p[1])):ctx.moveTo(f.X(p[0]),f.Y(p[1]));});
+      ctx.closePath();if(fill){ctx.fillStyle=fill;ctx.fill();}
+      if(stroke){ctx.strokeStyle=stroke;ctx.lineWidth=w||2;if(dash)ctx.setLineDash(dash);ctx.stroke();}ctx.restore();return f;};
+    f.circle=function(r,col,w,dash){
+      ctx.save();ctx.strokeStyle=col;ctx.lineWidth=w||2;if(dash)ctx.setLineDash(dash);
+      ctx.beginPath();ctx.arc(f.X(0),f.Y(0),r*f.sc,0,7);ctx.stroke();ctx.restore();return f;};
+    f.arc=function(a0,a1,r,col){
+      ctx.save();ctx.strokeStyle=col;ctx.lineWidth=2;ctx.beginPath();
+      ctx.arc(f.X(0),f.Y(0),r*f.sc,-a1,-a0);ctx.stroke();ctx.restore();return f;};
+    f.right=function(p,d1,d2,col,s){ /* علامة الزاوية القائمة عند p بين اتجاهين */
+      var n1=Math.hypot(d1[0],d1[1]),n2=Math.hypot(d2[0],d2[1]); if(n1<1e-9||n2<1e-9) return f;
+      s=s||.34;var a=[d1[0]/n1*s,d1[1]/n1*s],b=[d2[0]/n2*s,d2[1]/n2*s];
+      ctx.save();ctx.strokeStyle=col;ctx.lineWidth=1.8;ctx.beginPath();
+      ctx.moveTo(f.X(p[0]+a[0]),f.Y(p[1]+a[1]));
+      ctx.lineTo(f.X(p[0]+a[0]+b[0]),f.Y(p[1]+a[1]+b[1]));
+      ctx.lineTo(f.X(p[0]+b[0]),f.Y(p[1]+b[1]));ctx.stroke();ctx.restore();return f;};
+    f.tag=function(p,s,col,dx,dy){
+      ctx.save();ctx.fillStyle=col;ctx.font='600 13px ui-monospace,Menlo,Consolas,monospace';
+      ctx.textAlign='center';ctx.textBaseline='middle';
+      ctx.fillText(s,f.X(p[0])+(dx||0),f.Y(p[1])+(dy||0));ctx.restore();return f;};
+    f.note=function(px,py,s,col){
+      ctx.save();ctx.fillStyle=col;ctx.font='12px ui-monospace,Menlo,Consolas,monospace';
+      ctx.textAlign='left';ctx.textBaseline='top';ctx.fillText(s,px,py);ctx.restore();return f;};
+    return f;
+  }
+  /* أعِد الرسم عند تبديل السمة */
+  function onTheme(fn){
+    new MutationObserver(fn).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+  }
+  /* المستوى المشترك لمتجهين: يرسم الزاوية الحقيقية بينهما مهما كان بعدهما */
+  function plane(a,b){
+    var na=Math.hypot.apply(null,a);
+    if(na<1e-9) return null;
+    var e=a.map(function(v){return v/na;});
+    var pb=b.reduce(function(s,v,i){return s+v*e[i];},0);
+    var w=b.map(function(v,i){return v-pb*e[i];});
+    var nw=Math.hypot.apply(null,w);
+    return {A:[na,0], B:[pb,nw], na:na, proj:pb, perp:nw};
+  }
   tex(document.getElementById('k1'),"\\lambda=\\frac{b^\\top x}{\\|b\\|^2},\\quad \\pi_U(x)=\\lambda b=\\frac{bb^\\top}{\\|b\\|^2}x,\\qquad P_\\pi=B(B^\\top B)^{-1}B^\\top");
   function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
   function vec(v){return "("+mn(v[0])+", "+mn(v[1])+", "+mn(v[2])+")";}
   function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+  var figP=FIG('pjCv');
+  function drawProj(){
+    if(!figP)return;
+    var x=[+document.getElementById('x1').value,+document.getElementById('x2').value,+document.getElementById('x3').value];
+    var b=[+document.getElementById('b1').value,+document.getElementById('b2').value,+document.getElementById('b3').value];
+    var col=figP.col(), pl=plane(b,x);
+    figP.clear();
+    if(!pl){figP.grid();figP.note(14,14,'b is zero — no line to project onto',col.soft);return;}
+    var B=[pl.na,0], X=[pl.proj,pl.perp], PI=[pl.proj,0];
+    figP.fit([B,X,PI],48,170);
+    figP.grid();
+    figP.ray(B,col.line,[6,5]);
+    figP.arrow([0,0],B,col.soft,2.4).tag(B,'b',col.soft,20,18);
+    figP.arrow([0,0],X,col.ink,3).tag(X,'x',col.ink,18,-12);
+    figP.line(PI,X,col.terra,1.8,[5,4]);
+    figP.arrow([0,0],PI,col.accent,3.4).tag([PI[0]/2,0],'pi(x)',col.accent,0,-14);
+    if(pl.perp>1e-9) figP.right(PI,[1,0],[0,pl.perp>0?1:-1],col.terra,.24);
+    figP.note(14,14,'distance to the line = '+(Math.round(Math.abs(pl.perp)*1000)/1000),col.soft);
+  }
+  onTheme(drawProj);
+  ['x1','x2','x3','b1','b2','b3'].forEach(function(id){document.getElementById(id).oninput=drawProj;});
+  drawProj();
   document.getElementById('pGo').onclick=function(){
     var x=[+document.getElementById('x1').value,+document.getElementById('x2').value,+document.getElementById('x3').value];
     var b=[+document.getElementById('b1').value,+document.getElementById('b2').value,+document.getElementById('b3').value];
+    drawProj();
     var bb=dot(b,b),el=document.getElementById('pRO');
     if(bb<1e-12){el.innerHTML="المتجه <span class='coord'>b</span> صفري — لا يولّد خطاً، فلا إسقاط";return;}
     var lam=dot(b,x)/bb;
@@ -233,9 +356,33 @@
       "الإسقاط <span class='coord'>π_U(x) = "+vec(pr)+"</span> · البقية <span class='coord'>"+vec(rest)+"</span><br>"+
       "تحقق: <span class='coord'>⟨بقية, b₁⟩ = "+mn(dot(rest,b1))+"</span> و <span class='coord'>⟨بقية, b₂⟩ = "+mn(dot(rest,b2))+"</span> ✓ — البقية تتعامد مع المستوى كله";
   };
+  var figR=FIG('rtCv');
+  function drawRot(){
+    if(!figR)return;
+    var x=[+document.getElementById('r1').value,+document.getElementById('r2').value];
+    var deg=+document.getElementById('rt').value,th=deg*Math.PI/180;
+    var col=figR.col(),c=Math.cos(th),s=Math.sin(th);
+    var y=[c*x[0]-s*x[1],s*x[0]+c*x[1]],n=Math.hypot(x[0],x[1]);
+    figR.fit([[n,n],[-n,-n]],36,150);
+    figR.clear();figR.grid();
+    if(n>1e-9){
+      figR.circle(n,col.line,2,[6,5]);
+      var a0=Math.atan2(x[1],x[0]),a1=Math.atan2(y[1],y[0]);
+      figR.arc(Math.min(a0,a1),Math.max(a0,a1),n*0.32,col.vio);
+      figR.arrow([0,0],x,col.soft,2.6).tag(x,'x',col.soft,18,-12);
+      figR.arrow([0,0],y,col.accent,3.2).tag(y,'R(t)x',col.accent,20,-12);
+      figR.note(14,14,'|x| = '+(Math.round(n*1000)/1000)+'   |R(t)x| = '+(Math.round(Math.hypot(y[0],y[1])*1000)/1000)+'   -> length preserved',col.soft);
+    } else {
+      figR.note(14,14,'the zero vector has no direction to rotate',col.soft);
+    }
+  }
+  onTheme(drawRot);
+  ['r1','r2','rt'].forEach(function(id){document.getElementById(id).oninput=drawRot;});
+  drawRot();
   document.getElementById('rGo').onclick=function(){
     var x=[+document.getElementById('r1').value,+document.getElementById('r2').value];
     var deg=+document.getElementById('rt').value,th=deg*Math.PI/180;
+    drawRot();
     var c=Math.cos(th),s=Math.sin(th);
     var y=[c*x[0]-s*x[1],s*x[0]+c*x[1]];
     tex(document.getElementById('rStage'),"R(\\theta)=\\begin{bmatrix}\\cos\\theta & -\\sin\\theta\\\\ \\sin\\theta & \\cos\\theta\\end{bmatrix}=\\begin{bmatrix}"+mn(c).replace(/\u2212/g,'-')+" & "+mn(-s).replace(/\u2212/g,'-')+"\\\\ "+mn(s).replace(/\u2212/g,'-')+" & "+mn(c).replace(/\u2212/g,'-')+"\\end{bmatrix}");
