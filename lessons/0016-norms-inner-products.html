@@ -1,0 +1,265 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0016 · المعايير والضرب الداخلي المجرد — Norms & Inner Products</title>
+<meta name="description" content="المعيار يعطي الطول، والضرب الداخلي يعطي الهندسة كلها، وكوشي–شفارتز يربط بينهما.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0016-norms-inner-products.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0016 · المعايير والضرب الداخلي المجرد — مختبر الجبر الخطي">
+<meta property="og:description" content="المعيار يعطي الطول، والضرب الداخلي يعطي الهندسة كلها، وكوشي–شفارتز يربط بينهما.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0016 · المعايير والضرب الداخلي المجرد",
+ "alternateName": "Norms & Inner Products",
+ "description": "المعيار يعطي الطول، والضرب الداخلي يعطي الهندسة كلها، وكوشي–شفارتز يربط بينهما.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0016-norms-inner-products.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 16
+}
+</script>
+</head>
+<body data-lesson-id="0016">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0015-affine-spaces.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0016">الخارطة</a> · <a href="0017-orthogonality.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0016 · الهندسة التحليلية</div>
+    <h1>المعايير والضرب الداخلي المجرد</h1>
+    <span class="en-line" lang="en">Norms & Inner Products — three axioms give length, four give geometry, and Cauchy–Schwarz ties them together</span>
+    <div class="rule"></div>
+    <p class="meta">~40 دقيقة · المتطلب: الدرس 0005 (فضاء المتجهات الإقليدي)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> المعيار: ثلاثة شروط تصنع الطول<span class="en-sub" lang="en">ℓ1, ℓ2, ℓ∞ — three ways to measure how big a vector is</span></h2>
+    <p>ال<span class="term">معيار</span> <span class="en" lang="en" dir="ltr">(norm)</span> دالة <span class="coord">‖·‖ : V → ℝ</span> تحقق ثلاثة شروط: <b>التجانس المطلق</b> <span class="coord">‖λx‖ = |λ|·‖x‖</span>، و<b>متباينة المثلث</b> <span class="coord">‖x + y‖ ≤ ‖x‖ + ‖y‖</span>، و<b>التعريف الموجب</b> <span class="coord">‖x‖ ≥ 0</span> مع <span class="coord">‖x‖ = 0 ⟺ x = 0</span>. وأشهر ثلاثة: <span class="coord">ℓ₁</span> (مجموع القيم المطلقة)، و <span class="coord">ℓ₂</span> (الإقليدي)، و <span class="coord">ℓ∞</span> (أكبر مركّبة).</p>
+    <div class="analogy"><b>تشبيه: ثلاث طرق لقياس المسافة في المدينة</b><p><span class="coord">ℓ₂</span> مسافة الطائر في خط مستقيم، و <span class="coord">ℓ₁</span> مسافة سيارة الأجرة عبر الشوارع المتعامدة (ولهذا تُسمى «معيار مانهاتن»)، و <span class="coord">ℓ∞</span> أطول ضلع في الرحلة. ثلاث مساطر صادقة لمسافة واحدة. <span class="en" lang="en" dir="ltr">(Bird, taxi, longest leg.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> شكل «كرة الوحدة» يفضح طبيعة المعيار: مربّع مائل (معيّن) لـ <span class="coord">ℓ₁</span>، ودائرة لـ <span class="coord">ℓ₂</span>، ومربّع قائم لـ <span class="coord">ℓ∞</span>. وزوايا معيّن <span class="coord">ℓ₁</span> تقع على المحاور — ولهذا يولّد <span class="term">التخلخل</span> <span class="en" lang="en" dir="ltr">(sparsity)</span> في <span class="coord">Lasso</span>.</p></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Measure · NORMS">
+      <h3>المساطر الثلاث</h3>
+      <p class="hint">أدخل متجهاً — اللوحة تقيسه بالمعايير الثلاثة وترتّبها</p>
+      <div class="controls"><label>x₁ <input type="number" id="v1" value="3"></label><label>x₂ <input type="number" id="v2" value="-4"></label><label>x₃ <input type="number" id="v3" value="0"></label><button class="btn" id="vGo">قِس</button></div>
+      <div class="readout" id="vRO" style="direction:rtl;text-align:right">ثلاث مساطر…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> الضرب الداخلي المجرد والمصفوفة المعرفة الموجبة<span class="en-sub" lang="en">⟨x,y⟩ = xᵀAy is an inner product iff A is symmetric positive definite</span></h2>
+    <p>ال<span class="term">ضرب الداخلي</span> <span class="en" lang="en" dir="ltr">(inner product)</span> تعميم للضرب النقطي: دالة <span class="coord">⟨·,·⟩</span> خطية في الوسيط الأول، ومتماثلة <span class="coord">⟨x,y⟩ = ⟨y,x⟩</span>، ومعرّفة موجبة <span class="coord">⟨x,x⟩ &gt; 0</span> لكل <span class="coord">x ≠ 0</span>. وفي <span class="coord">ℝⁿ</span> كل ضرب داخلي يُكتب <span class="coord">⟨x,y⟩ = xᵀAy</span> حيث <span class="coord">A</span> <span class="term">متماثلة معرّفة موجبة</span> <span class="en" lang="en" dir="ltr">(symmetric positive definite)</span>.</p>
+    <div class="demo" data-label="Check · SPD">
+      <h3>فاحص المصفوفة المعرّفة الموجبة</h3>
+      <p class="hint">مصفوفة <span class="coord">2×2</span> متماثلة — الشرط: <span class="coord">a₁₁ &gt; 0</span> و <span class="coord">det &gt; 0</span></p>
+      <div class="controls"><label>a <input type="number" id="pa" value="9"></label><label>b <input type="number" id="pb" value="6"></label><label>d <input type="number" id="pd" value="5"></label><button class="btn" id="pGo">افحص</button></div>
+      <div class="controls"><label>x <input type="number" id="px1" value="1"><input type="number" id="px2" value="1"></label><label>y <input type="number" id="py1" value="-1"><input type="number" id="py2" value="1"></label><button class="btn ghost" id="pIn">احسب ⟨x,y⟩</button></div>
+      <div class="readout" id="pRO" style="direction:rtl;text-align:right">الفحص…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الضرب النقطي المعتاد حالة خاصة فقط: <span class="coord">A = I</span>. فإن غيّرت <span class="coord">A</span> تغيّرت الأطوال والزوايا وحتى التعامد — متجهان متعامدان بضرب داخلي قد لا يكونان متعامدين بآخر. <span class="en" lang="en" dir="ltr">(Orthogonality depends on the inner product.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> المعيار المستحث ومتباينة كوشي–شفارتز<span class="en-sub" lang="en">‖x‖ = √⟨x,x⟩ and |⟨x,y⟩| ≤ ‖x‖‖y‖ — why angles are well defined</span></h2>
+    <p>كل ضرب داخلي يولّد معياره بنفسه: <span class="coord">‖x‖ = √⟨x,x⟩</span> — ويسمى <span class="term">المعيار المستحث</span> <span class="en" lang="en" dir="ltr">(induced norm)</span>. والعكس ليس صحيحاً: <span class="coord">ℓ₁</span> و <span class="coord">ℓ∞</span> معياران لا يستحثهما ضرب داخلي. ثم تأتي <span class="term">متباينة كوشي–شفارتز</span>: <span class="coord">|⟨x,y⟩| ≤ ‖x‖·‖y‖</span>، وهي التي تضمن أن النسبة <span class="coord">⟨x,y⟩ / (‖x‖‖y‖)</span> تقع في <span class="coord">[−1, 1]</span> — فيصبح للزاوية معنى.</p>
+    <div class="demo" data-label="Verify · CAUCHY-SCHWARZ">
+      <h3>ميزان كوشي–شفارتز</h3>
+      <p class="hint">أدخل متجهين في <span class="coord">ℝ³</span> — اللوحة تزن الطرفين وتحسب المسافة</p>
+      <div class="controls"><label>x <input type="number" id="cx1" value="1"><input type="number" id="cx2" value="2"><input type="number" id="cx3" value="2"></label></div>
+      <div class="controls"><label>y <input type="number" id="cy1" value="2"><input type="number" id="cy2" value="1"><input type="number" id="cy3" value="0"></label><button class="btn" id="cGo">زِن</button></div>
+      <div class="readout" id="cRO" style="direction:rtl;text-align:right">الطرفان…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>ال<span class="term">مسافة</span> تُبنى من المعيار: <span class="coord">d(x,y) = ‖x − y‖</span>. وأي دالة تحقق التعريف الموجب والتماثل ومتباينة المثلث تُسمى <span class="term">مترية</span> <span class="en" lang="en" dir="ltr">(metric)</span> — والمعيار طريق إليها لا شرط لها.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>المعيار</td><td>الطول الإقليدي</td><td>أي دالة تحقق الشروط الثلاثة — والأطوال أنواع</td></tr>
+    <tr><td>الضرب الداخلي</td><td>الضرب النقطي</td><td>عائلة كاملة: <span class="coord">xᵀAy</span> لكل <span class="coord">A</span> معرّفة موجبة</td></tr>
+    <tr><td>كوشي–شفارتز</td><td>متباينة للحفظ</td><td>هي التي تجعل تعريف الزاوية ممكناً أصلاً</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> الطول والزاوية أمر بديهي في المستوى. <b>بعد هذا الدرس:</b> تعرف من أين جاءا: بديهيات قليلة تصنع هندسة كاملة في أي فضاء — حتى فضاء الدوال.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">للمتجه <span class="coord">x = (3, −4)</span> — ما <span class="coord">‖x‖₁</span> و <span class="coord">‖x‖∞</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">7</span> و <span class="coord">4</span></button><button class="opt" data-q="q1" data-a="1"><span class="coord">5</span> و <span class="coord">5</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">−1</span> و <span class="coord">3</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">12</span> و <span class="coord">3</span></button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">متى تكون <span class="coord">⟨x,y⟩ = xᵀAy</span> ضرباً داخلياً صحيحاً؟</div>
+      <button class="opt" data-q="q2" data-a="0">عندما تكون <span class="coord">A</span> متماثلة معرّفة موجبة</button><button class="opt" data-q="q2" data-a="1">عندما تكون <span class="coord">A</span> مربعة فقط</button><button class="opt" data-q="q2" data-a="2">عندما يكون <span class="coord">det(A) = 1</span></button><button class="opt" data-q="q2" data-a="3">دائماً</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">أي معيار <b>لا</b> يستحثه ضرب داخلي؟</div>
+      <button class="opt" data-q="q3" data-a="0"><span class="coord">ℓ₁</span></button><button class="opt" data-q="q3" data-a="1"><span class="coord">ℓ₂</span></button><button class="opt" data-q="q3" data-a="2">المعيار <span class="coord">‖x‖_A = √(xᵀAx)</span></button><button class="opt" data-q="q3" data-a="3">كلها مستحثة</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">ماذا تضمن متباينة كوشي–شفارتز؟</div>
+      <button class="opt" data-q="q4" data-a="0">أن <span class="coord">cos ω</span> يقع في <span class="coord">[−1, 1]</span> فتُعرَّف الزاوية</button><button class="opt" data-q="q4" data-a="1">أن الضرب الداخلي موجب دائماً</button><button class="opt" data-q="q4" data-a="2">أن المتجهات متعامدة</button><button class="opt" data-q="q4" data-a="3">أن المعيار يساوي الضرب الداخلي</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">لمصفوفة <span class="coord">A = [[9,6],[6,3]]</span> — هل هي معرّفة موجبة؟</div>
+      <button class="opt" data-q="q5" data-a="0">لا — <span class="coord">det = 27 − 36 = −9 &lt; 0</span></button><button class="opt" data-q="q5" data-a="1">نعم — عناصرها موجبة</button><button class="opt" data-q="q5" data-a="2">نعم — متماثلة</button><button class="opt" data-q="q5" data-a="3">لا يمكن الحكم</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>المعيار</td><td><span class="en" lang="en" dir="ltr">norm</span></td><td>مسطرة طول تحقق ثلاثة شروط</td></tr>
+    <tr><td>معرّفة موجبة</td><td><span class="en" lang="en" dir="ltr">positive definite</span></td><td><span class="coord">xᵀAx &gt; 0</span> لكل متجه غير صفري</td></tr>
+    <tr><td>كوشي–شفارتز</td><td><span class="en" lang="en" dir="ltr">Cauchy–Schwarz</span></td><td><span class="coord">|⟨x,y⟩| ≤ ‖x‖‖y‖</span></td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0016-norms-inner-products">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0016">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0016">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0016" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 3 · الأقسام 3.1–3.3</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0015-affine-spaces.html" rel="prev"><small>الدرس السابق</small>الفضاءات الأفينية</a>
+    <a class="next" href="0017-orthogonality.html" rel="next"><small>الدرس التالي</small>الزوايا والتعامد والمصفوفات المتعامدة</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0016 · المعايير والضرب الداخلي المجرد</span><span>التمرين: <code lang="en">python3 practice/0016-norms-inner-products.py</code> · <a href="../playground.html?ex=0016-norms-inner-products">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  tex(document.getElementById('k1'),"\\|x\\|_1=\\sum_i |x_i| \\qquad \\|x\\|_2=\\sqrt{\\sum_i x_i^2} \\qquad \\|x\\|_\\infty=\\max_i |x_i|");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  document.getElementById('vGo').onclick=function(){
+    var x=[+document.getElementById('v1').value,+document.getElementById('v2').value,+document.getElementById('v3').value];
+    var n1=x.reduce(function(s,v){return s+Math.abs(v);},0);
+    var n2=Math.sqrt(x.reduce(function(s,v){return s+v*v;},0));
+    var ni=Math.max.apply(null,x.map(Math.abs));
+    document.getElementById('vRO').innerHTML=
+      "<span class='coord'>‖x‖₁ = "+mn(n1)+"</span> · <span class='coord'>‖x‖₂ = "+mn(n2)+"</span> · <span class='coord'>‖x‖∞ = "+mn(ni)+"</span><br>"+
+      "الترتيب الثابت دائماً: <span class='coord'>‖x‖∞ ≤ ‖x‖₂ ≤ ‖x‖₁</span> "+((ni<=n2+1e-9&&n2<=n1+1e-9)?"✓ متحقق":"✗")+
+      " · "+(n1===0?"المتجه صفري: كل المعايير صفر":"كل المعايير موجبة لأن المتجه غير صفري");
+  };
+  document.getElementById('pGo').onclick=function(){
+    var a=+document.getElementById('pa').value,b=+document.getElementById('pb').value,d=+document.getElementById('pd').value;
+    var det=a*d-b*b;
+    document.getElementById('pRO').innerHTML="<span class='coord'>A = [["+mn(a)+","+mn(b)+"],["+mn(b)+","+mn(d)+"]]</span> متماثلة ✓ · <span class='coord'>a₁₁ = "+mn(a)+"</span> · <span class='coord'>det = "+mn(a)+"·"+mn(d)+" − "+mn(b)+"² = "+mn(det)+"</span> → "+
+      ((a>0&&det>0)?"<b>معرّفة موجبة</b> — تصلح لتعريف ضرب داخلي":(a>0&&Math.abs(det)<1e-12)?"<b>شبه معرّفة موجبة</b> — لا تصلح (يوجد متجه غير صفري طوله صفر)":"<b>ليست معرّفة موجبة</b> — لا تصلح لتعريف ضرب داخلي");
+  };
+  document.getElementById('pIn').onclick=function(){
+    var a=+document.getElementById('pa').value,b=+document.getElementById('pb').value,d=+document.getElementById('pd').value;
+    var x=[+document.getElementById('px1').value,+document.getElementById('px2').value];
+    var y=[+document.getElementById('py1').value,+document.getElementById('py2').value];
+    var ipA=x[0]*(a*y[0]+b*y[1])+x[1]*(b*y[0]+d*y[1]);
+    var ipI=x[0]*y[0]+x[1]*y[1];
+    document.getElementById('pRO').innerHTML="بالضرب النقطي المعتاد <span class='coord'>⟨x,y⟩ = "+mn(ipI)+"</span> → "+(Math.abs(ipI)<1e-12?"متعامدان":"غير متعامدين")+
+      "<br>بالضرب الداخلي <span class='coord'>xᵀAy = "+mn(ipA)+"</span> → "+(Math.abs(ipA)<1e-12?"متعامدان":"غير متعامدين")+
+      "<br>"+((Math.abs(ipI)<1e-12)===(Math.abs(ipA)<1e-12)?"الحكمان اتفقا هنا":"<b>الحكمان اختلفا</b> — التعامد صفة نسبية تتبع الضرب الداخلي المختار");
+  };
+  document.getElementById('cGo').onclick=function(){
+    var x=[+document.getElementById('cx1').value,+document.getElementById('cx2').value,+document.getElementById('cx3').value];
+    var y=[+document.getElementById('cy1').value,+document.getElementById('cy2').value,+document.getElementById('cy3').value];
+    var ip=x[0]*y[0]+x[1]*y[1]+x[2]*y[2];
+    var nx=Math.sqrt(x[0]*x[0]+x[1]*x[1]+x[2]*x[2]),ny=Math.sqrt(y[0]*y[0]+y[1]*y[1]+y[2]*y[2]);
+    var dv=[x[0]-y[0],x[1]-y[1],x[2]-y[2]];
+    var dist=Math.sqrt(dv[0]*dv[0]+dv[1]*dv[1]+dv[2]*dv[2]);
+    var eq=Math.abs(Math.abs(ip)-nx*ny)<1e-9;
+    document.getElementById('cRO').innerHTML="<span class='coord'>|⟨x,y⟩| = "+mn(Math.abs(ip))+"</span> ≤ <span class='coord'>‖x‖·‖y‖ = "+mn(nx)+" · "+mn(ny)+" = "+mn(nx*ny)+"</span> → المتباينة "+(Math.abs(ip)<=nx*ny+1e-9?"متحققة ✓":"✗")+
+      "<br>"+(eq?"<b>مساواة</b> — المتجهان متوازيان (أحدهما مضاعف للآخر)":"متباينة صارمة — المتجهان غير متوازيين")+
+      "<br>المسافة <span class='coord'>d(x,y) = ‖x − y‖ = "+mn(dist)+"</span>";
+  };
+  var ANS={q1:{"0":["صحيح — 3+4 و max(3,4).",true],"1":["هذا المعيار الإقليدي في الحالتين.",false],"2":["المعيار لا يكون سالباً أبداً.",false],"3":["راجع التعريفين.",false]},
+    q2:{"0":["صحيح — التماثل والتعريف الموجب شرطان لازمان.",true],"1":["التربيع وحده لا يكفي.",false],"2":["قيمة المحدد بعينها ليست الشرط.",false],"3":["بل بشروط.",false]},
+    q3:{"0":["صحيح — ℓ₁ و ℓ∞ لا يستحثهما ضرب داخلي.",true],"1":["الإقليدي مستحث بالضرب النقطي.",false],"2":["هذا مستحث بالضرب الداخلي المعرّف بـ A.",false],"3":["بل ℓ₁ استثناء.",false]},
+    q4:{"0":["صحيح — بلا كوشي–شفارتز لا معنى للزاوية.",true],"1":["الضرب الداخلي قد يكون سالباً.",false],"2":["التعامد حالة خاصة فقط.",false],"3":["المعيار جذر ⟨x,x⟩ لا ⟨x,y⟩.",false]},
+    q5:{"0":["صحيح — المحدد سالب فلا تصلح.",true],"1":["إيجابية العناصر لا تكفي.",false],"2":["التماثل شرط لازم لا كافٍ.",false],"3":["الاختبار قاطع.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

@@ -1,0 +1,236 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0015 · الفضاءات الأفينية — Affine Spaces</title>
+<meta name="description" content="الفضاء الأفيني فضاء جزئي أُزيح عن الأصل: نقطة إسناد زائد فضاء اتجاه.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0015-affine-spaces.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0015 · الفضاءات الأفينية — مختبر الجبر الخطي">
+<meta property="og:description" content="الفضاء الأفيني فضاء جزئي أُزيح عن الأصل: نقطة إسناد زائد فضاء اتجاه.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0015 · الفضاءات الأفينية",
+ "alternateName": "Affine Spaces",
+ "description": "الفضاء الأفيني فضاء جزئي أُزيح عن الأصل: نقطة إسناد زائد فضاء اتجاه.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0015-affine-spaces.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 15
+}
+</script>
+</head>
+<body data-lesson-id="0015">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0014-transformation-matrix.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0015">الخارطة</a> · <a href="0016-norms-inner-products.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0015 · التطبيقات الخطية</div>
+    <h1>الفضاءات الأفينية</h1>
+    <span class="en-line" lang="en">Affine Spaces — a subspace that slid away from the origin, and why Ax = b lives there</span>
+    <div class="rule"></div>
+    <p class="meta">~35 دقيقة · المتطلب: الدرس 0013 (التطبيقات الخطية)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> خطي أم أفيني؟ الفرق إزاحة واحدة<span class="en-sub" lang="en">Linear: f(x) = Ax · Affine: f(x) = Ax + b</span></h2>
+    <p>الدالة <span class="coord">f(x) = Ax</span> خطية، والدالة <span class="coord">f(x) = Ax + b</span> <span class="term">أفينية</span> <span class="en" lang="en" dir="ltr">(affine)</span>: خطية زائد إزاحة. وفي الاستعمال اليومي يخلط الناس بينهما — حتى إن «الانحدار الخطي» في تعلّم الآلة أفيني في حقيقته، لأن فيه حدّاً ثابتاً <span class="coord">b</span>.</p>
+    <div class="analogy"><b>تشبيه: المصعد والطابق</b><p>التطبيق الخطي مصعد يبدأ دائماً من الطابق الأرضي (الصفر). أما الأفيني فمصعد بدأ من الطابق الثالث: الحركة نفسها، ونقطة الانطلاق مزاحة. <span class="en" lang="en" dir="ltr">(Same motion, shifted start.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> اختبار واحد يفصلهما: هل <span class="coord">f(0) = 0</span>؟ إن نعم فخطي، وإن لا فأفيني. والفضاء الأفيني ليس فضاء متجهات لأنه لا يحوي الصفر.</p></div>
+    <div class="kmath" id="k1"></div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> <span class="coord">L = x₀ + U</span>: نقطة إسناد وفضاء اتجاه<span class="en-sub" lang="en">Support point plus direction space — a line or plane off the origin</span></h2>
+    <p>ليكن <span class="coord">U</span> فضاءً جزئياً و <span class="coord">x₀</span> متجهاً. المجموعة <span class="coord">L = x₀ + U = {x₀ + u | u ∈ U}</span> هي <span class="term">فضاء أفيني جزئي</span>، وتسمّى <span class="coord">x₀</span> <span class="term">نقطة الإسناد</span> <span class="en" lang="en" dir="ltr">(support point)</span> و <span class="coord">U</span> <span class="term">فضاء الاتجاه</span> <span class="en" lang="en" dir="ltr">(direction space)</span>. صورتها الوسيطية: <span class="coord">x = x₀ + λ₁b₁ + … + λₖbₖ</span>.</p>
+    <div class="demo" data-label="Slide · AFFINE">
+      <h3>مُزيح الفضاءات</h3>
+      <p class="hint">خط في <span class="coord">ℝ³</span>: نقطة إسناد <span class="coord">p</span> واتجاه <span class="coord">d</span> — حرّك الوسيط <span class="coord">t</span></p>
+      <div class="controls"><label>p <input type="number" id="p1" value="1"><input type="number" id="p2" value="2"><input type="number" id="p3" value="3"></label></div>
+      <div class="controls"><label>d <input type="number" id="d1" value="2"><input type="number" id="d2" value="-1"><input type="number" id="d3" value="1"></label><label>t <input type="number" id="tt" value="1" step="0.5"></label><button class="btn" id="aGo">احسب النقطة</button></div>
+      <div class="readout" id="aRO" style="direction:rtl;text-align:right">النقطة عند t…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>نقطة الإسناد ليست وحيدة: أي نقطة على <span class="coord">L</span> تصلح إسناداً. أما فضاء الاتجاه <span class="coord">U</span> فوحيد — وهو الذي يحدد بُعد الفضاء الأفيني. <span class="en" lang="en" dir="ltr">(Support point: many choices. Direction space: one.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> لماذا حلول <span class="coord">Ax = b</span> أفينية؟<span class="en-sub" lang="en">Particular solution plus the kernel — the shape of every solution set</span></h2>
+    <p>مجموعة حلول <span class="coord">Ax = b</span> عند <span class="coord">b ≠ 0</span> هي <span class="coord">{x_p + v | v ∈ ker(A)}</span>: <span class="term">حل خاص</span> واحد زائد النواة كاملة. هذا هو تعريف الفضاء الأفيني حرفياً — نقطة إسناد <span class="coord">x_p</span> وفضاء اتجاه <span class="coord">ker(A)</span>. ولهذا لا تكون مجموعة الحلول فضاءً جزئياً: الصفر ليس حلاً.</p>
+    <div class="demo" data-label="Shape · SOLUTION">
+      <h3>قارئ شكل مجموعة الحلول</h3>
+      <p class="hint">أدخل <span class="coord">n</span> والرتبة وقيمة <span class="coord">b</span> — اللوحة تسمّي الشكل الهندسي</p>
+      <div class="controls"><label>n <input type="number" id="sn" value="3" min="1" max="6"></label><label>rk(A) <input type="number" id="sr" value="2" min="0" max="6"></label><label><input type="checkbox" id="sb" checked> <span class="coord">b ≠ 0</span></label><button class="btn" id="sGo">سمِّ الشكل</button></div>
+      <div class="readout" id="sRO" style="direction:rtl;text-align:right">الشكل…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>ال<span class="term">مستوى الفائق</span> <span class="en" lang="en" dir="ltr">(hyperplane)</span> <span class="coord">aᵀx = c</span> فضاء أفيني بعده <span class="coord">n − 1</span> — وهو الشكل الذي تفصل به خوارزميات التصنيف مثل <span class="coord">SVM</span> بين فئتين.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>أفيني</td><td>خطي</td><td>خطي + إزاحة — ولا يمر بالأصل</td></tr>
+    <tr><td>نقطة الإسناد</td><td>بداية الخط</td><td>أي نقطة على الفضاء تصلح — ليست وحيدة</td></tr>
+    <tr><td>مجموعة حلول <span class="coord">Ax = b</span></td><td>فضاء جزئي</td><td>فضاء أفيني: حل خاص + النواة</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> «حلول لانهائية» جملة غامضة. <b>بعد هذا الدرس:</b> تعرف شكلها الهندسي بدقة: نقطة أو خط أو مستوٍ مزاح عن الأصل، وبعده <span class="coord">n − rk(A)</span>.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">هل مجموعة حلول <span class="coord">Ax = b</span> مع <span class="coord">b ≠ 0</span> فضاء جزئي؟</div>
+      <button class="opt" data-q="q1" data-a="0">لا — لا تحوي الصفر، فهي أفينية</button><button class="opt" data-q="q1" data-a="1">نعم — دائماً</button><button class="opt" data-q="q1" data-a="2">نعم — إن كانت <span class="coord">A</span> مربعة</button><button class="opt" data-q="q1" data-a="3">فقط إن كان الحل وحيداً</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">ما الفرق بين <span class="coord">f(x) = Ax</span> و <span class="coord">f(x) = Ax + b</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0">الثانية أفينية: خطية زائد إزاحة</button><button class="opt" data-q="q2" data-a="1">لا فرق</button><button class="opt" data-q="q2" data-a="2">الثانية غير مستمرة</button><button class="opt" data-q="q2" data-a="3">الأولى لا تُمثَّل بمصفوفة</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">في <span class="coord">L = x₀ + U</span>، ما الوحيد الذي لا يتغير؟</div>
+      <button class="opt" data-q="q3" data-a="0">فضاء الاتجاه <span class="coord">U</span></button><button class="opt" data-q="q3" data-a="1">نقطة الإسناد <span class="coord">x₀</span></button><button class="opt" data-q="q3" data-a="2">كلاهما وحيد</button><button class="opt" data-q="q3" data-a="3">لا شيء منهما</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">ما بُعد المستوى الفائق <span class="coord">aᵀx = c</span> في <span class="coord">ℝⁿ</span>؟</div>
+      <button class="opt" data-q="q4" data-a="0"><span class="coord">n − 1</span></button><button class="opt" data-q="q4" data-a="1"><span class="coord">n</span></button><button class="opt" data-q="q4" data-a="2"><span class="coord">1</span></button><button class="opt" data-q="q4" data-a="3"><span class="coord">0</span></button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">لمنظومة متسقة في <span class="coord">ℝ³</span> رتبتها 2 و <span class="coord">b ≠ 0</span> — ما شكل الحلول؟</div>
+      <button class="opt" data-q="q5" data-a="0">خط مزاح عن الأصل</button><button class="opt" data-q="q5" data-a="1">نقطة واحدة</button><button class="opt" data-q="q5" data-a="2">مستوٍ يمر بالأصل</button><button class="opt" data-q="q5" data-a="3">لا حل</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>الفضاء الأفيني</td><td><span class="en" lang="en" dir="ltr">affine subspace</span></td><td>فضاء جزئي أُزيح عن الأصل</td></tr>
+    <tr><td>نقطة الإسناد</td><td><span class="en" lang="en" dir="ltr">support point</span></td><td>أي نقطة على الفضاء تصلح مرجعاً</td></tr>
+    <tr><td>المستوى الفائق</td><td><span class="en" lang="en" dir="ltr">hyperplane</span></td><td>فضاء أفيني بعده <span class="coord">n − 1</span></td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0015-affine-spaces">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0015">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0015">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0015" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 2 · القسم 2.8 — Affine Spaces</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0014-transformation-matrix.html" rel="prev"><small>الدرس السابق</small>مصفوفة التحويل وتغيير الأساس</a>
+    <a class="next" href="0016-norms-inner-products.html" rel="next"><small>الدرس التالي</small>المعايير والضرب الداخلي المجرد</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0015 · الفضاءات الأفينية</span><span>التمرين: <code lang="en">python3 practice/0015-affine-spaces.py</code> · <a href="../playground.html?ex=0015-affine-spaces">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  tex(document.getElementById('k1'),"\\text{linear: } f(x)=Ax \\qquad \\text{affine: } f(x)=Ax+b \\qquad L=x_0+U");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  document.getElementById('aGo').onclick=function(){
+    var p=[+document.getElementById('p1').value,+document.getElementById('p2').value,+document.getElementById('p3').value];
+    var d=[+document.getElementById('d1').value,+document.getElementById('d2').value,+document.getElementById('d3').value];
+    var t=+document.getElementById('tt').value;
+    var x=[p[0]+t*d[0],p[1]+t*d[1],p[2]+t*d[2]];
+    var zero=(d[0]===0&&d[1]===0&&d[2]===0);
+    document.getElementById('aRO').innerHTML="<span class='coord'>x(t) = p + t·d = ("+mn(x[0])+", "+mn(x[1])+", "+mn(x[2])+")</span><br>عند <span class='coord'>t = 0</span> نعود لنقطة الإسناد <span class='coord'>("+mn(p[0])+", "+mn(p[1])+", "+mn(p[2])+")</span> · "+(zero?"الاتجاه صفري: الفضاء تقلّص إلى نقطة واحدة (بعده 0)":"فضاء الاتجاه <span class='coord'>span{d}</span> بعده <span class='coord'>1</span> — خط مزاح عن الأصل")+" · يمر بالأصل؟ "+((p[0]===0&&p[1]===0&&p[2]===0)?"نعم — إذاً هو فضاء جزئي أيضاً":"لا — فضاء أفيني خالص");
+  };
+  document.getElementById('sGo').onclick=function(){
+    var n=+document.getElementById('sn').value,r=+document.getElementById('sr').value,nz=document.getElementById('sb').checked;
+    var el=document.getElementById('sRO');
+    if(r>n){el.innerHTML="مستحيل: <span class='coord'>rk ≤ n</span>";return;}
+    var k=n-r,names={0:"نقطة واحدة",1:"خط",2:"مستوٍ",3:"فضاء ثلاثي"};
+    var shape=names[k]||("فضاء بعده "+k);
+    el.innerHTML="بعد مجموعة الحلول <span class='coord'>n − rk = "+k+"</span> → <b>"+shape+"</b> "+(nz?"<b>مزاح عن الأصل</b> (فضاء أفيني — ليس فضاءً جزئياً)":"<b>يمر بالأصل</b> (فضاء جزئي — هو النواة نفسها)")+(nz&&k===0?" · الحل وحيد، والفضاء الأفيني نقطة":"");
+  };
+  var ANS={q1:{"0":["صحيح — الصفر ليس حلاً عندما b ≠ 0.",true],"1":["الفضاء الجزئي يجب أن يحوي الصفر.",false],"2":["الشكل لا علاقة له.",false],"3":["حتى الحل الوحيد ليس فضاءً جزئياً إن لم يكن الصفر.",false]},
+    q2:{"0":["صحيح — الإزاحة هي الفرق.",true],"1":["الفرق جوهري: الصفر لا يذهب للصفر.",false],"2":["كلتاهما مستمرة.",false],"3":["الأولى مصفوفية تماماً.",false]},
+    q3:{"0":["صحيح — فضاء الاتجاه وحيد.",true],"1":["أي نقطة على L تصلح إسناداً.",false],"2":["الإسناد ليس وحيداً.",false],"3":["بل U وحيد.",false]},
+    q4:{"0":["صحيح — قيد واحد يخفض البعد واحداً.",true],"1":["القيد يخفض البعد.",false],"2":["هذا صحيح في ℝ² فقط.",false],"3":["البعد صفر يعني نقطة.",false]},
+    q5:{"0":["صحيح — البعد 3 − 2 = 1 مع إزاحة.",true],"1":["النقطة تحتاج رتبة 3.",false],"2":["المستوى يحتاج بعد 2، والإزاحة تنفي المرور بالأصل.",false],"3":["المنظومة متسقة بالفرض.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

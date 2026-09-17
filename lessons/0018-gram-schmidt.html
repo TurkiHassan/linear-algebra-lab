@@ -1,0 +1,251 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0018 · الأساس المتعامد وغرام–شميت — Orthonormal Basis, Gram–Schmidt & Orthogonal Complement</title>
+<meta name="description" content="حوّل أي أساس إلى أساس متعامد متجانس بغرام–شميت، واقرأ متمم التعامد.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0018-gram-schmidt.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0018 · الأساس المتعامد وغرام–شميت — مختبر الجبر الخطي">
+<meta property="og:description" content="حوّل أي أساس إلى أساس متعامد متجانس بغرام–شميت، واقرأ متمم التعامد.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0018 · الأساس المتعامد وغرام–شميت",
+ "alternateName": "Orthonormal Basis, Gram–Schmidt & Orthogonal Complement",
+ "description": "حوّل أي أساس إلى أساس متعامد متجانس بغرام–شميت، واقرأ متمم التعامد.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0018-gram-schmidt.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 18
+}
+</script>
+</head>
+<body data-lesson-id="0018">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0017-orthogonality.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0018">الخارطة</a> · <a href="0019-projections-rotations.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0018 · الهندسة التحليلية</div>
+    <h1>الأساس المتعامد وغرام–شميت</h1>
+    <span class="en-line" lang="en">Orthonormal Basis & Gram–Schmidt — turn any basis into a perpendicular one, and meet the orthogonal complement</span>
+    <div class="rule"></div>
+    <p class="meta">~40 دقيقة · المتطلب: الدرس 0017 (التعامد)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> الأساس المتعامد المتجانس: لماذا هو الأفضل؟<span class="en-sub" lang="en">In an orthonormal basis coordinates are just inner products</span></h2>
+    <p>الأساس <span class="term">المتعامد المتجانس</span> <span class="en" lang="en" dir="ltr">(orthonormal basis)</span> هو أساس متجهاته متعامدة مثنى مثنى وطول كل منها <span class="coord">1</span>. وميزته العملية هائلة: إحداثيات أي متجه تُقرأ بضرب داخلي واحد <span class="coord">αᵢ = ⟨x, bᵢ⟩</span> — بلا حل منظومة ولا حذف غاوسي. والأساس المعياري <span class="coord">{e₁, …, eₙ}</span> أبسط أمثلته.</p>
+    <div class="analogy"><b>تشبيه: المسطرة المتعامدة</b><p>حين تكون محاور الخريطة متعامدة ومتساوية التدريج تقرأ الموقع مباشرة. أما الخريطة المائلة المشوّهة فتحتاج حساباً في كل مرة. غرام–شميت هو تعديل الخريطة المائلة لتصير قائمة. <span class="en" lang="en" dir="ltr">(Straighten the map once, read it forever.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> إن كان <span class="coord">B</span> متعامداً متجانساً فمصفوفته متعامدة، ونظيرها منقولها، وإحداثيات <span class="coord">x</span> هي ببساطة <span class="coord">Bᵀx</span>.</p></div>
+    <div class="kmath" id="k1"></div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> غرام–شميت: اطرح الإسقاط يبقَ العمودي<span class="en-sub" lang="en">uₖ = bₖ − Σ (⟨bₖ,uᵢ⟩ / ⟨uᵢ,uᵢ⟩) uᵢ, then normalise</span></h2>
+    <p>خوارزمية <span class="term">غرام–شميت</span> <span class="en" lang="en" dir="ltr">(Gram–Schmidt)</span> تحوّل أي أساس إلى أساس متعامد ببناء تدريجي: خذ <span class="coord">u₁ = b₁</span>، ثم لكل متجه تالٍ اطرح منه إسقاطه على ما سبق: <span class="coord">uₖ = bₖ − Σᵢ (⟨bₖ,uᵢ⟩ / ⟨uᵢ,uᵢ⟩)·uᵢ</span>. ما يتبقى عمودي على كل ما سبق بالضرورة. ثم قسّم كلاً على طوله لتحصل على التجانس.</p>
+    <div class="demo" data-label="Build · GRAM-SCHMIDT">
+      <h3>آلة غرام–شميت</h3>
+      <p class="hint">متجهان مستقلان في <span class="coord">ℝ³</span> — اللوحة تنفّذ الخطوات وتتحقق من التعامد</p>
+      <div class="controls"><label>b₁ <input type="number" id="g11" value="1"><input type="number" id="g12" value="1"><input type="number" id="g13" value="0"></label></div>
+      <div class="controls"><label>b₂ <input type="number" id="g21" value="1"><input type="number" id="g22" value="0"><input type="number" id="g23" value="1"></label><button class="btn" id="gGo">نفّذ الخطوات</button></div>
+      <div class="readout" id="gSteps">…</div>
+      <div class="readout" id="gRO" style="direction:rtl;text-align:right">النتيجة…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>غرام–شميت يشترط دخلاً مستقلاً خطياً. فإن كان أحد المتجهات تركيباً من سابقيه خرج <span class="coord">uₖ = 0</span> — والصفر لا يُقسم على طوله. ظهور الصفر ليس عطلاً، بل هو الكاشف عن الارتباط. <span class="en" lang="en" dir="ltr">(A zero vector means dependence.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> متمم التعامد <span class="coord">U⊥</span><span class="en-sub" lang="en">Everything perpendicular to U — and why ker(A) = row(A)⊥</span></h2>
+    <p>لفضاء جزئي <span class="coord">U ⊂ V</span> بعده <span class="coord">M</span> داخل فضاء بعده <span class="coord">D</span>، يكون <span class="term">متمم التعامد</span> <span class="coord">U⊥</span> فضاءً بعده <span class="coord">D − M</span> يضم كل ما يتعامد مع كل متجه في <span class="coord">U</span>، ويتقاطعان في الصفر وحده. وكل متجه ينحلّ انحلالاً وحيداً إلى جزء في <span class="coord">U</span> وجزء في <span class="coord">U⊥</span>. وأجمل نتيجة: <span class="coord">ker(A) = row(A)⊥</span> — النواة هي بالضبط ما يتعامد مع كل صفوف المصفوفة.</p>
+    <div class="demo" data-label="Find · COMPLEMENT">
+      <h3>باحث متمم التعامد</h3>
+      <p class="hint">مستوٍ في <span class="coord">ℝ³</span> يولّده متجهان — اللوحة تجد المتجه الناظم وبعد المتمم</p>
+      <div class="controls"><label>u₁ <input type="number" id="c11" value="1"><input type="number" id="c12" value="1"><input type="number" id="c13" value="0"></label></div>
+      <div class="controls"><label>u₂ <input type="number" id="c21" value="0"><input type="number" id="c22" value="1"><input type="number" id="c23" value="1"></label><button class="btn" id="cGo">جد المتمم</button></div>
+      <div class="readout" id="cRO" style="direction:rtl;text-align:right">المتمم…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>الضرب الداخلي ليس حكراً على الأسهم: لدوال متصلة على <span class="coord">[a,b]</span> نعرّف <span class="coord">⟨u,v⟩ = ∫ u(x)v(x) dx</span>. وبهذا التعريف تكون <span class="coord">sin x</span> و <span class="coord">cos x</span> متعامدتين على <span class="coord">[−π, π]</span> — وهذه هي بذرة متسلسلة فورييه.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>الأساس المتعامد المتجانس</td><td>أساس جميل</td><td>أساس تُقرأ إحداثياته بضرب داخلي واحد</td></tr>
+    <tr><td>غرام–شميت</td><td>خطوات تُحفظ</td><td>اطرح الإسقاط يبقَ العمودي — فكرة واحدة مكرّرة</td></tr>
+    <tr><td>متمم التعامد</td><td>الباقي</td><td>فضاء كامل بعده <span class="coord">D − M</span>، ويكمّل الانحلال</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> الأساس المتعامد هدية تأتي أو لا تأتي. <b>بعد هذا الدرس:</b> تصنعه بنفسك من أي أساس — وهذه هي خوارزمية <span class="coord">QR</span> في جوهرها.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">في أساس متعامد متجانس — كيف تُحسب إحداثيات <span class="coord">x</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0">بضرب داخلي: <span class="coord">αᵢ = ⟨x, bᵢ⟩</span></button><button class="opt" data-q="q1" data-a="1">بحل منظومة خطية</button><button class="opt" data-q="q1" data-a="2">بحساب المحدد</button><button class="opt" data-q="q1" data-a="3">لا يمكن حسابها</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">ماذا يعني ظهور <span class="coord">uₖ = 0</span> في غرام–شميت؟</div>
+      <button class="opt" data-q="q2" data-a="0">أن <span class="coord">bₖ</span> مرتبط خطياً بما سبقه</button><button class="opt" data-q="q2" data-a="1">أن الخوارزمية أخطأت</button><button class="opt" data-q="q2" data-a="2">أن المتجهات متعامدة أصلاً</button><button class="opt" data-q="q2" data-a="3">أن البعد ازداد</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">لفضاء <span class="coord">U</span> بعده 2 داخل <span class="coord">ℝ³</span> — ما بعد <span class="coord">U⊥</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0"><span class="coord">1</span></button><button class="opt" data-q="q3" data-a="1"><span class="coord">2</span></button><button class="opt" data-q="q3" data-a="2"><span class="coord">3</span></button><button class="opt" data-q="q3" data-a="3"><span class="coord">0</span></button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">ما العلاقة بين النواة وفضاء الصفوف؟</div>
+      <button class="opt" data-q="q4" data-a="0"><span class="coord">ker(A) = row(A)⊥</span></button><button class="opt" data-q="q4" data-a="1"><span class="coord">ker(A) = row(A)</span></button><button class="opt" data-q="q4" data-a="2">لا علاقة بينهما</button><button class="opt" data-q="q4" data-a="3"><span class="coord">ker(A) = col(A)</span></button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">هل <span class="coord">sin x</span> و <span class="coord">cos x</span> متعامدتان على <span class="coord">[−π, π]</span>؟</div>
+      <button class="opt" data-q="q5" data-a="0">نعم — التكامل صفر لأن الحاصل دالة فردية</button><button class="opt" data-q="q5" data-a="1">لا — الدوال لا تتعامد</button><button class="opt" data-q="q5" data-a="2">نعم — لأن قيمتيهما القصوى 1</button><button class="opt" data-q="q5" data-a="3">فقط على <span class="coord">[0, π]</span></button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>الأساس المتعامد المتجانس</td><td><span class="en" lang="en" dir="ltr">orthonormal basis</span></td><td>أساس متعامد أطوال متجهاته 1</td></tr>
+    <tr><td>غرام–شميت</td><td><span class="en" lang="en" dir="ltr">Gram–Schmidt</span></td><td>اطرح الإسقاط لتحصل على العمودي</td></tr>
+    <tr><td>متمم التعامد</td><td><span class="en" lang="en" dir="ltr">orthogonal complement</span></td><td>كل ما يتعامد مع الفضاء كاملاً</td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0018-gram-schmidt">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0018">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0018">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0018" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 3 · الأقسام 3.5–3.8</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0017-orthogonality.html" rel="prev"><small>الدرس السابق</small>الزوايا والتعامد والمصفوفات المتعامدة</a>
+    <a class="next" href="0019-projections-rotations.html" rel="next"><small>الدرس التالي</small>الإسقاطات المتعامدة والدورانات</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0018 · الأساس المتعامد وغرام–شميت</span><span>التمرين: <code lang="en">python3 practice/0018-gram-schmidt.py</code> · <a href="../playground.html?ex=0018-gram-schmidt">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  tex(document.getElementById('k1'),"u_1=b_1,\\quad u_k=b_k-\\sum_{i<k}\\frac{\\langle b_k,u_i\\rangle}{\\langle u_i,u_i\\rangle}u_i,\\quad e_i=\\frac{u_i}{\\|u_i\\|}");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  function vec(v){return "("+mn(v[0])+", "+mn(v[1])+", "+mn(v[2])+")";}
+  function dot(a,b){return a[0]*b[0]+a[1]*b[1]+a[2]*b[2];}
+  function nrm(a){return Math.sqrt(dot(a,a));}
+  document.getElementById('gGo').onclick=function(){
+    var b1=[+document.getElementById('g11').value,+document.getElementById('g12').value,+document.getElementById('g13').value];
+    var b2=[+document.getElementById('g21').value,+document.getElementById('g22').value,+document.getElementById('g23').value];
+    var steps=document.getElementById('gSteps'),out=document.getElementById('gRO');
+    if(nrm(b1)<1e-12){steps.textContent='—';out.innerHTML="المتجه الأول صفري — غرام–شميت يشترط استقلالاً خطياً";return;}
+    var u1=b1.slice();
+    var f=dot(b2,u1)/dot(u1,u1);
+    var u2=[b2[0]-f*u1[0],b2[1]-f*u1[1],b2[2]-f*u1[2]];
+    steps.textContent=
+      "u1 = b1 = "+vec(u1).replace(/\u2212/g,'-')+"\n"+
+      "<b2,u1> = "+mn(dot(b2,u1))+"   <u1,u1> = "+mn(dot(u1,u1))+"   factor = "+mn(f)+"\n"+
+      "u2 = b2 - factor*u1 = "+vec(u2).replace(/\u2212/g,'-');
+    if(nrm(u2)<1e-9){out.innerHTML="<span class='coord'>u₂ = 0</span> → المتجهان <b>مرتبطان خطياً</b>: الثاني مضاعف للأول، ولا يمكن متابعة الخوارزمية";return;}
+    var e1=u1.map(function(v){return v/nrm(u1);}),e2=u2.map(function(v){return v/nrm(u2);});
+    out.innerHTML="الأساس المتعامد: <span class='coord'>u₁ = "+vec(u1)+"</span> و <span class='coord'>u₂ = "+vec(u2)+"</span> · تحقق التعامد <span class='coord'>⟨u₁,u₂⟩ = "+mn(dot(u1,u2))+"</span> ✓"+
+      "<br>بعد التجانس: <span class='coord'>e₁ = "+vec(e1)+"</span> و <span class='coord'>e₂ = "+vec(e2)+"</span> · الطولان <span class='coord'>"+mn(nrm(e1))+"</span> و <span class='coord'>"+mn(nrm(e2))+"</span>";
+  };
+  document.getElementById('cGo').onclick=function(){
+    var u1=[+document.getElementById('c11').value,+document.getElementById('c12').value,+document.getElementById('c13').value];
+    var u2=[+document.getElementById('c21').value,+document.getElementById('c22').value,+document.getElementById('c23').value];
+    var n=[u1[1]*u2[2]-u1[2]*u2[1],u1[2]*u2[0]-u1[0]*u2[2],u1[0]*u2[1]-u1[1]*u2[0]];
+    var el=document.getElementById('cRO');
+    if(nrm(n)<1e-9){el.innerHTML="المتجهان غير مستقلين (الضرب الاتجاهي صفر) → <span class='coord'>U</span> بعده 1 أو 0، ومتمم التعامد بعده <span class='coord'>2</span> أو <span class='coord'>3</span>";return;}
+    var w=n.map(function(v){return v/nrm(n);});
+    el.innerHTML="<span class='coord'>dim U = 2</span> → <span class='coord'>dim U⊥ = 3 − 2 = 1</span><br>المتجه الناظم <span class='coord'>w = "+vec(w)+"</span> · تحقق: <span class='coord'>⟨w,u₁⟩ = "+mn(dot(w,u1))+"</span> و <span class='coord'>⟨w,u₂⟩ = "+mn(dot(w,u2))+"</span> ✓<br>وبهذا ينحلّ كل متجه في <span class='coord'>ℝ³</span> انحلالاً وحيداً: جزء في المستوى وجزء على الناظم";
+  };
+  var ANS={q1:{"0":["صحيح — هذه ميزة التعامد والتجانس.",true],"1":["لا حاجة لمنظومة هنا.",false],"2":["المحدد لا علاقة له.",false],"3":["بل أسهل ما يكون.",false]},
+    q2:{"0":["صحيح — الصفر كاشف الارتباط.",true],"1":["الخوارزمية سليمة؛ الدخل هو المشكلة.",false],"2":["التعامد المسبق يعطي uₖ = bₖ لا صفراً.",false],"3":["البعد لا يزيد.",false]},
+    q3:{"0":["صحيح — 3 − 2 = 1.",true],"1":["هذا بعد U نفسه.",false],"2":["هذا بعد الفضاء كله.",false],"3":["الصفر يعني أن U هو الفضاء كله.",false]},
+    q4:{"0":["صحيح — النواة تتعامد مع كل صف.",true],"1":["بل تتعامد معه.",false],"2":["العلاقة وثيقة.",false],"3":["فضاء الأعمدة هو الصورة.",false]},
+    q5:{"0":["صحيح — sin·cos دالة فردية، وتكاملها على مجال متماثل صفر.",true],"1":["بل تتعامد بتعريف التكامل.",false],"2":["القيمة القصوى لا علاقة لها.",false],"3":["على [0,π] التكامل لا يساوي صفراً.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

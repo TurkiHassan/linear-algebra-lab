@@ -1,0 +1,255 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0017 · الزوايا والتعامد والمصفوفات المتعامدة — Angles, Orthogonality & Orthogonal Matrices</title>
+<meta name="description" content="الزاوية تُقرأ من الضرب الداخلي، والمصفوفة المتعامدة تحفظ الأطوال والزوايا.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0017-orthogonality.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0017 · الزوايا والتعامد والمصفوفات المتعامدة — مختبر الجبر الخطي">
+<meta property="og:description" content="الزاوية تُقرأ من الضرب الداخلي، والمصفوفة المتعامدة تحفظ الأطوال والزوايا.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0017 · الزوايا والتعامد والمصفوفات المتعامدة",
+ "alternateName": "Angles, Orthogonality & Orthogonal Matrices",
+ "description": "الزاوية تُقرأ من الضرب الداخلي، والمصفوفة المتعامدة تحفظ الأطوال والزوايا.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0017-orthogonality.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 17
+}
+</script>
+</head>
+<body data-lesson-id="0017">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0016-norms-inner-products.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0017">الخارطة</a> · <a href="0018-gram-schmidt.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0017 · الهندسة التحليلية</div>
+    <h1>الزوايا والتعامد والمصفوفات المتعامدة</h1>
+    <span class="en-line" lang="en">Angles & Orthogonality — cosine similarity, right angles, and the matrices that never distort them</span>
+    <div class="rule"></div>
+    <p class="meta">~35 دقيقة · المتطلب: الدرس 0016 (المعايير والضرب الداخلي)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> الزاوية من رقم واحد<span class="en-sub" lang="en">cos ω = ⟨x,y⟩ / (‖x‖‖y‖) — cosine similarity in one line</span></h2>
+    <p>بفضل كوشي–شفارتز توجد زاوية وحيدة <span class="coord">ω ∈ [0, π]</span> تحقق <span class="coord">cos ω = ⟨x,y⟩ / (‖x‖·‖y‖)</span>. وهذه بالضبط هي <span class="term">تشابه الجيب تمام</span> <span class="en" lang="en" dir="ltr">(cosine similarity)</span> التي تقارن بها نماذج اللغة تضمينات الكلمات: القيمة قرب <span class="coord">1</span> اتجاه واحد، وقرب <span class="coord">−1</span> اتجاهان متضادان، والصفر تعامد.</p>
+    <div class="analogy"><b>تشبيه: بوصلتان</b><p>لا يهم طول إبرة البوصلة، بل الاتجاه الذي تشير إليه. قسمةُ الضرب الداخلي على الطولين هي بالضبط «تحييد الطول» لنقارن الاتجاه وحده. <span class="en" lang="en" dir="ltr">(Divide out the lengths, keep the direction.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> <span class="coord">⟨x,y⟩ = 0 ⟺ x ⊥ y</span>. وإذا كان مع ذلك <span class="coord">‖x‖ = ‖y‖ = 1</span> فهما <span class="term">متعامدان متجانسان</span> <span class="en" lang="en" dir="ltr">(orthonormal)</span>.</p></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Angle · COSINE">
+      <h3>مقياس الزاوية</h3>
+      <p class="hint">متجهان في <span class="coord">ℝ³</span> — اللوحة تحسب الزاوية بالدرجات وتحكم على التعامد</p>
+      <div class="controls"><label>x <input type="number" id="ax1" value="1"><input type="number" id="ax2" value="0"><input type="number" id="ax3" value="1"></label></div>
+      <div class="controls"><label>y <input type="number" id="ay1" value="0"><input type="number" id="ay2" value="1"><input type="number" id="ay3" value="0"></label><button class="btn" id="aGo">احسب الزاوية</button></div>
+      <div class="readout" id="aRO" style="direction:rtl;text-align:right">الزاوية…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> فيثاغورس يعود: <span class="coord">‖x + y‖² = ‖x‖² + ‖y‖²</span><span class="en-sub" lang="en">Orthogonality is exactly what makes Pythagoras work</span></h2>
+    <p>افرد <span class="coord">‖x + y‖² = ‖x‖² + 2⟨x,y⟩ + ‖y‖²</span>، فترى أن نظرية فيثاغورس تتحقق <b>إذا وفقط إذا</b> اختفى الحد الأوسط — أي إذا تعامد المتجهان. التعامد ليس زينة هندسية إذاً، بل هو الشرط الذي يجعل «الأطوال تُجمع تربيعياً».</p>
+    <div class="demo" data-label="Split · PYTHAGORAS">
+      <h3>مختبر فيثاغورس</h3>
+      <p class="hint">أدخل متجهين في <span class="coord">ℝ²</span> — اللوحة تقارن الطرفين وتكشف الحدّ الأوسط</p>
+      <div class="controls"><label>x <input type="number" id="bx1" value="3"><input type="number" id="bx2" value="0"></label><label>y <input type="number" id="by1" value="0"><input type="number" id="by2" value="4"></label><button class="btn" id="bGo">قارن</button></div>
+      <div class="readout" id="bRO" style="direction:rtl;text-align:right">الطرفان…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الاستقلال الخطي لا يعني التعامد. متجهان مستقلان قد تكون بينهما زاوية حادة جداً — والاستقلال يكفي لبناء أساس، أما التعامد فترف حسابي يجعل كل شيء أسهل. <span class="en" lang="en" dir="ltr">(Independent ≠ orthogonal.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> المصفوفة المتعامدة: <span class="coord">A⁻¹ = Aᵀ</span><span class="en-sub" lang="en">Orthogonal matrices preserve length and angle — the perfect transformations</span></h2>
+    <p>المصفوفة المربعة <span class="coord">A</span> <span class="term">متعامدة</span> <span class="en" lang="en" dir="ltr">(orthogonal matrix)</span> إذا كانت أعمدتها متعامدة متجانسة، وحينها <span class="coord">AᵀA = AAᵀ = I</span> أي <span class="coord">A⁻¹ = Aᵀ</span> — أرخص نظير في الجبر الخطي. وخاصّتها الذهبية: <span class="coord">‖Ax‖ = ‖x‖</span> و <span class="coord">⟨Ax, Ay⟩ = ⟨x, y⟩</span>، فهي تحفظ الأطوال والزوايا معاً. ومحددها <span class="coord">±1</span>: الموجب دوران، والسالب انعكاس.</p>
+    <div class="demo" data-label="Verify · ORTHOGONAL">
+      <h3>فاحص المصفوفة المتعامدة</h3>
+      <p class="hint">أدخل مصفوفة <span class="coord">2×2</span> — اللوحة تفحص <span class="coord">AᵀA = I</span> وتحكم: دوران أم انعكاس</p>
+      <div class="controls"><label>a <input type="number" id="oa" value="0.7071" step="0.1"></label><label>b <input type="number" id="ob" value="-0.7071" step="0.1"></label><label>c <input type="number" id="oc" value="0.7071" step="0.1"></label><label>d <input type="number" id="od" value="0.7071" step="0.1"></label><button class="btn" id="oGo">افحص</button></div>
+      <div class="readout" id="oRO" style="direction:rtl;text-align:right">الفحص…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>لأن المصفوفة المتعامدة تحفظ المعيار، تُستعمل في <span class="term">التهيئة المتعامدة</span> <span class="en" lang="en" dir="ltr">(orthogonal initialization)</span> للشبكات العميقة: الأوزان لا تضخّم التدرّج ولا تخنقه أثناء الانتشار الخلفي.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>التعامد</td><td>زاوية قائمة على الورق</td><td><span class="coord">⟨x,y⟩ = 0</span> — ويتغير بتغير الضرب الداخلي</td></tr>
+    <tr><td>متعامد متجانس</td><td>متعامد فقط</td><td>متعامد <b>و</b> طول كل متجه يساوي 1</td></tr>
+    <tr><td>مصفوفة متعامدة</td><td>أعمدتها متعامدة</td><td>متعامدة <b>ومتجانسة</b> — وإلا فلا يصح <span class="coord">A⁻¹ = Aᵀ</span></td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> الزاوية القائمة صفة بصرية. <b>بعد هذا الدرس:</b> التعامد أداة حساب: يبسّط فيثاغورس، ويجعل النظير منقولاً، ويحفظ الهندسة تحت التحويل.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما الزاوية بين <span class="coord">(1,0,1)</span> و <span class="coord">(0,1,0)</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">90°</span> — الضرب الداخلي صفر</button><button class="opt" data-q="q1" data-a="1"><span class="coord">0°</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">45°</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">180°</span></button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">لمصفوفة متعامدة <span class="coord">A</span> — ما <span class="coord">A⁻¹</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">Aᵀ</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">A</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">−A</span></button><button class="opt" data-q="q2" data-a="3">لا يوجد نظير</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">مصفوفة متعامدة محددها <span class="coord">−1</span> — ماذا تمثّل؟</div>
+      <button class="opt" data-q="q3" data-a="0">انعكاساً</button><button class="opt" data-q="q3" data-a="1">دوراناً</button><button class="opt" data-q="q3" data-a="2">تكبيراً</button><button class="opt" data-q="q3" data-a="3">إسقاطاً</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">متى تتحقق <span class="coord">‖x + y‖² = ‖x‖² + ‖y‖²</span>؟</div>
+      <button class="opt" data-q="q4" data-a="0">عندما <span class="coord">x ⊥ y</span></button><button class="opt" data-q="q4" data-a="1">دائماً</button><button class="opt" data-q="q4" data-a="2">عندما يتوازيان</button><button class="opt" data-q="q4" data-a="3">عندما يتساوى طولاهما</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">أعمدة مصفوفة متعامدة بعضها على بعض لكن أطوالها <span class="coord">2</span> — هل هي مصفوفة متعامدة؟</div>
+      <button class="opt" data-q="q5" data-a="0">لا — ينقصها التجانس (طول 1)</button><button class="opt" data-q="q5" data-a="1">نعم — التعامد يكفي</button><button class="opt" data-q="q5" data-a="2">نعم — إن كانت مربعة</button><button class="opt" data-q="q5" data-a="3">لا يمكن الحكم</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>تشابه الجيب تمام</td><td><span class="en" lang="en" dir="ltr">cosine similarity</span></td><td>مقارنة الاتجاه بعد تحييد الطول</td></tr>
+    <tr><td>متعامد متجانس</td><td><span class="en" lang="en" dir="ltr">orthonormal</span></td><td>متعامد وطول كل متجه 1</td></tr>
+    <tr><td>مصفوفة متعامدة</td><td><span class="en" lang="en" dir="ltr">orthogonal matrix</span></td><td><span class="coord">AᵀA = I</span> — تحفظ الطول والزاوية</td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0017-orthogonality">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0017">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0017">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0017" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 3 · القسم 3.4 — Angles and Orthogonality</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0016-norms-inner-products.html" rel="prev"><small>الدرس السابق</small>المعايير والضرب الداخلي المجرد</a>
+    <a class="next" href="0018-gram-schmidt.html" rel="next"><small>الدرس التالي</small>الأساس المتعامد وغرام–شميت</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0017 · الزوايا والتعامد والمصفوفات المتعامدة</span><span>التمرين: <code lang="en">python3 practice/0017-orthogonality.py</code> · <a href="../playground.html?ex=0017-orthogonality">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  tex(document.getElementById('k1'),"\\cos\\omega=\\frac{\\langle x,y\\rangle}{\\|x\\|\\,\\|y\\|} \\in [-1,1] \\qquad x\\perp y \\iff \\langle x,y\\rangle=0");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  document.getElementById('aGo').onclick=function(){
+    var x=[+document.getElementById('ax1').value,+document.getElementById('ax2').value,+document.getElementById('ax3').value];
+    var y=[+document.getElementById('ay1').value,+document.getElementById('ay2').value,+document.getElementById('ay3').value];
+    var ip=x[0]*y[0]+x[1]*y[1]+x[2]*y[2];
+    var nx=Math.sqrt(x[0]*x[0]+x[1]*x[1]+x[2]*x[2]),ny=Math.sqrt(y[0]*y[0]+y[1]*y[1]+y[2]*y[2]);
+    var el=document.getElementById('aRO');
+    if(nx<1e-12||ny<1e-12){el.innerHTML="أحد المتجهين صفري — لا اتجاه له، فلا تُعرَّف الزاوية";return;}
+    var c=Math.max(-1,Math.min(1,ip/(nx*ny))),deg=Math.acos(c)*180/Math.PI;
+    el.innerHTML="<span class='coord'>⟨x,y⟩ = "+mn(ip)+"</span> · <span class='coord'>cos ω = "+mn(c)+"</span> · <span class='coord'>ω ≈ "+mn(deg)+"°</span><br>"+
+      (Math.abs(ip)<1e-9?"<b>متعامدان</b> — الضرب الداخلي صفر":(c>0?"زاوية حادة: الاتجاهان متقاربان":"زاوية منفرجة: الاتجاهان متباعدان"))+
+      " · متجانسان؟ "+((Math.abs(nx-1)<1e-9&&Math.abs(ny-1)<1e-9)?"نعم، الطولان 1":"لا، الطولان "+mn(nx)+" و "+mn(ny));
+  };
+  document.getElementById('bGo').onclick=function(){
+    var x=[+document.getElementById('bx1').value,+document.getElementById('bx2').value];
+    var y=[+document.getElementById('by1').value,+document.getElementById('by2').value];
+    var ip=x[0]*y[0]+x[1]*y[1];
+    var sx=x[0]*x[0]+x[1]*x[1],sy=y[0]*y[0]+y[1]*y[1];
+    var s=[x[0]+y[0],x[1]+y[1]],ss=s[0]*s[0]+s[1]*s[1];
+    document.getElementById('bRO').innerHTML="<span class='coord'>‖x + y‖² = "+mn(ss)+"</span> مقابل <span class='coord'>‖x‖² + ‖y‖² = "+mn(sx)+" + "+mn(sy)+" = "+mn(sx+sy)+"</span><br>الحدّ الأوسط <span class='coord'>2⟨x,y⟩ = "+mn(2*ip)+"</span> → "+
+      (Math.abs(ip)<1e-9?"<b>فيثاغورس يتحقق</b> لأن الحدّ الأوسط اختفى — المتجهان متعامدان":"<b>فيثاغورس لا يتحقق</b> — الحدّ الأوسط غير صفري، فالمتجهان غير متعامدين");
+  };
+  document.getElementById('oGo').onclick=function(){
+    var a=+document.getElementById('oa').value,b=+document.getElementById('ob').value,
+        c=+document.getElementById('oc').value,d=+document.getElementById('od').value;
+    var c1=a*a+c*c,c2=b*b+d*d,cross=a*b+c*d,det=a*d-b*c,tol=1e-3;
+    var ok=Math.abs(c1-1)<tol&&Math.abs(c2-1)<tol&&Math.abs(cross)<tol;
+    document.getElementById('oRO').innerHTML="طول العمود الأول <span class='coord'>"+mn(Math.sqrt(c1))+"</span> · الثاني <span class='coord'>"+mn(Math.sqrt(c2))+"</span> · ضربهما الداخلي <span class='coord'>"+mn(cross)+"</span> · <span class='coord'>det = "+mn(det)+"</span><br>"+
+      (ok?("<b>متعامدة</b>: <span class='coord'>AᵀA = I</span> و <span class='coord'>A⁻¹ = Aᵀ</span> — و"+(det>0?"محددها موجب: <b>دوران</b>":"محددها سالب: <b>انعكاس</b>")):"<b>ليست متعامدة</b> — يلزم أن يكون كل عمود طوله 1 وأن يتعامد العمودان");
+  };
+  var ANS={q1:{"0":["صحيح — 1·0 + 0·1 + 1·0 = 0.",true],"1":["الصفر يعني تعامداً لا توازياً.",false],"2":["احسب الضرب الداخلي أولاً.",false],"3":["180 تعني اتجاهين متضادين.",false]},
+    q2:{"0":["صحيح — أرخص نظير: المنقول.",true],"1":["هذا للمصفوفة الشاملة لنفسها فقط.",false],"2":["لا علاقة للإشارة.",false],"3":["المتعامدة قابلة للعكس دائماً.",false]},
+    q3:{"0":["صحيح — det = −1 انعكاس.",true],"1":["الدوران محدده +1.",false],"2":["المتعامدة لا تكبّر ولا تصغّر.",false],"3":["الإسقاط ليس متعامد المصفوفة.",false]},
+    q4:{"0":["صحيح — الحدّ الأوسط 2⟨x,y⟩ يختفي.",true],"1":["ليست متطابقة عامة.",false],"2":["التوازي أسوأ حالة: الحدّ الأوسط أكبر ما يكون.",false],"3":["تساوي الأطوال لا يكفي.",false]},
+    q5:{"0":["صحيح — التعامد وحده لا يكفي.",true],"1":["ينقص شرط الطول 1.",false],"2":["التربيع شرط لازم لا كافٍ.",false],"3":["الحكم قاطع.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

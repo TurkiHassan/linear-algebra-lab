@@ -1,0 +1,240 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0014 · مصفوفة التحويل وتغيير الأساس — Transformation Matrix & Basis Change</title>
+<meta name="description" content="ثبّت الأساس فيصير كل تطبيق خطي مصفوفة، وغيّر الأساس فتتغير المصفوفة لا التطبيق.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0014-transformation-matrix.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0014 · مصفوفة التحويل وتغيير الأساس — مختبر الجبر الخطي">
+<meta property="og:description" content="ثبّت الأساس فيصير كل تطبيق خطي مصفوفة، وغيّر الأساس فتتغير المصفوفة لا التطبيق.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0014 · مصفوفة التحويل وتغيير الأساس",
+ "alternateName": "Transformation Matrix & Basis Change",
+ "description": "ثبّت الأساس فيصير كل تطبيق خطي مصفوفة، وغيّر الأساس فتتغير المصفوفة لا التطبيق.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0014-transformation-matrix.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 14
+}
+</script>
+</head>
+<body data-lesson-id="0014">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0013-linear-mappings.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0014">الخارطة</a> · <a href="0015-affine-spaces.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0014 · التطبيقات الخطية</div>
+    <h1>مصفوفة التحويل وتغيير الأساس</h1>
+    <span class="en-line" lang="en">Transformation Matrix & Basis Change — every linear map becomes a matrix once you fix a basis</span>
+    <div class="rule"></div>
+    <p class="meta">~40 دقيقة · المتطلب: الدرس 0013 (التطبيقات الخطية)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> الإحداثيات: المتجه في لغة أساس<span class="en-sub" lang="en">Fix a basis B and every x becomes a column of coordinates</span></h2>
+    <p>ثبّت أساساً مرتباً <span class="coord">B = (b₁, …, bₙ)</span>، فيصير لكل متجه <span class="coord">x</span> تمثيل وحيد <span class="coord">x = α₁b₁ + … + αₙbₙ</span>. عمود المعاملات <span class="coord">α</span> هو <span class="term">إحداثيات</span> <span class="coord">x</span> بالنسبة لـ <span class="coord">B</span>، ونكتبه <span class="coord">[x]_B</span>. المتجه واحد، والعناوين بعدد الأسس.</p>
+    <div class="analogy"><b>تشبيه: العنوان والمدينة</b><p>البيت نفسه له عنوان بنظام الشوارع وعنوان آخر بإحداثيات <span class="coord">GPS</span>. البيت لم يتحرك، وإنما تغيّر دفتر العناوين. مصفوفة تغيير الأساس هي جدول التحويل بين الدفترين. <span class="en" lang="en" dir="ltr">(Same house, two address systems.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> المتجه كائن هندسي ثابت، والإحداثيات وصف نسبي. كل جدال حول «قيمة المتجه» ينتهي بسؤال واحد: بأي أساس؟</p></div>
+    <div class="kmath" id="k1"></div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> مصفوفة التحويل: أعمدتها صور الأساس<span class="en-sub" lang="en">Columns of A are the images of the basis vectors, written in C</span></h2>
+    <p>لتطبيق خطي <span class="coord">Φ : V → W</span> وأساسين <span class="coord">B</span> لـ <span class="coord">V</span> و <span class="coord">C</span> لـ <span class="coord">W</span>، توجد مصفوفة وحيدة <span class="coord">A_Φ</span> تحقق <span class="coord">[Φ(x)]_C = A_Φ · [x]_B</span>. وبناؤها وصفة من سطر واحد: <b>طبّق <span class="coord">Φ</span> على كل متجه أساس، واكتب الناتج عموداً</b>.</p>
+    <div class="demo" data-label="Build · MATRIX">
+      <h3>بانِي مصفوفة التحويل</h3>
+      <p class="hint">أدخل <span class="coord">Φ(x,y) = (p·x + q·y, r·x + s·y)</span> — اللوحة تطبّقه على <span class="coord">e₁</span> و <span class="coord">e₂</span> وتبني المصفوفة</p>
+      <div class="controls"><label>p <input type="number" id="tp" value="2"></label><label>q <input type="number" id="tq" value="1"></label><label>r <input type="number" id="tr" value="1"></label><label>s <input type="number" id="ts" value="-1"></label><button class="btn" id="tGo">ابنِ المصفوفة</button></div>
+      <div class="kmath" id="tStage" style="min-height:56px"></div>
+      <div class="readout" id="tRO" style="direction:rtl;text-align:right">صور الأساس…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>لا معنى لعبارة «مصفوفة التطبيق» بلا ذكر الأساسين. التطبيق واحد، ومصفوفاته بعدد أزواج الأسس — كما أن الرحلة واحدة وأوصافها بعدد الخرائط. <span class="en" lang="en" dir="ltr">(No basis, no matrix.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> تغيير الأساس: <span class="coord">A′ = T⁻¹ A S</span><span class="en-sub" lang="en">Change the address book on both ends and the matrix changes with it</span></h2>
+    <p>إذا بدّلت أساس <span class="coord">V</span> من <span class="coord">B</span> إلى <span class="coord">B̃</span> بمصفوفة <span class="coord">S</span>، وأساس <span class="coord">W</span> من <span class="coord">C</span> إلى <span class="coord">C̃</span> بمصفوفة <span class="coord">T</span>، صارت مصفوفة التطبيق <span class="coord">A′ = T⁻¹ A S</span>. وفي الحالة الخاصة <span class="coord">V = W</span> وأساس واحد: <span class="coord">A′ = S⁻¹ A S</span> — وهذا هو <span class="term">التشابه</span> <span class="en" lang="en" dir="ltr">(similarity)</span>.</p>
+    <div class="demo" data-label="Switch · BASIS">
+      <h3>مبدّل الأساس</h3>
+      <p class="hint">الأساس الجديد <span class="coord">b̃₁ = (1,1)</span> و <span class="coord">b̃₂ = (0,1)</span> — اللوحة تحسب <span class="coord">S⁻¹AS</span></p>
+      <div class="controls"><label>a <input type="number" id="sa" value="2"></label><label>b <input type="number" id="sb" value="1"></label><label>c <input type="number" id="sc" value="1"></label><label>d <input type="number" id="sd" value="-1"></label><button class="btn" id="sGo">حوّل</button></div>
+      <div class="kmath" id="sStage" style="min-height:70px"></div>
+      <div class="readout" id="sRO" style="direction:rtl;text-align:right">المصفوفة في الأساس الجديد…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>المحدد والرتبة والنواة لا تتغير بتغيير الأساس — لأنها خصائص <b>التطبيق</b> لا خصائص الجدول. هذا هو معنى «ثابت» <span class="en" lang="en" dir="ltr">(invariant)</span> في الجبر الخطي.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>الإحداثيات</td><td>قيمة المتجه</td><td>وصف نسبي يتبع الأساس المختار</td></tr>
+    <tr><td>مصفوفة التحويل</td><td>المصفوفة</td><td>جدول أعمدته صور متجهات الأساس — يتغير بتغيرهما</td></tr>
+    <tr><td>تغيير الأساس</td><td>تغيير الأرقام</td><td>تغيير الوصف لا الشيء: <span class="coord">A′ = T⁻¹AS</span></td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> المصفوفة والتطبيق شيء واحد. <b>بعد هذا الدرس:</b> التطبيق هو الأصل، والمصفوفة صورته في أساس بعينه — واختيار الأساس المناسب قد يبسّط كل شيء.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما أعمدة مصفوفة التحويل <span class="coord">A_Φ</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0">صور متجهات الأساس مكتوبة في الأساس الهدف</button><button class="opt" data-q="q1" data-a="1">صفوف المصفوفة الأصلية</button><button class="opt" data-q="q1" data-a="2">متجهات الأساس نفسها</button><button class="opt" data-q="q1" data-a="3">النواة والصورة</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">ما صيغة تغيير الأساس العامة؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">A′ = T⁻¹AS</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">A′ = A + S</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">A′ = S T A</span></button><button class="opt" data-q="q2" data-a="3"><span class="coord">A′ = Aᵀ</span></button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">أيّ من التالي <b>لا</b> يتغير بتغيير الأساس؟</div>
+      <button class="opt" data-q="q3" data-a="0">الرتبة والمحدد وبعد النواة</button><button class="opt" data-q="q3" data-a="1">عناصر المصفوفة</button><button class="opt" data-q="q3" data-a="2">إحداثيات المتجه</button><button class="opt" data-q="q3" data-a="3">أعمدة المصفوفة</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">لماذا يُشترط أن تكون <span class="coord">S</span> قابلة للعكس؟</div>
+      <button class="opt" data-q="q4" data-a="0">لأن أعمدتها أساس، فهي مستقلة ورتبتها تامة</button><button class="opt" data-q="q4" data-a="1">لأنها مربعة فقط</button><button class="opt" data-q="q4" data-a="2">لأن المحدد يجب أن يساوي 1</button><button class="opt" data-q="q4" data-a="3">ليست مشترطة</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">التطبيق <span class="coord">Φ(x,y) = (y, x)</span> — ما مصفوفته في الأساس المعياري؟</div>
+      <button class="opt" data-q="q5" data-a="0"><span class="coord">[[0,1],[1,0]]</span></button><button class="opt" data-q="q5" data-a="1"><span class="coord">[[1,0],[0,1]]</span></button><button class="opt" data-q="q5" data-a="2"><span class="coord">[[1,1],[0,0]]</span></button><button class="opt" data-q="q5" data-a="3"><span class="coord">[[0,0],[1,1]]</span></button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>مصفوفة التحويل</td><td><span class="en" lang="en" dir="ltr">transformation matrix</span></td><td>أعمدتها صور متجهات الأساس</td></tr>
+    <tr><td>مصفوفة تغيير الأساس</td><td><span class="en" lang="en" dir="ltr">change-of-basis matrix</span></td><td>جدول الترجمة بين دفتري عناوين</td></tr>
+    <tr><td>التشابه</td><td><span class="en" lang="en" dir="ltr">similarity</span></td><td><span class="coord">A′ = S⁻¹AS</span> — المصفوفة نفسها بأساس آخر</td></tr></table>
+  </section>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0014-transformation-matrix">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0014">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0014">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0014" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 2 · القسم 2.7.2 — Basis Change</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0013-linear-mappings.html" rel="prev"><small>الدرس السابق</small>التطبيقات الخطية: النواة والصورة</a>
+    <a class="next" href="0015-affine-spaces.html" rel="next"><small>الدرس التالي</small>الفضاءات الأفينية</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0014 · مصفوفة التحويل وتغيير الأساس</span><span>التمرين: <code lang="en">python3 practice/0014-transformation-matrix.py</code> · <a href="../playground.html?ex=0014-transformation-matrix">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  tex(document.getElementById('k1'),"x=\\alpha_1 b_1+\\cdots+\\alpha_n b_n \\quad\\Longrightarrow\\quad [x]_B=\\begin{bmatrix}\\alpha_1\\\\ \\vdots \\\\ \\alpha_n\\end{bmatrix}, \\qquad [\\Phi(x)]_C = A_\\Phi [x]_B");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  document.getElementById('tGo').onclick=function(){
+    var p=+document.getElementById('tp').value,q=+document.getElementById('tq').value,
+        r=+document.getElementById('tr').value,s=+document.getElementById('ts').value;
+    tex(document.getElementById('tStage'),"\\Phi(e_1)=\\begin{bmatrix}"+p+"\\\\"+r+"\\end{bmatrix},\\quad \\Phi(e_2)=\\begin{bmatrix}"+q+"\\\\"+s+"\\end{bmatrix} \\quad\\Rightarrow\\quad A_\\Phi=\\begin{bmatrix}"+p+" & "+q+"\\\\"+r+" & "+s+"\\end{bmatrix}");
+    var det=p*s-q*r;
+    document.getElementById('tRO').innerHTML="العمود الأول هو <span class='coord'>Φ(1,0) = ("+mn(p)+", "+mn(r)+")</span>، والثاني <span class='coord'>Φ(0,1) = ("+mn(q)+", "+mn(s)+")</span> · <span class='coord'>det = "+mn(det)+"</span> → "+(Math.abs(det)>1e-9?"تقابل: النواة صفرية والصورة كل ℝ²":"ليس تقابلاً: الرتبة 1 أو 0 والنواة غير صفرية");
+  };
+  document.getElementById('sGo').onclick=function(){
+    var a=+document.getElementById('sa').value,b=+document.getElementById('sb').value,
+        c=+document.getElementById('sc').value,d=+document.getElementById('sd').value;
+    /* S = [[1,0],[1,1]] : أعمدته هي b̃₁=(1,1) و b̃₂=(0,1) بالأساس المعياري */
+    var S=[[1,0],[1,1]],Si=[[1,0],[-1,1]],A=[[a,b],[c,d]];
+    function mul(X,Y){return [[X[0][0]*Y[0][0]+X[0][1]*Y[1][0],X[0][0]*Y[0][1]+X[0][1]*Y[1][1]],
+                              [X[1][0]*Y[0][0]+X[1][1]*Y[1][0],X[1][0]*Y[0][1]+X[1][1]*Y[1][1]]];}
+    var P=mul(Si,mul(A,S));
+    tex(document.getElementById('sStage'),"S=\\begin{bmatrix}1&0\\\\1&1\\end{bmatrix},\\; S^{-1}=\\begin{bmatrix}1&0\\\\-1&1\\end{bmatrix} \\quad A'=S^{-1}AS=\\begin{bmatrix}"+mn(P[0][0])+" & "+mn(P[0][1])+"\\\\"+mn(P[1][0])+" & "+mn(P[1][1])+"\\end{bmatrix}");
+    var dA=a*d-b*c,dP=P[0][0]*P[1][1]-P[0][1]*P[1][0];
+    document.getElementById('sRO').innerHTML="المصفوفة تغيّرت، والثوابت لم تتغيّر: <span class='coord'>det(A) = "+mn(dA)+"</span> و <span class='coord'>det(A′) = "+mn(dP)+"</span> · الأثر <span class='coord'>tr(A) = "+mn(a+d)+"</span> و <span class='coord'>tr(A′) = "+mn(P[0][0]+P[1][1])+"</span> — التطبيق واحد والوصف اثنان";
+  };
+  var ANS={q1:{"0":["صحيح — طبّق على الأساس واكتب عموداً.",true],"1":["الصفوف ليست الوصفة.",false],"2":["الأساس نفسه يعطي مصفوفة الوحدة فقط.",false],"3":["هذان فضاءان لا أعمدة.",false]},
+    q2:{"0":["صحيح — T للهدف و S للمصدر.",true],"1":["الجمع لا معنى له هنا.",false],"2":["الترتيب والعكس مقلوبان.",false],"3":["المنقول شيء آخر.",false]},
+    q3:{"0":["صحيح — هذه ثوابت التطبيق.",true],"1":["العناصر أول ما يتغير.",false],"2":["الإحداثيات تتبع الأساس.",false],"3":["الأعمدة تتغير بتغير الأساس.",false]},
+    q4:{"0":["صحيح — الأساس مستقل، فالمصفوفة تامة الرتبة.",true],"1":["التربيع وحده لا يكفي.",false],"2":["يكفي ألا يكون صفراً.",false],"3":["بل هي مشترطة وإلا لم تكن ترجمة.",false]},
+    q5:{"0":["صحيح — Φ(e₁)=(0,1) و Φ(e₂)=(1,0).",true],"1":["هذه مصفوفة الوحدة: تبقي كل شيء مكانه.",false],"2":["راجع صور الأساس.",false],"3":["راجع صور الأساس.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>
