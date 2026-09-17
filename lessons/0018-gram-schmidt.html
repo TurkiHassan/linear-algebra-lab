@@ -210,6 +210,11 @@
   function FIG(id){
     var cv=document.getElementById(id); if(!cv) return null;
     var ctx=cv.getContext('2d'), f={cv:cv,ctx:ctx,W:cv.width,H:cv.height,sc:34,ox:cv.width/2,oy:cv.height/2};
+    /* يوحّد مخزن اللوحة مع مقاسها المعروض × كثافة الشاشة فلا تبدو ضبابية */
+    f.hidpi=function(){
+      var d=window.LinalgHiDPI&&window.LinalgHiDPI(cv,ctx);
+      if(d){f.W=d.W;f.H=d.H;}
+      return f;};
     function v(n,fb){var c=getComputedStyle(document.documentElement).getPropertyValue(n).trim();return c||fb;}
     f.col=function(){return {paper:v('--paper','#f6f1e7'),ink:v('--ink','#1c1a15'),soft:v('--soft','#6f6757'),
       line:v('--line','#ded4c2'),accent:v('--accent','#0d5c46'),terra:v('--terra','#c2562f'),vio:v('--vio','#5b3f8f')};};
@@ -228,7 +233,7 @@
       return f;};
     f.X=function(x){return f.ox+x*f.sc;};
     f.Y=function(y){return f.oy-y*f.sc;};
-    f.clear=function(){var c=f.col();ctx.clearRect(0,0,f.W,f.H);ctx.fillStyle=c.paper;ctx.fillRect(0,0,f.W,f.H);};
+    f.clear=function(){f.hidpi();var c=f.col();ctx.clearRect(0,0,f.W,f.H);ctx.fillStyle=c.paper;ctx.fillRect(0,0,f.W,f.H);};
     f.grid=function(){
       var c=f.col(),i;ctx.save();ctx.strokeStyle=c.line;ctx.lineWidth=1;
       for(i=Math.ceil(-f.ox/f.sc);f.X(i)<f.W;i++){ctx.beginPath();ctx.moveTo(f.X(i),0);ctx.lineTo(f.X(i),f.H);ctx.stroke();}
@@ -286,6 +291,7 @@
   /* أعِد الرسم عند تبديل السمة */
   function onTheme(fn){
     new MutationObserver(fn).observe(document.documentElement,{attributes:true,attributeFilter:['data-theme']});
+    var t;addEventListener('resize',function(){clearTimeout(t);t=setTimeout(fn,120);});
   }
   /* المستوى المشترك لمتجهين: يرسم الزاوية الحقيقية بينهما مهما كان بعدهما */
   function plane(a,b){

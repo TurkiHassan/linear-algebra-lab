@@ -179,6 +179,24 @@
     setTimeout(applyBidiIsolation, 400);
   }
 
+  /* ---------- لوحات الرسم على الشاشات عالية الكثافة ----------
+     اللوحة التي مقاس مخزنها 640 وتُعرض بعرض 620 على شاشة بكثافة 2×
+     تُرسم بنصف الدقة فتبدو ضبابية. هذه الدالة توحّد المخزن مع المقاس
+     المعروض مضروباً في الكثافة، وتضبط تحويل السياق فتبقى إحداثيات
+     الرسم بوحدات CSS كما كتبها الدرس.
+     تُرجع {W, H} المنطقيتين، أو null إن لم تكن اللوحة معروضة بعد. */
+  window.LinalgHiDPI = function (cv, ctx) {
+    if (!cv) return null;
+    var r = cv.getBoundingClientRect();
+    var W = Math.round(r.width), H = Math.round(r.height);
+    if (!W || !H) return null;
+    var dpr = Math.max(1, Math.min(3, window.devicePixelRatio || 1));
+    var bw = Math.round(W * dpr), bh = Math.round(H * dpr);
+    if (cv.width !== bw || cv.height !== bh) { cv.width = bw; cv.height = bh; }
+    (ctx || cv.getContext("2d")).setTransform(dpr, 0, 0, dpr, 0, 0);
+    return { W: W, H: H };
+  };
+
   /* ---------- service worker ---------- */
   if ("serviceWorker" in navigator && location.protocol.indexOf("http") === 0) {
     var here = (document.currentScript && document.currentScript.src) || "";
