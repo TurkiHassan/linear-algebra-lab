@@ -1,0 +1,369 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0020 · الأثر وكثيرة الحدود المميزة — Trace & Characteristic Polynomial</title>
+<meta name="description" content="الأثر مجموع القطر، وكثيرة الحدود المميزة det(A − λI) التي جذورها هي القيم الذاتية.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0020-trace-characteristic.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0020 · الأثر وكثيرة الحدود المميزة — مختبر الجبر الخطي">
+<meta property="og:description" content="الأثر مجموع القطر، وكثيرة الحدود المميزة det(A − λI) التي جذورها هي القيم الذاتية.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
+  #cpPlot{max-width:640px}
+  .inv-grid{display:grid;grid-template-columns:repeat(2,auto);justify-content:center;gap:6px;direction:ltr}
+  .inv-grid input[type=number]{width:68px;text-align:center}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0020 · الأثر وكثيرة الحدود المميزة",
+ "alternateName": "Trace & Characteristic Polynomial",
+ "description": "الأثر مجموع القطر، وكثيرة الحدود المميزة det(A − λI) التي جذورها هي القيم الذاتية.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0020-trace-characteristic.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 20
+}
+</script>
+</head>
+<body data-lesson-id="0020">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0019-projections-rotations.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0020">الخارطة</a> · <a href="0021-eigenvalues.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0020 · تحليل المصفوفات</div>
+    <h1>الأثر وكثيرة الحدود المميزة</h1>
+    <span class="en-line" lang="en">Trace & Characteristic Polynomial — two numbers that survive every change of basis, and the polynomial whose roots are the eigenvalues</span>
+    <div class="rule"></div>
+    <p class="meta">~35 دقيقة · المتطلب: الدرس 0014 (مصفوفة التحويل) و0010 (المحددات)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> الأثر: مجموع القطر، ولا شيء غيره<span class="en-sub" lang="en">tr(A) = sum of the diagonal — and it is invariant under cyclic permutation</span></h2>
+    <p>ال<span class="term">أثر</span> <span class="en" lang="en" dir="ltr">(trace)</span> لمصفوفة مربعة <span class="coord">A ∈ ℝ^(n×n)</span> هو <span class="coord">tr(A) = a₁₁ + a₂₂ + … + aₙₙ</span>. تعريف يبدو ساذجاً — تجمع القطر وتنتهي — لكنه يحمل خاصية تجعله من أهم أرقام المصفوفة: <b>لا يتغير بتغيير الأساس</b>.</p>
+    <div class="analogy"><b>تشبيه: وزن الحقيبة</b><p>غيّر ترتيب ما في الحقيبة كما شئت، ورتّبه بأي نظام تحب — الوزن لا يتغير. الأساس ترتيبٌ للفضاء، والأثر وزنٌ لا يبالي بالترتيب. <span class="en" lang="en" dir="ltr">(Rearranging does not change the weight.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> <span class="coord">tr(AB) = tr(BA)</span> دائماً — حتى لو كانت <span class="coord">AB</span> و<span class="coord">BA</span> بحجمين مختلفين. ومن هذه القاعدة وحدها يتبع <span class="coord">tr(S⁻¹AS) = tr(ASS⁻¹) = tr(A)</span>، أي أن الأثر صفة التطبيق لا صفة تمثيله.</p></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مصفوفتان متشابهتان <span class="coord">B = S⁻¹AS</span>. أيّ هذه يتغيّر بينهما: الأثر، أم المحدد، أم القيم الذاتية، أم لا شيء منها؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا شيء منها. الثلاثة ثوابت تحت تغيير الأساس، لأنها صفات <b>التطبيق الخطي نفسه</b> لا صفات المصفوفة التي تمثّله. وعكس ذلك مفيد: لو اختلف أثرا مصفوفتين، فهما ليستا تمثيلين للتطبيق نفسه. <span class="en" lang="en" dir="ltr">(Trace, determinant and eigenvalues are basis-independent.)</span></p></details></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Cycle · TRACE">
+      <h3>ميزان دورة الضرب</h3>
+      <p class="hint">أدخل مصفوفتين <span class="coord">2×2</span> — اللوحة تحسب <span class="coord">tr(AB)</span> و<span class="coord">tr(BA)</span> وتقارنهما</p>
+      <div class="controls"><label><span class="coord">A</span></label><span class="inv-grid"><input type="number" id="ta" value="4"><input type="number" id="tb" value="2"><input type="number" id="tc" value="1"><input type="number" id="td" value="3"></span></div>
+      <div class="controls"><label><span class="coord">B</span></label><span class="inv-grid"><input type="number" id="ue" value="0"><input type="number" id="uf" value="-1"><input type="number" id="ug" value="2"><input type="number" id="uh" value="5"></span><button class="btn" id="tGo">قارن</button></div>
+      <div class="readout" id="tRO" style="direction:rtl;text-align:right">الأثران…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> كثيرة الحدود المميزة: <span class="coord">p(λ) = det(A − λI)</span><span class="en-sub" lang="en">The polynomial whose roots are exactly the eigenvalues</span></h2>
+    <p>خذ المصفوفة، واطرح <span class="coord">λ</span> من قطرها، ثم احسب المحدد. الناتج كثيرة حدود في <span class="coord">λ</span> تُسمّى ال<span class="term">كثيرة المميزة</span> <span class="en" lang="en" dir="ltr">(characteristic polynomial)</span>. وجذورها — القيم التي تُصفّرها — هي بالضبط القيم التي تجعل <span class="coord">A − λI</span> منهارة، أي القيم الذاتية التي يبنى عليها الدرس القادم.</p>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>للمصفوفة <span class="coord">2×2</span> تختصر الصيغة كلها إلى سطر واحد يستحق الحفظ: <span class="coord">p(λ) = λ² − tr(A)·λ + det(A)</span>. رقمان تعرفهما من النظرة الأولى يبنيان الكثيرة كاملة.</p></div>
+    <div class="demo" data-label="Build · POLYNOMIAL">
+      <h3>بانِي الكثيرة المميزة</h3>
+      <p class="hint">أدخل المصفوفة، ثم اسحب <span class="coord">λ</span> لترى قيمة الكثيرة عندها — الجذور حيث يلمس المنحنى المحور</p>
+      <div class="controls"><label><span class="coord">A</span></label><span class="inv-grid"><input type="number" id="pa" value="4"><input type="number" id="pb" value="2"><input type="number" id="pc" value="1"><input type="number" id="pd" value="3"></span></div>
+      <div class="controls"><label><span class="coord">λ</span> <input type="range" id="pL" min="-4" max="8" step="0.1" value="1"></label><span class="coord" id="pLv">1</span><button class="btn ghost" id="pSnap">اقفز إلى أقرب جذر</button></div>
+      <canvas id="cpCv" width="640" height="340" role="img"
+              aria-label="منحنى الكثيرة المميزة عبر محور لامدا، والجذران عند نقطتي تقاطعه مع المحور"></canvas>
+      <p class="figcap">المنحنى هو <span class="coord">p(λ)</span> — وحيث يقطع المحور الأفقي تكون القيمة الذاتية</p>
+      <div class="kmath" id="pStage" style="min-height:52px"></div>
+      <div class="readout" id="pRO" style="direction:rtl;text-align:right">الكثيرة…</div>
+    </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>مصفوفة المحاضرة من الأثر والمحدد إلى الجذرين، ثم عودة للتحقق:</p>
+      <pre dir="ltr">A = [ 4  2 ]
+    [ 1  3 ]
+
+the two numbers that build the polynomial
+
+  tr(A)  = 4 + 3        = 7
+  det(A) = 4*3 - 2*1    = 12 - 2 = 10
+
+the characteristic polynomial   p(L) = det(A - L*I)
+
+  A - L*I = [ 4-L    2  ]
+            [  1    3-L ]
+
+  p(L) = (4 - L)(3 - L) - 2*1
+       = 12 - 4L - 3L + L^2 - 2
+       = L^2 - 7L + 10
+
+  the 2x2 shortcut, confirmed:
+  p(L) = L^2 - tr(A)*L + det(A) = L^2 - 7L + 10      same
+
+the roots
+
+  L^2 - 7L + 10 = 0
+  (L - 2)(L - 5) = 0
+  L1 = 2 ,  L2 = 5
+
+read the invariants back out of the roots
+
+  L1 + L2 = 2 + 5  =  7  = tr(A)     OK
+  L1 * L2 = 2 * 5  = 10  = det(A)    OK</pre>
+      <p class="worked-note">آخر سطرين ليسا صدفة: مجموع الجذور هو الأثر، وحاصل ضربها هو المحدد — وهذا يصح لأي <span class="coord">n</span> لا للـ <span class="coord">2×2</span> وحده.</p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الجذور قد تكون <b>مركّبة</b>. مصفوفة الدوران بزاوية غير صفرية ليس لها قيمة ذاتية حقيقية، لأن كل متجه فيها يدور فلا يبقى أحدٌ على اتجاهه. عدم وجود جذر حقيقي ليس خطأً في الحساب، بل خبرٌ عن هندسة التحويل. <span class="en" lang="en" dir="ltr">(A rotation has no real eigenvector.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> ثلاثة أرقام لا يمسّها تغيير الأساس<span class="en-sub" lang="en">det, trace and eigenvalues are invariant — they describe the map, not the matrix</span></h2>
+    <p>الدرس <span class="coord">0014</span> بيّن أن مصفوفة التطبيق تتغيّر بتغيّر الأساس: <span class="coord">A′ = S⁻¹AS</span>. والسؤال الطبيعي: ما الذي يبقى؟ الجواب: <span class="coord">det</span> و<span class="coord">tr</span> والقيم الذاتية. هذه ثوابت التشابه، وبها نميّز تطبيقين مختلفين حقاً عن تطبيق واحد نُظر إليه بعينين مختلفتين.</p>
+    <div class="demo" data-label="Invariance · SIMILAR">
+      <h3>فاحص الثبات تحت التشابه</h3>
+      <p class="hint">اختر مصفوفة تغيير الأساس <span class="coord">S</span> — اللوحة تبني <span class="coord">S⁻¹AS</span> وتقارن الأرقام الثلاثة</p>
+      <div class="controls"><label>مصفوفة الأساس <span class="coord">S</span>
+        <select id="sPick">
+          <option value="shear">قصّ أفقي</option>
+          <option value="scale">تكبير على المحور السيني</option>
+          <option value="rot">دوران بزاوية قائمة على أربعة</option>
+          <option value="swap">تبديل المحورين</option>
+        </select></label><button class="btn" id="sGo">طبّق التشابه</button></div>
+      <div class="readout" id="sRO" style="direction:rtl;text-align:right">قبل وبعد…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>في تعلّم الآلة يظهر الأثر في كل مكان: <span class="coord">tr(XᵀX)</span> هو مجموع مربعات كل عناصر البيانات، وهو نفسه مجموع القيم الذاتية لمصفوفة التغاير — أي <b>الطاقة الكلية</b> في البيانات. وحين تقول إن «طريقة ما تحافظ على التباين»، فأنت تتحدث عن الأثر.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>الأثر</td><td>مجموع القطر وحسب</td><td>ثابت تحت تغيير الأساس، ومجموع القيم الذاتية</td></tr>
+    <tr><td>الكثيرة المميزة</td><td>معادلة نحلّها</td><td>آلة تحويل: تحوّل «أين ينهار <span class="coord">A − λI</span>» إلى جذور كثيرة حدود</td></tr>
+    <tr><td>مصفوفتان متشابهتان</td><td>متشابهتان في الشكل</td><td><span class="coord">B = S⁻¹AS</span> — التطبيق نفسه بأساس آخر</td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> الأثر رقم عابر في التعريفات. <b>بعد هذا الدرس:</b> الأثر والمحدد والقيم الذاتية ثلاثة ثوابت لتطبيق واحد، والكثيرة المميزة هي الجسر الذي يوصلك إليها جميعاً.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما <span class="coord">tr(A)</span> للمصفوفة <span class="coord">[[1,2],[3,4]]</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">5</span></button><button class="opt" data-q="q1" data-a="1"><span class="coord">10</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">-2</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">6</span></button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">مصفوفة <span class="coord">2×2</span> أثرها <span class="coord">7</span> ومحددها <span class="coord">10</span> — ما كثيرتها المميزة؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">λ² − 7λ + 10</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">λ² + 7λ + 10</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">λ² − 10λ + 7</span></button><button class="opt" data-q="q2" data-a="3"><span class="coord">7λ − 10</span></button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">هل يصح دائماً أن <span class="coord">tr(AB) = tr(A)·tr(B)</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0">لا — الصحيح <span class="coord">tr(AB) = tr(BA)</span></button><button class="opt" data-q="q3" data-a="1">نعم دائماً</button><button class="opt" data-q="q3" data-a="2">نعم للمصفوفات المربعة فقط</button><button class="opt" data-q="q3" data-a="3">نعم إن كانت قابلة للعكس</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">القيم الذاتية لمصفوفة <span class="coord">3×3</span> هي <span class="coord">2, 3, 5</span> — ما محددها؟</div>
+      <button class="opt" data-q="q4" data-a="0"><span class="coord">30</span> — حاصل الضرب</button><button class="opt" data-q="q4" data-a="1"><span class="coord">10</span> — المجموع</button><button class="opt" data-q="q4" data-a="2"><span class="coord">3</span></button><button class="opt" data-q="q4" data-a="3">لا يمكن تحديده</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">مصفوفتان <span class="coord">A</span> و<span class="coord">B</span> أثراهما مختلفان — هل يمكن أن تكونا متشابهتين؟</div>
+      <button class="opt" data-q="q5" data-a="0">لا — الأثر ثابت تحت التشابه</button><button class="opt" data-q="q5" data-a="1">نعم إن تساوى محدداهما</button><button class="opt" data-q="q5" data-a="2">نعم دائماً</button><button class="opt" data-q="q5" data-a="3">فقط إن كانتا قطريتين</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>الأثر</td><td><span class="en" lang="en" dir="ltr">trace</span></td><td>مجموع عناصر القطر — ومجموع القيم الذاتية</td></tr>
+    <tr><td>الكثيرة المميزة</td><td><span class="en" lang="en" dir="ltr">characteristic polynomial</span></td><td><span class="coord">det(A − λI)</span> — جذورها القيم الذاتية</td></tr>
+    <tr><td>مصفوفتان متشابهتان</td><td><span class="en" lang="en" dir="ltr">similar matrices</span></td><td><span class="coord">B = S⁻¹AS</span> — التطبيق نفسه بأساس آخر</td></tr></table>
+  </section>
+
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0020-trace-characteristic.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>trace</code> — أثر مصفوفة مربعة</li>
+      <li><code>det2</code> — محدد ‎2×2‎</li>
+      <li><code>matmul2</code> — ضرب مصفوفتين ‎2×2‎</li>
+      <li><code>trace_cycle_holds</code> — تحقق ‎tr(AB) = tr(BA)‎</li>
+      <li><code>char_poly2</code> — معاملات ‎(1, −tr, det)‎</li>
+      <li><code>eigenvalues2</code> — جذرا الكثيرة المميزة</li>
+      <li><code>invariants_match</code> — مجموع الجذور أثرٌ وحاصل ضربها محدد</li>
+    </ul></div>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0020-trace-characteristic">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0020">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0020">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0020" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 4 · القسم 4.1 — Determinant and Trace</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0019-projections-rotations.html" rel="prev"><small>الدرس السابق</small>الإسقاطات المتعامدة والدورانات</a>
+    <a class="next" href="0021-eigenvalues.html" rel="next"><small>الدرس التالي</small>القيم والمتجهات الذاتية</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0020 · الأثر وكثيرة الحدود المميزة</span><span>التمرين: <code lang="en">python3 practice/0020-trace-characteristic.py</code> · <a href="../playground.html?ex=0020-trace-characteristic">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
+  tex(document.getElementById('k1'),"\\mathrm{tr}(A)=\\sum_{i=1}^{n} a_{ii} \\qquad \\mathrm{tr}(AB)=\\mathrm{tr}(BA) \\qquad p_A(\\lambda)=\\det(A-\\lambda I)");
+  function mn(v){return String(Math.round(v*10000)/10000).replace(/-/g,"\u2212");}
+  function m2(id){return [+document.getElementById(id[0]).value,+document.getElementById(id[1]).value,
+                          +document.getElementById(id[2]).value,+document.getElementById(id[3]).value];}
+  function mul2(A,B){return [A[0]*B[0]+A[1]*B[2], A[0]*B[1]+A[1]*B[3],
+                             A[2]*B[0]+A[3]*B[2], A[2]*B[1]+A[3]*B[3]];}
+  var tr2=function(M){return M[0]+M[3];}, dt2=function(M){return M[0]*M[3]-M[1]*M[2];};
+
+  /* ١ · دورة الضرب لا تغيّر الأثر */
+  document.getElementById('tGo').onclick=function(){
+    var A=m2(['ta','tb','tc','td']), B=m2(['ue','uf','ug','uh']);
+    var AB=mul2(A,B), BA=mul2(B,A), same=Math.abs(tr2(AB)-tr2(BA))<1e-9;
+    document.getElementById('tRO').innerHTML=
+      "<span class='coord'>tr(AB) = "+mn(tr2(AB))+"</span> · <span class='coord'>tr(BA) = "+mn(tr2(BA))+"</span> → "+
+      (same?"<b>متساويان</b> — ولاحظ أن <span class='coord'>AB ≠ BA</span> عادةً، ومع ذلك يتساوى الأثران":"اختلفا — راجع الإدخال")+
+      "<br>الضرب نفسه غير تبادلي: <span class='coord'>AB = ["+mn(AB[0])+", "+mn(AB[1])+"; "+mn(AB[2])+", "+mn(AB[3])+"]</span> و<span class='coord'>BA = ["+mn(BA[0])+", "+mn(BA[1])+"; "+mn(BA[2])+", "+mn(BA[3])+"]</span>";
+  };
+  document.getElementById('tGo').click();
+
+  /* ٢ · منحنى الكثيرة المميزة وجذراها */
+  var cpF=FIG('cpCv'), pL=document.getElementById('pL'), pLv=document.getElementById('pLv');
+  function poly(){var A=m2(['pa','pb','pc','pd']);return {t:tr2(A),d:dt2(A),A:A};}
+  function roots(t,d){var disc=t*t-4*d; if(disc<0) return null;
+    var s=Math.sqrt(disc); return [(t-s)/2,(t+s)/2];}
+  function pAt(L,t,d){return L*L-t*L+d;}
+  function cpDraw(){
+    if(!cpF) return;
+    var P=poly(), C=cpF.col(), R=roots(P.t,P.d), L=+pL.value, y=pAt(L,P.t,P.d);
+    pLv.textContent=L;
+    var lo=(R?Math.min(R[0],R[1]):P.t/2)-3, hi=(R?Math.max(R[0],R[1]):P.t/2)+3;
+    var pts=[[lo,0],[hi,0],[L,y]];
+    if(R){pts.push([R[0],0],[R[1],0]);}
+    var vtx=P.t/2, vy=pAt(vtx,P.t,P.d); pts.push([vtx,vy]);
+    cpF.fit(pts,34,46).clear().grid();
+    var i, prev=null, step=(hi-lo)/220;
+    for(i=0;i<=220;i++){var x=lo+i*step, cur=[x,pAt(x,P.t,P.d)];
+      if(prev) cpF.line(prev,cur,C.accent,2.4); prev=cur;}
+    /* الجذران على المحور الأفقي: الوسم أسفلهما لا في اتجاه الأصل، وإلا ركب النقطة */
+    if(R){ R.forEach(function(r,k){ cpF.dot([r,0],C.terra,6).tag([r,0],"L"+(k+1)+" = "+mn(r),C.terra,0,22); }); }
+    cpF.dot([L,y],C.ink,5).line([L,0],[L,y],C.ink,1.6,[5,5]);
+    cpF.note(12,12,'p(L) = L^2 - '+mn(P.t)+'L + '+mn(P.d),C.accent);
+    cpF.note(12,30,'p('+mn(L)+') = '+mn(y),C.ink);
+    cpF.note(12,48,R?'two real roots  ->  two eigenvalues':'no real root  ->  complex eigenvalues',R?C.soft:C.terra);
+    tex(document.getElementById('pStage'),"p(\\lambda)=\\lambda^2-"+(Math.round(P.t*1000)/1000)+"\\lambda+"+(Math.round(P.d*1000)/1000));
+    document.getElementById('pRO').innerHTML=
+      "<span class='coord'>tr(A) = "+mn(P.t)+"</span> · <span class='coord'>det(A) = "+mn(P.d)+"</span> · "+
+      (R?("الجذران <span class='coord'>"+mn(R[0])+"</span> و<span class='coord'>"+mn(R[1])+"</span> — ومجموعهما <span class='coord'>"+mn(R[0]+R[1])+"</span> هو الأثر، وحاصل ضربهما <span class='coord'>"+mn(R[0]*R[1])+"</span> هو المحدد")
+        :("المميّز <span class='coord'>tr² − 4·det = "+mn(P.t*P.t-4*P.d)+"</span> سالب: لا جذر حقيقي — التحويل يدوّر ولا يُبقي اتجاهاً على حاله"));
+  }
+  ['pa','pb','pc','pd'].forEach(function(id){document.getElementById(id).addEventListener('input',cpDraw);});
+  pL.addEventListener('input',cpDraw);
+  document.getElementById('pSnap').onclick=function(){
+    var P=poly(), R=roots(P.t,P.d); if(!R){cpDraw();return;}
+    var L=+pL.value, near=Math.abs(L-R[0])<=Math.abs(L-R[1])?R[0]:R[1];
+    pL.value=Math.round(near*10)/10; cpDraw();
+  };
+  onTheme(cpDraw); cpDraw();
+
+  /* ٣ · الثبات تحت التشابه */
+  var S_PRESET={shear:[1,1,0,1], scale:[2,0,0,1], rot:[0.7071,-0.7071,0.7071,0.7071], swap:[0,1,1,0]};
+  function inv2(M){var d=dt2(M); if(Math.abs(d)<1e-12) return null;
+    return [M[3]/d,-M[1]/d,-M[2]/d,M[0]/d];}
+  document.getElementById('sGo').onclick=function(){
+    var A=m2(['pa','pb','pc','pd']), S=S_PRESET[document.getElementById('sPick').value], Si=inv2(S);
+    var el=document.getElementById('sRO');
+    if(!Si){el.innerHTML="مصفوفة الأساس شاذة — لا تصلح لتغيير أساس";return;}
+    var B=mul2(mul2(Si,A),S);
+    var rA=roots(tr2(A),dt2(A)), rB=roots(tr2(B),dt2(B));
+    el.innerHTML=
+      "<span class='coord'>S = ["+mn(S[0])+", "+mn(S[1])+"; "+mn(S[2])+", "+mn(S[3])+"]</span><br>"+
+      "<span class='coord'>A = ["+mn(A[0])+", "+mn(A[1])+"; "+mn(A[2])+", "+mn(A[3])+"]</span> · "+
+      "<span class='coord'>S⁻¹AS = ["+mn(B[0])+", "+mn(B[1])+"; "+mn(B[2])+", "+mn(B[3])+"]</span><br>"+
+      "المصفوفتان مختلفتان عنصراً بعنصر، ومع ذلك: <span class='coord'>tr: "+mn(tr2(A))+" → "+mn(tr2(B))+"</span> · "+
+      "<span class='coord'>det: "+mn(dt2(A))+" → "+mn(dt2(B))+"</span>"+
+      (rA&&rB?(" · <span class='coord'>λ: "+mn(rA[0])+", "+mn(rA[1])+" → "+mn(rB[0])+", "+mn(rB[1])+"</span>"):"")+
+      "<br>الأرقام الثلاثة لم تتحرك — لأنها صفات التطبيق لا صفات تمثيله.";
+  };
+  document.getElementById('sGo').click();
+
+  var ANS={q1:{"0":["صحيح — 1 + 4 = 5.",true],"1":["هذا مجموع كل العناصر لا القطر.",false],"2":["هذا المحدد.",false],"3":["راجع: القطر هو 1 و4.",false]},
+    q2:{"0":["صحيح — p(λ) = λ² − tr·λ + det.",true],"1":["إشارة الأثر سالبة في الصيغة.",false],"2":["بدّلت موضع الأثر والمحدد.",false],"3":["الكثيرة من الدرجة الثانية لا الأولى.",false]},
+    q3:{"0":["صحيح — الأثر يحترم دورة الضرب لا ضرب الأثرين.",true],"1":["جرّبها على مصفوفتي الوحدة: tr(I·I)=2 بينما 2·2=4.",false],"2":["المربعة لا تكفي — المثال المضاد مربع.",false],"3":["قابلية العكس لا علاقة لها.",false]},
+    q4:{"0":["صحيح — det(A) = Πλᵢ.",true],"1":["المجموع هو الأثر لا المحدد.",false],"2":["هذا عدد القيم لا حاصل ضربها.",false],"3":["القيم الذاتية تكفي تماماً.",false]},
+    q5:{"0":["صحيح — اختلاف الأثر ينفي التشابه.",true],"1":["تساوي المحددين لا يكفي مع اختلاف الأثر.",false],"2":["التشابه شرطه ثبات كل الثوابت.",false],"3":["القطرية لا تنقذ اختلاف الأثر.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

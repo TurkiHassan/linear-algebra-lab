@@ -1,0 +1,423 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0028 · جاكوبي وتدرّجات الدوال المتجهة — Jacobians & Vector-Valued Gradients</title>
+<meta name="description" content="مصفوفة جاكوبي لدالة متجهة، وجاكوبي التطبيق الخطي، وتدرّجات المصفوفات، وتدرّج خسارة المربعات الصغرى بقاعدة السلسلة.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0028-jacobian.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0028 · جاكوبي وتدرّجات الدوال المتجهة — مختبر الجبر الخطي">
+<meta property="og:description" content="مصفوفة جاكوبي لدالة متجهة، وجاكوبي التطبيق الخطي، وتدرّجات المصفوفات، وتدرّج خسارة المربعات الصغرى بقاعدة السلسلة.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
+  .figcap .coord{background:none;padding:0}
+  .inv-grid{display:grid;grid-template-columns:repeat(2,auto);justify-content:center;gap:6px;direction:ltr}
+  .inv-grid input[type=number]{width:68px;text-align:center}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0028 · جاكوبي وتدرّجات الدوال المتجهة",
+ "alternateName": "Jacobians & Vector-Valued Gradients",
+ "description": "مصفوفة جاكوبي لدالة متجهة، وجاكوبي التطبيق الخطي، وتدرّجات المصفوفات، وتدرّج خسارة المربعات الصغرى بقاعدة السلسلة.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0028-jacobian.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 28
+}
+</script>
+</head>
+<body data-lesson-id="0028">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0027-partial-gradients.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0028">الخارطة</a> · <a href="0029-backprop.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0028 · حساب المتجهات</div>
+    <h1>جاكوبي وتدرّجات الدوال المتجهة</h1>
+    <span class="en-line" lang="en">Gradients of Vector-Valued Functions & Matrices — the Jacobian is m x n, it equals A for f(x) = Ax, and it drives the least-square loss</span>
+    <div class="rule"></div>
+    <p class="meta">~35 دقيقة · المتطلب: الدرس 0027 (الاشتقاق الجزئي والتدرّج)</p>
+  </header>
+
+
+  <section id="s1">
+    <h2><span class="num">١</span> حين يصير المخرج متجهاً: مصفوفة جاكوبي<span class="en-sub" lang="en">For f: R^n -> R^m the derivative is an m x n matrix</span></h2>
+    <p>في الدرس <span class="coord">0027</span> كان المخرج عدداً واحداً، فكان التدرّج صفاً. والآن ليكن المخرج متجهاً: <span class="coord">f: ℝⁿ ↦ ℝᵐ</span>، أي <span class="coord">f(x) = [f₁(x), …, f_m(x)]ᵀ</span>. اشتق بالنسبة إلى متغير واحد تحصل على <b>عمود</b>: <span class="coord">∂f/∂xᵢ = [∂f₁/∂xᵢ, …, ∂f_m/∂xᵢ]ᵀ</span>، لأن كل مركّبة من المخرج تتأثر.</p>
+    <p>اصفف هذه الأعمدة جنباً إلى جنب — عموداً لكل متغير مدخل — تحصل على ال<span class="term">جاكوبي</span> <span class="en" lang="en" dir="ltr">(Jacobian)</span>: <span class="coord">J = ∇ₓf = df/dx ∈ ℝ^(m×n)</span>، صفٌّ لكل مخرج وعمودٌ لكل مدخل. والعنصر <span class="coord">Jᵢⱼ = ∂fᵢ/∂xⱼ</span> يجيب سؤالاً واحداً: كم يتغير المخرج رقم <span class="coord">i</span> إذا تحرك المدخل رقم <span class="coord">j</span>؟</p>
+    <div class="analogy"><b>تشبيه: لوحة مازج الصوت</b><p>لكل مقبض دخول أثرٌ على كل قناة خروج. جدول هذه الآثار — أثر كل مقبض في كل قناة — هو الجاكوبي. عمود لكل مقبض، وصف لكل قناة. <span class="en" lang="en" dir="ltr">(One row per output, one column per input.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> شكل المشتقة يتبع شكل المدخل والمخرج. <span class="coord">f: ℝⁿ ↦ ℝ</span> مشتقتها صفٌّ في <span class="coord">ℝ^(1×n)</span>، و<span class="coord">f: ℝⁿ ↦ ℝᵐ</span> مشتقتها مصفوفة في <span class="coord">ℝ^(m×n)</span>. فإن اختلّ بعدٌ في حسابك، فالخطأ في الشكل قبل أن يكون في الجبر.</p></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>طبقة شبكة عصبية بلا انحياز هي <span class="coord">f(x) = Ax</span>. ما جاكوبيها بالضبط؟ وهل يعتمد على <span class="coord">x</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p>الجاكوبي هو <span class="coord">A</span> نفسها، ولا يعتمد على <span class="coord">x</span> إطلاقاً. السبب: <span class="coord">fᵢ(x) = Σⱼ Aᵢⱼxⱼ</span>، فالمشتقة الجزئية <span class="coord">∂fᵢ/∂xⱼ = Aᵢⱼ</span> عدد ثابت. وهذا يترجم جملة معروفة: <b>التطبيق الخطي هو تخطيطه</b> — لا شيء ينحني فيه لتقرّبه. <span class="en" lang="en" dir="ltr">(A linear map is its own linearization.)</span></p></details></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Linear · JACOBIAN">
+      <h3>جاكوبي الطبقة الخطية</h3>
+      <p class="hint">أدخل <span class="coord">A</span>: اللوحة تحسب الجاكوبي <b>عددياً</b> من الدالة، ثم تقارنه بالمصفوفة نفسها</p>
+      <div class="controls"><label><span class="coord">A</span></label><span class="inv-grid"><input type="number" id="ja" value="2"><input type="number" id="jb" value="1"><input type="number" id="jc" value="0"><input type="number" id="jd" value="3"></span></div>
+      <canvas id="jCv" width="640" height="340" role="img"
+              aria-label="مربع الوحدة وصورته تحت التطبيق الخطي، وأعمدة الجاكوبي كسهمين"></canvas>
+      <p class="figcap">المربع الرمادي هو مربع الوحدة، والأزرق صورته — وعمودا الجاكوبي هما صورتا متجهي الأساس</p>
+      <div class="readout" id="jRO" style="direction:rtl;text-align:right">الجاكوبي…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> جاكوبي بلا خطية، وتدرّجات المصفوفات<span class="en-sub" lang="en">Nonlinear Jacobians, and what happens when you differentiate w.r.t. a matrix</span></h2>
+    <p>إن لم تكن الدالة خطية تغيّر الجاكوبي من نقطة إلى أخرى، وهذا بالضبط ما يجعله مفيداً: هو <b>أفضل تقريب خطي محلي</b> للدالة عند تلك النقطة. خذ مسار المحاضرة <span class="coord">g(t) = (t·cos t, t·sin t)</span>: جاكوبيه عمودٌ في <span class="coord">ℝ^(2×1)</span> يساوي <span class="coord">[cos t − t·sin t, sin t + t·cos t]ᵀ</span>، وهو متجه السرعة على اللولب.</p>
+    <p>ثم يأتي سؤال أغرب: ما مشتقة دالة بالنسبة إلى <b>مصفوفة</b>؟ إن كانت <span class="coord">A ∈ ℝ^(m×n)</span> و<span class="coord">B ∈ ℝ^(p×q)</span>، فالجاكوبي <span class="coord">dA/dB</span> مصفوف رباعي الأبعاد في <span class="coord">ℝ^((m×n)×(p×q))</span> — أي <span class="term">موتر</span> <span class="en" lang="en" dir="ltr">(tensor)</span>. لا تفزع: القاعدة نفسها لم تتغير، تغيّر عدد المحاور فقط.</p>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>مثال الشرائح: في <span class="coord">f(x) = Ax</span>، المشتقة بالنسبة إلى <span class="coord">A</span> لا إلى <span class="coord">x</span> تعطي <span class="coord">∂fᵢ/∂Aᵢ. = xᵀ</span> للصف رقم <span class="coord">i</span> و<span class="coord">0ᵀ</span> لكل صف آخر. أي أن كل مخرج يرى صفَّه من <span class="coord">A</span> ولا يرى الصفوف الأخرى — وهذا هو سبب تفرّق التدرّجات في الطبقات الكثيفة.</p></div>
+    <div class="demo" data-label="Pick · SHAPE">
+      <h3>معرض الجاكوبيات</h3>
+      <p class="hint">اختر دالة متجهة: اللوحة تعطي شكل الجاكوبي وقيمته عند النقطة، وتتحقق منه عددياً</p>
+      <div class="controls"><label>الدالة
+        <select id="vPick">
+          <option value="lin">f(x) = A x   (a linear layer)</option>
+          <option value="spiral">g(t) = ( t cos t , t sin t )</option>
+          <option value="polar">p(r, a) = ( r cos a , r sin a )</option>
+          <option value="scalar">h(x) = exp( x1 * x2^2 )</option>
+        </select></label>
+        <label><span class="coord">t</span> <input type="range" id="vT" min="0.1" max="3" step="0.05" value="1"></label><span class="coord" id="vTv">1</span></div>
+      <div class="readout" id="vRO" style="direction:rtl;text-align:right">الشكل…</div>
+    </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>جاكوبي التطبيق الخطي أولاً، ثم تدرّج خسارة المربعات الصغرى كما في الشرائح:</p>
+      <pre dir="ltr">PART 1   f(x) = A x   with   A = [ 2  1 ]
+                                 [ 0  3 ]
+
+  f1(x) = 2 x1 + 1 x2        f2(x) = 0 x1 + 3 x2
+
+  df1/dx1 = 2    df1/dx2 = 1
+  df2/dx1 = 0    df2/dx2 = 3
+
+  J = [ 2  1 ]  =  A          and it does not depend on x at all
+      [ 0  3 ]
+
+PART 2   least-square loss      L(e) = ||e||^2 ,  e(theta) = y - Phi theta
+
+  Phi = [ 1 ]      y = [ 2 ]      theta = 1      (one parameter, three samples)
+        [ 2 ]          [ 4 ]
+        [ 3 ]          [ 7 ]
+
+  residual        e = y - Phi theta = [ 1 , 2 , 4 ]^T
+  loss            L = e^T e = 1 + 4 + 16 = 21
+
+  the two factors of the chain rule
+
+    dL/de    = 2 e^T            in R^(1x3)  =  [ 2  4  8 ]
+    de/dtheta = -Phi            in R^(3x1)  =  [ -1 , -2 , -3 ]^T
+
+  multiply, inner dimension 3 matches
+
+    dL/dtheta = 2 e^T (-Phi) = -2 ( 1*1 + 2*2 + 4*3 )
+              = -2 * 17
+              = -34            in R^(1x1)
+
+  gradient descent, eta = 0.01
+
+    theta <- 1 - 0.01 * (-34) = 1.34        loss drops to 12.6068
+
+  closed form optimum
+
+    theta* = (Phi^T Phi)^-1 Phi^T y = 31 / 14 = 2.2142857</pre>
+      <p class="worked-note">لاحظ ترتيب الأبعاد في الجزء الثاني: <span class="coord">1×3</span> ثم <span class="coord">3×1</span>، فالبعد الداخلي متطابق والناتج <span class="coord">1×1</span>. وهذا هو الفحص الأول لكل حساب تدرّج: هل تتراصّ الأبعاد؟</p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> تدرّج خسارة المربعات الصغرى<span class="en-sub" lang="en">The least-square loss gradient — the chain rule on a real model</span></h2>
+    <p>نموذج خطي <span class="coord">y = Φθ</span>: المصفوفة <span class="coord">Φ ∈ ℝ^(N×D)</span> هي جدول الخصائص — صفٌّ لكل عيّنة وعمودٌ لكل خاصية — والمتجه <span class="coord">θ ∈ ℝ^D</span> هو ما نتعلمه. والخسارة <span class="coord">L(e) = ‖e‖²</span> حيث <span class="coord">e(θ) = y − Φθ</span> هو البواقي.</p>
+    <p>وبقاعدة السلسلة: <span class="coord">∂L/∂θ = (∂L/∂e)(∂e/∂θ)</span>. الحدّ الأول <span class="coord">∂L/∂e = 2eᵀ ∈ ℝ^(1×N)</span> لأن <span class="coord">‖e‖² = eᵀe</span>، والثاني <span class="coord">∂e/∂θ = −Φ ∈ ℝ^(N×D)</span>. فالنتيجة <span class="coord">∂L/∂θ = −2eᵀΦ = −2(yᵀ − θᵀΦᵀ)Φ</span>، وهي صفٌّ في <span class="coord">ℝ^(1×D)</span>.</p>
+    <div class="demo" data-label="Fit · LEAST SQUARES">
+      <h3>مقياس البواقي والتدرّج</h3>
+      <p class="hint">اسحب <span class="coord">θ</span> وراقب البواقي والخسارة والتدرّج — الخسارة قطع مكافئ وقاعه الحل المغلق</p>
+      <div class="controls"><label><span class="coord">θ</span> <input type="range" id="lT" min="0" max="4" step="0.02" value="1"></label><span class="coord" id="lTv">1</span>
+        <button class="btn" id="lStep">خطوة هبوط واحدة</button><button class="btn ghost" id="lOpt">اقفز إلى الحل المغلق</button></div>
+      <canvas id="lCv" width="640" height="360" role="img"
+              aria-label="نقاط البيانات والخط المقدَّر والبواقي، ومنحنى الخسارة مع قيمة المعامل"></canvas>
+      <p class="figcap">النقاط بيانات، والخط نموذجٌ ميله <span class="coord">θ</span>، والقطع الصغير أسفلاً هو الخسارة مع تغيّر <span class="coord">θ</span></p>
+      <div class="kmath" id="lStage" style="min-height:52px"></div>
+      <div class="readout" id="lRO" style="direction:rtl;text-align:right">البواقي…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الأبعاد أولاً لا الجبر. عند ضرب جاكوبيين يجب أن يتطابق البعد الداخلي: <span class="coord">(1×N)(N×D)</span> يعطي <span class="coord">(1×D)</span>. فإن خرج شكلٌ غير متوقع فقد قلبت منقولاً في مكان ما — وهذا أشهر خطأ في حساب التدرّجات يدوياً. <span class="en" lang="en" dir="ltr">(Check the shapes before the algebra.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>مقارنة نافعة: الدرس <span class="coord">0019</span> حلّ المربعات الصغرى بالإسقاط المتعامد — حلٌّ مغلق دفعة واحدة. وهذا الدرس يحلّها بالتدرّج — خطوة خطوة. الأول أدق حين يمكن، والثاني هو الوحيد الممكن حين تصير المعادلات ملايين.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>الجاكوبي</td><td>مصفوفة مشتقات</td><td>أفضل تقريب خطي محلي للدالة، صفٌّ لكل مخرج وعمودٌ لكل مدخل</td></tr>
+    <tr><td>جاكوبي التطبيق الخطي</td><td>يحتاج حساباً</td><td>هو المصفوفة نفسها، ولا يعتمد على النقطة</td></tr>
+    <tr><td>تدرّج المربعات الصغرى</td><td>صيغة تُحفظ</td><td>ضرب جاكوبيين تتراصّ أبعادهما: <span class="coord">(1×N)</span> في <span class="coord">(N×D)</span></td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> المشتقة عدد أو متجه. <b>بعد هذا الدرس:</b> المشتقة كائنٌ شكله يتبع شكل المدخل والمخرج، وضربُ الأشكال هو ما يحرّك الحساب كله.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما شكل جاكوبي دالة <span class="coord">f: ℝⁿ ↦ ℝᵐ</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0">مصفوفة <span class="coord">m×n</span></button><button class="opt" data-q="q1" data-a="1">مصفوفة <span class="coord">n×m</span></button><button class="opt" data-q="q1" data-a="2">متجه صف <span class="coord">1×n</span></button><button class="opt" data-q="q1" data-a="3">عدد واحد</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">ما جاكوبي <span class="coord">f(x) = Ax</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">A</span> نفسها، مهما كانت <span class="coord">x</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">Ax</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">Aᵀ</span></button><button class="opt" data-q="q2" data-a="3"><span class="coord">x</span></button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">في خسارة المربعات الصغرى، ما <span class="coord">∂L/∂e</span> إذا كانت <span class="coord">L = ‖e‖²</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0"><span class="coord">2eᵀ</span> في <span class="coord">ℝ^(1×N)</span></button><button class="opt" data-q="q3" data-a="1"><span class="coord">e</span></button><button class="opt" data-q="q3" data-a="2"><span class="coord">2e</span> كعمود</button><button class="opt" data-q="q3" data-a="3"><span class="coord">‖e‖</span></button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">لماذا يُقال إن الجاكوبي تقريب خطي محلي؟</div>
+      <button class="opt" data-q="q4" data-a="0">لأنه يصف كيف تتغير الدالة خطياً في جوار النقطة وحدها</button><button class="opt" data-q="q4" data-a="1">لأنه يساوي الدالة في كل مكان</button><button class="opt" data-q="q4" data-a="2">لأنه دائماً مربع</button><button class="opt" data-q="q4" data-a="3">لأنه لا يعتمد على النقطة أبداً</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">ما شكل <span class="coord">dA/dB</span> إذا كانت <span class="coord">A ∈ ℝ^(m×n)</span> و<span class="coord">B ∈ ℝ^(p×q)</span>؟</div>
+      <button class="opt" data-q="q5" data-a="0">موتر رباعي الأبعاد في <span class="coord">ℝ^((m×n)×(p×q))</span></button><button class="opt" data-q="q5" data-a="1">مصفوفة <span class="coord">m×p</span></button><button class="opt" data-q="q5" data-a="2">متجه صف</button><button class="opt" data-q="q5" data-a="3">غير معرّف</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>مصفوفة جاكوبي</td><td><span class="en" lang="en" dir="ltr">Jacobian</span></td><td>مصفوفة المشتقات الجزئية لدالة متجهة، صفٌّ لكل مخرج</td></tr>
+    <tr><td>الدالة المتجهة</td><td><span class="en" lang="en" dir="ltr">vector-valued function</span></td><td>دالة مخرجها متجه لا عدد</td></tr>
+    <tr><td>الموتر</td><td><span class="en" lang="en" dir="ltr">tensor</span></td><td>مصفوف متعدد المحاور — يظهر عند الاشتقاق بالنسبة إلى مصفوفة</td></tr></table>
+  </section>
+
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0028-jacobian.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>matvec</code> — ضرب مصفوفة في متجه</li>
+      <li><code>jacobian</code> — جاكوبي عددي لدالة متجهة</li>
+      <li><code>jacobian_shape</code> — شكل الجاكوبي <span class="coord">(m, n)</span></li>
+      <li><code>linear_jacobian</code> — جاكوبي التطبيق الخطي، وهو المصفوفة نفسها</li>
+      <li><code>residual</code> — البواقي <span class="coord">y − Φθ</span></li>
+      <li><code>least_squares_loss</code> — الخسارة <span class="coord">eᵀe</span></li>
+      <li><code>loss_gradient</code> — التدرّج <span class="coord">−2eᵀΦ</span></li>
+      <li><code>descent_step</code> — خطوة تحديث للمعاملات</li>
+    </ul></div>
+
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0028-jacobian">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0028">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0028">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0028" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span> — الفصل الخامس: Vector Calculus</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0027-partial-gradients.html" rel="prev"><small>الدرس السابق</small>الاشتقاق الجزئي والتدرّج</a>
+    <a class="next" href="0029-backprop.html" rel="next"><small>الدرس التالي</small>الانتشار الخلفي والاشتقاق التلقائي</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0028 · جاكوبي وتدرّجات الدوال المتجهة</span><span>التمرين: <code lang="en">python3 practice/0028-jacobian.py</code> · <a href="../playground.html?ex=0028-jacobian">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
+  tex(document.getElementById('k1'),"J=\\nabla_x f=\\frac{d\\mathbf{f}(x)}{dx}=\\begin{bmatrix}\\frac{\\partial f_1}{\\partial x_1}&\\cdots&\\frac{\\partial f_1}{\\partial x_n}\\\\ \\vdots&&\\vdots\\\\ \\frac{\\partial f_m}{\\partial x_1}&\\cdots&\\frac{\\partial f_m}{\\partial x_n}\\end{bmatrix}\\in\\mathbb{R}^{m\\times n}");
+  function mn(v){return String(Math.round(v*10000)/10000).replace(/-/g,"−");}
+  var H=1e-6;
+
+  /* ١ · جاكوبي الطبقة الخطية */
+  var jF=FIG('jCv'), JIDS=['ja','jb','jc','jd'];
+  function readA(){return JIDS.map(function(id){return +document.getElementById(id).value||0;});}
+  function jDraw(){
+    if(!jF) return;
+    var C=jF.col(), A=readA();
+    var map=function(v){return [A[0]*v[0]+A[1]*v[1], A[2]*v[0]+A[3]*v[1]];};
+    /* الجاكوبي عددياً: عمودٌ لكل متغير مدخل */
+    var p=[0.7,-0.4], J=[[0,0],[0,0]], i;
+    for(i=0;i<2;i++){
+      var up=p.slice(), dn=p.slice(); up[i]+=H; dn[i]-=H;
+      var a=map(up), b=map(dn);
+      J[0][i]=(a[0]-b[0])/(2*H); J[1][i]=(a[1]-b[1])/(2*H);
+    }
+    var sq=[[0,0],[1,0],[1,1],[0,1]], img=sq.map(map);
+    jF.fit(img.concat(sq),34,110).clear().grid();
+    jF.poly(sq,C.soft,null,1.8,[6,5]);
+    jF.poly(img,C.accent,"#0d5c4618",2.4);
+    jF.arrow([0,0],map([1,0]),C.vio,2.8).label(map([1,0]),"col 1",C.vio,20);
+    jF.arrow([0,0],map([0,1]),C.terra,2.8).label(map([0,1]),"col 2",C.terra,20);
+    jF.note(12,12,'numeric J = [ '+mn(J[0][0])+'  '+mn(J[0][1])+' ; '+mn(J[1][0])+'  '+mn(J[1][1])+' ]',C.vio);
+    jF.note(12,30,'matrix  A = [ '+mn(A[0])+'  '+mn(A[1])+' ; '+mn(A[2])+'  '+mn(A[3])+' ]',C.accent);
+    var same=Math.abs(J[0][0]-A[0])<1e-4&&Math.abs(J[0][1]-A[1])<1e-4&&Math.abs(J[1][0]-A[2])<1e-4&&Math.abs(J[1][1]-A[3])<1e-4;
+    jF.note(12,48,same?'identical  ->  J = A':'mismatch',same?C.soft:C.terra);
+    document.getElementById('jRO').innerHTML=
+      "الجاكوبي المحسوب عددياً عند نقطة عشوائية: <span class='coord'>["+mn(J[0][0])+", "+mn(J[0][1])+"; "+mn(J[1][0])+", "+mn(J[1][1])+"]</span>"+
+      "<br>والمصفوفة المدخلة: <span class='coord'>["+mn(A[0])+", "+mn(A[1])+"; "+mn(A[2])+", "+mn(A[3])+"]</span> → "+
+      (same?"<b>متطابقان</b> — غيّر النقطة كما شئت فلن يتغير الجاكوبي، لأن التطبيق الخطي لا ينحني":"اختلفا — راجع الإدخال")+
+      "<br>وعمودا الجاكوبي هما صورتا متجهي الأساس، وهذا نفسه تعريف مصفوفة التحويل في الدرس <span class='coord'>0014</span>.";
+  }
+  JIDS.forEach(function(id){document.getElementById(id).addEventListener('input',jDraw);});
+  onTheme(jDraw); jDraw();
+
+  /* ٢ · معرض الجاكوبيات */
+  var vT=document.getElementById('vT'), vTv=document.getElementById('vTv');
+  function numJac(f,x,m){
+    var n=x.length, J=[], i, j;
+    for(i=0;i<m;i++){J.push([]); for(j=0;j<n;j++) J[i].push(0);}
+    for(j=0;j<n;j++){
+      var up=x.slice(), dn=x.slice(); up[j]+=H; dn[j]-=H;
+      var a=f(up), b=f(dn);
+      for(i=0;i<m;i++) J[i][j]=(a[i]-b[i])/(2*H);
+    }
+    return J;
+  }
+  function fmtJ(J){return J.map(function(r){return r.map(mn).join(", ");}).join("; ");}
+  function vShow(){
+    var kind=document.getElementById('vPick').value, t=+vT.value; vTv.textContent=mn(t);
+    var el=document.getElementById('vRO'), J, txt, shape, exact;
+    if(kind==="lin"){
+      J=numJac(function(v){return [2*v[0]+v[1], 3*v[1]];},[t,t*0.5],2);
+      shape="2×2"; exact="A = [2, 1; 0, 3]";
+      txt="التطبيق خطي، فالجاكوبي ثابت لا يتحرك مع <span class='coord'>t</span> إطلاقاً.";
+    } else if(kind==="spiral"){
+      J=numJac(function(v){return [v[0]*Math.cos(v[0]), v[0]*Math.sin(v[0])];},[t],2);
+      shape="2×1"; exact="[cos t − t·sin t ; sin t + t·cos t] = ["+mn(Math.cos(t)-t*Math.sin(t))+"; "+mn(Math.sin(t)+t*Math.cos(t))+"]";
+      txt="مدخل واحد ومخرجان، فالجاكوبي عمود — وهو متجه السرعة على اللولب.";
+    } else if(kind==="polar"){
+      J=numJac(function(v){return [v[0]*Math.cos(v[1]), v[0]*Math.sin(v[1])];},[t,0.6],2);
+      shape="2×2"; exact="محدده <span class='coord'>r = "+mn(t)+"</span> — وهو معامل تمدد المساحة";
+      txt="مدخلان ومخرجان. محدد الجاكوبي هنا هو <span class='coord'>r</span> بعينه، وهو ما يفسّر ظهوره في تغيير المتغيرات.";
+    } else {
+      J=numJac(function(v){return [Math.exp(v[0]*v[1]*v[1])];},[t,1],1);
+      shape="1×2"; exact="[x₂²·exp(x₁x₂²), 2x₁x₂·exp(x₁x₂²)]";
+      txt="المخرج عدد واحد، فالجاكوبي صفٌّ — وهو التدرّج نفسه الذي عرفته في الدرس <span class='coord'>0027</span>.";
+    }
+    el.innerHTML="الشكل: <span class='coord'>"+shape+"</span> · الجاكوبي عددياً: <span class='coord'>["+fmtJ(J)+"]</span>"+
+      "<br>الصيغة المغلقة: <span class='coord'>"+exact+"</span><br>"+txt;
+  }
+  document.getElementById('vPick').addEventListener('input',vShow);
+  vT.addEventListener('input',vShow); vShow();
+
+  /* ٣ · المربعات الصغرى */
+  var PHI=[1,2,3], Y=[2,4,7];
+  var lF=FIG('lCv'), lT=document.getElementById('lT'), lTv=document.getElementById('lTv');
+  function resid(th){return Y.map(function(y,i){return y-PHI[i]*th;});}
+  function loss(th){return resid(th).reduce(function(s,e){return s+e*e;},0);}
+  function grad(th){var e=resid(th);return -2*e.reduce(function(s,v,i){return s+v*PHI[i];},0);}
+  function lDraw(){
+    if(!lF) return;
+    var C=lF.col(), th=+lT.value; lTv.textContent=mn(th);
+    var e=resid(th), L=loss(th), G=grad(th), opt=31/14;
+    var pts=[[0,0],[3.4,3.4*th],[3.4,8]], i;
+    for(i=0;i<3;i++) pts.push([PHI[i],Y[i]]);
+    lF.fit(pts,34,64).clear().grid();
+    lF.line([0,0],[3.4,3.4*th],C.accent,2.6);
+    for(i=0;i<3;i++){
+      lF.line([PHI[i],PHI[i]*th],[PHI[i],Y[i]],C.terra,2,[5,4]);
+      lF.dot([PHI[i],Y[i]],C.ink,5);
+    }
+    var prev=null;
+    for(i=0;i<=160;i++){var a=i/160*4, cur=[a*0.85,loss(a)*0.055];
+      if(prev) lF.line(prev,cur,C.vio,1.8); prev=cur;}
+    lF.dot([th*0.85,L*0.055],C.vio,5);
+    lF.note(12,12,'theta = '+mn(th)+'   loss = '+mn(L),C.ink);
+    lF.note(12,30,'dL/dtheta = '+mn(G),C.terra);
+    lF.note(12,48,'closed form theta* = '+mn(opt),C.accent);
+    tex(document.getElementById('lStage'),"\\frac{\\partial L}{\\partial\\theta}=2e^\\top(-\\Phi)="+(Math.round(G*1000)/1000));
+    document.getElementById('lRO').innerHTML=
+      "البواقي <span class='coord'>e = ["+e.map(mn).join(", ")+"]</span> · الخسارة <span class='coord'>L = "+mn(L)+"</span> · التدرّج <span class='coord'>∂L/∂θ = "+mn(G)+"</span>"+
+      "<br>"+(G<0?"التدرّج سالب، فالصعود يميناً — والهبوط يزيد <span class='coord'>θ</span>."
+              :(G>0?"التدرّج موجب، فالهبوط ينقص <span class='coord'>θ</span>.":"التدرّج معدوم: أنت عند القاع تماماً."))+
+      "<br>الحل المغلق <span class='coord'>θ* = 31/14 = "+mn(opt)+"</span>، وعنده تكون الخسارة <span class='coord'>"+mn(loss(opt))+"</span> — أقلّ ما يمكن.";
+  }
+  lT.addEventListener('input',lDraw);
+  document.getElementById('lStep').onclick=function(){
+    var th=+lT.value; th=th-0.01*grad(th);
+    lT.value=Math.max(0,Math.min(4,th)); lDraw();
+  };
+  document.getElementById('lOpt').onclick=function(){lT.value=Math.round(31/14*100)/100;lDraw();};
+  onTheme(lDraw); lDraw();
+
+  var ANS={q1:{"0":["صحيح — صفٌّ لكل مخرج وعمودٌ لكل مدخل.",true],"1":["مقلوبة: الأسطر للمخارج.",false],"2":["هذا شكل التدرّج حين يكون المخرج عدداً.",false],"3":["العدد يصلح حين يكون المدخل والمخرج عددين.",false]},
+    q2:{"0":["صحيح — لأن ∂fᵢ/∂xⱼ = Aᵢⱼ عدد ثابت.",true],"1":["هذا قيمة الدالة لا مشتقتها.",false],"2":["المنقول يظهر في اشتقاقات أخرى لا هنا.",false],"3":["x مدخل لا مشتقة.",false]},
+    q3:{"0":["صحيح — لأن ‖e‖² = eᵀe، ومشتقتها صفٌّ.",true],"1":["نسيت العامل 2 والمنقول.",false],"2":["الشكل صفٌّ لا عمود.",false],"3":["هذا المعيار لا مربعه.",false]},
+    q4:{"0":["صحيح — هذا هو معنى التخطيط في الدرس 0030.",true],"1":["لو ساواها لما احتجنا الدالة أصلاً.",false],"2":["شكله m×n وليس مربعاً بالضرورة.",false],"3":["عدم اعتماده على النقطة خاصية التطبيق الخطي وحده.",false]},
+    q5:{"0":["صحيح — موتر بأربعة محاور كما نصّت المحاضرة.",true],"1":["الأبعاد لا تختصر هكذا.",false],"2":["الصف يصلح حين يكون المخرج عدداً والمدخل متجهاً.",false],"3":["معرّف تماماً، لكنه موتر لا مصفوفة.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

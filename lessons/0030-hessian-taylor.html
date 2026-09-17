@@ -1,0 +1,445 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0030 · هسي والتخطيط وتايلور متعددة المتغيرات — Hessian, Linearization & Multivariate Taylor</title>
+<meta name="description" content="مصفوفة هسي وتماثلها وتصنيف الانحناء، والتخطيط كأول حدّين من تايلور، والنموذج التربيعي وخطوة نيوتن.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0030-hessian-taylor.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0030 · هسي والتخطيط وتايلور متعددة المتغيرات — مختبر الجبر الخطي">
+<meta property="og:description" content="مصفوفة هسي وتماثلها وتصنيف الانحناء، والتخطيط كأول حدّين من تايلور، والنموذج التربيعي وخطوة نيوتن.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
+  .figcap .coord{background:none;padding:0}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0030 · هسي والتخطيط وتايلور متعددة المتغيرات",
+ "alternateName": "Hessian, Linearization & Multivariate Taylor",
+ "description": "مصفوفة هسي وتماثلها وتصنيف الانحناء، والتخطيط كأول حدّين من تايلور، والنموذج التربيعي وخطوة نيوتن.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0030-hessian-taylor.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 30
+}
+</script>
+</head>
+<body data-lesson-id="0030">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0029-backprop.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0030">الخارطة</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0030 · حساب المتجهات</div>
+    <h1>هسي والتخطيط وتايلور متعددة المتغيرات</h1>
+    <span class="en-line" lang="en">Higher-Order Derivatives, Linearization & the Multivariate Taylor Series — curvature, the tangent plane, and the Newton step</span>
+    <div class="rule"></div>
+    <p class="meta">~35 دقيقة · المتطلب: الدرس 0029 (الانتشار الخلفي والاشتقاق التلقائي)</p>
+  </header>
+
+
+  <section id="s1">
+    <h2><span class="num">١</span> المشتقات العليا: هسي ومصفوفة الانحناء<span class="en-sub" lang="en">The Hessian collects every second partial derivative, and it is symmetric</span></h2>
+    <p>التدرّج يخبرك بالميل، ولا يخبرك بالانحناء. ولمعرفة الانحناء اشتق مرة ثانية: لكل زوج من المحاور مشتقة ثانية <span class="coord">∂²f/∂xᵢ∂xⱼ</span>، وجمعها كلها في مصفوفة يعطي ال<span class="term">هسي</span> <span class="en" lang="en" dir="ltr">(Hessian)</span>: <span class="coord">∇²ₓf ∈ ℝ^(n×n)</span>.</p>
+    <p>وإن كانت الدالة قابلة للاشتقاق مرتين فإن <b>ترتيب الاشتقاق لا يهم</b>: <span class="coord">∂²f/∂xᵢ∂xⱼ = ∂²f/∂xⱼ∂xᵢ</span>، أي أن هسي <b>متماثلة</b> دائماً. وهذه ليست ملاحظة عابرة: التماثل يستدعي النظرية الطيفية من الدرس <span class="coord">0023</span>، فلهسي قيم ذاتية حقيقية ومتجهات ذاتية متعامدة — وهي محاور الانحناء.</p>
+    <div class="analogy"><b>تشبيه: السيارة على الطريق</b><p>السرعة مشتقة أولى، والتسارع مشتقة ثانية. الأولى تقول أين تمضي، والثانية تقول هل ينعطف الطريق ومتى تحتاج إبطاء. خوارزمية بلا مشتقة ثانية تسير بلا إحساس بالمنعطفات. <span class="en" lang="en" dir="ltr">(Speed is first order; curvature is second.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> إشارات قيم هسي الذاتية تصنّف النقطة الحرجة: كلها موجبة فهي <b>صغرى محلية</b>، وكلها سالبة فهي <b>عظمى محلية</b>، ومختلطة فهي <b>نقطة سرج</b>. وهذا هو التعريف الموجب نفسه الذي قابلته في الدرس <span class="coord">0022</span>.</p></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>للدالة <span class="coord">f(x₁,x₂) = x₁²x₂ + x₁x₂³</span> عند النقطة <span class="coord">(1, 1)</span>: هل هسي متماثلة؟ وما نوع النقطة؟</p>
+      <details><summary>اكشف الجواب</summary><p>هسي هنا <span class="coord">[[2, 5], [5, 6]]</span> — متماثلة كما يجب. أثرها <span class="coord">8</span> ومحددها <span class="coord">−13</span>، وسالبية المحدد تعني قيمتين ذاتيتين مختلفتي الإشارة، فالنقطة <b>سرج</b>. لاحظ أنها ليست حرجة أصلاً لأن التدرّج <span class="coord">[3, 4]</span> لا ينعدم؛ فالانحناء يوصف عند أي نقطة لا عند الحرجة وحدها. <span class="en" lang="en" dir="ltr">(Negative determinant means a saddle.)</span></p></details></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Curvature · HESSIAN">
+      <h3>فاحص الانحناء</h3>
+      <p class="hint">اختر الدالة وأدخل النقطة: اللوحة تبني هسي عددياً، وتفحص تماثلها، وتصنّف الانحناء</p>
+      <div class="controls"><label>الدالة
+        <select id="hFn">
+          <option value="bowl">f = x^2 + y^2</option>
+          <option value="dome">f = - x^2 - y^2</option>
+          <option value="saddle">f = x^2 - y^2</option>
+          <option value="slide">f = x^2 y + x y^3</option>
+        </select></label>
+        <label><span class="coord">x</span> <input type="number" id="hX" value="1" step="0.25"></label>
+        <label><span class="coord">y</span> <input type="number" id="hY" value="1" step="0.25"></label></div>
+      <canvas id="hCv" width="640" height="360" role="img"
+              aria-label="خطوط مستوى الدالة قرب النقطة، ومحورا الانحناء وهما المتجهان الذاتيان لهسي"></canvas>
+      <p class="figcap">السهمان محورا الانحناء — المتجهان الذاتيان لهسي — والأخضر انحناء موجب والأحمر سالب</p>
+      <div class="kmath" id="hStage" style="min-height:52px"></div>
+      <div class="readout" id="hRO" style="direction:rtl;text-align:right">هسي…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> التخطيط: أول حدّين من تايلور<span class="en-sub" lang="en">Linearization — keep the first two Taylor terms and nothing more</span></h2>
+    <p>ال<span class="term">تخطيط</span> <span class="en" lang="en" dir="ltr">(linearization)</span> هو قطع متسلسلة تايلور عند الحد الأول: <span class="coord">f(x) ≈ f(x₀) + (∇ₓf)(x₀)(x − x₀)</span>. أي أنك تستبدل بالدالة مستوىً مماساً لها عند النقطة، وتصدّقه ما دمت قريباً.</p>
+    <p>وهذا التقريب البسيط هو أساس أشياء كثيرة: خطوة هبوط التدرّج تفترضه ضمناً، وحساسية النموذج للتشويش تُقاس به، ومعامل التمدد المحلي هو معيار جاكوبيه. وحين لا يكفي المستوى المماس نضيف الحد التربيعي، فنحصل على نموذج يرى الانحناء.</p>
+    <div class="demo" data-label="Order · APPROXIMATE">
+      <h3>المستوى المماس والقطع المكافئ</h3>
+      <p class="hint">حرّك <span class="coord">x₀</span> وقارن: التقريب الخطي يمسّ المنحنى، والتربيعي ينحني معه</p>
+      <div class="controls"><label>الدالة
+        <select id="aFn">
+          <option value="wave">f(x) = sin(x) + x / 3</option>
+          <option value="exp">f(x) = exp(x / 2)</option>
+          <option value="quart">f(x) = x^4 / 8 - x^2</option>
+        </select></label>
+        <label><span class="coord">x₀</span> <input type="range" id="aX" min="-3" max="3" step="0.05" value="1"></label><span class="coord" id="aXv">1</span></div>
+      <canvas id="aCv" width="640" height="360" role="img"
+              aria-label="منحنى الدالة، والتقريب الخطي عند النقطة، والتقريب التربيعي الذي يتبع الانحناء"></canvas>
+      <p class="figcap">الأخضر تقريبٌ خطي، والبنفسجي تربيعي — والفرق بينهما هو ما يراه الانحناء ولا يراه الميل</p>
+      <div class="readout" id="aRO" style="direction:rtl;text-align:right">التقريب…</div>
+    </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>هسي الدالة نفسها من الدرس <span class="coord">0027</span>، ثم تقريب تايلور من الرتبة الثانية، ثم خطوة نيوتن:</p>
+      <pre dir="ltr">f(x1, x2) = x1^2 x2 + x1 x2^3           at the point x0 = (1, 1)
+
+FIRST DERIVATIVES
+
+  df/dx1 = 2 x1 x2 + x2^3        df/dx2 = x1^2 + 3 x1 x2^2
+
+  grad f (1,1) = [ 3   4 ]                       in R^(1x2)
+
+SECOND DERIVATIVES
+
+  d2f/dx1dx1 = 2 x2                  = 2
+  d2f/dx1dx2 = 2 x1 + 3 x2^2         = 5
+  d2f/dx2dx1 = 2 x1 + 3 x2^2         = 5         same, as it must be
+  d2f/dx2dx2 = 6 x1 x2               = 6
+
+  H = [ 2  5 ]        symmetric
+      [ 5  6 ]
+
+  trace = 8 , det = 2*6 - 5*5 = -13   ->  eigenvalues of opposite sign  ->  SADDLE
+
+SECOND ORDER TAYLOR with delta = (0.1, 0.1)
+
+  f(x0)                = 1 + 1                        = 2
+  grad f . delta       = 3*0.1 + 4*0.1                = 0.7
+  0.5 * delta^T H delta = 0.5 * (0.02 + 2*0.05 + 0.06) = 0.09
+
+  approximation        = 2 + 0.7 + 0.09              = 2.79
+  true f(1.1, 1.1)     = 1.331 + 1.4641              = 2.7951
+  error                                              = 0.0051
+
+  first order alone would give 2.7  ->  error 0.0951 , nineteen times worse
+
+NEWTON STEP        delta* = - H^-1 (grad f)^T
+
+  H^-1 = (1 / -13) [  6  -5 ]
+                   [ -5   2 ]
+
+  H^-1 (grad f)^T = [ 2/13 , 7/13 ] = [ 0.1538462 , 0.5384615 ]
+
+  delta* = [ -0.1538462 , -0.5384615 ]</pre>
+      <p class="worked-note">الرقم المهم هو المقارنة الأخيرة: الحد التربيعي وحده قلّص الخطأ تسعة عشر ضعفاً. وهذا كل ما تشتريه طرق الرتبة الثانية.</p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> تايلور متعددة المتغيرات وخطوة نيوتن<span class="en-sub" lang="en">The multivariate Taylor series, and the curvature-aware step</span></h2>
+    <p>الصيغة العامة: <span class="coord">f(x) = Σₖ₌₀^∞ Dᵏₓf(x₀)/k! · δᵏ</span> حيث <span class="coord">δ = x − x₀</span>، والقوة <span class="coord">δᵏ</span> ضربٌ خارجي مكرر: <span class="coord">δ² = δ ⊗ δ = δδᵀ</span> و<span class="coord">δ³ = δ ⊗ δ ⊗ δ</span>. فالحدود العليا موترات لا مصفوفات — وهذا سبب الاكتفاء عملياً بحدّين أو ثلاثة.</p>
+    <p>والحدّان الأولان يعطيان النموذج التربيعي: <span class="coord">L(θ + Δ) ≈ L(θ) + ∇L(θ)Δ + ½ΔᵀE∇²L(θ)Δ</span>. ولو كان هذا النموذج صادقاً تماماً لأمكن القفز إلى قاعه في خطوة واحدة: <span class="coord">Δ* = −(∇²L)⁻¹(∇L)ᵀ</span> — وهذه <span class="term">خطوة نيوتن</span> <span class="en" lang="en" dir="ltr">(Newton step)</span>.</p>
+    <div class="demo" data-label="Order · COMPARE">
+      <h3>ميزان الرتبتين</h3>
+      <p class="hint">أدخل الإزاحة: اللوحة تقارن التقريب من الرتبة الأولى والثانية بالقيمة الحقيقية</p>
+      <div class="controls"><label><span class="coord">δ₁</span> <input type="number" id="tD1" value="0.1" step="0.05"></label>
+        <label><span class="coord">δ₂</span> <input type="number" id="tD2" value="0.1" step="0.05"></label>
+        <button class="btn" id="tGo">قارن الرتبتين</button></div>
+      <div class="readout" id="tRO" style="direction:rtl;text-align:right">المقارنة…</div>
+    </div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>خطوة نيوتن تحتاج عكس هسي، وحجمها <span class="coord">P×P</span> حيث <span class="coord">P</span> عدد المعاملات. في نموذج بمليار معامل يستحيل ذلك تخزيناً وحساباً، فتُستعمل تقريبات: قطرية، أو منخفضة الرتبة على صورة <span class="coord">∇² ≈ U_kΛ_kU_kᵀ + λI</span> — وهي التقريبات نفسها من الدرس <span class="coord">0025</span>. <span class="en" lang="en" dir="ltr">(The exact Hessian rarely fits.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>القيمة الذاتية الكبرى لهسي تُسمّى <b>الحدّة</b> <span class="en" lang="en" dir="ltr">(sharpness)</span>، وهي التي تقيّد حجم الخطوة: الاتجاه شديد الانحناء يقيّد معدّل التعلّم كله. أما الاتجاهات المسطّحة — القيم الذاتية الصغيرة — فهي التي يُعتقد أنها تحكم قدرة النموذج على التعميم.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>هسي</td><td>مصفوفة مشتقات ثانية</td><td>مصفوفة انحناء متماثلة، قيمها الذاتية تصنّف النقطة وتقيّد الخطوة</td></tr>
+    <tr><td>التخطيط</td><td>تبسيط تقريبي</td><td>أول حدّين من تايلور — وهو ما تفترضه كل خطوة هبوط تدرّج</td></tr>
+    <tr><td>خطوة نيوتن</td><td>طريقة أسرع</td><td>القفز إلى قاع النموذج التربيعي، وثمنها عكس مصفوفة <span class="coord">P×P</span></td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> التحسين سيرٌ في اتجاه الميل. <b>بعد هذا الدرس:</b> الميل رتبة أولى والانحناء رتبة ثانية، وكل خوارزمية تحسين هي اختيارٌ لمقدار ما تعرفه عن الانحناء ومقدار ما تدفعه ثمناً له.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما شكل هسي دالة <span class="coord">f: ℝⁿ ↦ ℝ</span>؟</div>
+      <button class="opt" data-q="q1" data-a="0">مصفوفة <span class="coord">n×n</span> متماثلة</button><button class="opt" data-q="q1" data-a="1">متجه صف <span class="coord">1×n</span></button><button class="opt" data-q="q1" data-a="2">مصفوفة <span class="coord">m×n</span></button><button class="opt" data-q="q1" data-a="3">عدد واحد</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">لماذا تكون هسي متماثلة دائماً لدالة قابلة للاشتقاق مرتين؟</div>
+      <button class="opt" data-q="q2" data-a="0">لأن ترتيب الاشتقاق الجزئي لا يغيّر النتيجة</button><button class="opt" data-q="q2" data-a="1">لأنها مربعة</button><button class="opt" data-q="q2" data-a="2">لأن التدرّج متجه صف</button><button class="opt" data-q="q2" data-a="3">هي ليست متماثلة عادةً</button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">ما تقريب الرتبة الأولى لدالة عند <span class="coord">x₀</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0"><span class="coord">f(x₀) + (∇f)(x₀)(x − x₀)</span></button><button class="opt" data-q="q3" data-a="1"><span class="coord">f(x₀)</span> وحدها</button><button class="opt" data-q="q3" data-a="2"><span class="coord">(∇f)(x₀)</span> وحدها</button><button class="opt" data-q="q3" data-a="3"><span class="coord">½(x − x₀)ᵀH(x − x₀)</span></button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">هسي عند نقطة حرجة قيمها الذاتية <span class="coord">9.39</span> و<span class="coord">−1.39</span> — ما نوع النقطة؟</div>
+      <button class="opt" data-q="q4" data-a="0">نقطة سرج — لاختلاف الإشارتين</button><button class="opt" data-q="q4" data-a="1">صغرى محلية</button><button class="opt" data-q="q4" data-a="2">عظمى محلية</button><button class="opt" data-q="q4" data-a="3">لا يمكن تحديده</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">ما العائق العملي الأكبر أمام خطوة نيوتن في الشبكات الكبيرة؟</div>
+      <button class="opt" data-q="q5" data-a="0">هسي مصفوفة <span class="coord">P×P</span> يتعذّر تخزينها وعكسها حين يكبر عدد المعاملات</button><button class="opt" data-q="q5" data-a="1">أن التدرّج غير معرّف</button><button class="opt" data-q="q5" data-a="2">أن هسي غير متماثلة</button><button class="opt" data-q="q5" data-a="3">أن تايلور لا تصح لأكثر من متغير</button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>مصفوفة هسي</td><td><span class="en" lang="en" dir="ltr">Hessian</span></td><td>كل المشتقات الثانية في مصفوفة متماثلة تصف الانحناء</td></tr>
+    <tr><td>التخطيط</td><td><span class="en" lang="en" dir="ltr">linearization</span></td><td>استبدال المستوى المماس بالدالة في جوار نقطة</td></tr>
+    <tr><td>خطوة نيوتن</td><td><span class="en" lang="en" dir="ltr">Newton step</span></td><td>القفز إلى قاع النموذج التربيعي بعكس هسي</td></tr></table>
+  </section>
+
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0030-hessian-taylor.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>gradient</code> — التدرّج عددياً</li>
+      <li><code>hessian</code> — هسي عددياً بفروق مركزية</li>
+      <li><code>is_symmetric</code> — فحص تماثل هسي</li>
+      <li><code>eigenvalues2</code> — قيمتا هسي الذاتيتان لمصفوفة <span class="coord">2×2</span></li>
+      <li><code>classify</code> — صغرى أم عظمى أم سرج</li>
+      <li><code>linearize</code> — تقريب الرتبة الأولى</li>
+      <li><code>taylor2</code> — تقريب الرتبة الثانية</li>
+      <li><code>newton_step</code> — الخطوة <span class="coord">−H⁻¹(∇f)ᵀ</span></li>
+    </ul></div>
+
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0030-hessian-taylor">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0030">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0030">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0030" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span> — الفصل الخامس: Vector Calculus</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0029-backprop.html" rel="prev"><small>الدرس السابق</small>الانتشار الخلفي والاشتقاق التلقائي</a>
+    <a class="next home" href="../index.html"><small>اكتمل المسار</small>إلى الفهرس</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0030 · هسي والتخطيط وتايلور متعددة المتغيرات</span><span>التمرين: <code lang="en">python3 practice/0030-hessian-taylor.py</code> · <a href="../playground.html?ex=0030-hessian-taylor">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
+  tex(document.getElementById('k1'),"\\nabla^2_x f=\\begin{bmatrix}\\frac{\\partial^2 f}{\\partial x_1^2}&\\cdots&\\frac{\\partial^2 f}{\\partial x_1\\partial x_n}\\\\ \\vdots&&\\vdots\\\\ \\frac{\\partial^2 f}{\\partial x_n\\partial x_1}&\\cdots&\\frac{\\partial^2 f}{\\partial x_n^2}\\end{bmatrix} \\qquad f(x)\\approx f(x_0)+\\nabla f(x_0)\\delta+\\tfrac{1}{2}\\delta^\\top\\nabla^2 f(x_0)\\delta");
+  function mn(v){return String(Math.round(v*10000)/10000).replace(/-/g,"\u2212");}
+  var H=1e-4;
+  function grad2(f,x,y){return [(f(x+H,y)-f(x-H,y))/(2*H),(f(x,y+H)-f(x,y-H))/(2*H)];}
+  function hess2(f,x,y){
+    var fxx=(f(x+H,y)-2*f(x,y)+f(x-H,y))/(H*H);
+    var fyy=(f(x,y+H)-2*f(x,y)+f(x,y-H))/(H*H);
+    var fxy=(f(x+H,y+H)-f(x+H,y-H)-f(x-H,y+H)+f(x-H,y-H))/(4*H*H);
+    return [[fxx,fxy],[fxy,fyy]];
+  }
+  function eig2(M){
+    var t=M[0][0]+M[1][1], d=M[0][0]*M[1][1]-M[0][1]*M[1][0], disc=t*t-4*d;
+    if(disc<0) return null;
+    var s=Math.sqrt(disc); return [(t+s)/2,(t-s)/2];
+  }
+  function eigvec2(M,l){
+    var a=M[0][0]-l, b=M[0][1];
+    var v=(Math.abs(b)>1e-9)?[b,-a]:[M[1][1]-l,-M[1][0]];
+    if(Math.abs(v[0])<1e-12&&Math.abs(v[1])<1e-12) v=[1,0];
+    var n=Math.hypot(v[0],v[1]); return [v[0]/n,v[1]/n];
+  }
+
+  /* ١ · فاحص الانحناء */
+  var HF={bowl:{f:function(x,y){return x*x+y*y;},s:"x^2 + y^2"},
+          dome:{f:function(x,y){return -x*x-y*y;},s:"- x^2 - y^2"},
+          saddle:{f:function(x,y){return x*x-y*y;},s:"x^2 - y^2"},
+          slide:{f:function(x,y){return x*x*y+x*y*y*y;},s:"x^2 y + x y^3"}};
+  var hF=FIG('hCv'), hFn=document.getElementById('hFn'),
+      hX=document.getElementById('hX'), hY=document.getElementById('hY');
+  function contour(fig,f,level,col,cx,cy,R,N){
+    var d=2*R/N, i, j;
+    function ip(a,b,fa,fb){var t=(level-fa)/(fb-fa);return [a[0]+t*(b[0]-a[0]),a[1]+t*(b[1]-a[1])];}
+    for(i=0;i<N;i++)for(j=0;j<N;j++){
+      var x0=cx-R+i*d, y0=cy-R+j*d, x1=x0+d, y1=y0+d;
+      var P=[[x0,y0],[x1,y0],[x1,y1],[x0,y1]];
+      var V=[f(x0,y0),f(x1,y0),f(x1,y1),f(x0,y1)], hits=[], k;
+      for(k=0;k<4;k++){var a=V[k], b=V[(k+1)%4];
+        if((a-level)*(b-level)<0) hits.push(ip(P[k],P[(k+1)%4],a,b));}
+      if(hits.length>=2) fig.line(hits[0],hits[1],col,1.3);
+    }
+  }
+  function hDraw(){
+    if(!hF) return;
+    var C=hF.col(), G=HF[hFn.value], f=G.f, x=+hX.value||0, y=+hY.value||0;
+    var Hm=hess2(f,x,y), g=grad2(f,x,y), ev=eig2(Hm), R=1.5;
+    hF.fit([[x-R,y-R],[x+R,y+R]],30,150).clear().grid();
+    var base=f(x,y), k;
+    for(k=-4;k<=4;k++) if(k) contour(hF,f,base+k*Math.max(0.35,Math.abs(base)*0.22),C.line,x,y,R,56);
+    contour(hF,f,base,C.soft,x,y,R,70);
+    if(ev){
+      [0,1].forEach(function(i){
+        var v=eigvec2(Hm,ev[i]), col=ev[i]>=0?C.accent:C.terra, s=0.9;
+        hF.arrow([x,y],[x+v[0]*s,y+v[1]*s],col,2.8);
+        hF.label([x+v[0]*s-x,y+v[1]*s-y],"L"+(i+1),col,0);
+        hF.tag([x+v[0]*s,y+v[1]*s],mn(Math.round(ev[i]*100)/100),col,0,-16);
+      });
+    }
+    hF.dot([x,y],C.ink,5);
+    hF.note(12,12,'f = '+G.s,C.ink);
+    hF.note(12,30,'H = [ '+mn(Hm[0][0])+'  '+mn(Hm[0][1])+' ; '+mn(Hm[1][0])+'  '+mn(Hm[1][1])+' ]',C.vio);
+    hF.note(12,48,ev?('eigenvalues  '+mn(ev[0])+' , '+mn(ev[1])):'complex eigenvalues',C.soft);
+    var kind = !ev?"غير محدد":(ev[0]>1e-6&&ev[1]>1e-6?"انحناء موجب في كل اتجاه — قعرٌ محلي":
+               (ev[0]<-1e-6&&ev[1]<-1e-6?"انحناء سالب في كل اتجاه — قمةٌ محلية":
+               (Math.abs(ev[0])<1e-6||Math.abs(ev[1])<1e-6?"اتجاه مسطّح: قيمة ذاتية معدومة":"إشارتان مختلفتان — سرج")));
+    var sym=Math.abs(Hm[0][1]-Hm[1][0])<1e-3;
+    tex(document.getElementById('hStage'),"H=\\begin{bmatrix}"+(Math.round(Hm[0][0]*100)/100)+"&"+(Math.round(Hm[0][1]*100)/100)+"\\\\"+(Math.round(Hm[1][0]*100)/100)+"&"+(Math.round(Hm[1][1]*100)/100)+"\\end{bmatrix}");
+    document.getElementById('hRO').innerHTML=
+      "عند <span class='coord'>("+mn(x)+", "+mn(y)+")</span>: التدرّج <span class='coord'>["+mn(g[0])+", "+mn(g[1])+"]</span> وهسي <span class='coord'>["+mn(Hm[0][0])+", "+mn(Hm[0][1])+"; "+mn(Hm[1][0])+", "+mn(Hm[1][1])+"]</span>"+
+      "<br>التماثل: <span class='coord'>∂²f/∂x∂y − ∂²f/∂y∂x = "+mn(Hm[0][1]-Hm[1][0])+"</span> → "+(sym?"<b>متماثلة</b> كما تقتضي النظرية":"فرق عددي كبير")+
+      "<br>التصنيف: "+kind+(ev?(" — والقيمتان الذاتيتان <span class='coord'>"+mn(ev[0])+"</span> و<span class='coord'>"+mn(ev[1])+"</span>."):"")+
+      "<br>والمتجهان الذاتيان متعامدان دائماً، فمحورا الانحناء قائمان — وهذه النظرية الطيفية من الدرس <span class='coord'>0023</span>.";
+  }
+  [hFn,hX,hY].forEach(function(el){el.addEventListener('input',hDraw);});
+  onTheme(hDraw); hDraw();
+
+  /* ٢ · التقريب من الرتبتين */
+  var AF={wave:{f:function(x){return Math.sin(x)+x/3;},s:"sin(x) + x/3"},
+          exp:{f:function(x){return Math.exp(x/2);},s:"exp(x/2)"},
+          quart:{f:function(x){return x*x*x*x/8-x*x;},s:"x^4/8 - x^2"}};
+  var aF=FIG('aCv'), aFn=document.getElementById('aFn'),
+      aX=document.getElementById('aX'), aXv=document.getElementById('aXv');
+  function aDraw(){
+    if(!aF) return;
+    var C=aF.col(), G=AF[aFn.value], f=G.f, x0=+aX.value; aXv.textContent=mn(x0);
+    var h=1e-4, d1=(f(x0+h)-f(x0-h))/(2*h), d2=(f(x0+h)-2*f(x0)+f(x0-h))/(h*h);
+    var lo=-3.4, hi=3.4, i, pts=[];
+    for(i=0;i<=24;i++){var t=lo+(hi-lo)*i/24; pts.push([t,f(t)]);}
+    aF.fit(pts,34,88).clear().grid();
+    var prev=null;
+    for(i=0;i<=280;i++){var t2=lo+(hi-lo)*i/280, cur=[t2,f(t2)];
+      if(prev) aF.line(prev,cur,C.ink,2.4); prev=cur;}
+    prev=null;
+    for(i=0;i<=280;i++){var t3=lo+(hi-lo)*i/280, v=f(x0)+d1*(t3-x0);
+      var cur3=(Math.abs(v)<40)?[t3,v]:null; if(prev&&cur3) aF.line(prev,cur3,C.accent,2.2); prev=cur3;}
+    prev=null;
+    for(i=0;i<=280;i++){var t4=lo+(hi-lo)*i/280, v2=f(x0)+d1*(t4-x0)+0.5*d2*(t4-x0)*(t4-x0);
+      var cur4=(Math.abs(v2)<40)?[t4,v2]:null; if(prev&&cur4) aF.line(prev,cur4,C.vio,2.2,[7,6]); prev=cur4;}
+    aF.dot([x0,f(x0)],C.terra,6);
+    var probe=x0+1.0, e1=Math.abs(f(probe)-(f(x0)+d1*1.0)), e2=Math.abs(f(probe)-(f(x0)+d1*1.0+0.5*d2));
+    aF.note(12,12,'f(x) = '+G.s,C.ink);
+    aF.note(12,30,'first order  error at x0 + 1 = '+mn(e1),C.accent);
+    aF.note(12,48,'second order error at x0 + 1 = '+mn(e2),C.vio);
+    document.getElementById('aRO').innerHTML=
+      "عند <span class='coord'>x₀ = "+mn(x0)+"</span>: الميل <span class='coord'>"+mn(d1)+"</span> والانحناء <span class='coord'>"+mn(d2)+"</span>."+
+      "<br>على بعد وحدة واحدة: خطأ الرتبة الأولى <span class='coord'>"+mn(e1)+"</span> وخطأ الرتبة الثانية <span class='coord'>"+mn(e2)+"</span>"+
+      (e2<e1?" — أي أن الحد التربيعي قلّص الخطأ <span class='coord'>"+mn(e1/(e2||1e-12))+"</span> ضعفاً.":" — وهنا لا يساعد الحد التربيعي، فالانحناء نفسه يتغيّر بسرعة.")+
+      "<br>وكلما اقتربت من <span class='coord'>x₀</span> تلاشى الفرق: التقريبان وعدٌ محليٌّ لا عالمي.";
+  }
+  [aFn,aX].forEach(function(el){el.addEventListener('input',aDraw);});
+  onTheme(aDraw); aDraw();
+
+  /* ٣ · ميزان الرتبتين */
+  var SF=function(x,y){return x*x*y+x*y*y*y;};
+  document.getElementById('tGo').onclick=function(){
+    var d1=+document.getElementById('tD1').value||0, d2=+document.getElementById('tD2').value||0;
+    var x0=1, y0=1, g=[3,4], Hm=[[2,5],[5,6]];
+    var lin=SF(x0,y0)+g[0]*d1+g[1]*d2;
+    var quad=lin+0.5*(Hm[0][0]*d1*d1+2*Hm[0][1]*d1*d2+Hm[1][1]*d2*d2);
+    var truth=SF(x0+d1,y0+d2), e1=Math.abs(truth-lin), e2=Math.abs(truth-quad);
+    var det=Hm[0][0]*Hm[1][1]-Hm[0][1]*Hm[1][0];
+    var step=[-(( Hm[1][1]*g[0]-Hm[0][1]*g[1])/det),-((-Hm[1][0]*g[0]+Hm[0][0]*g[1])/det)];
+    document.getElementById('tRO').innerHTML=
+      "<span class='coord'>f(x₁,x₂) = x₁²x₂ + x₁x₂³</span> عند <span class='coord'>(1, 1)</span> وإزاحة <span class='coord'>δ = ("+mn(d1)+", "+mn(d2)+")</span><br>"+
+      "القيمة الحقيقية: <span class='coord'>"+mn(truth)+"</span><br>"+
+      "الرتبة الأولى: <span class='coord'>"+mn(lin)+"</span> بخطأ <span class='coord'>"+mn(e1)+"</span><br>"+
+      "الرتبة الثانية: <span class='coord'>"+mn(quad)+"</span> بخطأ <span class='coord'>"+mn(e2)+"</span><br>"+
+      (e2<e1?"الحد التربيعي قلّص الخطأ <span class='coord'>"+mn(e1/(e2||1e-12))+"</span> ضعفاً.":"الإزاحة كبيرة، فالنموذج التربيعي نفسه خرج من جواره.")+
+      "<br>وخطوة نيوتن عند هذه النقطة: <span class='coord'>Δ* = ["+mn(step[0])+", "+mn(step[1])+"]</span> — وهي تقفز إلى نقطة سرج لا إلى قاع، لأن هسي هنا ليست معرّفة موجبة.";
+  };
+  document.getElementById('tGo').click();
+
+  var ANS={q1:{"0":["صحيح — مصفوفة مربعة متماثلة بعدد المتغيرات.",true],"1":["هذا التدرّج لا هسي.",false],"2":["هذا الجاكوبي لدالة متجهة.",false],"3":["العدد يصلح لدالة أحادية المتغير.",false]},
+    q2:{"0":["صحيح — تبادل ترتيب الاشتقاق يعطي العنصرين المتناظرين.",true],"1":["المربعة لا تعني التماثل.",false],"2":["شكل التدرّج لا علاقة له بالتماثل.",false],"3":["التماثل يصح لكل دالة قابلة للاشتقاق مرتين.",false]},
+    q3:{"0":["صحيح — أول حدّين من تايلور.",true],"1":["هذا حدٌّ واحد: تقريب من الرتبة الصفرية.",false],"2":["التدرّج وحده ليس تقريباً للدالة.",false],"3":["هذا الحد التربيعي وحده بلا الحدين قبله.",false]},
+    q4:{"0":["صحيح — إشارتان مختلفتان تعنيان صعوداً في اتجاه وهبوطاً في آخر.",true],"1":["الصغرى تحتاج قيمتين موجبتين.",false],"2":["العظمى تحتاج قيمتين سالبتين.",false],"3":["الإشارتان كافيتان للتصنيف.",false]},
+    q5:{"0":["صحيح — التخزين والعكس يكبران بمربع عدد المعاملات.",true],"1":["التدرّج معرّف تماماً.",false],"2":["هسي متماثلة دائماً هنا.",false],"3":["تايلور تصح لأي عدد من المتغيرات.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

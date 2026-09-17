@@ -1,0 +1,444 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>0025 · التقريب منخفض الرتبة — Low-Rank Approximation</title>
+<meta name="description" content="المصفوفة مجموع مصفوفات أحادية الرتبة، وقطع المجموع عند k هو أفضل تقريب ممكن.">
+<link rel="canonical" href="https://turkihassan.github.io/linear-algebra-lab/lessons/0025-low-rank.html">
+<meta property="og:type" content="article">
+<meta property="og:title" content="0025 · التقريب منخفض الرتبة — مختبر الجبر الخطي">
+<meta property="og:description" content="المصفوفة مجموع مصفوفات أحادية الرتبة، وقطع المجموع عند k هو أفضل تقريب ممكن.">
+<meta property="og:locale" content="ar_SA">
+<meta name="twitter:card" content="summary">
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.css">
+<link rel="stylesheet" href="../assets/lesson-fonts.css">
+<style>
+  :root{--paper:#f6f1e7;--ink:#1c1a15;--soft:#6f6757;--line:#ded4c2;--accent:#0d5c46;--terra:#c2562f;--vio:#5b3f8f}
+  *{box-sizing:border-box}
+  body{margin:0;background:var(--paper);color:var(--ink);font-family:var(--serif-text);line-height:1.9}
+  h1,h2,h3{font-family:var(--serif-display)}
+  .masthead,.kicker,.meta,.hint,.card-tag,.btn,.opt,.coord,.readout,.footer{font-family:var(--th-sans)}
+  .wrap{max-width:860px;margin:0 auto;padding:0 22px 90px}
+  .masthead{display:flex;justify-content:space-between;gap:12px;padding:20px 0;border-bottom:3px solid var(--ink);font-size:12px}
+  .hero{padding:38px 0 10px}
+  .kicker{color:var(--accent);font-weight:700;font-size:12px}
+  h1{font-size:clamp(34px,6vw,54px);line-height:1.25;margin:6px 0}
+  .en-line{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:14px}
+  .rule{height:3px;background:var(--ink);margin:18px 0}
+  .meta{color:var(--soft);font-size:13px}
+  h2{font-size:26px;margin:54px 0 8px}
+  .num{display:inline-grid;place-items:center;width:34px;height:34px;border-radius:50%;background:var(--ink);color:#fff;font-size:17px;margin-left:10px}
+  .en-sub{display:block;direction:ltr;text-align:left;color:var(--soft);font-size:13px}
+  .analogy{border:1px solid var(--line);border-inline-start:6px solid var(--accent);border-radius:14px;padding:16px 18px;background:#fff;margin:20px 0}
+  .card{border-radius:14px;padding:16px 18px;margin:20px 0;background:#fff;border:1px solid var(--line)}
+  .card.idea{border-inline-start:6px solid var(--accent)}
+  .card.warn{border-inline-start:6px solid var(--terra)}
+  .card-tag{display:inline-block;font-size:11px;background:var(--ink);color:#fff;border-radius:999px;padding:3px 12px;margin-bottom:8px}
+  .warn-tag{background:var(--terra)}
+  .term{font-weight:800}
+  .en{color:var(--soft)}
+  .coord{direction:ltr;unicode-bidi:isolate;font-family:ui-monospace,Menlo,Consolas,monospace;background:#00000008;padding:0 6px;border-radius:6px}
+  .demo{border:2px dashed var(--ink);border-radius:18px;padding:20px;margin:24px 0;background:#fff}
+  .demo h3{margin:0 0 4px}
+  .hint{color:var(--soft);font-size:13px;margin:0 0 12px}
+  .controls{display:flex;flex-wrap:wrap;gap:10px;margin:12px 0;align-items:center}
+  .controls label{font-size:13px}
+  .controls input[type=number]{width:64px;font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:4px 8px;direction:ltr}
+  .controls select{font:inherit;border:1.5px solid var(--line);border-radius:8px;padding:6px 10px;background:#fff}
+  html{scroll-behavior:smooth}
+  @media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+  .btn{font:inherit;border:1.5px solid var(--ink);background:var(--ink);color:#fff;border-radius:999px;padding:9px 20px;cursor:pointer;transition:transform .15s ease,background .2s ease}
+  .btn:hover{background:#000}
+  .btn.ghost:hover{background:var(--ink);color:#fff}
+  .btn:active{transform:scale(.97)}
+  .opt:hover{border-color:var(--ink)}
+  .controls.stick{position:sticky;bottom:12px;z-index:6;width:max-content;max-width:100%;background:color-mix(in srgb,#fff 90%,transparent);backdrop-filter:blur(10px);border:1px solid var(--line);border-radius:999px;padding:8px 12px;box-shadow:0 12px 32px rgba(0,0,0,.14)}
+  .btn.ghost{background:transparent;color:var(--ink)}
+  .opt{display:block;width:100%;text-align:start;font:inherit;background:#fff;border:1.5px solid var(--line);border-radius:12px;padding:10px 14px;margin:8px 0;cursor:pointer}
+  .opt:disabled{opacity:.75;cursor:default}
+  .opt.ok{border-color:var(--accent);background:#0d5c4612}
+  .opt.no{border-color:var(--terra);background:#c2562f12}
+  .feedback{font-size:13px;min-height:1.6em;color:var(--soft)}
+  .readout{font-family:ui-monospace,Menlo,Consolas,monospace;direction:ltr;text-align:left;background:var(--ink);color:#f6f1e7;border-radius:12px;padding:12px 16px;margin-top:12px;overflow-x:auto}
+  .footer{margin-top:60px;border-top:1px solid var(--line);padding-top:16px;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;font-size:12px;color:var(--soft)}
+  table{width:100%;border-collapse:collapse;margin:16px 0;font-size:14px}
+  th,td{border:1px solid var(--line);padding:9px 12px;text-align:start}
+  th{background:#00000008}
+  .kmath{direction:ltr;text-align:center;overflow-x:auto;padding:8px;background:#fff;border:1px solid var(--line);border-radius:12px;margin:12px 0}
+  a{color:var(--accent)}
+  .figcap{font-family:var(--th-sans);font-size:12.5px;color:var(--soft);text-align:center;margin:2px 0 0}
+  .m2{display:grid;grid-template-columns:repeat(2,auto);justify-content:center;gap:6px;direction:ltr}
+  .m2 input[type=number]{width:68px;text-align:center}
+</style>
+<link rel="stylesheet" href="../assets/lesson.css">
+<link rel="stylesheet" href="../assets/ui.css">
+<link rel="manifest" href="../manifest.webmanifest">
+<meta name="theme-color" content="#faf7f2">
+<link rel="icon" type="image/png" href="../assets/icons/icon-192.png">
+<script type="application/ld+json">
+{
+ "@context": "https://schema.org",
+ "@type": "LearningResource",
+ "inLanguage": "ar",
+ "name": "0025 · التقريب منخفض الرتبة",
+ "alternateName": "Low-Rank Approximation",
+ "description": "المصفوفة مجموع مصفوفات أحادية الرتبة، وقطع المجموع عند k هو أفضل تقريب ممكن.",
+ "url": "https://turkihassan.github.io/linear-algebra-lab/lessons/0025-low-rank.html",
+ "learningResourceType": [
+  "درس تفاعلي",
+  "تمرين برمجي"
+ ],
+ "educationalLevel": "جامعي — مقدمة",
+ "isPartOf": {
+  "@type": "Course",
+  "name": "مختبر الجبر الخطي",
+  "url": "https://turkihassan.github.io/linear-algebra-lab/"
+ },
+ "position": 25
+}
+</script>
+</head>
+<body data-lesson-id="0025">
+<div class="wrap">
+  <div class="masthead"><div>مختبر الجبر الخطي <b>· من الصفر</b></div><div><a href="0024-svd.html">→ السابق</a> · <a href="../index.html">الرئيسية</a> · <a href="../map.html#l0025">الخارطة</a> · <a href="0026-derivatives-taylor.html">التالي ←</a></div></div>
+  <header class="hero">
+    <div class="kicker">الدرس 0025 · تحليل المصفوفات</div>
+    <h1>التقريب منخفض الرتبة</h1>
+    <span class="en-line" lang="en">Low-Rank Approximation — keep the largest singular values, throw the rest away, and Eckart-Young proves nothing better exists</span>
+    <div class="rule"></div>
+    <p class="meta">~35 دقيقة · المتطلب: الدرس 0024 (تحليل القيم المفردة)</p>
+  </header>
+
+  <section id="s1">
+    <h2><span class="num">١</span> المصفوفة مجموع طبقات أحادية الرتبة<span class="en-sub" lang="en">A is the sum of sigma-i times u-i v-i-transpose, and each term has rank exactly one</span></h2>
+    <p>أعد قراءة <span class="coord">A = UΣVᵀ</span> بطريقة أخرى: بدل ضرب ثلاث مصفوفات، اجمع <span class="coord">r</span> طبقة، كل طبقة حاصل ضرب خارجي: <span class="coord">A = Σ σᵢ uᵢvᵢᵀ</span>. وكل حدّ رتبته <b>واحد</b> بالضبط، لأن كل أعمدته مضاعفات للعمود الأول. فالمصفوفة إذاً كومة طبقات مرتّبة بالأهمية، وأهميتها هي <span class="coord">σᵢ</span>.</p>
+    <div class="analogy"><b>تشبيه: طبقات الرسم</b><p>لوحة رقمية مكوّنة من طبقات: طبقة الخلفية تحمل معظم الصورة، ثم طبقات التفاصيل الدقيقة. أطفئ الطبقات الصغيرة فتبقى اللوحة مفهومة؛ أطفئ الأولى فتضيع. <span class="coord">σᵢ</span> هو مقدار ما تحمله الطبقة. <span class="en" lang="en" dir="ltr">(Layers, ordered by how much they carry.)</span></p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> <span class="coord">Â(k) = Σᵢ₌₁ᵏ σᵢ uᵢvᵢᵀ</span> هو <b>أفضل</b> تقريب من الرتبة <span class="coord">k</span> على الإطلاق، وخطؤه بالمعيار الطيفي هو <span class="coord">σ₍ₖ₊₁₎</span> بالضبط. هذه مبرهنة <span class="term">إيكارت–يونغ</span> <span class="en" lang="en" dir="ltr">(Eckart–Young)</span>.</p></div>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مصفوفة قيمها المفردة <span class="coord">(10, 3, 1, 0.2, 0)</span>. ما خطأ أفضل تقريب لها من الرتبة <span class="coord">2</span> بالمعيار الطيفي؟</p>
+      <details><summary>اكشف الجواب</summary><p><span class="coord">1</span> — أي <span class="coord">σ₃</span>، القيمة المفردة التالية مباشرة بعد القطع. إيكارت–يونغ لا تقول إن الخطأ <i>صغير</i> فحسب، بل تعطيه بالضبط: <span class="coord">‖A − Â(k)‖₂ = σ₍ₖ₊₁₎</span>. ولاحظ ما يعنيه ذلك هنا: الاحتفاظ بطبقتين من خمس يترك خطأً قدره <span class="coord">1</span> مقابل <span class="coord">σ₁ = 10</span> — أي عُشر الحجم. <span class="en" lang="en" dir="ltr">(The error is the next singular value, exactly.)</span></p></details></div>
+    <div class="kmath" id="k1"></div>
+    <div class="demo" data-label="Layers · RANK ONE">
+      <h3>مفكّك الطبقات</h3>
+      <p class="hint">أدخل مصفوفة <span class="coord">2×2</span> — اللوحة تفصلها إلى طبقتين أحاديتي الرتبة وتعيد جمعهما</p>
+      <div class="controls"><label><span class="coord">A</span></label><span class="m2"><input type="number" id="oa" value="3"><input type="number" id="ob" value="0"><input type="number" id="oc" value="4"><input type="number" id="od" value="5"></span><button class="btn" id="oGo">افصل الطبقات</button></div>
+      <div class="readout" id="oRO" style="direction:rtl;text-align:right">الطبقتان…</div>
+    </div>
+  </section>
+
+  <section id="s2">
+    <h2><span class="num">٢</span> ماذا يضيع حين نقطع؟<span class="en-sub" lang="en">Drop the smallest layers and watch the picture survive</span></h2>
+    <p>هنا يظهر معنى التقريب بالعين لا بالأرقام. النمط الذي أمامك مصفوفة <span class="coord">16×16</span> رتبتها <span class="coord">4</span> بالضبط — أربع طبقات تكفي لإعادة بنائه تماماً. وعند الرتبة <span class="coord">1</span> يبقى الهيكل العام وتضيع التفاصيل، وعند <span class="coord">2</span> يعود أكثره، وعند <span class="coord">4</span> يعود كاملاً بلا أي خطأ.</p>
+    <div class="demo" data-label="Compress · RANK K">
+      <h3>ضاغط الرتبة</h3>
+      <p class="hint">حرّك <span class="coord">k</span> — اليسار هو الأصل، واليمين هو إعادة البناء بأول <span class="coord">k</span> طبقة فقط</p>
+      <div class="controls"><label><span class="coord">k</span> <input type="range" id="iK" min="1" max="8" step="1" value="1"></label><span class="coord" id="iKv">1</span></div>
+      <canvas id="imCv" width="640" height="250" role="img"
+              aria-label="النمط الأصلي إلى اليسار وإعادة بنائه بأول عدد من الطبقات إلى اليمين، ومعهما فرق القيم"></canvas>
+      <p class="figcap">الأصل · إعادة البناء · والفرق بينهما — والفرق يتلاشى عند الرتبة الحقيقية للمصفوفة</p>
+      <div class="readout" id="iRO" style="direction:rtl;text-align:right">الرتبة…</div>
+    </div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>نأخذ تحليل الدرس السابق ونقطعه عند طبقة واحدة، ثم نقيس الخطأ ونطابقه بالمبرهنة.</p>
+      <pre dir="ltr">from lesson 0024, for   A = [ 3  0 ]
+                            [ 4  5 ]
+
+  sigma1 = sqrt(45) = 6.7082      u1 = (1, 3)/sqrt10     v1 = (1,  1)/sqrt2
+  sigma2 = sqrt(5)  = 2.2361      u2 = (3,-1)/sqrt10     v2 = (1, -1)/sqrt2
+
+the rank-1 approximation is the FIRST layer alone
+
+  A(1) = sigma1 * u1 * v1^T
+
+  u1 v1^T = (1/sqrt10)(1, 3)^T  *  (1/sqrt2)(1, 1)
+          = (1/sqrt20) [ 1*1   1*1 ] = (1/sqrt20) [ 1  1 ]
+                       [ 3*1   3*1 ]              [ 3  3 ]
+
+  sigma1 / sqrt20 = 6.7082 / 4.4721 = 1.5
+
+  A(1) = 1.5 [ 1  1 ] = [ 1.5  1.5 ]
+             [ 3  3 ]   [ 4.5  4.5 ]
+
+what was lost
+
+  E = A - A(1) = [ 3 - 1.5    0 - 1.5 ] = [  1.5  -1.5 ]
+                 [ 4 - 4.5    5 - 4.5 ]   [ -0.5   0.5 ]
+
+measure it with the spectral norm, via E^T E
+
+  E^T E = [  1.5  -0.5 ] [  1.5  -1.5 ] = [  2.5  -2.5 ]
+          [ -1.5   0.5 ] [ -0.5   0.5 ]   [ -2.5   2.5 ]
+
+  tr = 5 ,  det = 6.25 - 6.25 = 0
+  eigenvalues:  0  and  5
+  ||E||_2 = sqrt(5) = 2.2361
+
+Eckart-Young said the error would be sigma2
+
+  sigma2 = sqrt(5) = 2.2361                                     OK
+
+  not "close to" sigma2 -- exactly sigma2, and no rank-1 matrix
+  anywhere does better.</pre>
+      <p class="worked-note">قوّة المبرهنة في كلمة «أفضل»: ليست <span class="coord">Â(k)</span> تقريباً جيداً فحسب، بل لا يوجد أي مصفوفة من الرتبة <span class="coord">k</span> — مهما بُنيت — أقرب إلى <span class="coord">A</span> منها.</p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>«رتبة منخفضة» لا تعني «مصفوفة صغيرة». <span class="coord">Â(k)</span> تبقى بحجم <span class="coord">A</span> نفسه، لكن تخزينها يحتاج <span class="coord">k(m + n + 1)</span> عدداً بدل <span class="coord">m·n</span> — لأنك تحفظ الطبقات لا الناتج. هنا يقع التوفير، لا في الأبعاد. <span class="en" lang="en" dir="ltr">(Store the factors, not the product.)</span></p></div>
+  </section>
+
+  <section id="s3">
+    <h2><span class="num">٣</span> المعيار الطيفي ومبرهنة إيكارت–يونغ<span class="en-sub" lang="en">The spectral norm measures how much a matrix can stretch — and it equals sigma-one</span></h2>
+    <p>لقياس «بُعد» مصفوفتين نحتاج معياراً للمصفوفات. ال<span class="term">معيار الطيفي</span> <span class="en" lang="en" dir="ltr">(spectral norm)</span> يعرّف <span class="coord">‖A‖₂</span> بأنه أكبر تمدد تحدثه <span class="coord">A</span> لأي متجه — وقد رأيتَ في الدرس السابق أن هذا بالضبط هو <span class="coord">σ₁</span>. وبهذا المعيار تقول إيكارت–يونغ كلمتها الدقيقة.</p>
+    <div class="demo" data-label="Theorem · EXACT ERROR">
+      <h3>ميزان إيكارت–يونغ</h3>
+      <p class="hint">اختر طيفاً وحرّك <span class="coord">k</span> — اللوحة ترسم القيم المفردة وتحدّد الخطأ عند القطع</p>
+      <div class="controls"><label>الطيف
+        <select id="eSel">
+          <option value="lec">طيف المحاضرة</option>
+          <option value="flat">طيف مستوٍ</option>
+          <option value="steep">طيف حادّ الانحدار</option>
+          <option value="img">طيف نمط الضاغط أعلاه</option>
+        </select></label><label><span class="coord">k</span> <input type="range" id="eK" min="1" max="5" step="1" value="2"></label><span class="coord" id="eKv">2</span></div>
+      <canvas id="eyCv" width="640" height="320" role="img"
+              aria-label="أعمدة تمثّل القيم المفردة، والمحتفظ بها ملوّن والمقطوع باهت، والخطأ هو أول عمود مقطوع"></canvas>
+      <p class="figcap">الأعمدة الملوّنة هي ما احتفظتَ به، وأول عمود باهت هو الخطأ بعينه</p>
+      <div class="readout" id="eRO" style="direction:rtl;text-align:right">الخطأ…</div>
+    </div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p>هذا هو الأساس النظري لضغط الصور وأنظمة التوصية وتحليل المعنى الكامن في النصوص. بل إن أوزان الشبكات العميقة تُظهر تجريبياً <span class="term">رتبة فعّالة منخفضة</span> <span class="en" lang="en" dir="ltr">(low effective rank)</span> — والطبقة التي تبدو <span class="coord">1000×1000</span> تحمل معلومات بضع عشرات من الطبقات. ومن هنا جاءت أساليب الضغط والتشذيب والتدريب منخفض الرتبة.</p></div>
+  </section>
+
+  <section id="gain">
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
+    <tr><td>أحادية الرتبة</td><td>مصفوفة بسيطة</td><td><span class="coord">uvᵀ</span> — كل أعمدتها مضاعفات لعمود واحد</td></tr>
+    <tr><td>التقريب منخفض الرتبة</td><td>تقريب تقريبي</td><td><b>الأفضل</b> على الإطلاق بمبرهنة إيكارت–يونغ</td></tr>
+    <tr><td>المعيار الطيفي</td><td>معيار بين معايير</td><td>أكبر تمدد تحدثه المصفوفة — وهو <span class="coord">σ₁</span></td></tr></table>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> الضغط تقنية هندسية. <b>بعد هذا الدرس:</b> هو مبرهنة: احتفظ بأكبر <span class="coord">k</span> قيمة مفردة، وخطؤك محسوبٌ سلفاً ولا أحد يستطيع أفضل منه.</p></div>
+  </section>
+
+  <section id="quiz">
+    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <div class="q" id="q1"><div class="prompt">ما رتبة المصفوفة <span class="coord">uvᵀ</span> لمتجهين غير صفريين؟</div>
+      <button class="opt" data-q="q1" data-a="0"><span class="coord">1</span></button><button class="opt" data-q="q1" data-a="1"><span class="coord">2</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">0</span></button><button class="opt" data-q="q1" data-a="3">تعتمد على الأطوال</button><div class="feedback"></div></div>
+    <div class="q" id="q2"><div class="prompt">القيم المفردة <span class="coord">(10, 3, 1, 0.2, 0)</span> — ما خطأ أفضل تقريب من الرتبة <span class="coord">2</span>؟</div>
+      <button class="opt" data-q="q2" data-a="0"><span class="coord">1</span> — أي <span class="coord">σ₃</span></button><button class="opt" data-q="q2" data-a="1"><span class="coord">3</span></button><button class="opt" data-q="q2" data-a="2"><span class="coord">0.2</span></button><button class="opt" data-q="q2" data-a="3"><span class="coord">1.2</span></button><div class="feedback"></div></div>
+    <div class="q" id="q3"><div class="prompt">ماذا يساوي المعيار الطيفي <span class="coord">‖A‖₂</span>؟</div>
+      <button class="opt" data-q="q3" data-a="0">أكبر قيمة مفردة <span class="coord">σ₁</span></button><button class="opt" data-q="q3" data-a="1">مجموع القيم المفردة</button><button class="opt" data-q="q3" data-a="2">المحدد</button><button class="opt" data-q="q3" data-a="3">الأثر</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">هل يوجد تقريب من الرتبة <span class="coord">k</span> أفضل من <span class="coord">Â(k)</span>؟</div>
+      <button class="opt" data-q="q4" data-a="0">لا — إيكارت–يونغ تنفي ذلك</button><button class="opt" data-q="q4" data-a="1">نعم، بطرق تكرارية</button><button class="opt" data-q="q4" data-a="2">نعم إن كانت <span class="coord">A</span> متماثلة</button><button class="opt" data-q="q4" data-a="3">لا نعلم</button><div class="feedback"></div></div>
+    <div class="q" id="q5"><div class="prompt">مصفوفة <span class="coord">100×100</span> قُرِّبت بالرتبة <span class="coord">5</span> — كم عدداً نخزّن؟</div>
+      <button class="opt" data-q="q5" data-a="0">نحو <span class="coord">1005</span> — أي <span class="coord">k(m + n + 1)</span></button><button class="opt" data-q="q5" data-a="1"><span class="coord">10000</span> كما هي</button><button class="opt" data-q="q5" data-a="2"><span class="coord">25</span></button><button class="opt" data-q="q5" data-a="3"><span class="coord">5</span></button><div class="feedback"></div></div>
+  </section>
+
+  <section id="glossary">
+    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
+    <tr><td>الضرب الخارجي</td><td><span class="en" lang="en" dir="ltr">outer product</span></td><td><span class="coord">uvᵀ</span> — مصفوفة رتبتها واحد</td></tr>
+    <tr><td>المعيار الطيفي</td><td><span class="en" lang="en" dir="ltr">spectral norm</span></td><td>أكبر تمدد تحدثه المصفوفة، وهو <span class="coord">σ₁</span></td></tr>
+    <tr><td>إيكارت–يونغ</td><td><span class="en" lang="en" dir="ltr">Eckart–Young</span></td><td>قطع <span class="coord">SVD</span> عند <span class="coord">k</span> هو أفضل تقريب، وخطؤه <span class="coord">σ₍ₖ₊₁₎</span></td></tr></table>
+  </section>
+
+  <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
+    <p>ملف <code>practice/0025-low-rank.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
+    <ul>
+      <li><code>outer</code> — الضرب الخارجي ‎uvᵀ‎</li>
+      <li><code>rank_of</code> — رتبة مصفوفة ‎2×2‎</li>
+      <li><code>mat_sub</code> — طرح مصفوفتين</li>
+      <li><code>spectral_norm2</code> — أكبر قيمة مفردة</li>
+      <li><code>truncate2</code> — التقريب ‎Â(k)‎</li>
+      <li><code>approx_error</code> — الخطأ المقيس فعلاً</li>
+      <li><code>eckart_young_holds</code> — مطابقته بـ ‎σ₍ₖ₊₁₎</li>
+    </ul></div>
+
+  <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
+    <button class="tool-btn theme-btn" type="button">الوضع الداكن</button>
+    <button class="tool-btn" type="button" onclick="window.print()">طباعة / PDF</button>
+    <a class="tool-btn" href="../playground.html?ex=0025-low-rank">شغّل التمرين في المتصفح</a>
+    <a class="tool-btn" href="../map.html#l0025">موضع الدرس في الخارطة</a>
+    <a class="tool-btn" href="../review.html#l0025">بطاقات المراجعة</a>
+    <button class="tool-btn done-toggle" type="button" data-lesson="0025" aria-pressed="false">أتممت الدرس</button>
+  </div>
+  <div class="refs">
+    <span class="card-tag">مراجع خارجية</span>
+    <ul>
+      <li><a href="https://mml-book.github.io/" target="_blank" rel="noopener" lang="en">Mathematics for Machine Learning — Deisenroth, Faisal, Ong</a><span>الفصل 4 · القسم 4.6 — Matrix Approximation</span></li>
+      <li><a href="https://www.youtube.com/playlist?list=PLZHQObOWTQDPD3MizzM2xVFitgF8hE_ab" target="_blank" rel="noopener" lang="en">3Blue1Brown — Essence of Linear Algebra</a></li>
+    </ul>
+  </div>
+  <nav class="pager" aria-label="التنقل بين الدروس">
+    <a class="prev" href="0024-svd.html" rel="prev"><small>الدرس السابق</small>تحليل القيم المفردة</a>
+    <a class="next" href="0026-derivatives-taylor.html" rel="next"><small>الدرس التالي</small>الاشتقاق ومتسلسلة تايلور</a>
+  </nav>
+  <footer class="footer"><span>الدرس 0025 · التقريب منخفض الرتبة</span><span>التمرين: <code lang="en">python3 practice/0025-low-rank.py</code> · <a href="../playground.html?ex=0025-low-rank">في المتصفح</a></span></footer>
+</div>
+<script src="https://cdn.jsdelivr.net/npm/katex@0.16.11/dist/katex.min.js"></script>
+<script src="../assets/figure.js"></script>
+<script>
+(function(){
+  "use strict";
+  function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
+  var FIG = LinalgFig.FIG, onTheme = LinalgFig.onTheme, plane = LinalgFig.plane;
+  tex(document.getElementById('k1'),"A=\\sum_{i=1}^{r}\\sigma_i \\mathbf{u}_i\\mathbf{v}_i^{\\top} \\qquad \\hat{A}(k)=\\sum_{i=1}^{k}\\sigma_i \\mathbf{u}_i\\mathbf{v}_i^{\\top} \\qquad \\lVert A-\\hat{A}(k)\\rVert_2=\\sigma_{k+1}");
+  function mn(v){return String(Math.round(v*1000)/1000).replace(/-/g,"\u2212");}
+  /* نمط 16×16 وتحليله المفرد، محسوبان مسبقاً بطريقة جاكوبي — رتبته 4 بالضبط */
+  var IMG={n:16,
+    U:[[0.0542,0.0192,0.0536,0.4938,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0542,0.0192,0.0536,0.4938,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.3794,0.2399,0.3519,-0.0892,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.3794,0.2399,0.3519,-0.0892,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.3794,0.2399,0.3519,-0.0892,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.1859,-0.3608,0.0427,-0.011,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.1859,-0.3608,0.0427,-0.011,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.341,0.1224,-0.4495,0.0066,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.341,0.1224,-0.4495,0.0066,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.341,0.1224,-0.4495,0.0066,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.1859,-0.3608,0.0427,-0.011,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.1859,-0.3608,0.0427,-0.011,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.1859,-0.3608,0.0427,-0.011,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.1859,-0.3608,0.0427,-0.011,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0542,0.0192,0.0536,0.4938,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],[0.0542,0.0192,0.0536,0.4938,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0]],
+    S:[7.4438,2.4909,1.3149,0.4969,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0,0.0],
+    V:[[0.0563,-0.0482,0.0162,0.4011,-0.02,-0.0,0.1731,0.0387,-0.0015,0.2894,-0.0083,-0.0001,-0.1431,-0.1746,0.7071,-0.4082],[0.0563,-0.0482,0.0162,0.4011,-0.02,-0.0,0.1731,0.0387,-0.0015,0.2894,-0.0083,-0.0001,-0.1431,-0.1746,-0.7071,-0.4082],[0.0563,-0.0482,0.0162,0.4011,-0.02,-0.0,0.1731,0.0387,-0.0015,0.2894,-0.0083,-0.0001,-0.1431,-0.1746,0.0,0.8165],[0.4085,-0.3943,-0.006,-0.1045,-0.5109,-0.0087,-0.086,0.2328,0.0145,-0.0978,-0.5552,-0.0132,0.0502,-0.1522,0.0,0.0],[0.4085,-0.3943,-0.006,-0.1045,0.2602,-0.7027,0.0438,-0.1186,-0.0074,0.0498,0.2827,0.0067,-0.0256,0.0775,0.0,0.0],[0.4085,-0.3943,-0.006,-0.1045,0.2508,0.7114,0.0422,-0.1143,-0.0071,0.048,0.2725,0.0065,-0.0246,0.0747,0.0,0.0],[0.2886,0.3009,-0.1618,0.0022,0.2934,-0.0,0.0279,0.2846,-0.2831,-0.1808,-0.256,0.2412,-0.5788,0.2463,0.0,0.0],[0.2886,0.3009,-0.1618,0.0022,-0.1533,-0.0,0.0162,0.0135,0.6454,-0.063,0.1298,-0.5156,-0.2421,0.1193,0.0,0.0],[0.2886,0.3009,-0.1618,0.0022,-0.5347,-0.0,0.002,-0.1916,-0.5583,0.0213,0.3967,-0.0778,0.0422,0.0076,0.0,0.0],[0.2886,0.3009,-0.1618,0.0022,-0.0486,0.0,-0.0155,-0.1015,0.3913,0.0864,0.0425,0.7273,0.2823,-0.1265,0.0,0.0],[0.2886,0.3009,-0.1618,0.0022,0.4432,0.0,-0.0305,-0.005,-0.1954,0.1361,-0.3129,-0.3751,0.4964,-0.2466,0.0,0.0],[0.1787,0.1829,0.6586,-0.0298,0.0037,-0.0,0.0004,-0.6249,0.0009,-0.0217,-0.2749,0.0,-0.1824,-0.0118,0.0,0.0],[0.1787,0.1829,0.6586,-0.0298,-0.0037,0.0,-0.0004,0.6249,-0.0009,0.0217,0.2749,-0.0,0.1824,0.0118,0.0,0.0],[0.0563,-0.0482,0.0162,0.4011,0.1036,0.0,-0.6543,-0.0257,0.0006,-0.4505,0.1731,0.0009,-0.0933,-0.3901,0.0,0.0],[0.0563,-0.0482,0.0162,0.4011,-0.0462,-0.0,-0.4119,-0.035,0.0005,0.2272,-0.1278,-0.0008,0.2361,0.7325,0.0,0.0],[0.0563,-0.0482,0.0162,0.4011,0.0026,0.0,0.5468,-0.0553,0.0035,-0.6448,-0.0204,0.0004,0.2866,0.1815,0.0,0.0]]};
+
+  /* SVD لمصفوفة 2×2 — الأداة نفسها المستعملة في الدرس 0024 */
+  function svd2(A){
+    var a=A[0],b=A[1],c=A[2],d=A[3];
+    var g=[a*a+c*c,a*b+c*d,a*b+c*d,b*b+d*d];
+    var t=g[0]+g[3], dd=g[0]*g[3]-g[1]*g[2], q=Math.max(0,t*t-4*dd), s=Math.sqrt(q);
+    var l1=(t+s)/2, l2=Math.max(0,(t-s)/2), s1=Math.sqrt(Math.max(0,l1)), s2=Math.sqrt(l2);
+    function ev(L){var p=g[0]-L,r=g[1];
+      if(Math.abs(p)>1e-9||Math.abs(r)>1e-9){var v=[-r,p]; if(Math.hypot(v[0],v[1])>1e-9) return v;}
+      var u=g[2],w=g[3]-L; if(Math.abs(u)>1e-9||Math.abs(w)>1e-9) return [-w,u];
+      return [1,0];}
+    function nz(v){var n=Math.hypot(v[0],v[1]); return n<1e-12?[1,0]:[v[0]/n,v[1]/n];}
+    var v1=nz(ev(l1)), v2=nz(ev(l2));
+    var av1=[a*v1[0]+b*v1[1],c*v1[0]+d*v1[1]], av2=[a*v2[0]+b*v2[1],c*v2[0]+d*v2[1]];
+    var u1=s1>1e-9?[av1[0]/s1,av1[1]/s1]:[1,0];
+    var u2=s2>1e-9?[av2[0]/s2,av2[1]/s2]:[-u1[1],u1[0]];
+    return {s1:s1,s2:s2,u1:u1,u2:u2,v1:v1,v2:v2};
+  }
+
+  /* ١ · الطبقتان أحاديتا الرتبة */
+  document.getElementById('oGo').onclick=function(){
+    var A=['oa','ob','oc','od'].map(function(i){return +document.getElementById(i).value;});
+    var S=svd2(A), el=document.getElementById('oRO');
+    function layer(sg,u,v){return [sg*u[0]*v[0], sg*u[0]*v[1], sg*u[1]*v[0], sg*u[1]*v[1]];}
+    var L1=layer(S.s1,S.u1,S.v1), L2=layer(S.s2,S.u2,S.v2);
+    var sum=[L1[0]+L2[0],L1[1]+L2[1],L1[2]+L2[2],L1[3]+L2[3]];
+    var okk=[0,1,2,3].every(function(i){return Math.abs(sum[i]-A[i])<1e-6;});
+    var E=[A[0]-L1[0],A[1]-L1[1],A[2]-L1[2],A[3]-L1[3]];
+    el.innerHTML=
+      "الطبقة الأولى <span class='coord'>σ₁u₁v₁ᵀ = ["+mn(L1[0])+", "+mn(L1[1])+"; "+mn(L1[2])+", "+mn(L1[3])+"]</span> — "+
+      "رتبتها واحد لأن صفّها الثاني مضاعف للأول.<br>"+
+      "الطبقة الثانية <span class='coord'>σ₂u₂v₂ᵀ = ["+mn(L2[0])+", "+mn(L2[1])+"; "+mn(L2[2])+", "+mn(L2[3])+"]</span><br>"+
+      "مجموعهما "+(okk?"<b>يعيد المصفوفة الأصلية بالضبط</b>":"يقارب المصفوفة")+" · "+
+      "ولو اكتفيتَ بالأولى لكان الضائع <span class='coord'>["+mn(E[0])+", "+mn(E[1])+"; "+mn(E[2])+", "+mn(E[3])+"]</span> "+
+      "ومعياره الطيفي <span class='coord'>"+mn(S.s2)+"</span> — وهو <span class='coord'>σ₂</span> نفسها.";
+  };
+  document.getElementById('oGo').click();
+
+  /* ٢ · ضاغط الرتبة على نمط 16×16 حقيقي */
+  var imF=FIG('imCv'), iK=document.getElementById('iK'), iKv=document.getElementById('iKv');
+  function rebuild(k){
+    var n=IMG.n, out=[], i, j, t;
+    for(i=0;i<n;i++){ var row=[];
+      for(j=0;j<n;j++){ var s=0;
+        for(t=0;t<k;t++) s+=IMG.U[i][t]*IMG.S[t]*IMG.V[j][t];
+        row.push(s); }
+      out.push(row); }
+    return out;
+  }
+  var IMG_A=null;
+  function imDraw(){
+    if(!imF) return;
+    if(!IMG_A) IMG_A=rebuild(IMG.n);
+    var k=+iK.value, R=rebuild(k), C=imF.col(), n=IMG.n;
+    iKv.textContent=k;
+    imF.hidpi();
+    var ctx=imF.ctx, W=imF.W, H=imF.H;
+    ctx.clearRect(0,0,W,H); ctx.fillStyle=C.paper; ctx.fillRect(0,0,W,H);
+    var pad=14, gap=16, cell=Math.floor(Math.min((W-2*pad-2*gap)/(3*n), (H-46)/n));
+    var x0=Math.round((W-(3*n*cell+2*gap))/2), y0=34, i, j, worst=0;
+    function panel(M,ox,mode){
+      for(i=0;i<n;i++) for(j=0;j<n;j++){
+        var v=M[i][j];
+        if(mode==='diff'){ var e=Math.abs(v); worst=Math.max(worst,e);
+          ctx.fillStyle='rgba(194,86,47,'+Math.min(1,e*2.2).toFixed(3)+')'; }
+        else { var g=Math.max(0,Math.min(1,v)); var q=Math.round(255-g*215);
+          ctx.fillStyle='rgb('+q+','+q+','+q+')'; }
+        ctx.fillRect(ox+j*cell, y0+i*cell, cell, cell);
+      }
+      ctx.strokeStyle=C.line; ctx.lineWidth=1; ctx.strokeRect(ox+.5,y0+.5,n*cell-1,n*cell-1);
+    }
+    var D=[]; for(i=0;i<n;i++){var r=[]; for(j=0;j<n;j++) r.push(R[i][j]-IMG_A[i][j]); D.push(r);}
+    panel(IMG_A,x0,'gray');
+    panel(R,x0+n*cell+gap,'gray');
+    panel(D,x0+2*(n*cell+gap),'diff');
+    ctx.save(); ctx.fillStyle=C.soft; ctx.font='12px ui-monospace,Menlo,Consolas,monospace';
+    ctx.textAlign='center'; ctx.textBaseline='bottom';
+    ctx.fillText('original', x0+n*cell/2, y0-8);
+    ctx.fillText('rank '+k, x0+n*cell+gap+n*cell/2, y0-8);
+    ctx.fillText('difference', x0+2*(n*cell+gap)+n*cell/2, y0-8);
+    ctx.restore();
+    var next=IMG.S[k]||0, kept=0, tot=0, t;
+    for(t=0;t<IMG.S.length;t++){ tot+=IMG.S[t]*IMG.S[t]; if(t<k) kept+=IMG.S[t]*IMG.S[t]; }
+    document.getElementById('iRO').innerHTML=
+      "بالرتبة <span class='coord'>"+k+"</span>: الخطأ الطيفي <span class='coord'>σ₍"+(k+1)+"₎ = "+mn(next)+"</span> · "+
+      "والطاقة المحفوظة <span class='coord'>"+mn(kept/tot*100)+"%</span> · "+
+      "التخزين <span class='coord'>"+(k*(2*n+1))+"</span> عدداً بدل <span class='coord'>"+(n*n)+"</span>"+
+      (next<1e-9?"<br><b>الفرق اختفى تماماً</b> — بلغنا الرتبة الحقيقية للمصفوفة، فلا شيء بعدها يُضاف."
+               :"<br>أكبر فرق في خلية <span class='coord'>"+mn(worst)+"</span> — وهو ما تراه في اللوحة الثالثة.");
+  }
+  iK.addEventListener('input',imDraw);
+  onTheme(imDraw); imDraw();
+
+  /* ٣ · أعمدة الطيف وموضع الخطأ */
+  var eyF=FIG('eyCv'), eK=document.getElementById('eK'), eKv=document.getElementById('eKv');
+  var SPEC={lec:[10,3,1,0.2,0], flat:[5,4.6,4.2,3.9,3.5], steep:[12,1.5,0.4,0.1,0.02], img:IMG.S.slice(0,5)};
+  function eyDraw(){
+    if(!eyF) return;
+    var S=SPEC[document.getElementById('eSel').value], k=+eK.value, C=eyF.col();
+    eKv.textContent=k;
+    eyF.hidpi();
+    var ctx=eyF.ctx, W=eyF.W, H=eyF.H;
+    ctx.clearRect(0,0,W,H); ctx.fillStyle=C.paper; ctx.fillRect(0,0,W,H);
+    var pad=52, base=H-44, top=40, mx=Math.max.apply(null,S)||1;
+    var bw=(W-2*pad)/S.length, i;
+    ctx.strokeStyle=C.line; ctx.lineWidth=1;
+    ctx.beginPath(); ctx.moveTo(pad-10,base+.5); ctx.lineTo(W-pad+10,base+.5); ctx.stroke();
+    for(i=0;i<S.length;i++){
+      var h=(base-top)*(S[i]/mx), x=pad+i*bw+bw*0.18, w=bw*0.64;
+      var keep=i<k;
+      ctx.fillStyle=keep?C.accent:(i===k?C.terra:C.line);
+      ctx.globalAlpha=keep?1:(i===k?0.85:0.5);
+      ctx.fillRect(x, base-h, w, h);
+      ctx.globalAlpha=1;
+      ctx.fillStyle=C.soft; ctx.font='12px ui-monospace,Menlo,Consolas,monospace';
+      ctx.textAlign='center'; ctx.textBaseline='top';
+      ctx.fillText('s'+(i+1), x+w/2, base+7);
+      ctx.textBaseline='bottom';
+      ctx.fillStyle=keep?C.accent:(i===k?C.terra:C.soft);
+      ctx.fillText(mn(S[i]), x+w/2, base-h-5);
+    }
+    ctx.save(); ctx.fillStyle=C.ink; ctx.font='600 13px ui-monospace,Menlo,Consolas,monospace';
+    ctx.textAlign='left'; ctx.textBaseline='top';
+    ctx.fillText('kept: '+k+'   dropped: '+(S.length-k), 14, 12);
+    ctx.fillStyle=C.terra;
+    ctx.fillText('error = s'+(k+1)+' = '+mn(S[k]||0), 14, 30);
+    ctx.restore();
+    var ratio=S[0]>1e-12?((S[k]||0)/S[0]):0;
+    document.getElementById('eRO').innerHTML=
+      "احتفظنا بـ <span class='coord'>"+k+"</span> من <span class='coord'>"+S.length+"</span> · "+
+      "الخطأ <span class='coord'>‖A − Â("+k+")‖₂ = σ₍"+(k+1)+"₎ = "+mn(S[k]||0)+"</span> — "+
+      "أي <span class='coord'>"+mn(ratio*100)+"%</span> من أكبر قيمة مفردة.<br>"+
+      (ratio<1e-9?"الطيف نفد: القطع هنا بلا خسارة على الإطلاق."
+       :(ratio<0.15?"طيف حادّ الانحدار: قليلٌ من الطبقات يحمل معظم المصفوفة، فالضغط مجدٍ جداً."
+                   :"طيف مستوٍ نسبياً: كل طبقة تحمل قدراً مقارباً، فالقطع مكلف والضغط أقل جدوى."));
+  }
+  eK.addEventListener('input',eyDraw);
+  document.getElementById('eSel').addEventListener('change',eyDraw);
+  onTheme(eyDraw); eyDraw();
+
+  var ANS={q1:{"0":["صحيح — كل الأعمدة مضاعفات لعمود واحد.",true],"1":["الضرب الخارجي لا يبلغ رتبة اثنين أبداً.",false],"2":["الصفر يلزمه متجه صفري.",false],"3":["الطول يغيّر المقياس لا الرتبة.",false]},
+    q2:{"0":["صحيح — الخطأ هو σ₍ₖ₊₁₎ بالضبط.",true],"1":["هذه σ₂ وهي محفوظة لا مقطوعة.",false],"2":["هذه σ₄، والخطأ يحدده أول مقطوع.",false],"3":["الخطأ ليس مجموعاً بالمعيار الطيفي.",false]},
+    q3:{"0":["صحيح — أكبر تمدد ممكن.",true],"1":["هذا المعيار النووي.",false],"2":["المحدد حاصل ضربها لا أكبرها.",false],"3":["الأثر مجموع القيم الذاتية لا المفردة.",false]},
+    q4:{"0":["صحيح — هذا نصّ المبرهنة.",true],"1":["التكرار قد يقترب منه ولن يتجاوزه.",false],"2":["التماثل لا يغيّر الأمثلية.",false],"3":["بل نعلم، والمبرهنة قاطعة.",false]},
+    q5:{"0":["صحيح — k(m + n + 1) = 5·201 = 1005.",true],"1":["هذا حجم المصفوفة الكاملة.",false],"2":["k² ليست الصيغة.",false],"3":["القيم المفردة وحدها لا تكفي لإعادة البناء.",false]}};
+  document.querySelectorAll('.q').forEach(function(box){
+    var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;
+    opts.forEach(function(b){b.addEventListener('click',function(){
+      if(done)return;done=true;var a=b.getAttribute('data-a'),info=ANS[id][a];
+      opts.forEach(function(o){o.disabled=true;if(ANS[id][o.getAttribute('data-a')][1])o.classList.add('ok');});
+      if(!info[1])b.classList.add('no');fb.textContent=info[0];
+    });});
+  });
+})();
+</script>
+<script src="../assets/site.js"></script>
+<script src="../assets/ui.js"></script>
+</body>
+</html>

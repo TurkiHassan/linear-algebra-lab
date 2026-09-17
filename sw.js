@@ -1,5 +1,5 @@
 /* Offline cache for مختبر الجبر الخطي. Bump CACHE to force refresh. */
-const CACHE = "linalg-v7";
+const CACHE = "linalg-v9";
 
 /* Precached on install: the shell every page needs. */
 const CORE = [
@@ -43,6 +43,17 @@ const CORE = [
   "./lessons/0017-orthogonality.html",
   "./lessons/0018-gram-schmidt.html",
   "./lessons/0019-projections-rotations.html",
+  "./lessons/0020-trace-characteristic.html",
+  "./lessons/0021-eigenvalues.html",
+  "./lessons/0022-cholesky.html",
+  "./lessons/0023-diagonalization.html",
+  "./lessons/0024-svd.html",
+  "./lessons/0025-low-rank.html",
+  "./lessons/0026-derivatives-taylor.html",
+  "./lessons/0027-partial-gradients.html",
+  "./lessons/0028-jacobian.html",
+  "./lessons/0029-backprop.html",
+  "./lessons/0030-hessian-taylor.html",
   "./assets/fonts/thmanyahsans-Black.woff2",
   "./assets/fonts/thmanyahsans-Bold.woff2",
   "./assets/fonts/thmanyahsans-Medium.woff2",
