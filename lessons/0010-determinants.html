@@ -106,7 +106,7 @@
     <h1>المحددات من 2×2 إلى 3×3</h1>
     <span class="en-line" lang="en">Determinants — one number that reports area, volume and invertibility</span>
     <div class="rule"></div>
-    <p class="meta">~45 دقيقة · المتطلب: الدرس 0002 (النظير الضربي)</p>
+    <p class="meta">~55 دقيقة · المتطلب: الدرس 0002 (النظير الضربي)</p>
   </header>
 
   <section id="s1">
@@ -115,6 +115,7 @@
     <div class="analogy"><b>تشبيه: ميزان المطار</b><p>حقيبتك إما تمر (محدد ≠ 0) أو تُرفض (محدد = 0) — رقم واحد على الشاشة يقرر مصير الرحلة كلها: النظير، والاستقلال، والمساحة. <span class="en" lang="en" dir="ltr">One number on the screen decides the whole flight.</span></p></div>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>القاعدة الذهبية:</b> المحدد يسأل ثلاثة أسئلة دفعة واحدة: هل يوجد نظير؟ هل الأعمدة مستقلة؟ هل المساحة غير مسطحة؟ وإذا كان المحدد صفراً فالأجوبة: لا نظير، وأعمدة مرتبطة، ومساحة صفر. <span class="en" lang="en" dir="ltr">(Zero determinant: no inverse, dependent columns, zero area.)</span></p></div>
     <div class="kmath" id="k1"></div>
+    <p>في المنهج: صيغة معكوس <span class="coord" dir="ltr">A=[[a₁₁,a₁₂],[a₂₁,a₂₂]]</span> هي <span class="coord" dir="ltr">A⁻¹ = (1/(a₁₁a₂₂−a₁₂a₂₁))·[[a₂₂,−a₁₂],[−a₂₁,a₁₁]]</span>، فالمعكوس موجود إذا وفقط إذا كان <span class="coord" dir="ltr">a₁₁a₂₂−a₁₂a₂₁≠0</span>. ومن هنا يُعرَّف المحدد <span class="coord" dir="ltr">det(A)=a₁₁a₂₂−a₁₂a₂₁</span>.</p>
   </section>
 
   <section id="s2">
@@ -133,54 +134,79 @@
   </section>
 
   <section id="s3">
-    <h2><span class="num">٣</span> قاعدة ساروس لـ 3×3<span class="en-sub" lang="en">Sarrus: copy two columns, diagonals down minus diagonals up</span></h2>
-    <p>للمصفوفة <span class="coord">3×3</span>: انسخ أول عمودين يميناً، اجمع حواصل الأقطار النازلة الثلاثة، واطرح حواصل الأقطار الصاعدة الثلاثة. أدخل مصفوفتك واللوحة تفصّل الحساب قطراً فقطراً — ثم تحكم: هل النظير موجود أم المصفوفة شاذة؟</p>
-    <div class="demo" data-label="Sarrus · CALC">
-      <h3>آلة ساروس المفصّلة</h3>
-      <p class="hint">أدخل العناصر التسعة — كل قطر يظهر بحاصله</p>
-      <div class="controls"><label>a11 <input type="number" id="s11" value="2"></label><label>a12 <input type="number" id="s12" value="4"></label><label>a13 <input type="number" id="s13" value="6"></label><label>a21 <input type="number" id="s21" value="3"></label><label>a22 <input type="number" id="s22" value="8"></label><label>a23 <input type="number" id="s23" value="5"></label><label>a31 <input type="number" id="s31" value="-1"></label><label>a32 <input type="number" id="s32" value="1"></label><label>a33 <input type="number" id="s33" value="2"></label><button class="btn" id="sGo">احسب بساروس</button></div>
-      <div class="readout" id="sRO" style="direction:rtl;text-align:right">مجموع النوازل − مجموع الصواعد = ؟</div>
+    <h2><span class="num">٣</span> مفكوك لابلاس: محدد من محددات أصغر<span class="en-sub" lang="en">Laplace expansion — a determinant built from smaller determinants</span></h2>
+    <p>محدد <span class="coord" dir="ltr">3×3</span> يساوي ستة حدود، وهذه الحدود تتجمع على نمط واحد: <span class="coord" dir="ltr">a₁₁·det(A₁,₁) − a₁₂·det(A₁,₂) + a₁₃·det(A₁,₃)</span>. الرمز <span class="coord" dir="ltr">Aₖ,ⱼ</span> هو المصفوفة الصغرى الناتجة عن حذف الصف <span class="coord" dir="ltr">k</span> والعمود <span class="coord" dir="ltr">j</span>، والإشارة <span class="coord" dir="ltr">(−1)^{k+j}</span> تتبع رقعة الشطرنج: <span class="coord" dir="ltr">+ − +</span> في الصف الأول. هذا هو <b>مفكوك لابلاس</b> (Laplace expansion)، ويصلح لأي رتبة: محدد <span class="coord" dir="ltr">n×n</span> يتفكك إلى محددات <span class="coord" dir="ltr">(n−1)×(n−1)</span> حتى نصل إلى <span class="coord" dir="ltr">2×2</span>.</p>
+    <div class="kmath" dir="ltr">det(A) = Σₖ (−1)^{k+j} · aₖⱼ · det(Aₖ,ⱼ) &nbsp; (على العمود j) &nbsp; ; &nbsp; det(A) = Σₖ (−1)^{k+j} · aⱼₖ · det(Aⱼ,ₖ) &nbsp; (على الصف j)</div>
+    <p>التعريف الرسمي في المنهج: يمكنك الفك على أي صف أو أي عمود والنتيجة واحدة، فاختر الصف أو العمود الأكثر أصفاراً لتقليل العمل. وتنص النظرية على أن <span class="coord" dir="ltr">det(A)≠0 ⟺ rank(A)=n ⟺ A قابلة للعكس</span>.</p>
+    <div class="demo" data-label="Laplace · CALC">
+      <h3>آلة المفكوك على الصف الأول</h3>
+      <p class="hint">أدخل العناصر التسعة — تظهر المحددات الصغرى الثلاثة ثم المجموع بالإشارات</p>
+      <div class="controls"><label>a11 <input type="number" id="s11" value="2"></label><label>a12 <input type="number" id="s12" value="4"></label><label>a13 <input type="number" id="s13" value="6"></label><label>a21 <input type="number" id="s21" value="3"></label><label>a22 <input type="number" id="s22" value="8"></label><label>a23 <input type="number" id="s23" value="5"></label><label>a31 <input type="number" id="s31" value="-1"></label><label>a32 <input type="number" id="s32" value="1"></label><label>a33 <input type="number" id="s33" value="2"></label><button class="btn" id="sGo">احسب بالمفكوك</button></div>
+      <div class="readout" id="sRO" style="direction:rtl;text-align:right">المفكوك على الصف الأول = ؟</div>
     </div>
-    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>قاعدة ساروس صالحة لمصفوفات <span class="coord">3×3</span> فقط — لا تمددها إلى <span class="coord">4×4</span>؛ والأحجام الأكبر تحتاج المفكوك (طريقة لابلاس). وخطأ الإشارة في الأقطار الصاعدة هو الفخ الأول. <span class="en" lang="en" dir="ltr">(Sarrus stops at 3×3; mind the minus signs.)</span></p></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>الإشارات تتناوب <span class="coord" dir="ltr">+ − +</span> حسب موقع العنصر <span class="coord" dir="ltr">(−1)^{k+j}</span> لا حسب إشارته. أما «قاعدة ساروس» (نسخ عمودين ورسم الأقطار) فهي اختصار بصري يعطي الحدود الستة نفسها لكن لمصفوفات <span class="coord" dir="ltr">3×3</span> فقط؛ والمنهج يعتمد المفكوك والحذف. <span class="en" lang="en" dir="ltr">(The diagonal trick stops at 3×3; the expansion does not.)</span></p></div>
     <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
-      <p>قاعدة ساروس على مصفوفة <span class="coord">3×3</span>، أقطاراً أقطاراً:</p>
+      <p>المفكوك على الصف الأول، ثم التحقق بالحذف إلى مثلثية:</p>
       <pre dir="ltr">A = [ 1  2   3 ]
     [ 4  5   6 ]
     [ 7  8  10 ]
 
-copy the first two columns to the right
+minors of the first row
+  M11 = 5*10 - 6*8 =  2
+  M12 = 4*10 - 6*7 = -2
+  M13 = 4*8  - 5*7 = -3
 
-  1   2   3  |  1   2
-  4   5   6  |  4   5
-  7   8  10  |  7   8
+signs  + - +
+det A = 1*(2) - 2*(-2) + 3*(-3) = 2 + 4 - 9 = -3     nonzero  ->  invertible
 
-diagonals going down  (add)
-  1 * 5 * 10  =  50
-  2 * 6 *  7  =  84
-  3 * 4 *  8  =  96
-                 ---
-                 230
+cross-check by elimination to a triangular matrix
+  R2 <- R2 - 4*R1   ->  [ 0  -3   -6 ]
+  R3 <- R3 - 7*R1   ->  [ 0  -6  -11 ]
+  R3 <- R3 - 2*R2   ->  [ 0   0    1 ]
+  row additions do not change det
+  diagonal 1, -3, 1   ->   det A = 1 * (-3) * 1 = -3     same   OK</pre>
+      <p class="worked-note">المفكوك يعمّ على أي رتبة، والحذف إلى مثلثية هو أرخص طريق لمصفوفة كبيرة: حاصل ضرب القطر مع تتبّع التبديلات والضرب بعدد.</p></div>
+  </section>
 
-diagonals going up    (subtract)
-  7 * 5 *  3  = 105
-  8 * 6 *  1  =  48
- 10 * 4 *  2  =  80
-                 ---
-                 233
+  <section id="properties">
+    <h2><span class="num">٤</span> خصائص المحدد وحسابه بالحذف<span class="en-sub" lang="en">Determinant properties and computing it by elimination</span></h2>
+    <p>يجمع المنهج ثماني خصائص للمحدد. بعضها يجعل الحذف الغاوسي أسرع طريق للحساب:</p>
+    <table><tr><th>الخاصية</th><th>الصيغة</th><th>تعني</th></tr>
+    <tr><td>الضرب</td><td><span class="coord" dir="ltr">det(AB)=det(A)·det(B)</span></td><td>المحدد يوزّع على الضرب</td></tr>
+    <tr><td>المنقول</td><td><span class="coord" dir="ltr">det(A)=det(Aᵀ)</span></td><td>الصفوف والأعمدة متكافئة</td></tr>
+    <tr><td>المعكوس</td><td><span class="coord" dir="ltr">det(A⁻¹)=1/det(A)</span></td><td>لمصفوفة قابلة للعكس</td></tr>
+    <tr><td>المتشابهة</td><td><span class="coord" dir="ltr">det(A)=det(A′)</span> إذا <span class="coord" dir="ltr">A′=S⁻¹AS</span></td><td>تغيير الأساس لا يغيّر المحدد</td></tr>
+    <tr><td>المثلثية</td><td><span class="coord" dir="ltr">det(T)=T₁₁·T₂₂·…·Tₙₙ</span></td><td>حاصل ضرب القطر (وهذا يشمل القطرية)</td></tr>
+    <tr><td>إضافة مضاعف صف</td><td>المحدد لا يتغير</td><td>العملية الغاوسية الثالثة مجانية</td></tr>
+    <tr><td>ضرب صف بعدد <span class="coord" dir="ltr">λ</span></td><td>المحدد يتضاعف <span class="coord" dir="ltr">λ</span> مرة، لذا <span class="coord" dir="ltr">det(λA)=λⁿdet(A)</span></td><td>الرتبة <span class="coord" dir="ltr">n</span> تعطي <span class="coord" dir="ltr">λⁿ</span></td></tr>
+    <tr><td>تبديل صفين</td><td>تنقلب إشارة المحدد</td><td>سجّل عدد التبديلات</td></tr></table>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>مصفوفة <span class="coord" dir="ltr">3×3</span> محددها <span class="coord" dir="ltr">44</span>. ما محدد <span class="coord" dir="ltr">2A</span>؟</p>
+      <details><summary>اكشف الجواب</summary><p><span class="coord" dir="ltr">2³·44=352</span> وليس <span class="coord" dir="ltr">2·44=88</span>: كل صف من الصفوف الثلاثة يتضاعف مرتين، فيتضاعف المحدد ثماني مرات. <span class="en" lang="en" dir="ltr">(det(cA) = cⁿ·det(A), the exponent is the order.)</span></p></details></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>الحذف إلى مثلثية على مصفوفة الآلة نفسها:</p>
+      <pre dir="ltr">A = [  2  4  6 ]
+    [  3  8  5 ]
+    [ -1  1  2 ]
 
-det A = 230 - 233 = -3        nonzero  -&gt;  invertible
+R2 <- R2 - 1.5*R1   ->  [ 0   2  -4 ]
+R3 <- R3 + 0.5*R1   ->  [ 0   3   5 ]
+R3 <- R3 - 1.5*R2   ->  [ 0   0  11 ]
 
-cross-check by cofactor expansion along the first row
-  1*(5*10 - 6*8) - 2*(4*10 - 6*7) + 3*(4*8 - 5*7)
-= 1*(50 - 48)    - 2*(40 - 42)    + 3*(32 - 35)
-= 2 + 4 - 9
-= -3                                   same   OK</pre>
-      <p class="worked-note">ساروس لمصفوفات <span class="coord">3×3</span> فقط. لا تمدّها إلى <span class="coord">4×4</span> — القاعدة تنهار هناك، والتفكيك بالعوامل المرافقة هو الطريق.</p></div>
+all three moves are row additions, so det is unchanged
+det A = 2 * 2 * 11 = 44
+
+cross-check by expansion along the first row
+  2*(8*2 - 5*1) - 4*(3*2 - 5*(-1)) + 6*(3*1 - 8*(-1))
+= 2*11 - 4*11 + 6*11 = 44                       same   OK
+
+det(2A) = 2^3 * 44 = 352</pre>
+      <p class="worked-note"><span class="coord" dir="ltr">det(A)≠0 ⟺ rank(A)=n ⟺ A قابلة للعكس</span>: هذا ما يربط المحدد بالرتبة والنظير.</p></div>
   </section>
 
   <div class="demo" data-label="Watch · VIDEO">
     <h3>شاهد المحدد متحركاً</h3>
-    <p class="hint">موشن جرافيك بتعليق عربي: المساحة، وساروس، وحسم الصفر</p>
+    <p class="hint">موشن جرافيك بتعليق عربي: المساحة والحدود الستة وحسم الصفر (النسخة المصوّرة تذكر قاعدة الأقطار، والمنهج يعتمد المفكوك أعلاه)</p>
     <video controls preload="metadata" poster="../video/outputs/0010-determinants-poster.png" style="width:100%;border-radius:12px;border:1px solid var(--line);background:#000">
       <source src="../video/outputs/0010-determinants-ar.mp4" type="video/mp4">
       <track kind="subtitles" srclang="ar" label="العربية" src="../video/outputs/0010-determinants-subs.vtt" default>
@@ -188,40 +214,43 @@ cross-check by cofactor expansion along the first row
   </div>
 
   <section id="gain">
-    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <h2><span class="num">٥</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
     <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
     <tr><td>محدد <span class="coord">2×2</span></td><td><span class="coord">ad − bc</span> محفوظة</td><td>مساحة متوازي الأضلاع بإشارة + كاشف الشذوذ</td></tr>
-    <tr><td>ساروس 3×3</td><td>وصفة طويلة</td><td>أقطار نازلة ناقص صاعدة — لمصفوفات 3×3 فقط</td></tr>
+    <tr><td>مفكوك لابلاس</td><td>وصفة طويلة</td><td>محدد من محددات أصغر بإشارات الرقعة — يصلح لأي رتبة</td></tr>
+    <tr><td>الحذف إلى مثلثية</td><td>طريقة منفصلة</td><td>المحدد = حاصل ضرب القطر، مع تتبع التبديلات والضرب بعدد</td></tr>
     <tr><td>الشذوذ</td><td>مصفوفة سيئة</td><td>محدد صفر = بلا نظير = أعمدة مرتبطة = مساحة مسطحة</td></tr></table>
-    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> تحسب المحدد آلياً. <b>بعد هذا الدرس:</b> تراه مساحةً، وتتنبأ بالنظير قبل حسابه، وتنفذ ساروس بلا أخطاء إشارة.</p></div>
+    <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا الدرس:</b> تحسب المحدد آلياً. <b>بعد هذا الدرس:</b> تراه مساحةً، وتتنبأ بالنظير قبل حسابه، وتفكّ أي محدد بمفكوك لابلاس أو بالحذف بلا أخطاء إشارة.</p></div>
   </section>
 
   <section id="quiz">
-    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <h2><span class="num">٦</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
     <div class="q" id="q1"><div class="prompt">محدد <span class="coord">[[2,−3],[1,2]]</span>؟</div>
       <button class="opt" data-q="q1" data-a="0">7 — لأن <span class="coord">4 − (−3)</span></button><button class="opt" data-q="q1" data-a="1">1</button><button class="opt" data-q="q1" data-a="2">−7</button><button class="opt" data-q="q1" data-a="3">0</button><div class="feedback"></div></div>
     <div class="q" id="q2"><div class="prompt">محدد <span class="coord">[[2,1],[4,2]] = 0</span> — الحكم؟</div>
       <button class="opt" data-q="q2" data-a="0">شاذة: بلا نظير وأعمدة مرتبطة</button><button class="opt" data-q="q2" data-a="1">النظير هو I</button><button class="opt" data-q="q2" data-a="2">النظير موجود</button><button class="opt" data-q="q2" data-a="3">المساحة 2</button><div class="feedback"></div></div>
     <div class="q" id="q3"><div class="prompt">ماذا تمثل <span class="coord">|det|</span> هندسياً في <span class="coord">2×2</span>؟</div>
       <button class="opt" data-q="q3" data-a="0">مساحة متوازي أضلاع العمودين</button><button class="opt" data-q="q3" data-a="1">طول القطر</button><button class="opt" data-q="q3" data-a="2">ميل الخط</button><button class="opt" data-q="q3" data-a="3">عدد الحلول</button><div class="feedback"></div></div>
-    <div class="q" id="q4"><div class="prompt">قاعدة ساروس صالحة لـ؟</div>
-      <button class="opt" data-q="q4" data-a="0"><span class="coord">3×3</span> فقط</button><button class="opt" data-q="q4" data-a="1">أي رتبة مربعة</button><button class="opt" data-q="q4" data-a="2">2×2 فقط</button><button class="opt" data-q="q4" data-a="3">المستطيلة أيضاً</button><div class="feedback"></div></div>
+    <div class="q" id="q4"><div class="prompt">كيف نحسب محدد <span class="coord">4×4</span> وفق المنهج؟</div>
+      <button class="opt" data-q="q4" data-a="0">بمفكوك لابلاس أو بالحذف إلى مثلثية</button><button class="opt" data-q="q4" data-a="1">بقاعدة الأقطار مباشرة</button><button class="opt" data-q="q4" data-a="2">بضرب القطر دائماً</button><button class="opt" data-q="q4" data-a="3">لا يمكن حسابه</button><div class="feedback"></div></div>
     <div class="q" id="q5"><div class="prompt">إذا كان <span class="coord">det ≠ 0</span> فماذا يضمن؟</div>
       <button class="opt" data-q="q5" data-a="0">نظير موجود + أعمدة مستقلة</button><button class="opt" data-q="q5" data-a="1">المصفوفة متماثلة</button><button class="opt" data-q="q5" data-a="2">المنظومة بلا حل</button><button class="opt" data-q="q5" data-a="3">الأعمدة متعامدة</button><div class="feedback"></div></div>
   </section>
 
   <section id="glossary">
-    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <h2><span class="num">٧</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
     <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
     <tr><td>المحدد</td><td><span class="en" lang="en" dir="ltr">determinant</span></td><td>رقم المصفوفة الكاشف: نظير واستقلال ومساحة</td></tr>
-    <tr><td>قاعدة ساروس</td><td><span class="en" lang="en" dir="ltr">Sarrus rule</span></td><td>وصفة الأقطار لمحدد 3×3</td></tr></table>
+    <tr><td>مفكوك لابلاس</td><td><span class="en" lang="en" dir="ltr">Laplace expansion</span></td><td>تفكيك المحدد على صف أو عمود إلى محددات أصغر بإشارات متناوبة</td></tr>
+    <tr><td>المصفوفة الصغرى</td><td><span class="en" lang="en" dir="ltr">Minor submatrix</span></td><td>ما يبقى بعد حذف صف وعمود</td></tr>
+    <tr><td>مصفوفة مثلثية</td><td><span class="en" lang="en" dir="ltr">Triangular matrix</span></td><td>أصفار فوق القطر أو تحته؛ محددها حاصل ضرب القطر</td></tr></table>
   </section>
 
   <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
     <p>ملف <code>practice/0010-determinants.py</code> يطلب هذه الدوال، وكلها تُحلّ بما في هذا الدرس وحده:</p>
     <ul>
       <li><code>det2</code> — محدد ‎2×2‎</li>
-      <li><code>det3_sarrus</code> — محدد ‎3×3‎ بقاعدة ساروس</li>
+      <li><code>det_laplace</code> — محدد مصفوفة مربعة بمفكوك لابلاس</li>
       <li><code>is_invertible_2</code> — هل المصفوفة قابلة للعكس؟</li>
     </ul></div>
   <div class="lesson-tools" role="group" aria-label="أدوات الدرس">
@@ -255,7 +284,7 @@ cross-check by cofactor expansion along the first row
   function C(k){return {line:CVAR('--line','#ded4c2'),ink:CVAR('--ink','#1c1a15'),soft:CVAR('--soft','#6f6757'),
     accent:CVAR('--accent','#0d5c46'),terra:CVAR('--terra','#c2562f'),vio:CVAR('--vio','#5b3f8f')}[k];}
   function tex(el,s){try{if(window.katex)katex.render(s,el,{throwOnError:false});else el.textContent=s;}catch(e){el.textContent=s;}}
-  tex(document.getElementById('k1'),"|A| = ad-bc \\qquad |B|_{3\\times3} = \\downarrow_1+\\downarrow_2+\\downarrow_3 - \\uparrow_1-\\uparrow_2-\\uparrow_3");
+  tex(document.getElementById('k1'),"|A| = ad-bc \\qquad |A|_{3\\times3} = a_{11}\\det A_{1,1}-a_{12}\\det A_{1,2}+a_{13}\\det A_{1,3}");
   var cv=document.getElementById('dtCv'),ctx=cv.getContext('2d'),RO=document.getElementById('dtRO');
   function draw(){
     var a=2,b=1,c=+document.getElementById('dc').value,d=+document.getElementById('dd').value;
@@ -275,13 +304,13 @@ cross-check by cofactor expansion along the first row
   function gv(id){return +document.getElementById(id).value;}
   document.getElementById('sGo').onclick=function(){
     var a=gv('s11'),b=gv('s12'),c=gv('s13'),d=gv('s21'),e=gv('s22'),f=gv('s23'),g=gv('s31'),h=gv('s32'),k=gv('s33');
-    var down=a*e*k+b*f*g+c*d*h,up=c*e*g+a*f*h+b*d*k,det=down-up;
-    document.getElementById('sRO').innerHTML="النوازل: <span class='coord'>"+a+"·"+e+"·"+k+" + "+b+"·"+f+"·"+g+" + "+c+"·"+d+"·"+h+" = "+down+"</span> · الصواعد: <span class='coord'>"+c+"·"+e+"·"+g+" + "+a+"·"+f+"·"+h+" + "+b+"·"+d+"·"+k+" = "+up+"</span> · المحدد <span class='coord'>"+down+" − ("+up+") = "+det+"</span>"+(det===0?" → شاذة: محدد صفر فلا نظير":" → قابلة للعكس: النظير موجود");
+    var m1=e*k-f*h,m2=d*k-f*g,m3=d*h-e*g,det=a*m1-b*m2+c*m3;
+    document.getElementById('sRO').innerHTML="المحددات الصغرى: <span class='coord'>M₁="+m1+" · M₂="+m2+" · M₃="+m3+"</span> · المفكوك: <span class='coord'>"+a+"·("+m1+") − ("+b+")·("+m2+") + "+c+"·("+m3+") = "+det+"</span>"+(det===0?" → شاذة: محدد صفر فلا نظير":" → قابلة للعكس: النظير موجود");
   };
   var ANS={q1:{"0":["صحيح — 2·2 − (−3)·1 = 7.",true],"1":["أعد: 4+3.",false],"2":["خطأ إشارة — السالب مع السالب.",false],"3":["الصفر للمصفوفة الثانية.",false]},
     q2:{"0":["صحيح — الصف الثاني ضعف الأول.",true],"1":["I ليست نظيراً تلقائياً.",false],"2":["الصفر يمنع النظير.",false],"3":["المساحة صفر هنا.",false]},
     q3:{"0":["صحيح — هذا هو المعنى الهندسي.",true],"1":["القطر ليس المحدد.",false],"2":["الميل مفهوم آخر.",false],"3":["عدد الحلول تحسمه المنظومة لا المساحة.",false]},
-    q4:{"0":["صحيح — للأكبر استعمل المفكوك.",true],"1":["خاطئ — ساروس تنكسر بعد 3.",false],"2":["الصغرى لها ad−bc.",false],"3":["المحدد للمربعة فقط.",false]},
+    q4:{"0":["صحيح — المفكوك يعمم على أي رتبة، والحذف يختصر الطريق.",true],"1":["خاطئ — اختصار الأقطار ينكسر بعد 3×3.",false],"2":["القطر وحده يصلح للمثلثية فقط.",false],"3":["بل يُحسب بسهولة بأحد الطريقين.",false]},
     q5:{"0":["صحيح — الحزمتان معاً.",true],"1":["التماثل غير مطلوب.",false],"2":["عكس الصحيح — الحل وحيد.",false],"3":["التعامد أقوى من اللازم.",false]}};
   document.querySelectorAll('.q').forEach(function(box){
     var id=box.id,fb=box.querySelector('.feedback'),opts=box.querySelectorAll('.opt'),done=false;

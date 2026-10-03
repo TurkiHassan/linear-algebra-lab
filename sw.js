@@ -1,5 +1,5 @@
 /* Offline cache for مختبر الجبر الخطي. Bump CACHE to force refresh. */
-const CACHE = "linalg-v9";
+const CACHE = "linalg-v10";
 
 /* Precached on install: the shell every page needs. */
 const CORE = [

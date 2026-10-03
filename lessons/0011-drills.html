@@ -123,7 +123,7 @@
     <tr><td>D7</td><td>0007</td><td>أوزان تركيب لهدف معطى</td></tr>
     <tr><td>D8</td><td>0008</td><td>استقلال زوج بالمحدد</td></tr>
     <tr><td>D9</td><td>0009</td><td>اختبار أساس + إحداثيات</td></tr>
-    <tr><td>D10</td><td>0010</td><td>محدد 2×2 وساروس 3×3</td></tr></table>
+    <tr><td>D10</td><td>0010</td><td>محدد 2×2 ومفكوك 3×3</td></tr></table>
     <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
       <p>تدريب كامل محلول من أوله إلى تحققه — هكذا يُكتب الحل على الورقة:</p>
       <pre dir="ltr">drill   are v1 = (3, 1) and v2 = (1, 2) a basis of R^2 ?
@@ -182,6 +182,61 @@ answer   basis: yes       [x]_B = (2, 1)</pre>
     </div>
   </section>
 
+  <section id="lecture2-drills">
+    <h2><span class="num">٣</span> تمارين المحاضرة الثانية المحلولة<span class="en-sub" lang="en">Lecture 2 tutorial and review problems, with the slide-76 correction</span></h2>
+    <p>هذه هي المسائل التي أوصى بها الدكتور في القناة: أسئلة المراجعة (شرائح <span class="coord" dir="ltr">55–64</span>) ومسائل التمارين (شرائح <span class="coord" dir="ltr">76–89</span>) من شرائح المنهج. حلّها على الورق أولاً، ثم افتح الحلول للتحقق.</p>
+    <div class="card warn"><span class="card-tag warn-tag">تصحيح مهم · الشريحة <span class="coord" dir="ltr">76</span></span><p>تعرض الشريحة المنظومة <span class="coord" dir="ltr">2x+3y−z=8, x−y+2z=1, 3x+2y+z=7</span> وتزعم أن حلها الوحيد <span class="coord" dir="ltr">(2,1,−1)</span>. هذا غير صحيح: الطرف الأيسر للمعادلة الثالثة هو مجموع الطرفين الأيسرين للأولى والثانية (<span class="coord" dir="ltr">3x+2y+z</span>)، لكن مجموع الطرفين الأيمنين <span class="coord" dir="ltr">9</span> لا <span class="coord" dir="ltr">7</span>. بالطرح نحصل على <span class="coord" dir="ltr">0=−2</span> فالمنظومة <b>غير متسقة</b> ولا حل لها. والفحص الأسرع تعويض الحل المزعوم: المعادلة الثانية تعطي <span class="coord" dir="ltr">2−1−2=−1</span> لا <span class="coord" dir="ltr">1</span>. القاعدة: عوّض دائماً في المعادلات الأصلية.</p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>فحص الشريحة <span class="coord" dir="ltr">76</span> بالرتب وبالتعويض:</p>
+      <pre dir="ltr">[A|b] = [ 2   3  -1 | 8 ]
+        [ 1  -1   2 | 1 ]
+        [ 3   2   1 | 7 ]
+
+R3 <- R3 - R1 - R2   ->  [ 0  0  0 | 7 - 8 - 1 ]  =  [ 0  0  0 | -2 ]
+
+rk(A) = 2        rk(A|b) = 3        rk(A) < rk(A|b)   ->   no solution
+
+the slide claims (2, 1, -1); plug into equation 2:
+  1*2 - 1*1 + 2*(-1) = 2 - 1 - 2 = -1      but the right side is 1     FAIL</pre>
+      <p class="worked-note">الرتبتان تحسمان الحكم قبل أي حل، والتعويض يكشف الخطأ في ثوانٍ.</p></div>
+    <details><summary><b>حلول مسائل التمارين</b> — اكشفها بعد المحاولة</summary>
+    <div style="overflow-x:auto"><table><tr><th>الشريحة</th><th>المسألة</th><th>الحل</th></tr>
+    <tr><td><span class="coord" dir="ltr">76</span></td><td><span class="coord" dir="ltr">2x+3y−z=8, x−y+2z=1, 3x+2y+z=7</span></td><td>غير متسقة: <span class="coord" dir="ltr">0=−2</span>؛ رتبة A تساوي <span class="coord" dir="ltr">2</span> ورتبة [A|b] تساوي <span class="coord" dir="ltr">3</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">77</span></td><td><span class="coord" dir="ltr">x+2y−z=3, 2x+4y−2z=6, 3x+6y−3z=9</span></td><td>الرتبة <span class="coord" dir="ltr">1</span> والمعادلتان الأخريان مضاعفات للأولى: حلول لا نهائية <span class="coord" dir="ltr">x=3−2y+z</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">78</span></td><td><span class="coord" dir="ltr">A=[[1,2],[3,4]], B=[[2,0],[1,3]]</span></td><td><span class="coord" dir="ltr">AB=[[4,6],[10,12]]</span>، <span class="coord" dir="ltr">BA=[[2,4],[10,14]]</span> (AB≠BA)، <span class="coord" dir="ltr">det A=−2</span> و<span class="coord" dir="ltr">A⁻¹=[[−2,1],[3/2,−1/2]]</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">79</span></td><td>هل <span class="coord" dir="ltr">U={x+y−z=0}</span> فضاء جزئي من <span class="coord" dir="ltr">ℝ³</span>؟</td><td>نعم: يحوي الصفر، ومغلق على الجمع والضرب بعدد (الطرف الأيسر يتوزع خطياً)</td></tr>
+    <tr><td><span class="coord" dir="ltr">80</span></td><td><span class="coord" dir="ltr">(1,2,1), (2,1,0), (3,3,1)</span></td><td>مرتبطة: العمود الثالث بلا قائد و<span class="coord" dir="ltr">v₃=v₁+v₂</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">81</span></td><td>أساس <span class="coord" dir="ltr">span{(1,1,0),(2,0,1),(3,1,1)}</span></td><td>القائدان في العمودين <span class="coord" dir="ltr">1</span> و<span class="coord" dir="ltr">2</span>، فالأساس <span class="coord" dir="ltr">{(1,1,0),(2,0,1)}</span> والبعد <span class="coord" dir="ltr">2</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">82</span></td><td>رتبة <span class="coord" dir="ltr">[[1,2,3,4],[2,4,6,8],[1,1,1,1]]</span></td><td><span class="coord" dir="ltr">2</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">83</span></td><td>مصفوفة <span class="coord" dir="ltr">Φ(x,y)=(2x+y, x−y)</span></td><td><span class="coord" dir="ltr">[[2,1],[1,−1]]</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">84</span></td><td>النواة والصورة لـ <span class="coord" dir="ltr">[[1,2,3],[2,4,6]]</span></td><td>النواة <span class="coord" dir="ltr">span{(−2,1,0),(−3,0,1)}</span> والصورة <span class="coord" dir="ltr">span{(1,2)}</span>؛ <span class="coord" dir="ltr">2+1=3</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">85</span></td><td><span class="coord" dir="ltr">b̃₁=b₁+b₂, b̃₂=b₂</span></td><td><span class="coord" dir="ltr">S=[[1,0],[1,1]]</span>؛ إذا كانت إحداثيات x في الجديد <span class="coord" dir="ltr">(1,2)</span> ففي القديم <span class="coord" dir="ltr">(1,3)</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">86</span></td><td>مستقيم من <span class="coord" dir="ltr">(1,2,3)</span> باتجاه <span class="coord" dir="ltr">(2,−1,1)</span></td><td><span class="coord" dir="ltr">(1,2,3)+t(2,−1,1)</span> فضاء أفيني؛ <span class="coord" dir="ltr">t=1</span> يعطي <span class="coord" dir="ltr">(3,1,4)</span> و<span class="coord" dir="ltr">t=−1</span> يعطي <span class="coord" dir="ltr">(−1,3,2)</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">87</span></td><td>القيم الذاتية لـ <span class="coord" dir="ltr">[[3,1],[0,2]]</span></td><td><span class="coord" dir="ltr">3</span> و<span class="coord" dir="ltr">2</span> بمتجهين <span class="coord" dir="ltr">(1,0)</span> و<span class="coord" dir="ltr">(1,−1)</span> — يشرحها الدرس <span class="coord" dir="ltr">0021</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">89·1</span></td><td><span class="coord" dir="ltr">x+y+z=6, 2x−y+z=3, x+y−z=0</span></td><td><span class="coord" dir="ltr">(1,2,3)</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">89·2</span></td><td>رتبة <span class="coord" dir="ltr">[[1,2,3],[4,5,6],[7,8,9]]</span></td><td><span class="coord" dir="ltr">2</span> (الصف الثالث = <span class="coord" dir="ltr">2×</span>الثاني − الأول)</td></tr>
+    <tr><td><span class="coord" dir="ltr">89·3</span></td><td><span class="coord" dir="ltr">(1,1,1), (1,2,0), (0,1,−1)</span></td><td>مرتبطة: المحدد <span class="coord" dir="ltr">0</span> و<span class="coord" dir="ltr">v₂=v₁+v₃</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">89·4</span></td><td>النواة والصورة لـ <span class="coord" dir="ltr">[[1,2],[2,4]]</span></td><td>النواة <span class="coord" dir="ltr">span{(−2,1)}</span> والصورة <span class="coord" dir="ltr">span{(1,2)}</span></td></tr>
+    <tr><td><span class="coord" dir="ltr">89·5</span></td><td>مصفوفة <span class="coord" dir="ltr">Φ(x,y)=(x+2y, 3x−y)</span></td><td><span class="coord" dir="ltr">[[1,2],[3,−1]]</span></td></tr>
+    </table></div>
+    </details>
+    <details><summary><b>أجوبة أسئلة المراجعة</b> — اكشفها بعد المحاولة</summary>
+    <div style="overflow-x:auto"><table><tr><th>الشريحة</th><th>الجواب المختصر</th></tr>
+    <tr><td><span class="coord" dir="ltr">55</span></td><td>ثلاثة أنواع: وحيد، لا نهائي، لا حل. لا حل إذا <span class="coord" dir="ltr">rk(A)<rk(A|b)</span>؛ وحيد إذا <span class="coord" dir="ltr">rk(A)=rk(A|b)=n</span>؛ لا نهائي إذا <span class="coord" dir="ltr">rk(A)=rk(A|b)<n</span>. مصفوفة <span class="coord" dir="ltr">3×3</span> رتبتها <span class="coord" dir="ltr">2</span> تترك متغيراً حراً واحداً إذا كان النظام متسقاً.</td></tr>
+    <tr><td><span class="coord" dir="ltr">56</span></td><td><span class="coord" dir="ltr">AB</span> من النوع <span class="coord" dir="ltr">2×4</span>. <span class="coord" dir="ltr">BA</span> غير معرّف لأن أعمدة B وعددها <span class="coord" dir="ltr">4</span> لا تساوي صفوف A وعددها <span class="coord" dir="ltr">2</span>. الضرب غير إبدالي (مثال الشريحة <span class="coord" dir="ltr">78</span>).</td></tr>
+    <tr><td><span class="coord" dir="ltr">57</span></td><td><span class="coord" dir="ltr">(AB)⁻¹=B⁻¹A⁻¹</span>. <span class="coord" dir="ltr">(A+B)⁻¹≠A⁻¹+B⁻¹</span> عموماً (مثلاً A=B=I). <span class="coord" dir="ltr">(AB)ᵀ=BᵀAᵀ</span>.</td></tr>
+    <tr><td><span class="coord" dir="ltr">58</span></td><td>العمليات: تبديل صفين، ضرب صف بعدد غير صفري، إضافة مضاعف صف لآخر. الصيغة المدرجة تكشف الاتساق والقادة، وعدد الحلول من مقارنة الرتبتين مع n.</td></tr>
+    <tr><td><span class="coord" dir="ltr">59</span></td><td><span class="coord" dir="ltr">U₁</span> فضاء جزئي. <span class="coord" dir="ltr">U₂</span> لا (الصفر لا يحققها: <span class="coord" dir="ltr">0≠1</span>). <span class="coord" dir="ltr">U₃</span> فضاء جزئي: <span class="coord" dir="ltr">x²+y²=0</span> تعني <span class="coord" dir="ltr">x=y=0</span>، فهي محور z (فخ: تبدو غير خطية).</td></tr>
+    <tr><td><span class="coord" dir="ltr">60</span></td><td>اجعل المتجهات أعمدة واختزل: كل عمود فيه قائد ⟺ مستقلة. في <span class="coord" dir="ltr">ℝ³</span> الارتباط يعني أنها في مستوى واحد (أو متوازية). لا يمكن لأربعة متجهات في <span class="coord" dir="ltr">ℝ³</span> أن تكون مستقلة.</td></tr>
+    <tr><td><span class="coord" dir="ltr">61</span></td><td>الأساس من أعمدة القادة في المصفوفة الأصلية. غير وحيد لكن عدد عناصره (البعد) وحيد. بعد <span class="coord" dir="ltr">2</span> في <span class="coord" dir="ltr">ℝ³</span> يعني مستوى يمر بالأصل.</td></tr>
+    <tr><td><span class="coord" dir="ltr">62</span></td><td>أكبر رتبة ممكنة <span class="coord" dir="ltr">min(3,4)=3</span>. إذا كانت <span class="coord" dir="ltr">rk=2</span> فبعد النواة <span class="coord" dir="ltr">4−2=2</span>. الحل موجود ⟺ <span class="coord" dir="ltr">rk(A)=rk(A|b)</span>.</td></tr>
+    <tr><td><span class="coord" dir="ltr">63</span></td><td>الخطية: <span class="coord" dir="ltr">Φ(x+y)=Φ(x)+Φ(y)</span> و<span class="coord" dir="ltr">Φ(λx)=λΦ(x)</span>. النواة ما يذهب إلى الصفر، والتطبيق متباين ⟺ النواة <span class="coord" dir="ltr">{0}</span>. مبرهنة الرتبة والنواة: <span class="coord" dir="ltr">dim ker + dim Im = dim V</span>.</td></tr>
+    <tr><td><span class="coord" dir="ltr">64</span></td><td>ليست فضاء جزئياً (لا تحوي الصفر)؛ هي فضاء أفيني: <span class="coord" dir="ltr">x_p + ker(A)</span> حيث <span class="coord" dir="ltr">x_p</span> حل خاص.</td></tr>
+    </table></div>
+    </details>
+    <p class="hint">مرجع المنهج: محاضرة الجبر الخطي. تصحيح الشريحة <span class="coord" dir="ltr">76</span> موثّق في خريطة تغطية المنهج.</p>
+  </section>
+
   <div class="demo" data-label="Watch · VIDEO">
     <h3>شاهد الإحماء متحركاً</h3>
     <p class="hint">موشن جرافيك بتعليق عربي: طلقات الإحماء وحصاد المسار</p>
@@ -192,12 +247,12 @@ answer   basis: yes       [x]_B = (2, 1)</pre>
   </div>
 
   <section id="gain">
-    <h2><span class="num">٣</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
     <div class="card idea"><span class="card-tag">فكرة أساسية</span><p><b>قبل هذا المسار:</b> صفحات بخط اليد. <b>بعد هذا المسار:</b> تميّز الخطي، وتضرب المصفوفات، وتحذف غاوسياً، وتختبر الفضاءات، وتخلط التراكيب، وتحسم الاستقلال، وتقرأ الأساس والبعد، وتحسب المحددات — وتثبت كل ذلك ببايثون.</p></div>
   </section>
 
   <section id="quiz">
-    <h2><span class="num">٤</span> الاختبار الختامي<span class="en-sub" lang="en">Final check across the whole path</span></h2>
+    <h2><span class="num">٥</span> الاختبار الختامي<span class="en-sub" lang="en">Final check across the whole path</span></h2>
     <div class="q" id="q1"><div class="prompt">أيّهما خطية؟ <span class="coord">(1/2)x + y − πz = √2</span> أم <span class="coord">xy + z = 2</span>؟</div>
       <button class="opt" data-q="q1" data-a="0">الأولى — الثوابت لا تضر</button><button class="opt" data-q="q1" data-a="1">الثانية — فيها z</button><button class="opt" data-q="q1" data-a="2">كلتاهما</button><button class="opt" data-q="q1" data-a="3">لا واحدة</button><div class="feedback"></div></div>
     <div class="q" id="q2"><div class="prompt">ناتج ضرب <span class="coord">(2×3)</span> في <span class="coord">(3×4)</span>؟</div>
@@ -211,7 +266,7 @@ answer   basis: yes       [x]_B = (2, 1)</pre>
   </section>
 
   <section id="glossary">
-    <h2><span class="num">٥</span> قاموس المسار<span class="en-sub" lang="en">Path glossary</span></h2>
+    <h2><span class="num">٦</span> قاموس المسار<span class="en-sub" lang="en">Path glossary</span></h2>
     <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
     <tr><td>منظومة خطية</td><td><span class="en" lang="en" dir="ltr">linear system</span></td><td>معادلات خطية تُحل معاً</td></tr>
     <tr><td>القائد</td><td><span class="en" lang="en" dir="ltr">pivot</span></td><td>مسمار الحذف الغاوسي</td></tr>

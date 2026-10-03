@@ -105,7 +105,7 @@
     <h1>فضاء المتجهات الإقليدي</h1>
     <span class="en-line" lang="en">Euclidean Vector Spaces — inner product, length and distance</span>
     <div class="rule"></div>
-    <p class="meta">~45 دقيقة · المتطلب: الدرس 0002 (العمليات)</p>
+    <p class="meta">~55 دقيقة · المتطلب: الدرس 0002 (العمليات)</p>
   </header>
 
   <section id="s1">
@@ -168,6 +168,38 @@ Pythagoras, because they are perpendicular
       <p class="worked-note">الضرب الداخلي صفر واحد يختصر «الزاوية قائمة». وهو الرقم نفسه الذي يظهر في اللوحة أعلاه عند سحب المتجهين.</p></div>
   </section>
 
+  <section id="s4">
+    <h2><span class="num">٤</span> الزمرة وبديهيات فضاء المتجهات<span class="en-sub" lang="en">Groups and the axioms behind a vector space</span></h2>
+    <p>حتى الآن عملنا في <span class="coord" dir="ltr">ℝⁿ</span>، لكن «فضاء المتجهات» أوسع: أي مجموعة لها جمع وضرب بعدد تتبعان قواعد معينة. القاعدة الأولى تخص الجمع وحده، وتسمى <span class="term">الزمرة</span> <span class="en" lang="en" dir="ltr">(group)</span>: مجموعة <span class="coord" dir="ltr">G</span> مع عملية <span class="coord" dir="ltr">∘</span> تحقق أربعة شروط.</p>
+    <table><tr><th>الشرط</th><th>معناه</th><th>مثال بالجمع على الأعداد الصحيحة</th></tr>
+    <tr><td>الانغلاق</td><td>ناتج العملية يبقى في المجموعة</td><td>مجموع عددين صحيحين عدد صحيح</td></tr>
+    <tr><td>الدمج</td><td><span class="coord" dir="ltr">(a∘b)∘c = a∘(b∘c)</span></td><td><span class="coord" dir="ltr">(1+2)+3 = 1+(2+3)</span></td></tr>
+    <tr><td>العنصر المحايد</td><td>عنصر <span class="coord" dir="ltr">e</span> لا يغيّر شيئاً</td><td><span class="coord" dir="ltr">e = 0</span></td></tr>
+    <tr><td>النظير</td><td>لكل عنصر نظير يعيده إلى المحايد</td><td>نظير <span class="coord" dir="ltr">5</span> هو <span class="coord" dir="ltr">−5</span></td></tr></table>
+    <p>إذا تحققت أيضاً <span class="coord" dir="ltr">a∘b = b∘a</span> سُميت الزمرة <b>إبدالية</b>. فحص سريع: <span class="coord" dir="ltr">(ℤ,+)</span> زمرة إبدالية، و<span class="coord" dir="ltr">(ℝⁿ,+)</span> كذلك، و<span class="coord" dir="ltr">(ℝ∖{0},×)</span> زمرة. أما <span class="coord" dir="ltr">(ℕ,+)</span> فليست زمرة لأنه لا نظير لـ <span class="coord" dir="ltr">3</span> داخل الأعداد الطبيعية، و<span class="coord" dir="ltr">(ℤ,×)</span> ليست زمرة لأن نظير <span class="coord" dir="ltr">2</span> هو <span class="coord" dir="ltr">½</span> وهو خارج المجموعة.</p>
+    <p><span class="term">فضاء المتجهات</span> <span class="en" lang="en" dir="ltr">(vector space)</span> فوق الأعداد الحقيقية هو مجموعة <span class="coord" dir="ltr">V</span> يجعلها الجمع <b>زمرة إبدالية</b>، ويضاف إليها ضرب بعدد حقيقي يحقق أربع قواعد:</p>
+    <div class="kmath" dir="ltr">λ(x+y)=λx+λy &nbsp; ; &nbsp; (λ+ψ)x=λx+ψx &nbsp; ; &nbsp; λ(ψx)=(λψ)x &nbsp; ; &nbsp; 1·x=x</div>
+    <p>فمجموعة متعددات الحدود التي درجتها لا تزيد على <span class="coord" dir="ltr">2</span> فضاء متجهات، وكذلك مجموعة المصفوفات <span class="coord" dir="ltr">2×3</span>، وكذلك الدوال المستمرة على فترة <span class="coord" dir="ltr">C([a,b])</span>، لأن الجمع والضرب بعدد يبقيان داخلها وتتحقق القواعد. أما <span class="coord" dir="ltr">{(x,y): y ≥ 0}</span> فليست فضاء: المتجه <span class="coord" dir="ltr">(1,1)</span> فيها، لكن <span class="coord" dir="ltr">(−1)·(1,1)=(−1,−1)</span> خارجها، أي لا نظير جمعياً ولا انغلاق على الضرب.</p>
+    <div class="card predict"><span class="card-tag predict-tag">توقّع قبل أن تجرّب</span>
+      <p>هل <span class="coord" dir="ltr">ℤ²</span> فضاء متجهات فوق الأعداد الحقيقية؟</p>
+      <details><summary>اكشف الجواب</summary><p>لا. الجمع يبقى داخلها، لكن الضرب بعدد حقيقي يخرج منها: <span class="coord" dir="ltr">½·(1,0)</span> ليست نقطة صحيحة. <span class="en" lang="en" dir="ltr">(Closure under scalar multiplication fails.)</span></p></details></div>
+    <div class="card warn"><span class="card-tag warn-tag">انتبه</span><p>ليس كل فضاء متجهات هو <span class="coord" dir="ltr">ℝⁿ</span> وليس كل متجه سهماً؛ الدوال والمصفوفات ومتعددات الحدود متجهات أيضاً. وما يهم هو القواعد، لا الشكل. <span class="en" lang="en" dir="ltr">(Vectors are whatever obeys the axioms.)</span></p></div>
+    <div class="worked"><span class="card-tag worked-tag">مثال محسوب</span>
+      <p>المصفوفات <span class="coord" dir="ltr">2×2</span> القابلة للعكس مع الضرب زمرة، لكنها ليست إبدالية:</p>
+      <pre dir="ltr">A = [ 1  1 ]     B = [ 1  0 ]
+    [ 0  1 ]         [ 1  1 ]
+
+A B = [ 1*1+1*1   1*0+1*1 ]  =  [ 2  1 ]
+      [ 0*1+1*1   0*0+1*1 ]     [ 1  1 ]
+
+B A = [ 1*1+0*0   1*1+0*1 ]  =  [ 1  1 ]
+      [ 1*1+1*0   1*1+1*1 ]     [ 1  2 ]
+
+A B != B A     the order matters: closure, associativity, identity I and
+               inverses hold, but commutativity does not</pre>
+      <p class="worked-note">المرجع في المنهج: محاضرة الجبر الخطي، تعريف الزمرة وفضاء المتجهات وأمثلته.</p></div>
+  </section>
+
   <div class="demo" data-label="Watch · VIDEO">
     <h3>شاهد المتجهات متحركة</h3>
     <p class="hint">موشن جرافيك بتعليق عربي: الضرب الداخلي والطول والتعامد</p>
@@ -178,7 +210,7 @@ Pythagoras, because they are perpendicular
   </div>
 
   <section id="gain">
-    <h2><span class="num">٤</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
+    <h2><span class="num">٥</span> ماذا كسبت؟<span class="en-sub" lang="en">What you gained</span></h2>
     <table><tr><th>المصطلح</th><th>ما يقوله الناس</th><th>الحقيقة</th></tr>
     <tr><td>الضرب الداخلي</td><td>ضرب متجهين</td><td>رقم واحد = مجموع حواصل العناصر — كاشف التعامد</td></tr>
     <tr><td>الطول</td><td>حجم المتجه</td><td>جذر مجموع المربعات — امتداد فيثاغورس</td></tr>
@@ -187,7 +219,7 @@ Pythagoras, because they are perpendicular
   </section>
 
   <section id="quiz">
-    <h2><span class="num">٥</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
+    <h2><span class="num">٦</span> اختبر فهمك<span class="en-sub" lang="en">Check your understanding</span></h2>
     <div class="q" id="q1"><div class="prompt"><span class="coord">(1,5,−2)</span> في أي فضاء؟</div>
       <button class="opt" data-q="q1" data-a="0"><span class="coord">ℝ³</span> — ثلاثة عناصر</button><button class="opt" data-q="q1" data-a="1"><span class="coord">ℝ²</span></button><button class="opt" data-q="q1" data-a="2"><span class="coord">ℝ⁴</span></button><button class="opt" data-q="q1" data-a="3"><span class="coord">ℝ¹</span></button><div class="feedback"></div></div>
     <div class="q" id="q2"><div class="prompt">الضرب الداخلي لـ <span class="coord">(1,2)</span> و <span class="coord">(3,−1)</span>؟</div>
@@ -201,11 +233,13 @@ Pythagoras, because they are perpendicular
   </section>
 
   <section id="glossary">
-    <h2><span class="num">٦</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
+    <h2><span class="num">٧</span> قاموس الدرس<span class="en-sub" lang="en">Glossary</span></h2>
     <table><tr><th>المصطلح العربي</th><th lang="en">English</th><th>معناه ببساطة</th></tr>
     <tr><td>الضرب الداخلي</td><td><span class="en" lang="en" dir="ltr">inner product</span></td><td>رقم التشابه: اضرب المتناظر واجمع</td></tr>
     <tr><td>الطول</td><td><span class="en" lang="en" dir="ltr">length (norm)</span></td><td>مسافة المتجه عن الأصل</td></tr>
-    <tr><td>المسافة</td><td><span class="en" lang="en" dir="ltr">distance</span></td><td>طول الفرق بين متجهين</td></tr></table>
+    <tr><td>المسافة</td><td><span class="en" lang="en" dir="ltr">distance</span></td><td>طول الفرق بين متجهين</td></tr>
+    <tr><td>الزمرة</td><td><span class="en" lang="en" dir="ltr">group</span></td><td>مجموعة بعملية: انغلاق ودمج ومحايد ونظير لكل عنصر</td></tr>
+    <tr><td>فضاء المتجهات</td><td><span class="en" lang="en" dir="ltr">vector space</span></td><td>زمرة جمعية إبدالية مع ضرب بعدد يحقق قواعد التوزيع</td></tr></table>
   </section>
 
   <div class="card tools"><span class="card-tag tools-tag">ما ستكتبه في التمرين</span>
